@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="ecrsviewcontrollerBundle"
+           value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <af:document title="CRSCurrentPendingReport.jspx" id="d1">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/pageTemplate/EcrsTemplate.jspx"
+                                 id="pt1">
+                    <f:facet name="content">
+                        <af:panelHeader text="#{ecrsviewcontrollerBundle.CURRENT_AND_PENDING_CRS_REPORT}" id="ph1"
+                                        size="1"
+                                        inlineStyle="padding:5px;">
+                            <f:facet name="context"/>
+                            <f:facet name="menuBar"/>
+                            <f:facet name="legend"/>
+                            <f:facet name="info"/>
+                            <af:panelGroupLayout id="pgl2" layout="horizontal"
+                                                 halign="center">
+                                <af:table value="#{bindings.CRSCurrentPendingCRSReport.collectionModel}"
+                                          var="row"
+                                          rows="#{bindings.CRSCurrentPendingCRSReport.rangeSize}"
+                                          emptyText="#{bindings.CRSCurrentPendingCRSReport.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                          fetchSize="#{bindings.CRSCurrentPendingCRSReport.rangeSize}"
+                                          rowBandingInterval="0"
+                                          id="t1" columnStretching="column:c1"
+                                          inlineStyle="width:500px;">
+                                    <af:column sortProperty="#{bindings.CRSCurrentPendingCRSReport.hints.CrsName.name}"
+                                               sortable="false"
+                                               headerText="#{bindings.CRSCurrentPendingCRSReport.hints.CrsName.label}"
+                                               id="c1">
+                                        <af:outputText value="#{row.CrsName}"
+                                                       shortDesc="#{bindings.CRSCurrentPendingCRSReport.hints.CrsName.tooltip}"
+                                                       id="ot1"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.CRSCurrentPendingCRSReport.hints.CrsState.name}"
+                                               sortable="false"
+                                               headerText="#{bindings.CRSCurrentPendingCRSReport.hints.CrsState.label}"
+                                               id="c2">
+                                        <af:outputText value="#{row.CrsState}"
+                                                       shortDesc="#{bindings.CRSCurrentPendingCRSReport.hints.CrsState.tooltip}"
+                                                       id="ot2"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.CRSCurrentPendingCRSReport.hints.MeddraVers.name}"
+                                               sortable="false"
+                                               headerText="#{bindings.CRSCurrentPendingCRSReport.hints.MeddraVers.label}"
+                                               id="c3" width="150">
+                                        <af:outputText value="#{row.MeddraVers}"
+                                                       shortDesc="#{bindings.CRSCurrentPendingCRSReport.hints.MeddraVers.tooltip}"
+                                                       id="ot3"/>
+                                    </af:column>
+                                </af:table>
+                            </af:panelGroupLayout>
+                            <f:facet name="toolbar">
+                                <af:toolbar id="t4">
+                                    <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT}"
+                                                      id="cb1"
+                                                      partialSubmit="true">
+                                        <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                                       filename="CurrentPendingCrsReport.xls"
+                                                                       method="#{pageFlowScope.reportsBean.downloadCurrPendingCRSReport}"/>
+                                    </af:commandButton>
+                                </af:toolbar>
+                            </f:facet>
+                            <af:panelGroupLayout id="pgl3" layout="vertical">
+                                <af:spacer width="10" height="10" id="s2"/>
+                                <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb2" action="home"/>
+                            </af:panelGroupLayout>
+                        </af:panelHeader>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

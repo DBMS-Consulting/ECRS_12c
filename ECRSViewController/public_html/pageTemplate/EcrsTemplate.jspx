@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="ecrsviewcontrollerBundle" value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <af:pageTemplateDef var="attrs" definition="private">
+        <af:xmlContent>
+            <component xmlns="http://xmlns.oracle.com/adf/faces/rich/component">
+                <display-name>EcrsTemplate</display-name>
+                <facet>
+                    <description>
+                        Facet for content
+                    </description>
+                    <facet-name>
+                        content
+                    </facet-name>
+                </facet>
+                <attribute>
+                    <attribute-name>
+                        contentWidth
+                    </attribute-name>
+                    <attribute-class>
+                        java.lang.String
+                    </attribute-class>
+                    <default-value>
+                        1200px
+                    </default-value>
+                </attribute>
+            </component>
+        </af:xmlContent>
+        <af:separator id="pt_s1"/>
+        <af:panelGroupLayout id="pt_pgl1" layout="scroll">
+            <af:panelGroupLayout id="pt_pgl4" layout="vertical"
+                                 inlineStyle="width:#{attrs.contentWidth};margin: 0 auto; background-color: white;">
+                <af:panelGroupLayout id="pt_pgl3" layout="horizontal" styleClass="AFStretchWidth">
+                    <af:commandImageLink id="pt_gil1" icon="/images/crs.png" action="home" immediate="true"
+                                         shortDesc="#{applicationScope.crsBean.version}">
+                        <af:showPopupBehavior popupId="pt_p2" triggerType="click" align="overlap"/>
+                    </af:commandImageLink>
+                    <af:panelGroupLayout id="pt_pgl2" layout="horizontal" halign="end"
+                                         inlineStyle="white-space:nowrap; padding:5px;">
+                        <af:commandButton text="Login" id="pt_cb1" visible="#{!securityContext.authenticated}">
+                            <af:showPopupBehavior triggerType="click" popupId="pt_p1"/>
+                        </af:commandButton>
+                        <af:panelFormLayout id="pt_pfl1" visible="#{securityContext.authenticated}">
+                            <af:commandButton text="Logoff" id="pt_cb2" actionListener="#{sessionBean.logout}"
+                                              immediate="true"/>
+                            <af:panelLabelAndMessage label="Logged in as:" id="pt_plam1">
+                                <af:outputText value="#{securityContext.userName}" id="pt_ot1"/>
+                            </af:panelLabelAndMessage>
+                            <af:panelLabelAndMessage label="Role:" id="pt_plam2">
+                                <af:outputText value="#{sessionBean.userRole}" id="pt_ot2" inlineStyle="font-weight:bold;"/>
+                            </af:panelLabelAndMessage>
+                        </af:panelFormLayout>
+                    </af:panelGroupLayout>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pgl1" layout="scroll">
+                    <af:menuBar id="mb1">
+                        <af:commandMenuItem text="#{ecrsviewcontrollerBundle.CREATE}" id="cmi1" action="create" immediate="true"
+                                            inlineStyle=" font-weight: bold;     padding-right: 10px;"
+                                            visible="#{securityContext.userInRole['CRS_BSL'] || securityContext.userInRole['CRS_ADMIN']}"
+                                            disabled="#{sessionScope.sessionBean.freezeMedDRAFlag}"/>
+                        <af:commandMenuItem text="#{ecrsviewcontrollerBundle.UPDATE}" id="cmi2" action="update" immediate="true"
+                         inlineStyle=" font-weight: bold;     padding-right: 10px;"
+                                            visible="#{securityContext.authenticated}"
+                                            disabled="#{sessionScope.sessionBean.freezeMedDRAFlag}"/>
+                        <af:commandMenuItem text="#{ecrsviewcontrollerBundle.BROWSE__SEARCH}" id="cmi3" immediate="true"
+                                            action="browseSearch"  inlineStyle=" font-weight: bold;     padding-right: 10px;"/>
+                        <af:menu text="#{ecrsviewcontrollerBundle.REPORTS}" id="pt_m2"
+                                 inlineStyle="font-weight: bold;     padding-right: 10px;">
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.MEDDRA_COMPONENTS}" id="pt_cmi2"
+                                                action="meddraComponents" inlineStyle="font-weight: bold;"
+                                                immediate="true"/>
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.RISK_DEFINITIONS_PER_SAFETY_TO}" id="pt_cmi4"
+                                                action="riskDefSafety" inlineStyle="font-weight: bold;"
+                                                immediate="true"/>
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.MEDDRA_VERSION_IMPACT}"
+                                                id="pt_cmi10"
+                                                action="MedDRAVersionImpact" inlineStyle="font-weight: bold;"
+                                                immediate="true"/>                    
+                            <af:menu text="#{ecrsviewcontrollerBundle.ADMIN_REPORTS}" id="pt_m3"
+                                     visible="#{securityContext.userInRole['CRS_ADMIN']}"
+                                     inlineStyle="font-weight: bold;     padding-right: 10px;">
+                                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.ADMIN_DASHBOARD}"
+                                                    id="pt_cmi1"
+                                                    action="adminDashBoard"
+                                                    inlineStyle="font-weight: bold;"
+                                                    immediate="true"/>
+                                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.MEDDRA_COMPONENT_STARDARDIZA_0}"
+                                                    id="pt_cmi7"
+                                                    action="meddraCompStandard"
+                                                    inlineStyle="font-weight: bold;"
+                                                    immediate="true"/>
+                                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.RETIRED_NMQSCMQS_PREVIOUSLY_US}"
+                                                    id="pt_cmi3"
+                                                    inlineStyle="font-weight: bold;"
+                                                    immediate="true"
+                                                    action="retiredNmq"/>
+                                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.CRS_COUNT_PER_MEDDRA_COMPONENT}"
+                                                    id="pt_cmi5"
+                                                    action="crsCountper"
+                                                    inlineStyle="font-weight: bold;"
+                                                    immediate="true"/>
+                                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.CURRENT_AND_PENDING_CRS}"
+                                                    id="pt_cmi6"
+                                                    action="crsCurrentPending"
+                                                    inlineStyle="font-weight: bold;"
+                                                    immediate="true"/>
+                            </af:menu>
+                        </af:menu>
+                        <af:menu text="#{ecrsviewcontrollerBundle.ADMINISTRATION}" id="pt_m1"
+                                 inlineStyle="font-weight: bold;     padding-right: 10px;"
+                                 visible="#{securityContext.userInRole['CRS_ADMIN']}">
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.COMPOUNDS}" id="pt_gmi1"
+                                                action="compound" immediate="true" inlineStyle="font-weight: bold;"/>
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.STATES}" id="pt_gmi2" action="states" immediate="true"
+                                                inlineStyle="font-weight: bold;"/>
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.RISK_PURPOSES}" id="pt_gmi3"
+                                                action="riskPurpose" immediate="true" inlineStyle="font-weight: bold;"/>
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.ROLES}" id="pt_gmi4" action="roles" immediate="true"
+                                                inlineStyle="font-weight: bold;"/>
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.USER_ROLES}" id="pt_gmi5"
+                                                action="userRoles" immediate="true" inlineStyle="font-weight: bold;"/>
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.DOMAINS}" id="pt_cmi8" immediate="true"
+                                                action="domains" inlineStyle="font-weight: bold;"/>
+                            <af:commandMenuItem text="#{ecrsviewcontrollerBundle.MEDDRA_FREEZE}" id="pt_cmi9" immediate="true"
+                                                action="freezeMedDRA" inlineStyle="font-weight: bold;"/>
+                        </af:menu>
+                    </af:menuBar>
+                    <af:separator id="s1"/>
+                </af:panelGroupLayout>
+                <af:panelGroupLayout id="pt_pgl5" layout="vertical" styleClass="AFStretchWidth"
+                                     inlineStyle="min-height:400px;">
+                    <af:facetRef facetName="content"/>
+                </af:panelGroupLayout>
+            </af:panelGroupLayout>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="pt_p1">
+                <af:noteWindow id="pt_nw1">
+                    <af:panelFormLayout id="pt_pfl2">
+                        <af:inputText label="Username" id="pt_it1" value="#{sessionBean.username}"/>
+                        <af:inputText label="Password" id="pt_it2" secret="true" value="#{sessionBean.password}"/>
+                        <af:commandButton text="Login" id="pt_cb3" action="#{sessionBean.doLogin}"/>
+                    </af:panelFormLayout>
+                </af:noteWindow>
+            </af:popup>
+            <af:popup childCreation="deferred" autoCancel="disabled" id="pt_p2">
+                    <af:dialog id="pt_d3" title="eCRS" type="ok">
+                            <f:facet name="buttonBar"/>
+                            <af:outputText value="#{applicationScope.crsBean.version}" id="pt_ot4" noWrap="true"/>
+                    </af:dialog>
+            </af:popup>
+        </af:panelGroupLayout>
+    </af:pageTemplateDef>
+</jsp:root>

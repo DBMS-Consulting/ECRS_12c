@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="ecrsviewcontrollerBundle"
+           value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <af:document title="MedDRACompStardardReport.jspx" id="d1">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/pageTemplate/EcrsTemplate.jspx"
+                                 id="pt1">
+                    <f:facet name="content">
+                        <af:panelHeader text="#{ecrsviewcontrollerBundle.MEDDRA_COMPONENT_STARDARDIZATI}" id="ph1"
+                                        inlineStyle="padding:5px;" size="1">
+                            <f:facet name="context"/>
+                            <f:facet name="menuBar"/>
+                            <f:facet name="toolbar">
+                                <af:toolbar id="t4">
+                                    <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT}"
+                                                      id="cb1">
+                                        <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                                       filename="MedDRAComponentStandardizationReport.xls"
+                                                                       method="#{pageFlowScope.reportsBean.downloadMedDRACompStandardReport}"/>
+                                    </af:commandButton>
+                                </af:toolbar>
+                            </f:facet>
+                            <f:facet name="legend"/>
+                            <f:facet name="info"/>
+                            <af:panelGroupLayout id="pgl2" layout="horizontal"
+                                                 halign="center"
+                                                 inlineStyle="width:400px;">
+                                <af:table value="#{bindings.MedDRAStandardReport1.collectionModel}"
+                                          var="row"
+                                          rows="#{bindings.MedDRAStandardReport1.rangeSize}"
+                                          emptyText="#{bindings.MedDRAStandardReport1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                          fetchSize="#{bindings.MedDRAStandardReport1.rangeSize}"
+                                          rowBandingInterval="0"
+                                          id="t1" inlineStyle="width:400px;"
+                                          columnStretching="column:c1" columnBandingInterval="0">
+                                    <af:column sortProperty="#{bindings.MedDRAStandardReport1.hints.DefinitionType.name}"
+                                               sortable="false"
+                                               headerText="#{bindings.MedDRAStandardReport1.hints.DefinitionType.label}"
+                                               id="c1">
+                                        <af:outputText value="#{row.DefinitionType}"
+                                                       shortDesc="#{bindings.MedDRAStandardReport1.hints.DefinitionType.tooltip}"
+                                                       id="ot1"/>
+                                    </af:column>
+                                    <af:column sortProperty="#{bindings.MedDRAStandardReport1.hints.Percentofuse.name}"
+                                               sortable="false"
+                                               headerText="#{bindings.MedDRAStandardReport1.hints.Percentofuse.label}"
+                                               id="c2">
+                                        <af:outputText value="#{row.Percentofuse}"
+                                                       shortDesc="#{bindings.MedDRAStandardReport1.hints.Percentofuse.tooltip}"
+                                                       id="ot2"/>
+                                    </af:column>
+                                </af:table>
+                            </af:panelGroupLayout>
+                            <af:panelGroupLayout id="pgl3" layout="vertical">
+                                <af:spacer width="10" height="10" id="s2"/>
+                                <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb2" action="home"/>
+                            </af:panelGroupLayout>
+                        </af:panelHeader>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

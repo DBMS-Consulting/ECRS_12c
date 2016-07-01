@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <description>#{crsBean.getInitialize}</description>
+  <view id="ManageUserRoles">
+    <page>/pages/ManageUserRoles.jspx</page>
+  </view>
+  <view id="ManageStates">
+    <page>/pages/ManageStates.jspx</page>
+  </view>
+  <view id="ManageRoles">
+    <page>/pages/ManageRoles.jspx</page>
+  </view>
+  <view id="ManageRiskPurpose">
+    <page>/pages/ManageRiskPurpose.jspx</page>
+  </view>
+  <view id="ManageCompound">
+    <page>/pages/ManageCompound.jspx</page>
+  </view>
+  <view id="SearchCRS">
+    <page>/pages/SearchCRS.jspx</page>
+  </view>
+  <view id="CrsCreate">
+    <page>/pages/CrsCreate.jspx</page>
+  </view>
+  <view id="Home">
+    <page>/pages/Home.jspx</page>
+  </view>
+  <view id="BrowseSearch">
+    <page>/pages/BrowseSearch.jspx</page>
+  </view>
+  <view id="AdminDashBoardReport">
+    <page>/pages/reports/AdminDashBoardReport.jspx</page>
+  </view>
+  <view id="CRSCountperMedDRAReport">
+    <page>/pages/reports/CRSCountperMedDRAReport.jspx</page>
+  </view>
+  <view id="CRSCurrentPendingReport">
+    <page>/pages/reports/CRSCurrentPendingReport.jspx</page>
+  </view>
+  <view id="MedDRAComponentsReport">
+    <page>/pages/reports/MedDRAComponentsReport.jspx</page>
+  </view>
+  <view id="MedDRACompStardardReport">
+    <page>/pages/reports/MedDRACompStardardReport.jspx</page>
+  </view>
+  <view id="RiskDefinitionsSafetyTopicReport">
+    <page>/pages/reports/RiskDefinitionsSafetyTopicReport.jspx</page>
+  </view>
+  <view id="RetiredNMQsCMQsReport">
+    <page>/pages/reports/RetiredNMQsCMQsReport.jspx</page>
+  </view>
+  <view id="ManageDomains">
+    <page>/pages/ManageDomains.jspx</page>
+  </view>
+  <view id="PTReport">
+    <page>/pages/reports/PTReport.jspx</page>
+  </view>
+  <view id="ManageMedDRAFreeze">
+    <page>/pages/ManageMedDRAFreeze.jspx</page>
+  </view>
+  <view id="MedDRAVersionImpact">
+    <page>/pages/reports/MedDRAVersionImpact.jspx</page>
+  </view>
+  <control-flow-rule id="__2">
+    <from-activity-id>*</from-activity-id>
+    <control-flow-case id="__3">
+      <from-outcome>userRoles</from-outcome>
+      <to-activity-id>ManageUserRoles</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__4">
+      <from-outcome>states</from-outcome>
+      <to-activity-id>ManageStates</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__5">
+      <from-outcome>roles</from-outcome>
+      <to-activity-id>ManageRoles</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__6">
+      <from-outcome>riskPurpose</from-outcome>
+      <to-activity-id>ManageRiskPurpose</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__7">
+      <from-outcome>compound</from-outcome>
+      <to-activity-id>ManageCompound</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__8">
+      <from-outcome>update</from-outcome>
+      <to-activity-id>SearchCRS</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__9">
+      <from-outcome>create</from-outcome>
+      <to-activity-id>CrsCreate</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__10">
+      <from-outcome>home</from-outcome>
+      <to-activity-id>Home</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__11">
+      <from-outcome>browseSearch</from-outcome>
+      <to-activity-id>BrowseSearch</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__12">
+      <from-outcome>adminDashBoard</from-outcome>
+      <to-activity-id>AdminDashBoardReport</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__13">
+      <from-outcome>crsCountper</from-outcome>
+      <to-activity-id>CRSCountperMedDRAReport</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__14">
+      <from-outcome>crsCurrentPending</from-outcome>
+      <to-activity-id>CRSCurrentPendingReport</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__15">
+      <from-outcome>meddraComponents</from-outcome>
+      <to-activity-id>MedDRAComponentsReport</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__16">
+      <from-outcome>meddraCompStandard</from-outcome>
+      <to-activity-id>MedDRACompStardardReport</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__18">
+      <from-outcome>riskDefSafety</from-outcome>
+      <to-activity-id>RiskDefinitionsSafetyTopicReport</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__17">
+      <from-outcome>retiredNmq</from-outcome>
+      <to-activity-id>RetiredNMQsCMQsReport</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__20">
+      <from-outcome>domains</from-outcome>
+      <to-activity-id>ManageDomains</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__21">
+      <from-outcome>ptReport</from-outcome>
+      <to-activity-id>PTReport</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__22">
+      <from-outcome>freezeMedDRA</from-outcome>
+      <to-activity-id>ManageMedDRAFreeze</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__23">
+      <from-outcome>MedDRAVersionImpact</from-outcome>
+      <to-activity-id>MedDRAVersionImpact</to-activity-id>
+    </control-flow-case>
+  </control-flow-rule>
+  <managed-bean id="__1">
+    <managed-bean-name>sessionBean</managed-bean-name>
+    <managed-bean-class>com.novartis.ecrs.view.beans.SessionBean</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__19">
+    <managed-bean-name>reportsBean</managed-bean-name>
+    <managed-bean-class>com.novartis.ecrs.ui.bean.CRSReportsBean</managed-bean-class>
+    <managed-bean-scope>pageFlow</managed-bean-scope>
+  </managed-bean>
+</adfc-config>

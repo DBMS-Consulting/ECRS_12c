@@ -1,0 +1,1467 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://java.sun.com/jsf/html">
+  <c:set var="ecrsviewcontrollerBundle" value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pg32" layout="vertical" halign="start">
+        <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}"
+                  id="t1"/>
+    <af:panelHeader text="#{ecrsviewcontrollerBundle.RELATIONS} : #{pageFlowScope.crsName}" id="ph1" styleClass="AFStretchWidth" size="1">
+      <f:facet name="context"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:switcher id="s6" facetName="#{pageFlowScope.manageCRSBean.baseOrStaging}" defaultFacet="BASE">
+        <f:facet name="STAGING">
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+            <f:facet name="menus">
+              <af:menu text="#{ecrsviewcontrollerBundle.FILTER}" id="m1">
+                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.ADVANCED_FILTER}" id="cmi1">
+                  <af:showPopupBehavior triggerType="action" popupId="::p9"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.CLEAR_FILTERS}" id="cmi2"
+                                    actionListener="#{pageFlowScope.manageCRSBean.clearFilters}"/>
+              </af:menu>
+            </f:facet>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <f:facet name="afterToolbar"/>
+            <f:facet name="secondaryToolbar">
+              <af:toolbar id="t3">
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT}" id="cb3" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="AddRiskDefinitionsReport.xls"
+                                                 method="#{pageFlowScope.manageCRSBean.exportRiskDefinitions}"/>
+                </af:commandButton>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" rendered="false"
+                                  id="cb25" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="PTReport.xls" 
+                                                 method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>
+                </af:commandButton>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.COPY_RISK_DEFINTION}" id="cb2"
+                                  icon="/images/copy.png" visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
+                                  actionListener="#{pageFlowScope.manageCRSBean.onClickCopy}" partialSubmit="true"/>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.ADD_RISK_DEFINITION}" id="cb1"
+                                  icon="/images/Create.png"
+                                  actionListener="#{pageFlowScope.manageCRSBean.addRiskDefinition}" partialSubmit="true"
+                                  visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"/>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.REFRESH_REPOSITORY}" id="cb22"
+                                  icon="/images/database-refresh-icon.png"
+                                  actionListener="#{pageFlowScope.manageCRSBean.refreshRepository}"/>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.CrsRiskVO.collectionModel}" var="row" rows="#{bindings.CrsRiskVO.rangeSize}"
+                      emptyText="#{bindings.CrsRiskVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.CrsRiskVO.rangeSize}" rowBandingInterval="0"
+                      filterModel="#{bindings.CrsRiskVOQuery.queryDescriptor}"
+                      queryListener="#{bindings.CrsRiskVOQuery.processQuery}" filterVisible="true" varStatus="vs"
+                      selectedRowKeys="#{bindings.CrsRiskVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.CrsRiskVO.collectionModel.makeCurrent}" rowSelection="single"
+                      id="t2" columnSelection="multiple" styleClass="AFStretchWidth" autoHeightRows="15"
+                      columnStretching="column:c23" binding="#{pageFlowScope.manageCRSBean.stagingTable}">
+              <af:column id="c21">
+                <af:column id="c12" width="8" rowHeader="true"/>
+                <af:column sortProperty="#{bindings.CrsRiskVO.hints.SafetyTopicOfInterest.name}" filterable="true"
+                           sortable="true" headerText="#{bindings.CrsRiskVO.hints.SafetyTopicOfInterest.label}" id="c1"
+                           width="150">
+                  <af:commandLink shortDesc="#{bindings.CrsRiskVO.hints.SafetyTopicOfInterest.tooltip}" id="cl4"
+                                  text="#{row.SafetyTopicOfInterest}"
+                                  actionListener="#{pageFlowScope.manageCRSBean.editRiskDefinition}"
+                                  partialSubmit="true"/>
+                </af:column>
+                <af:column id="c20" headerText="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}">
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeSpFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeSpFlag.label}" id="c2"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.SPP}">
+                    <af:outputText value="#{row.RiskPurposeSpFlag eq 'Y' ? 'Y' : ''}" id="ot57"
+                                   shortDesc="#{ecrsviewcontrollerBundle.SPP}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeDsFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeDsFlag.label}" id="c3"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.DSUR}">
+                    <af:outputText value="#{row.RiskPurposeDsFlag eq 'Y' ? 'Y' : ''}" id="ot58"
+                                   shortDesc="#{ecrsviewcontrollerBundle.DSUR}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeRmFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeRmFlag.label}" id="c4"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.RMP}">
+                    <af:outputText value="#{row.RiskPurposeRmFlag eq 'Y' ? 'Y' : ''}" id="ot59"
+                                   shortDesc="#{ecrsviewcontrollerBundle.RMP}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposePsFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposePsFlag.label}" id="c5"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.PSUR}">
+                    <af:outputText value="#{row.RiskPurposePsFlag eq 'Y' ? 'Y' : ''}" id="ot60"
+                                   shortDesc="#{ecrsviewcontrollerBundle.PSUR}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeIbFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeIbFlag.label}" id="c6"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.EXPECTED_IN_IB}">
+                    <af:outputText value="#{row.RiskPurposeIbFlag eq 'Y' ? 'Y' : ''}" id="ot61"
+                                   shortDesc="#{ecrsviewcontrollerBundle.EXPECTED_IN_IB}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeCdFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeCdFlag.label}" id="c7"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.CDS}">
+                    <af:outputText value="#{row.RiskPurposeCdFlag eq 'Y' ? 'Y' : ''}" id="ot62"
+                                   shortDesc="#{ecrsviewcontrollerBundle.CDS}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeOsFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeOsFlag.label}" id="c8"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.OTHER_SEARCH}">
+                    <af:outputText value="#{row.RiskPurposeOsFlag eq 'Y' ? 'Y' : ''}" id="ot63"
+                                   inlineStyle=";" shortDesc="#{ecrsviewcontrollerBundle.OTHER_SEARCH}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeMiFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeMiFlag.label}" id="c9"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.MISSING_INFORMATION}">
+                    <af:outputText value="#{row.RiskPurposeMiFlag eq 'Y' ? 'Y' : ''}" id="ot64"
+                                   shortDesc="#{ecrsviewcontrollerBundle.MISSING_INFORMATION}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeErFlag.name}" filterable="true"
+                             sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeErFlag.label}" id="c10"
+                             width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}">
+                    <af:outputText value="#{row.RiskPurposeErFlag eq 'Y' ? 'Y' : ''}" id="ot65"
+                                   shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}"/>
+                  </af:column>
+                  <f:facet name="header">
+                    <af:panelGroupLayout id="pgl13" layout="horizontal">
+                      <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot79"/>
+                      <af:commandImageLink id="cil5" icon="/images/Help-icon.png">
+                        <af:showPopupBehavior triggerType="action" popupId=":::prplegend"/>
+                      </af:commandImageLink>
+                      <f:facet name="separator">
+                        <af:spacer width="10" height="10" id="s7"/>
+                      </f:facet>
+                    </af:panelGroupLayout>
+                  </f:facet>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskVO.hints.SocTerm.name}" filterable="true"
+                           headerText="#{ecrsviewcontrollerBundle.SOC}" id="c11" width="170">
+                  <af:outputText value="#{row.SocTerm}" shortDesc="#{bindings.CrsRiskVO.hints.SocTerm.tooltip}"
+                                 id="ot11"/>
+                </af:column>
+                <!--<af:column sortProperty="#{bindings.CrsRiskVO.hints.DatabaseList.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.DATABASE}" id="c12" rendered="false">
+                  <af:outputText value="#{row.DatabaseList}" id="ot12"/>
+                </af:column>-->
+                <af:column sortProperty="#{bindings.CrsRiskVO.hints.DataDomain.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.CrsRiskVO.hints.DataDomain.label}" id="c13" width="70">
+                  <af:outputText value="#{row.DataDomain}" shortDesc="#{bindings.CrsRiskVO.hints.DataDomain.tooltip}"
+                                 id="ot13"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskVO.hints.SearchCriteriaDetails.name}" filterable="true"
+                           headerText="#{bindings.CrsRiskVO.hints.SearchCriteriaDetails.label}" id="c17" width="90">
+                  <af:outputText value="#{row.SearchCriteriaDetails}"
+                                 shortDesc="#{bindings.CrsRiskVO.hints.SearchCriteriaDetails.tooltip}" id="ot17"/>
+                </af:column>
+                <f:facet name="header">
+                  <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.NAME}" id="plam1">
+                    <af:outputText value="#{pageFlowScope.crsName}" id="ot2"/>
+                  </af:panelLabelAndMessage>
+                </f:facet>
+              </af:column>
+              <af:column headerText="#{bindings.CrsRiskVO.hints.MeddraCode.label}" id="c88" sortable="true" filterable="true"
+                    sortProperty="#{bindings.CrsRiskVO.hints.MeddraCode.name}">
+                <af:outputText value="#{row.MeddraCode}" shortDesc="#{bindings.CrsRiskVO.hints.MeddraCode.tooltip}"
+                               id="ot27"/>
+              </af:column>
+              <af:column id="c23" headerText="#{ecrsviewcontrollerBundle.SAFETY_TOPIC_DEFINITION}">
+                <af:column sortProperty="#{bindings.CrsRiskVO.hints.MeddraTerm.name}" filterable="true"
+                           headerText="#{bindings.CrsRiskVO.hints.MeddraTerm.label}" id="c14" width="200">
+                  <af:panelGroupLayout id="pgl9">
+                    <af:image source="/images/BlueBall.gif" id="i6"
+                              visible="#{row.TmsUpdateFlag eq 'Y'}"/>
+                    <af:outputText value="#{row.MeddraTerm}" shortDesc="#{bindings.CrsRiskVO.hints.MeddraTerm.tooltip}"
+                                   id="ot14"/>
+                  </af:panelGroupLayout>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskVO.hints.MeddraLevel.name}" filterable="true" sortable="true"
+                           headerText="#{bindings.CrsRiskVO.hints.MeddraLevel.label}" id="c15" width="50">
+                  <af:outputText value="#{row.MeddraLevel}" shortDesc="#{bindings.CrsRiskVO.hints.MeddraLevel.tooltip}"
+                                 id="ot15"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskVO.hints.MeddraQualifier.name}" filterable="true"
+                           headerText="#{bindings.CrsRiskVO.hints.MeddraQualifier.label}" id="c16" width="60">
+                  <af:outputText value="#{row.CrsQualifier}"
+                                 shortDesc="#{bindings.CrsRiskVO.hints.MeddraQualifier.tooltip}" id="ot16"/>
+                </af:column>
+                
+                <af:column sortProperty="#{bindings.CrsRiskVO.hints.MqmComment.name}" filterable="true"
+                           headerText="#{ecrsviewcontrollerBundle.COMMENT}" id="c18" width="50">
+                  <af:outputText value="#{row.NonMeddraComponentComment}"
+                                 shortDesc="#{bindings.CrsRiskVO.hints.MqmComment.tooltip}" id="ot18"/>
+                </af:column>
+                <af:column id="c84" headerText="#{ecrsviewcontrollerBundle.MQM_COMMENT_0}" filterable="true"
+                           visible="#{securityContext.userInRole['CRS_MQM'] || securityContext.userInRole['CRS_ADMIN'] || securityContext.userInRole['CRS_BSL']}"
+                           width="50">
+                  <af:outputText value="#{row.MqmComment}" id="ot81"/>
+                </af:column>
+              </af:column>
+              <af:column id="c24" rendered="false">
+                <af:column id="c22" width="20" rendered="false">
+                  <f:facet name="header">
+                    <af:image source="/images/delete.png" id="i1"/>
+                  </f:facet>
+                  <af:commandImageLink id="cil1" icon="/images/delete.png"/>
+                </af:column>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+        <f:facet name="BASE">
+          <af:panelCollection id="pc4" styleClass="AFStretchWidth">
+            <f:facet name="menus">
+             <af:menu text="#{ecrsviewcontrollerBundle.FILTER}" id="m3">
+                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.ADVANCED_FILTER}" id="cmi3">
+                  <af:showPopupBehavior triggerType="action" popupId="::p9"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="#{ecrsviewcontrollerBundle.CLEAR_FILTERS}" id="cmi4"
+                                    actionListener="#{pageFlowScope.manageCRSBean.clearFilters}"/>
+              </af:menu>
+            </f:facet>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.CrsRiskBaseVO.collectionModel}" var="row"
+                      rows="#{bindings.CrsRiskBaseVO.rangeSize}"
+                      emptyText="#{bindings.CrsRiskBaseVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.CrsRiskBaseVO.rangeSize}" rowBandingInterval="0"
+                      filterModel="#{bindings.CrsRiskBaseVOQuery.queryDescriptor}"
+                      queryListener="#{bindings.CrsRiskBaseVOQuery.processQuery}" filterVisible="true" varStatus="vs"
+                      selectedRowKeys="#{bindings.CrsRiskBaseVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.CrsRiskBaseVO.collectionModel.makeCurrent}" rowSelection="single"
+                      id="t10" styleClass="AFStretchWidth" autoHeightRows="15" columnSelection="multiple">
+              <af:column id="c80">
+                <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.SafetyTopicOfInterest.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.SAFETY_TOPIC_OF_INTEREST}" id="c61"
+                           width="150">
+                            <af:commandLink shortDesc="#{bindings.CrsRiskBaseVO.hints.SafetyTopicOfInterest.tooltip}" id="cl3"
+                                  text="#{row.SafetyTopicOfInterest}"
+                                  actionListener="#{pageFlowScope.manageCRSBean.loadRiskDefinitionsBase}"
+                                  partialSubmit="true"/>
+                </af:column>
+                <af:column id="c79" headerText="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}">
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeSpFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.SP}" id="c62" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.SPP}">
+                    <af:outputText value="#{row.RiskPurposeSpFlag eq 'Y' ? 'Y' : ''}" id="ot39"
+                                   shortDesc="#{ecrsviewcontrollerBundle.SPP}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeDsFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.DS}" id="c63" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.DSUR}">
+                    <af:outputText value="#{row.RiskPurposeDsFlag eq 'Y' ? 'Y' : ''}" id="ot40"
+                                   shortDesc="#{ecrsviewcontrollerBundle.DSUR}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeRmFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.RM}" id="c64" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.RMP}">
+                    <af:outputText value="#{row.RiskPurposeRmFlag eq 'Y' ? 'Y' : ''}" id="ot41"
+                                   shortDesc="#{ecrsviewcontrollerBundle.RMP}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposePsFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.PS}" id="c65" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.PSUR}">
+                    <af:outputText value="#{row.RiskPurposePsFlag eq 'Y' ? 'Y' : ''}" id="ot42"
+                                   shortDesc="#{ecrsviewcontrollerBundle.PSUR}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeIbFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.IB}" id="c66" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.EXPECTED_IN_IB}">
+                    <af:outputText value="#{row.RiskPurposeIbFlag eq 'Y' ? 'Y' : ''}" id="ot43"
+                                   shortDesc="#{ecrsviewcontrollerBundle.EXPECTED_IN_IB}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeCdFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.CD}" id="c67" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.CDS}">
+                    <af:outputText value="#{row.RiskPurposeCdFlag eq 'Y' ? 'Y' : ''}" id="ot44"
+                                   shortDesc="#{ecrsviewcontrollerBundle.CDS}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeOsFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.OS}" id="c68" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.OTHER_SEARCH}">
+                    <af:outputText value="#{row.RiskPurposeOsFlag eq 'Y' ? 'Y' : ''}" id="ot45"
+                                   shortDesc="#{ecrsviewcontrollerBundle.OTHER_SEARCH}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeMiFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.MI}" id="c69" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.MISSING_INFORMATION}">
+                    <af:outputText value="#{row.RiskPurposeMiFlag eq 'Y' ? 'Y' : ''}" id="ot46"
+                                   shortDesc="#{ecrsviewcontrollerBundle.MISSING_INFORMATION}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeErFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.ER}" id="c70" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}">
+                    <af:outputText value="#{row.RiskPurposeErFlag eq 'Y' ? 'Y' : ''}" id="ot47"
+                                   shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}"/>
+                  </af:column>
+                  <f:facet name="header">
+                    <af:panelGroupLayout id="pgl12" layout="horizontal">
+                      <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot78"/>
+                      <af:commandImageLink id="cil6" icon="/images/Help-icon.png">
+                        <af:showPopupBehavior triggerType="action" popupId=":::prplegend"/>
+                      </af:commandImageLink>
+                      <f:facet name="separator">
+                        <af:spacer width="10" height="10" id="s8"/>
+                      </f:facet>
+                    </af:panelGroupLayout>
+                  </f:facet>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.SocTerm.name}" filterable="true" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.SOC}" id="c71" width="170">
+                  <af:outputText value="#{row.SocTerm}" shortDesc="#{bindings.CrsRiskBaseVO.hints.SocTerm.tooltip}"
+                                 id="ot48"/>
+                </af:column>
+                <!--<af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.DatabaseList.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.DATABASE}" id="c72" rendered="false">
+                  <af:outputText value="#{row.DatabaseList}"
+                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.DatabaseList.tooltip}" id="ot49"/>
+                </af:column>-->
+                <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.DataDomain.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.DATA_DOMAIN}" id="c73">
+                  <af:outputText value="#{row.DataDomain}"
+                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.DataDomain.tooltip}" id="ot50"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.SearchCriteriaDetails.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.SEARCH_CRITERIA_DETAILS}" id="c77"
+                           >
+                  <af:outputText value="#{row.SearchCriteriaDetails}"
+                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.SearchCriteriaDetails.tooltip}" id="ot54"/>
+                </af:column>
+                <f:facet name="header">
+                  <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.NAME}" id="plam7">
+                    <af:outputText value="#{pageFlowScope.manageCRSBean.selectedCrsName}" id="ot56"/>
+                  </af:panelLabelAndMessage>
+                </f:facet>
+              </af:column>
+              <af:column headerText="#{bindings.CrsRiskBaseVO.hints.MeddraCode.label}" id="c87" sortable="true" filterable="true" 
+                sortProperty="#{bindings.CrsRiskBaseVO.hints.MeddraCode.name}">
+                <af:outputText value="#{row.MeddraCode}" shortDesc="#{bindings.CrsRiskBaseVO.hints.MeddraCode.tooltip}"
+                               id="ot82"/>
+              </af:column>
+              <af:column id="c81" headerText="#{ecrsviewcontrollerBundle.SAFETY_TOPIC_DEFINITION}">
+                <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.MeddraTerm.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.MEDDRA_TERM}" id="c74" width="200">
+                  <af:outputText value="#{row.MeddraTerm}"
+                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.MeddraTerm.tooltip}" id="ot51"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.MeddraLevel.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.MEDDRA_LEVEL}" id="c75" width="50">
+                  <af:outputText value="#{row.MeddraLevel}"
+                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.MeddraLevel.tooltip}" id="ot52"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.MeddraQualifier.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.MEDDRA_QUALIFIER}" id="c76"
+                           width="60">
+                  <af:outputText value="#{row.CrsQualifier}"
+                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.MeddraQualifier.tooltip}" id="ot53"/>
+                </af:column>
+                
+                <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.MqmComment.name}" filterable="true"
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.COMMENT}" id="c78" width="90">
+                  <af:outputText value="#{row.NonMeddraComponentComment}"
+                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.MqmComment.tooltip}" id="ot55"/>
+                </af:column>
+              </af:column>
+              <af:column id="c82" rendered="false"/>
+            </af:table>
+            <f:facet name="secondaryToolbar">
+              <af:toolbar id="t11">
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT}" id="cb21" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="AddRiskDefinitionsReport.xls"
+                                                 method="#{pageFlowScope.manageCRSBean.exportRiskDefinitions}"/>
+                </af:commandButton>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" rendered="false"
+                                  id="cb26" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="PTReport.xls"
+                                                 method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>
+                </af:commandButton>
+              </af:toolbar>
+            </f:facet>
+          </af:panelCollection>
+          
+        </f:facet>
+      </af:switcher>
+      <af:spacer width="10" height="10" id="s3"/>
+      <af:panelGroupLayout id="pgl6" layout="horizontal">
+        <af:commandButton text="#{ecrsviewcontrollerBundle.BACK}" id="cb8"
+                          action="#{controllerContext.currentViewPort.taskFlowContext.trainModel.getPrevious}"/>
+        <af:commandButton text="#{ecrsviewcontrollerBundle.NEXT}" id="cb11" action="#{pageFlowScope.manageCRSBean.onClickNext}"
+        disabled="#{pageFlowScope.manageCRSBean.flowType eq 'S'}"/>
+        <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb12" action="home" immediate="true"
+                          actionListener="#{bindings.Rollback.execute}"/>
+        <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.DICTIONARY_VERSION_}" id="plam4">
+          <af:outputText id="ot9" value="#{sessionScope.dictVersion}"/>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.NAME}#{ecrsviewcontrollerBundle.COLON}" id="plam5">
+          <af:outputText value="#{pageFlowScope.manageCRSBean.selectedCrsName}" id="ot10"/>
+        </af:panelLabelAndMessage>
+        <f:facet name="separator">
+          <af:spacer width="10" height="10" id="s4"/>
+        </f:facet>
+      </af:panelGroupLayout>
+    </af:panelHeader>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+              binding="#{pageFlowScope.manageCRSBean.riskDefPopup}" contentDelivery="lazyUncached"
+              popupCanceledListener="#{pageFlowScope.manageCRSBean.onCloseRiskPopup}">
+      <af:dialog id="d1" title="Detail Risk Definitions" contentWidth="900" type="none">
+        <f:facet name="buttonBar">
+          <af:panelGroupLayout id="pgl3">
+            <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb14"
+                              actionListener="#{pageFlowScope.manageCRSBean.onCancelCrsRiskPopup}" immediate="true"/>
+          </af:panelGroupLayout>
+        </f:facet>
+        <af:panelGroupLayout id="pgl2" layout="vertical" binding="#{pageFlowScope.manageCRSBean.riskDefPopupPanel}">
+          <af:panelGroupLayout id="pgl8" layout="horizontal" halign="end">
+            <af:outputText id="ot77"
+                           binding="#{pageFlowScope.manageCRSBean.hiddenPopupAlign}">
+              <af:showPopupBehavior popupId="help-pp"></af:showPopupBehavior>
+            </af:outputText>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl1" layout="horizontal">
+            <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.CRS_NAME}" id="plam2">
+              <af:outputText value="#{pageFlowScope.crsName}" id="ot3"/>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage id="plam3" label="#{ecrsviewcontrollerBundle.CRS_ID}">
+              <af:outputText value="#{pageFlowScope.crsId}" id="ot4"/>
+            </af:panelLabelAndMessage>
+            <f:facet name="separator">
+              <af:spacer width="10" height="10" id="s1"/>
+            </f:facet>
+          </af:panelGroupLayout>
+          <af:panelFormLayout id="pfl2" maxColumns="2" rows="2" inlineStyle="white-space: nowrap;">
+            <af:inputText value="#{bindings.SafetyTopicOfInterest.inputValue}"
+                          label="#{bindings.SafetyTopicOfInterest.hints.label}"
+                          columns="#{bindings.SafetyTopicOfInterest.hints.displayWidth}"
+                          maximumLength="#{bindings.SafetyTopicOfInterest.hints.precision}"
+                          shortDesc="#{bindings.SafetyTopicOfInterest.hints.tooltip}" id="it1"
+                          contentStyle="width:200px;" autoSubmit="true"
+                          valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}"
+                          readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true">
+              <f:validator binding="#{bindings.SafetyTopicOfInterest.validator}"/>
+            </af:inputText>
+            <!--<af:selectManyChoice label="#{ecrsviewcontrollerBundle.DATABASE}" id="smc1"
+                                 value="#{pageFlowScope.manageCRSBean.selDatabases}" autoSubmit="true"
+                                 readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"
+                                 rendered="false">
+              <f:selectItems value="#{pageFlowScope.manageCRSBean.databaseList}" id="si3"/>
+            </af:selectManyChoice>-->
+            <af:selectOneChoice value="#{bindings.DomainId.inputValue}" label="#{ecrsviewcontrollerBundle.DATA_DOMAIN}"
+                                shortDesc="#{bindings.DomainId.hints.tooltip}" id="soc9" autoSubmit="true"
+                                readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"
+                                valueChangeListener="#{pageFlowScope.manageCRSBean.onDomainIdChange}">
+              <f:selectItems value="#{bindings.DomainId.items}" id="si65"/>
+            </af:selectOneChoice>
+            <!--<af:selectOneChoice label="#{bindings.DataDomain.hints.label}" id="soc1"
+                                value="#{bindings.DataDomain.inputValue}" autoSubmit="true"
+                                readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"
+                                rendered="false">
+              <af:selectItem label="MedDRA" value="MEDDRA" id="si1"/>
+              <af:selectItem label="Other" value="OTHER" id="si2"/>
+            </af:selectOneChoice>-->
+            <af:selectManyChoice label="#{ecrsviewcontrollerBundle.RISK_PURPOSES}" id="smc2"
+                                 value="#{pageFlowScope.manageCRSBean.selRiskPurposes}" autoSubmit="true"
+                                 valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}"
+                                 readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true">
+              <af:selectItem label="SP (SPP)" id="si4" value="SP"/>
+              <af:selectItem label="DS (DSUR)" id="si5" value="DS"/>
+              <af:selectItem label="RM (RMP)" id="si6" value="RM"/>
+              <af:selectItem label="PS (PSUR)" id="si7" value="PS"/>
+              <af:selectItem label="CD (CDS)" id="si8" value="CD"/>
+              <af:selectItem label="IB (Expected in (IB))" id="si9" value="IB"/>
+              <af:selectItem label="OS (Other Search)" id="si10" value="OS"/>
+              <af:selectItem label="MI (Missing Information)" id="si11" value="MI"/>
+              <af:selectItem label="ER (Expediting Rules)" id="si12" value="ER"/>
+            </af:selectManyChoice>
+            
+            <af:selectOneChoice value="#{bindings.SocTerm.inputValue}" label="#{bindings.SocTerm.label}"
+                                shortDesc="#{bindings.SocTerm.hints.tooltip}" id="soc4" showRequired="#{bindings.DomainId1.inputValue == 1}"
+                                contentStyle="width:300px;" autoSubmit="true"
+                                visible="#{bindings.DomainId1.inputValue == 1 or bindings.DomainId1.inputValue == null}"
+                                readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
+                                valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}"                                
+                                binding="#{pageFlowScope.manageCRSBean.socTermSOC}" partialTriggers="soc9">
+              <f:selectItems value="#{bindings.SocTerm.items}" id="si17"/>
+            </af:selectOneChoice>
+            
+          </af:panelFormLayout>
+          <af:panelFormLayout id="pfl3">
+            <af:inputText value="#{bindings.NonMeddraComponentComment.inputValue}"
+                          label="#{bindings.NonMeddraComponentComment.hints.label}"
+                          required="#{bindings.NonMeddraComponentComment.hints.mandatory}"
+                          columns="#{bindings.NonMeddraComponentComment.hints.displayWidth}"
+                          maximumLength="#{bindings.NonMeddraComponentComment.hints.precision}"
+                          shortDesc="#{bindings.NonMeddraComponentComment.hints.tooltip}" id="it6"
+                          contentStyle="width:500px;" rows="3"
+                          readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
+                          valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}"
+                          disabled="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" autoSubmit="true">
+              <f:validator binding="#{bindings.NonMeddraComponentComment.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.SearchCriteriaDetails.inputValue}"
+                          label="#{bindings.SearchCriteriaDetails.hints.label}"
+                          showRequired="#{null != bindings.DomainId1.inputValue and bindings.DomainId1.inputValue != 1}"
+                          columns="#{bindings.SearchCriteriaDetails.hints.displayWidth}"
+                          maximumLength="200"
+                          contentStyle="width:500px;" rows="3" autoSubmit="true"
+                          readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
+                          valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}"
+                          shortDesc="#{bindings.SearchCriteriaDetails.hints.tooltip}" id="it14"
+                          binding="#{pageFlowScope.manageCRSBean.searchCriteriaDetails}" partialTriggers="soc9">
+              <f:validator binding="#{bindings.SearchCriteriaDetails.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.MqmComment.inputValue}" label="#{bindings.MqmComment.hints.label}"
+                          required="#{bindings.MqmComment.hints.mandatory}"
+                          columns="#{bindings.MqmComment.hints.displayWidth}"
+                          maximumLength="#{bindings.MqmComment.hints.precision}"
+                          shortDesc="#{bindings.MqmComment.hints.tooltip}" id="it13" contentStyle="width:500px;"
+                          rows="3" autoSubmit="true"
+                          valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}"
+                          readOnly="#{pageFlowScope.manageCRSBean.flowType eq 'S' or !(bindings.StateId.inputValue eq 1 || bindings.StateId.inputValue eq 2 || bindings.StateId.inputValue eq 3)}"
+                          visible="#{securityContext.userInRole['CRS_MQM'] || securityContext.userInRole['CRS_ADMIN'] || securityContext.userInRole['CRS_BSL']}"
+                          disabled="#{!(securityContext.userInRole['CRS_ADMIN'] or (securityContext.userInRole['CRS_MQM'] and (bindings.StateId.inputValue eq 2 || bindings.StateId.inputValue eq 3)))}">
+              <f:validator binding="#{bindings.MqmComment.validator}"/>
+            </af:inputText>
+          </af:panelFormLayout>
+          <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar">
+              <af:toolbar id="t12" binding="#{pageFlowScope.manageCRSBean.cntrlStatusBar}"
+                          partialTriggers="cb4 cb5 cb13" rendered="true" visible="true">
+                <af:image id="iconWarn" source="/images/alert.png" rendered="true"
+		  binding="#{pageFlowScope.manageCRSBean.iconCRSChanged}" visible="false"
+		  shortDesc="Risk Def Modified"/>
+                <af:image id="iconError" source="/images/error.png" rendered="true"
+		  binding="#{pageFlowScope.manageCRSBean.iconCRSSaveError}" visible="false"
+		  shortDesc="Error saving Risk Def"/>
+                <af:image id="iconSave" source="/images/tick.png"
+		  binding="#{pageFlowScope.manageCRSBean.iconCRSSaved}" rendered="true"
+		  visible="false" shortDesc="Risk Def saved"/>
+               <!-- <af:panelLabelAndMessage id="plam8" visible="false"
+                                         binding="#{pageFlowScope.manageCRSBean.savedSuccessMessage}"
+                                         partialTriggers="cb5">
+                  <af:image source="/images/tick.png" id="i4"/>
+                  <af:outputText value="#{ecrsviewcontrollerBundle.SAVED_SUCCESSFULLY}" id="ot66"/>
+                </af:panelLabelAndMessage> -->
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.CrsRiskDefinitionsVO.collectionModel}" var="row"
+                      rows="#{bindings.CrsRiskDefinitionsVO.rangeSize}"
+                      emptyText="#{bindings.CrsRiskDefinitionsVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.CrsRiskDefinitionsVO.rangeSize}" rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.CrsRiskDefinitionsVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.CrsRiskDefinitionsVO.collectionModel.makeCurrent}"
+                      rowSelection="multiple" id="t4" styleClass="AFStretchWidth" partialTriggers="::cb4"
+                      binding="#{pageFlowScope.manageCRSBean.riskDefTable}" contentDelivery="immediate"
+                      columnStretching="column:c19">
+              <af:column id="c85" width="20" visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+                <af:selectBooleanCheckbox value="#{row.bindings.SelectAttr.inputValue}"
+                                          label="#{row.bindings.SelectAttr.label}"
+                                          shortDesc="#{bindings.CrsRiskDefinitionsVO.hints.SelectAttr.tooltip}"
+                                          id="sbc1" autoSubmit="true"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO.hints.MeddraTerm.name}" sortable="false"
+                         headerText="#{bindings.CrsRiskDefinitionsVO.hints.MeddraTerm.label}" id="c19">
+                <af:panelGroupLayout id="pgl10">
+                  <af:image source="/images/BlueBall.gif" id="i7"
+                            visible="#{row.bindings.TmsUpdateFlag.inputValue eq 'Y'}"/>
+                  <af:inputText value="#{row.bindings.MeddraTerm.inputValue}"
+                                label="#{bindings.CrsRiskDefinitionsVO.hints.MeddraTerm.label}"
+                                required="#{bindings.CrsRiskDefinitionsVO.hints.MeddraTerm.mandatory}"
+                                columns="#{bindings.CrsRiskDefinitionsVO.hints.MeddraTerm.displayWidth}"
+                                maximumLength="#{bindings.CrsRiskDefinitionsVO.hints.MeddraTerm.precision}"
+                                shortDesc="#{bindings.CrsRiskDefinitionsVO.hints.MeddraTerm.tooltip}" id="it16"
+                                readOnly="true">
+                    <f:validator binding="#{row.bindings.MeddraTerm.validator}"/>
+                  </af:inputText>
+                </af:panelGroupLayout>
+              </af:column>
+              <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.name}" sortable="false"
+                         headerText="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.label}" id="c25">
+                <af:inputText value="#{row.bindings.MeddraLevel.inputValue}"
+                              label="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.label}"
+                              required="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.mandatory}"
+                              columns="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.displayWidth}"
+                              maximumLength="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.precision}"
+                              shortDesc="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.tooltip}" id="it17"
+                              readOnly="true">
+                  <f:validator binding="#{row.bindings.MeddraLevel.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO.hints.MeddraQualifier.name}" sortable="false"
+                         headerText="#{bindings.CrsRiskDefinitionsVO.hints.MeddraQualifier.label}" id="c26">
+                <af:selectOneChoice label="#{bindings.CrsRiskDefinitionsVO.hints.MeddraQualifier.label}" id="soc1"
+                                    value="#{row.bindings.CrsQualifier.inputValue}" autoSubmit="true" 
+                                    readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable or row.bindings.MeddraQualifierUpdFlag.inputValue ne 'Y'}"
+                                    valueChangeListener="#{pageFlowScope.manageCRSBean.onMedDRAQualifierUpdate}">
+                  <af:selectItem label="BROAD" value="BROAD" id="si24"/>
+                  <af:selectItem label="NARROW" value="NARROW" id="si25"/>
+                </af:selectOneChoice>
+                <af:inputText value="#{row.bindings.MeddraQualifier.inputValue}"
+                              label="#{bindings.CrsRiskDefinitionsVO.hints.MeddraQualifier.label}"
+                              required="#{bindings.CrsRiskDefinitionsVO.hints.MeddraQualifier.mandatory}"
+                              columns="#{bindings.CrsRiskDefinitionsVO.hints.MeddraQualifier.displayWidth}"
+                              maximumLength="#{bindings.CrsRiskDefinitionsVO.hints.MeddraQualifier.precision}"
+                              shortDesc="#{bindings.CrsRiskDefinitionsVO.hints.MeddraQualifier.tooltip}" id="it18"
+                              readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable or row.bindings.MeddraQualifierUpdFlag.inputValue ne 'Y'}" visible="false"
+                              autoSubmit="true"
+                              partialTriggers="soc1">
+                  <f:validator binding="#{row.bindings.MeddraQualifier.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO.hints.MeddraCode.name}" sortable="false"
+                         headerText="#{bindings.CrsRiskDefinitionsVO.hints.MeddraCode.label}" id="c27">
+                <af:inputText value="#{row.bindings.MeddraCode.inputValue}"
+                              label="#{bindings.CrsRiskDefinitionsVO.hints.MeddraCode.label}"
+                              required="#{bindings.CrsRiskDefinitionsVO.hints.MeddraCode.mandatory}"
+                              columns="#{bindings.CrsRiskDefinitionsVO.hints.MeddraCode.displayWidth}"
+                              maximumLength="#{bindings.CrsRiskDefinitionsVO.hints.MeddraCode.precision}"
+                              shortDesc="#{bindings.CrsRiskDefinitionsVO.hints.MeddraCode.tooltip}" id="it19"
+                              readOnly="true">
+                  <f:validator binding="#{row.bindings.MeddraCode.validator}"/>
+                </af:inputText>
+              </af:column>
+              <!-- <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO.hints.SearchCriteriaDetails.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.CrsRiskDefinitionsVO.hints.SearchCriteriaDetails.label}" id="c28">
+                <af:panelGroupLayout id="pgl11">
+                  <af:commandImageLink id="cil4" icon="/images/edit.png"
+                                       visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+                    <af:showPopupBehavior popupId=":::p8" triggerType="click"/>
+                  </af:commandImageLink>
+                  <af:inputText value="#{row.bindings.SearchCriteriaDetails.inputValue}"
+                                label="#{bindings.CrsRiskDefinitionsVO.hints.SearchCriteriaDetails.label}"
+                                required="#{bindings.CrsRiskDefinitionsVO.hints.SearchCriteriaDetails.mandatory}"
+                                columns="#{bindings.CrsRiskDefinitionsVO.hints.SearchCriteriaDetails.displayWidth}"
+                                maximumLength="#{bindings.CrsRiskDefinitionsVO.hints.SearchCriteriaDetails.precision}"
+                                shortDesc="#{bindings.CrsRiskDefinitionsVO.hints.SearchCriteriaDetails.tooltip}"
+                                id="it20" autoSubmit="true" readOnly="true">
+                    <f:validator binding="#{row.bindings.SearchCriteriaDetails.validator}"/>
+                  </af:inputText>
+                </af:panelGroupLayout>
+              </af:column>-->
+              <af:column id="c29" width="20" visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
+                         rendered="false">
+                <f:facet name="header">
+                  <af:image source="/images/delete.png" id="i2"/>
+                </f:facet>
+                <af:commandImageLink id="cil2" icon="/images/delete.png"
+                                     actionListener="#{bindings.DeleteRiskDefinition.execute}"/>
+              </af:column>
+              <af:collectionDropTarget dropListener="#{pageFlowScope.manageCRSBean.dragDropListener}" actions="COPY"
+                                       modelName="copyRows"/>
+            </af:table>
+            <f:facet name="secondaryToolbar">
+              <af:toolbar id="t5">
+                <af:commandButton text="#{ecrsviewcontrollerBundle.ADD}" id="cb7" icon="/images/Create.png"
+                                  actionListener="#{bindings.CreateRiskDefinition.execute}" visible="false"/>
+               <af:commandButton text="#{ecrsviewcontrollerBundle.DELETE_SELECTED}" id="cb4" icon="/images/delete.png"
+                                       visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}" partialSubmit="true"
+                                 actionListener="#{pageFlowScope.manageCRSBean.onClickOfRiskDefDelete}">
+                  </af:commandButton>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.SAVE}" id="cb5" icon="/images/filesave.png"
+                                  actionListener="#{pageFlowScope.manageCRSBean.saveRiskDefs}"
+                                  visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}" partialSubmit="true"/>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" id="cb6"
+                                  icon="/images/hierarchy.gif" partialSubmit="true"
+                                  actionListener="#{pageFlowScope.manageCRSBean.onClickHierarchySearch}"
+                                  visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"/>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.SAVE}" id="cb13"
+                                  visible="#{securityContext.userInRole['CRS_MQM'] and pageFlowScope.manageCRSBean.flowType eq 'U'}"
+                                  actionListener="#{pageFlowScope.manageCRSBean.onClickRiskDefSave}">
+                </af:commandButton>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.REFRESH_REPOSITORY}" id="cb23"
+                                  icon="/images/database-refresh-icon.png"
+                                  actionListener="#{pageFlowScope.manageCRSBean.refreshRepoInPopup}"/>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" partialSubmit="true"               
+                                  id="cb28" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="PTReport.xls" 
+                                                 method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>
+                </af:commandButton>                  
+                <af:commandButton text="#{ecrsviewcontrollerBundle.DELETE_SAFETY_TOPIC_OF_INTERES}" id="cb27" icon="/images/delete.png"
+                          visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+                  <af:showPopupBehavior popupId="::delSTIConfPopup"
+                              triggerType="action"/>
+                </af:commandButton>
+                <af:commandImageLink id="cil7" icon="/images/Help-icon.png" rendered="false">
+                  <af:showPopupBehavior triggerType="action"
+                                        popupId="::prplegend"/>
+                </af:commandImageLink>
+              </af:toolbar>
+            </f:facet>
+          </af:panelCollection>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p2"
+              binding="#{pageFlowScope.manageCRSBean.successPopup}">
+      <af:dialog id="d2" title="#{ecrsviewcontrollerBundle.INFO}" type="ok" titleIconSource="/images/info_icon.png"
+                 inlineStyle="width:150px;">
+        <f:facet name="buttonBar"/>
+        <af:outputText id="ot5" value="#{ecrsviewcontrollerBundle.SAVED_SUCCESSFULLY}"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached"
+              binding="#{pageFlowScope.manageCRSBean.hierPopup}">
+      <af:dialog id="d3" title="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" modal="false" type="cancel"
+                 contentWidth="350">
+        <f:facet name="buttonBar"/>
+        <af:panelFormLayout id="pfl1" rows="2" maxColumns="2">
+          <af:selectOneChoice label="#{ecrsviewcontrollerBundle.DICTIONARY}" id="soc2" required="true"
+                              value="#{pageFlowScope.manageCRSBean.dictionary}" autoSubmit="true"
+                              valueChangeListener="#{pageFlowScope.manageCRSBean.dictionaryVC}">
+            <af:selectItem label="MedDRA" value="NMATMED" id="si13"/>
+            <af:selectItem label="Filter" value="NMATSMQ" id="si14"/>
+          </af:selectOneChoice>
+          <af:selectOneChoice label="#{ecrsviewcontrollerBundle.LEVEL}" id="soc3"
+                              value="#{pageFlowScope.manageCRSBean.level}" autoSubmit="true" partialTriggers="soc2">
+            <f:selectItems id="si15" value="#{pageFlowScope.manageCRSBean.levelItems}"/>
+          </af:selectOneChoice>
+          <af:inputText label="#{ecrsviewcontrollerBundle.TERM}" id="it2" value="#{pageFlowScope.manageCRSBean.term}"
+                        autoSubmit="true"/>
+          <af:commandButton text="#{ecrsviewcontrollerBundle.SEARCH}" id="cb10" partialSubmit="true"
+                            actionListener="#{pageFlowScope.manageCRSBean.searchHierarchy}"/>
+        </af:panelFormLayout>
+        <af:spacer width="10" height="10" id="s2"/>
+        <af:table value="#{bindings.HierarchySearchVO.collectionModel}" var="row"
+                  rows="#{bindings.HierarchySearchVO.rangeSize}"
+                  emptyText="#{bindings.HierarchySearchVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.HierarchySearchVO.rangeSize}" rowBandingInterval="0"
+                  selectedRowKeys="#{bindings.HierarchySearchVO.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.HierarchySearchVO.collectionModel.makeCurrent}" rowSelection="multiple"
+                  id="t6" styleClass="AFStretchWidth" columnStretching="column:c30" partialTriggers="::cb10">
+          <af:column sortProperty="#{bindings.HierarchySearchVO.hints.Mqterm.name}" sortable="false"
+                     headerText="#{ecrsviewcontrollerBundle.TERM}" id="c30">
+            <af:outputText value="#{row.Mqterm}" shortDesc="#{bindings.HierarchySearchVO.hints.Mqterm.tooltip}"
+                           id="ot6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.HierarchySearchVO.hints.Mqcode.name}" sortable="false"
+                     headerText="#{ecrsviewcontrollerBundle.CONTENT_CODE}" id="c31" width="150">
+            <af:outputText value="#{row.Mqcode}" shortDesc="#{bindings.HierarchySearchVO.hints.Mqcode.tooltip}"
+                           id="ot7"/>
+          </af:column>
+          <af:column id="c32" width="20">
+            <af:commandButton id="cb9" actionListener="#{pageFlowScope.manageCRSBean.executeHierarchyChildNew}"/>
+          </af:column>
+          <af:dragSource actions="COPY" defaultAction="COPY" discriminant="copyRows"/>
+        </af:table>
+        <af:treeTable value="#{pageFlowScope.manageCRSBean.hierChildTreeModel}" var="node" rowSelection="multiple"
+                      id="tt1" styleClass="AFStretchWidth" partialTriggers="::cb10"
+                      binding="#{pageFlowScope.manageCRSBean.childTreeTable}" initiallyExpanded="true"
+                      contentDelivery="immediate" visible="false">
+          <f:facet name="nodeStamp">
+            <af:column id="c33" width="150">
+              <af:outputText value="#{node.term}" id="ot19" rendered="#{!node.showHasChildrenButton}"/>
+              <af:commandLink text="#{node.term}" id="cl2"
+              rendered="#{node.showHasChildrenButton}" partialSubmit="true"
+                              actionListener="#{pageFlowScope.manageCRSBean.expandHierarchyChild}"/>
+            </af:column>
+          </f:facet>
+          <f:facet name="pathStamp">
+            <af:outputText value="#{node}" id="ot20"/>
+          </f:facet>
+          <af:column id="c34" headerText="#{ecrsviewcontrollerBundle.HIERARCHY_DETAILS}">
+            <af:column id="c35" headerText="#{ecrsviewcontrollerBundle.CODE}">
+              <af:outputText value="#{node.dictContentCode}" id="ot24"/>
+            </af:column>
+            <af:column id="c36" headerText="#{ecrsviewcontrollerBundle.LEVEL}">
+              <af:outputText value="#{node.levelName}" id="ot22"/>
+            </af:column>
+            <af:column id="c37" headerText="#{ecrsviewcontrollerBundle.SCOPE}">
+              <af:outputText value="#{node.scopeName}" id="ot23"
+                             rendered="#{!pageFlowScope.manageCRSBean.meddraSearch}"/>
+            </af:column>
+          </af:column>
+          <af:dragSource actions="COPY" defaultAction="COPY" discriminant="copyRows"/>
+        </af:treeTable>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p4"
+              binding="#{pageFlowScope.manageCRSBean.meddraError}">
+      <af:dialog id="d4" title="#{ecrsviewcontrollerBundle.ERROR}" titleIconSource="/images/delete.png" type="ok">
+        <f:facet name="buttonBar"/>
+        <af:outputText value="#{ecrsviewcontrollerBundle.ONLY_ONE_MEDDRA_ROW_CAN_BE_ADD}" id="ot8"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p5"
+              binding="#{pageFlowScope.manageCRSBean.parentError}">
+      <af:dialog id="d5" title="#{ecrsviewcontrollerBundle.ERROR}" titleIconSource="/images/delete.png" type="ok">
+        <f:facet name="buttonBar"/>
+        <af:outputText value="#{ecrsviewcontrollerBundle.PARENT_NODE_CANNOT_BE_DRAGGED_}" id="ot21"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p6"
+              binding="#{pageFlowScope.manageCRSBean.pendingPopup}">
+      <af:dialog id="d6" title="Warning" titleIconSource="/images/warning.png" type="none">
+        <f:facet name="buttonBar">
+          <af:panelGroupLayout id="pgl5">
+            <af:commandButton text="#{ecrsviewcontrollerBundle.YES}" id="cb15"
+                              actionListener="#{pageFlowScope.manageCRSBean.onClickYes}"/>
+            <af:commandButton text="#{ecrsviewcontrollerBundle.NO}" id="cb16"/>
+          </af:panelGroupLayout>
+        </f:facet>
+        <af:outputText value="#{ecrsviewcontrollerBundle.THERE_ARE_SOME_PENDING_CHANGES}" id="ot37"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p7" contentDelivery="lazyUncached"
+              binding="#{pageFlowScope.manageCRSBean.copyPopup}"
+              popupCanceledListener="#{pageFlowScope.manageCRSBean.onCloseRiskPopup}">
+      <af:dialog id="d7" title="#{ecrsviewcontrollerBundle.COPY_RISK_DEFINTION}" type="none" contentWidth="800">
+        <f:facet name="buttonBar">
+          <af:panelGroupLayout id="pgl7">
+            <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb20"
+                              actionListener="#{pageFlowScope.manageCRSBean.onCancelCrsRiskPopup}" immediate="true"/>
+          </af:panelGroupLayout>
+        </f:facet>
+        <af:panelGroupLayout id="pgl4" layout="vertical" binding="#{pageFlowScope.manageCRSBean.copyRiskDefPopupPanel}">
+          <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.SAFETY_TOPIC_OF_INTEREST}" id="plam6">
+            <af:inputText label="#{ecrsviewcontrollerBundle.SAFETY_TOPIC_OF_INTEREST}" id="it3" simple="true"
+                          value="#{pageFlowScope.manageCRSBean.safetyTopicOfInterest}" autoSubmit="true"
+                          binding="#{pageFlowScope.manageCRSBean.stoiBinding}"/>
+            <f:facet name="end">
+              <af:commandButton text="#{ecrsviewcontrollerBundle.SEARCH}" id="cb17"
+                                actionListener="#{pageFlowScope.manageCRSBean.searchCrs}" immediate="true"
+                                partialSubmit="true"/>
+            </f:facet>
+          </af:panelLabelAndMessage>
+          <af:showDetail disclosed="true" id="sd1" styleClass="AFStretchWidth">
+            <af:table value="#{bindings.CopyCrsRiskVO.collectionModel}" var="copyRow"
+                      rows="#{bindings.CopyCrsRiskVO.rangeSize}"
+                      emptyText="#{bindings.CopyCrsRiskVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.CopyCrsRiskVO.rangeSize}" rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.CopyCrsRiskVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.CopyCrsRiskVO.collectionModel.makeCurrent}" rowSelection="single"
+                      id="t7" styleClass="AFStretchWidth" partialTriggers="::cb17" >
+              <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.CrsName.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.CRS_NAME}" id="c38">
+                         <af:outputText value="#{copyRow.CrsName}" id="ot68"/>
+              </af:column>        
+              <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.SafetyTopicOfInterest.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.SAFETY_TOPIC_OF_INTEREST}" id="c28">
+                <af:commandLink shortDesc="#{bindings.CopyCrsRiskVO.hints.SafetyTopicOfInterest.tooltip}" id="cl1"
+                                text="#{copyRow.SafetyTopicOfInterest}" partialSubmit="true"
+                                actionListener="#{pageFlowScope.manageCRSBean.copyCrsRiskRelation}" immediate="true"/>
+              </af:column>
+              <af:column id="c48" headerText="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}">
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeSpFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.SP}" id="c39" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.SPP}">
+                  <af:outputText value="#{copyRow.RiskPurposeSpFlag eq 'Y' ? 'Y' : ''}" id="ot32"
+                                 shortDesc="#{ecrsviewcontrollerBundle.SPP}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeDsFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.DS}" id="c40" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.DSUR}">
+                  <af:outputText value="#{copyRow.RiskPurposeDsFlag eq 'Y' ? 'Y' : ''}" id="ot69"
+                                 shortDesc="#{ecrsviewcontrollerBundle.DSUR}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeRmFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.RM}" id="c41" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.RMP}">
+                  <af:outputText value="#{copyRow.RiskPurposeRmFlag eq 'Y' ? 'Y' : ''}" id="ot70"
+                                 shortDesc="#{ecrsviewcontrollerBundle.RMP}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposePsFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.PS}" id="c42" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.PSUR}">
+                  <af:outputText value="#{copyRow.RiskPurposePsFlag eq 'Y' ? 'Y' : ''}" id="ot71"
+                                 shortDesc="#{ecrsviewcontrollerBundle.PSUR}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeIbFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.IB}" id="c43" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.EXPECTED_IN_IB}">
+                  <af:outputText value="#{copyRow.RiskPurposeIbFlag eq 'Y' ? 'Y' : ''}" id="ot72"
+                                 shortDesc="#{ecrsviewcontrollerBundle.EXPECTED_IN_IB}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeCdFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.CD}" id="c44" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.CDS}">
+                  <af:outputText value="#{copyRow.RiskPurposeCdFlag eq 'Y' ? 'Y' : ''}" id="ot73"
+                                 shortDesc="#{ecrsviewcontrollerBundle.CDS}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeOsFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.OS}" id="c45" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.OTHER_SEARCH}">
+                  <af:outputText value="#{copyRow.RiskPurposeOsFlag eq 'Y' ? 'Y' : ''}" id="ot74"
+                                 shortDesc="#{ecrsviewcontrollerBundle.OTHER_SEARCH}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeMiFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.MI}" id="c46" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.MISSING_INFORMATION}">
+                  <af:outputText value="#{copyRow.RiskPurposeMiFlag eq 'Y' ? 'Y' : ''}" id="ot75"
+                                 shortDesc="#{ecrsviewcontrollerBundle.MISSING_INFORMATION}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeErFlag.name}" sortable="true"
+                           headerText="#{ecrsviewcontrollerBundle.ER}" id="c47" width="20"
+                           shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}">
+                  <af:outputText value="#{copyRow.RiskPurposeErFlag eq 'Y' ? 'Y' : ''}" id="ot76"
+                                 shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}"/>
+                </af:column>
+                <f:facet name="header">
+                  <af:panelGroupLayout id="pgl14" layout="horizontal">
+                    <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot80"/>
+                    <af:commandImageLink id="cil8" icon="/images/Help-icon.png">
+                      <af:showPopupBehavior triggerType="action" popupId="::prplegend"/>
+                    </af:commandImageLink>
+                    <f:facet name="separator">
+                      <af:spacer width="10" height="10" id="s9"/>
+                    </f:facet>
+                  </af:panelGroupLayout>
+                </f:facet>
+              </af:column>
+              <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.SocTerm.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.SOC}" id="c481">
+                <af:outputText value="#{copyRow.SocTerm}" shortDesc="#{bindings.CopyCrsRiskVO.hints.SocTerm.tooltip}"
+                               id="ot25"/>
+              </af:column>
+              <!--<af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.DatabaseList.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.DATABASE}" id="c49" rendered="false">
+                <af:outputText value="#{copyRow.DatabaseList}"
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.DatabaseList.tooltip}" id="ot26"/>
+              </af:column>-->
+               <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.DataDomain.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.DATA_DOMAIN}" id="c50">
+                <af:outputText value="#{copyRow.DataDomain}" 
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.DataDomain.tooltip}" id="ot84"/>
+              </af:column>
+              <af:column headerText="#{ecrsviewcontrollerBundle.SEARCH_CRITERIA_DETAILS}" id="c54" 
+                    sortProperty="#{bindings.CopyCrsRiskVO.hints.SearchCriteriaDetails.name}" sortable="true">
+                <af:outputText value="#{copyRow.SearchCriteriaDetails}" 
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.SearchCriteriaDetails.tooltip}" id="ot66"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.MeddraCode.name}" sortable="true"
+                         headerText="#{bindings.CopyCrsRiskVO.hints.MeddraCode.label}" id="c89">
+                <af:outputText value="#{copyRow.MeddraCode}"
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.MeddraCode.tooltip}" id="ot83"/>
+              </af:column>
+              
+              <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.MeddraTerm.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.MEDDRA_TERM}" id="c51">
+                <af:outputText value="#{copyRow.MeddraTerm}"
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.MeddraTerm.tooltip}" id="ot28"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.MeddraLevel.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.MEDDRA_LEVEL}" id="c52" width="50">
+                <af:outputText value="#{copyRow.MeddraLevel}"
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.MeddraLevel.tooltip}" id="ot29"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.MeddraQualifier.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.MEDDRA_QUALIFIER}" id="c485" width="50">
+                <af:outputText value="#{copyRow.CrsQualifier}"
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.MeddraQualifier.tooltip}" id="ot30"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.MeddraCode.name}" sortable="true"
+                         headerText="#{bindings.CopyCrsRiskVO.hints.MeddraCode.label}" id="c53" width="50"
+                         rendered="false">
+                <af:outputText value="#{copyRow.MeddraCode}"
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.MeddraCode.tooltip}" id="ot31"/>
+              </af:column>
+             <!-- <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.SearchCriteriaDetails.name}" sortable="true"
+                         headerText="#{ecrsviewcontrollerBundle.SEARCH_CRITERIA_DETAILS}" id="c54" width="50" rendered="false">
+                <af:outputText value="#{copyRow.SearchCriteriaDetails}"
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.SearchCriteriaDetails.tooltip}" id="ot32"/>
+              </af:column> -->
+            </af:table>
+            <f:facet name="prompt"/>
+          </af:showDetail>
+          <af:panelGroupLayout id="pgl51" binding="#{pageFlowScope.manageCRSBean.copyPanel}"
+                               layout="vertical" visible="false">
+            <af:panelFormLayout id="pfl4" rows="2" maxColumns="2">
+              <af:inputText value="#{bindings.SafetyTopicOfInterest.inputValue}"
+                            label="#{bindings.SafetyTopicOfInterest.hints.label}"
+                            columns="#{bindings.SafetyTopicOfInterest.hints.displayWidth}"
+                            maximumLength="#{bindings.SafetyTopicOfInterest.hints.precision}"
+                            shortDesc="#{bindings.SafetyTopicOfInterest.hints.tooltip}" id="it7" required="true"
+                            contentStyle="width:200px;" autoSubmit="true"
+                            valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
+                <f:validator binding="#{bindings.SafetyTopicOfInterest.validator}"/>
+              </af:inputText>
+              <!--<af:selectManyChoice label="#{ecrsviewcontrollerBundle.DATABASE}" id="smc3"
+                                   value="#{pageFlowScope.manageCRSBean.selDatabases}" autoSubmit="true"
+                                   binding="#{pageFlowScope.manageCRSBean.copyDBListBinding}" rendered="false">
+                <f:selectItems value="#{pageFlowScope.manageCRSBean.databaseList}" id="si16"/>
+              </af:selectManyChoice>-->
+              <af:selectOneChoice value="#{bindings.DomainId.inputValue}"
+                                  label="#{ecrsviewcontrollerBundle.DATA_DOMAIN}" autoSubmit="true"
+                                  shortDesc="#{bindings.DomainId.hints.tooltip}" id="soc10" required="true"
+                                  readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
+                                  valueChangeListener="#{pageFlowScope.manageCRSBean.onDomainIdChangeInCopyRisk}">
+                <f:selectItems value="#{bindings.DomainId.items}" id="si66"/>
+              </af:selectOneChoice>
+              <!--<af:inputText value="#{bindings.DataDomain.inputValue}" label="#{bindings.DataDomain.hints.label}"
+                            required="#{bindings.DataDomain.hints.mandatory}"
+                            columns="#{bindings.DataDomain.hints.displayWidth}"
+                            maximumLength="#{bindings.DataDomain.hints.precision}"
+                            shortDesc="#{bindings.DataDomain.hints.tooltip}" id="it8" autoSubmit="true"
+                            rendered="false">
+                <f:validator binding="#{bindings.DataDomain.validator}"/>
+              </af:inputText>-->
+              
+              <af:selectManyChoice label="#{ecrsviewcontrollerBundle.RISK_PURPOSES}" id="smc4"
+                                   value="#{pageFlowScope.manageCRSBean.selRiskPurposes}" autoSubmit="true"
+                                   binding="#{pageFlowScope.manageCRSBean.copyRPListBinding}"
+                                   valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
+                <af:selectItem label="SP (SPP)" id="si1" value="SP"/>
+                <af:selectItem label="DS (DSUR)" id="si2" value="DS"/>
+                <af:selectItem label="RM (RMP)" id="si3" value="RM"/>
+                <af:selectItem label="PS (PSUR)" id="si16" value="PS"/>
+                <af:selectItem label="CD (CDS)" id="si19" value="CD"/>
+                <af:selectItem label="IB (Expected in (IB))" id="si20" value="IB"/>
+                <af:selectItem label="OS (Other Search)" id="si21" value="OS"/>
+                <af:selectItem label="MI (Missing Information)" id="si22" value="MI"/>
+                <af:selectItem label="ER (Expediting Rules)" id="si23" value="ER"/>
+              </af:selectManyChoice>
+              
+              <af:selectOneChoice value="#{bindings.SocTerm.inputValue}" label="#{bindings.SocTerm.label}"
+                                  shortDesc="#{bindings.SocTerm.hints.tooltip}" id="soc5" contentStyle="width:300px;"
+                                  required="#{bindings.DomainId1.inputValue == 1}"
+                                  visible="#{bindings.DomainId1.inputValue == 1}"
+                                  binding="#{pageFlowScope.manageCRSBean.socTermSOCCopy}" autoSubmit="true"
+                                  partialTriggers="soc10"
+                                  valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
+                <f:selectItems value="#{bindings.SocTerm.items}" id="si18"/>
+              </af:selectOneChoice>
+              
+            </af:panelFormLayout>
+            <af:panelFormLayout id="pfl5">
+              <af:inputText value="#{bindings.NonMeddraComponentComment.inputValue}"
+                            label="#{bindings.NonMeddraComponentComment.hints.label}"
+                            required="#{bindings.NonMeddraComponentComment.hints.mandatory}"
+                            columns="#{bindings.NonMeddraComponentComment.hints.displayWidth}"
+                            maximumLength="#{bindings.NonMeddraComponentComment.hints.precision}"
+                            shortDesc="#{bindings.NonMeddraComponentComment.hints.tooltip}" id="it9" rows="3"
+                            contentStyle="width:500px;" autoSubmit="true"
+                            valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
+                <f:validator binding="#{bindings.NonMeddraComponentComment.validator}"/>
+              </af:inputText>
+              <af:inputText value="#{bindings.SearchCriteriaDetails.inputValue}"
+                          label="#{bindings.SearchCriteriaDetails.hints.label}"
+                          showRequired="#{null != bindings.DomainId1.inputValue and bindings.DomainId1.inputValue != 1}"
+                          columns="#{bindings.SearchCriteriaDetails.hints.displayWidth}"
+                          maximumLength="200"
+                          contentStyle="width:500px;" rows="3" autoSubmit="true"
+                          readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
+                          shortDesc="#{bindings.SearchCriteriaDetails.hints.tooltip}" id="it15"
+                          binding="#{pageFlowScope.manageCRSBean.searchCriteriaDetailsCopy}" partialTriggers="soc10"
+                            valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
+              <f:validator binding="#{bindings.SearchCriteriaDetails.validator}"/>
+            </af:inputText>
+            </af:panelFormLayout>
+            <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+              <f:facet name="menus"/>
+              <f:facet name="toolbar"/>
+              <f:facet name="statusbar">
+                <af:toolbar id="t13" visible="true"
+                            partialTriggers="cb81 cb18" rendered="true"
+                    binding="#{pageFlowScope.manageCRSBean.cntrlStatusBarCopy}">
+                <af:image id="iconWarn1" source="/images/alert.png" rendered="true"
+		  binding="#{pageFlowScope.manageCRSBean.iconCopyCRSChanged}" visible="false"
+		  shortDesc="Risk Def Modified"/>
+                <af:image id="iconError1" source="/images/error.png" rendered="true"
+		  binding="#{pageFlowScope.manageCRSBean.iconCopyCRSSaveError}" visible="false"
+		  shortDesc="Error saving Risk Def"/>
+                <af:image id="iconSave1" source="/images/tick.png"
+		  binding="#{pageFlowScope.manageCRSBean.iconCopyCRSSaved}" rendered="true"
+		  visible="false" shortDesc="Risk Def saved"/>
+                <!-- <af:panelLabelAndMessage id="plam9"
+                                           binding="#{pageFlowScope.manageCRSBean.copySuccessMessage}">
+                    <af:image source="/images/tick.png" id="i5"/>
+                    <af:outputText value="#{ecrsviewcontrollerBundle.SAVED_SUCCESSFULLY}" id="ot67"/>
+                  </af:panelLabelAndMessage> -->
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.CrsRiskDefinitionsVO1.collectionModel}" var="row"
+                        rows="#{bindings.CrsRiskDefinitionsVO1.rangeSize}"
+                        emptyText="#{bindings.CrsRiskDefinitionsVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        fetchSize="#{bindings.CrsRiskDefinitionsVO1.rangeSize}" rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.CrsRiskDefinitionsVO1.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.CrsRiskDefinitionsVO1.collectionModel.makeCurrent}"
+                        rowSelection="multiple" id="t8" partialTriggers="::cb81"
+                        columnStretching="column:c55" binding="#{pageFlowScope.manageCRSBean.copyRiskDefTable}"
+                        styleClass="AFStretchWidth">
+                <af:column id="c86" width="20" visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+                  <af:selectBooleanCheckbox value="#{row.bindings.SelectAttr.inputValue}"
+                                            label="#{row.bindings.SelectAttr.label}"
+                                            shortDesc="#{bindings.CrsRiskDefinitionsVO1.hints.SelectAttr.tooltip}"
+                                            id="sbc2"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraTerm.name}" sortable="false"
+                           headerText="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraTerm.label}" id="c55">
+                  <af:outputText value="#{row.MeddraTerm}"
+                                 shortDesc="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraTerm.tooltip}" id="ot33"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraLevel.name}" sortable="false"
+                           headerText="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraLevel.label}" id="c56">
+                  <af:outputText value="#{row.MeddraLevel}"
+                                 shortDesc="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraLevel.tooltip}" id="ot34"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraQualifier.name}" sortable="false"
+                           headerText="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraQualifier.label}" id="c57">
+                  <af:outputText value="#{row.CrsQualifier}"
+                                 shortDesc="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraQualifier.tooltip}" id="ot35"
+                                 rendered="false"/>
+                  <af:inputText id="it8" value="#{row.CrsQualifier}" readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable or row.MeddraQualifierUpdFlag ne 'Y'}"
+                                rendered="false"/>
+                  <af:selectOneChoice id="soc11" readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable or row.MeddraQualifierUpdFlag ne 'Y'}"
+                                      value="#{row.CrsQualifier}" autoSubmit="true"
+                                      valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
+                    <af:selectItem label="BROAD" value="BROAD" id="si26"/>
+                    <af:selectItem label="NARROW" value="NARROW" id="si27"/>
+                  </af:selectOneChoice>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraCode.name}" sortable="false"
+                           headerText="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraCode.label}" id="c58">
+                  <af:outputText value="#{row.MeddraCode}"
+                                 shortDesc="#{bindings.CrsRiskDefinitionsVO1.hints.MeddraCode.tooltip}" id="ot36"/>
+                </af:column>
+               <!-- <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO1.hints.SearchCriteriaDetails.name}"
+                           sortable="false" rendered="false"
+                           headerText="#{bindings.CrsRiskDefinitionsVO1.hints.SearchCriteriaDetails.label}" id="c59">
+                  <af:outputText value="#{row.SearchCriteriaDetails}"
+                                 shortDesc="#{bindings.CrsRiskDefinitionsVO1.hints.SearchCriteriaDetails.tooltip}"
+                                 id="ot371"/>
+                </af:column> -->
+                <af:column id="c60" width="20" rendered="false">
+                  <f:facet name="header">
+                    <af:image source="/images/delete.png" id="i3"/>
+                  </f:facet>
+                  <af:commandImageLink id="cil3" icon="/images/delete.png"
+                                       actionListener="#{bindings.DeleteRiskDefinition.execute}" partialSubmit="true"/>
+                </af:column>
+                <af:collectionDropTarget dropListener="#{pageFlowScope.manageCRSBean.dragDropListener}" actions="COPY"
+                                         modelName="copyRows"/>
+              </af:table>
+              <f:facet name="secondaryToolbar">
+                <af:toolbar id="t9">
+                  <af:commandButton text="#{ecrsviewcontrollerBundle.DELETE_SELECTED}" id="cb81"
+                                    icon="/images/delete.png"
+                                    actionListener="#{pageFlowScope.manageCRSBean.onClickOfRiskDefDelete}"
+                                    partialSubmit="true" visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"/>
+                  <af:commandButton text="#{ecrsviewcontrollerBundle.SAVE}" id="cb18" icon="/images/filesave.png"
+                                    actionListener="#{pageFlowScope.manageCRSBean.saveRiskDefs}" partialSubmit="true"/>
+                  <af:commandButton text="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" id="cb19"
+                                    icon="/images/hierarchy.gif"
+                                    actionListener="#{pageFlowScope.manageCRSBean.onClickCopyHierarchySearch}"
+                                    partialSubmit="true"/>
+                </af:toolbar>
+              </f:facet>
+            </af:panelCollection>
+          </af:panelGroupLayout>
+          <f:facet name="separator">
+            <af:spacer width="10" height="10" id="s5"/>
+          </f:facet>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p8">
+      <af:dialog id="d8" title="#{ecrsviewcontrollerBundle.ENTER_SEARCH_CRITERIA_DETAILS}">
+        <f:facet name="buttonBar"/>
+        <af:inputText label="#{ecrsviewcontrollerBundle.SEARCH_CRITERIA_DETAILS}" id="it4" columns="50" rows="3"
+                      autoSubmit="true" value="#{bindings.SearchCriteriaDetails.inputValue}" maximumLength="200"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p9"
+              binding="#{pageFlowScope.manageCRSBean.advancedFilterPopup}">
+      <af:dialog id="d9" title="#{ecrsviewcontrollerBundle.ADVANCED_FILTER}" type="cancel">
+        <f:facet name="buttonBar">
+          <af:commandButton text="#{ecrsviewcontrollerBundle.OK}" id="cb24"
+                            actionListener="#{pageFlowScope.manageCRSBean.onOkFilter}"/>
+        </f:facet>
+        <af:panelFormLayout id="pfl6" rows="3" inlineStyle="white-space: nowrap">
+          <af:selectOneChoice label="#{ecrsviewcontrollerBundle.FILTER_BY}" id="soc6"
+                              value="#{pageFlowScope.manageCRSBean.filterBy1}">
+            <af:selectItem label="Safety Topic Of Interest" value="SAFETY_TOPIC_OF_INTEREST" id="si28"/>
+            <af:selectItem label="Data Domain" value="DATA_DOMAIN" id="si29"/>
+            <af:selectItem label="SP" value="RISK_PURPOSE_SP_FLAG" id="si30"/>
+            <af:selectItem label="DS" value="RISK_PURPOSE_DS_FLAG" id="si31"/>
+            <af:selectItem label="RM" value="RISK_PURPOSE_RM_FLAG" id="si32"/>
+            <af:selectItem label="PS" value="RISK_PURPOSE_PS_FLAG" id="si33"/>
+            <af:selectItem label="IB" value="RISK_PURPOSE_IB_FLAG" id="si34"/>
+            <af:selectItem label="CD" value="RISK_PURPOSE_CD_FLAG" id="si35"/>
+            <af:selectItem label="OS" value="RISK_PURPOSE_OS_FLAG" id="si36"/>
+            <af:selectItem label="MI" value="RISK_PURPOSE_MI_FLAG" id="si37"/>
+            <af:selectItem label="ER" value="RISK_PURPOSE_ER_FLAG" id="si38"/>
+          </af:selectOneChoice>
+          <af:selectOneChoice label="#{ecrsviewcontrollerBundle.THEN_BY}" id="soc7"
+                              value="#{pageFlowScope.manageCRSBean.filterBy2}">
+            <af:selectItem label="Safety Topic Of Interest" value="SAFETY_TOPIC_OF_INTEREST" id="si39"/>
+            <af:selectItem label="Data Domain" value="DATA_DOMAIN" id="si40"/>
+            <af:selectItem label="SP" value="RISK_PURPOSE_SP_FLAG" id="si41"/>
+            <af:selectItem label="DS" value="RISK_PURPOSE_DS_FLAG" id="si42"/>
+            <af:selectItem label="RM" value="RISK_PURPOSE_RM_FLAG" id="si43"/>
+            <af:selectItem label="PS" value="RISK_PURPOSE_PS_FLAG" id="si44"/>
+            <af:selectItem label="IB" value="RISK_PURPOSE_IB_FLAG" id="si45"/>
+            <af:selectItem label="CD" value="RISK_PURPOSE_CD_FLAG" id="si46"/>
+            <af:selectItem label="OS" value="RISK_PURPOSE_OS_FLAG" id="si47"/>
+            <af:selectItem label="MI" value="RISK_PURPOSE_MI_FLAG" id="si48"/>
+            <af:selectItem label="ER" value="RISK_PURPOSE_ER_FLAG" id="si49"/>
+          </af:selectOneChoice>
+          <af:selectOneChoice label="#{ecrsviewcontrollerBundle.THEN_BY}" id="soc8"
+                              value="#{pageFlowScope.manageCRSBean.filterBy3}">
+            <af:selectItem label="Safety Topic Of Interest" value="SAFETY_TOPIC_OF_INTEREST" id="si50"/>
+            <af:selectItem label="Data Domain" value="DATA_DOMAIN" id="si51"/>
+            <af:selectItem label="SP" value="RISK_PURPOSE_SP_FLAG" id="si52"/>
+            <af:selectItem label="DS" value="RISK_PURPOSE_DS_FLAG" id="si53"/>
+            <af:selectItem label="RM" value="RISK_PURPOSE_RM_FLAG" id="si54"/>
+            <af:selectItem label="PS" value="RISK_PURPOSE_PS_FLAG" id="si55"/>
+            <af:selectItem label="IB" value="RISK_PURPOSE_IB_FLAG" id="si56"/>
+            <af:selectItem label="CD" value="RISK_PURPOSE_CD_FLAG" id="si57"/>
+            <af:selectItem label="OS" value="RISK_PURPOSE_OS_FLAG" id="si58"/>
+            <af:selectItem label="MI" value="RISK_PURPOSE_MI_FLAG" id="si59"/>
+            <af:selectItem label="ER" value="RISK_PURPOSE_ER_FLAG" id="si60"/>
+          </af:selectOneChoice>
+          <af:inputText id="it10" value="#{pageFlowScope.manageCRSBean.filterValue1}"/>
+          <af:inputText id="it11" value="#{pageFlowScope.manageCRSBean.filterValue2}"/>
+          <af:inputText id="it12" value="#{pageFlowScope.manageCRSBean.filterValue3}"/>
+          <af:selectOneRadio id="sor1" value="#{pageFlowScope.manageCRSBean.filterCri1}" layout="horizontal">
+            <af:selectItem label="OR" value="OR" id="si62"/>
+            <af:selectItem label="AND" value="AND" id="si61"/>
+          </af:selectOneRadio>
+          <af:selectOneRadio id="sor2" value="#{pageFlowScope.manageCRSBean.filterCri2}" layout="horizontal">
+            <af:selectItem label="OR" value="OR" id="si64"/>
+            <af:selectItem label="AND" value="AND" id="si63"/>
+          </af:selectOneRadio>
+        </af:panelFormLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="prplegend">
+      <af:dialog id="d10" type="ok" title="#{ecrsviewcontrollerBundle.INFO}"
+                 titleIconSource="/images/info_icon.png" contentWidth="750">
+        <f:facet name="buttonBar"/>
+        <af:table value="#{bindings.PurposeLegendStaticVO.collectionModel}"
+                  var="row" rows="#{bindings.PurposeLegendStaticVO.rangeSize}"
+                  emptyText="#{bindings.PurposeLegendStaticVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.PurposeLegendStaticVO.rangeSize}"
+                  rowBandingInterval="0" id="t14"
+                  autoHeightRows="#{bindings.PurposeLegendStaticVO.estimatedRowCount}"
+                  styleClass="AFStretchWidth" columnStretching="column:c83">
+          <af:column sortProperty="#{bindings.PurposeLegendStaticVO.hints.RiskCode.name}"
+                     sortable="false"
+                     headerText="#{bindings.PurposeLegendStaticVO.hints.RiskCode.label}"
+                     id="c49" width="60">
+            <af:outputText value="#{row.RiskCode}"
+                           shortDesc="#{bindings.PurposeLegendStaticVO.hints.RiskCode.tooltip}"
+                           id="ot12"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.PurposeLegendStaticVO.hints.Name.name}"
+                     sortable="false"
+                     headerText="#{bindings.PurposeLegendStaticVO.hints.Name.label}"
+                     id="c72" width="100">
+            <af:outputText value="#{row.Name}"
+                           shortDesc="#{bindings.PurposeLegendStaticVO.hints.Name.tooltip}"
+                           id="ot26"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.PurposeLegendStaticVO.hints.Description.name}"
+                     sortable="false"
+                     headerText="#{bindings.PurposeLegendStaticVO.hints.Description.label}"
+                     id="c83" noWrap="false">
+            <af:outputText value="#{row.Description}"
+                           shortDesc="#{bindings.PurposeLegendStaticVO.hints.Description.tooltip}"
+                           id="ot49"/>
+          </af:column>
+        </af:table>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="delConfPopup"
+                  binding="#{pageFlowScope.manageCRSBean.delConfPopupBinding}">
+            <af:dialog id="d11" type="yesNo"
+                       title="#{ecrsviewcontrollerBundle.INFO}"
+                       titleIconSource="/images/info_icon.png"
+                       closeIconVisible="false" inlineStyle="width:250px;"
+                       dialogListener="#{pageFlowScope.manageCRSBean.processDeleteRiskDefinitionsDialog}">
+                <af:outputText value="#{ecrsviewcontrollerBundle.ARE_YOU_SURE_THAT_YOU_WANT_TO_DELETE_RISK_RELATION}" id="ot85"/>
+            </af:dialog>
+        </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="delSTIConfPopup"
+                  binding="#{pageFlowScope.manageCRSBean.delSTIConfPopup}">
+            <af:dialog id="d12" type="yesNo"
+                       title="#{ecrsviewcontrollerBundle.INFO}"
+                       titleIconSource="/images/info_icon.png"
+                       closeIconVisible="false" inlineStyle="width:250px;"
+                       dialogListener="#{pageFlowScope.manageCRSBean.processDeleteSaftyTopicOfIntDialog}">
+                <af:outputText value="#{ecrsviewcontrollerBundle.ARE_YOU_SURE_THAT_YOU_WANT_TO_DELETE_SAFETY_TOPIC}" id="ot86"/>
+            </af:dialog>
+        </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p10" contentDelivery="lazyUncached"
+              binding="#{pageFlowScope.manageCRSBean.riskBasePopup}">
+      <af:dialog id="d13" title="Detail Risk Definitions" contentWidth="900" type="none">
+        <f:facet name="buttonBar">
+        <af:panelGroupLayout id="pgl11">
+            <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb29"
+                              actionListener="#{pageFlowScope.manageCRSBean.onCancelCrsRiskBasePopup}" immediate="true"/>
+          </af:panelGroupLayout>
+          </f:facet>
+          <af:panelGroupLayout id="pgl15" layout="vertical" binding="#{pageFlowScope.manageCRSBean.riskBasePopupPanel}">
+          <af:panelGroupLayout id="pgl16" layout="horizontal" halign="end">
+            <af:outputText id="ot67"
+                           binding="#{pageFlowScope.manageCRSBean.hiddenPopupAlign}">
+              <af:showPopupBehavior popupId="hidden_pp"></af:showPopupBehavior>
+            </af:outputText>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl17" layout="horizontal">
+            <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.CRS_NAME}" id="plam8">
+              <af:outputText value="#{pageFlowScope.crsName}" id="ot87"/>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage id="plam10" label="#{ecrsviewcontrollerBundle.CRS_ID}">
+              <af:outputText value="#{pageFlowScope.crsId}" id="ot88"/>
+            </af:panelLabelAndMessage>
+            <f:facet name="separator">
+              <af:spacer width="10" height="10" id="s10"/>
+            </f:facet>
+          </af:panelGroupLayout>
+          <af:panelFormLayout id="pfl7" maxColumns="2" rows="2" inlineStyle="white-space: nowrap;">
+            <af:inputText value="#{bindings.SafetyTopicOfInterestBase.inputValue}"
+                          label="#{bindings.SafetyTopicOfInterestBase.hints.label}"
+                          columns="#{bindings.SafetyTopicOfInterestBase.hints.displayWidth}"
+                          maximumLength="#{bindings.SafetyTopicOfInterestBase.hints.precision}"
+                          shortDesc="#{bindings.SafetyTopicOfInterestBase.hints.tooltip}" id="it5"
+                          contentStyle="width:200px;" 
+                          readOnly="true" required="true">
+              <f:validator binding="#{bindings.SafetyTopicOfInterestBase.validator}"/>
+            </af:inputText>
+            <af:inputText label="#{ecrsviewcontrollerBundle.DATA_DOMAIN}" id="it25" readOnly="true"
+                          value="#{pageFlowScope.dataDomainBase}"/>
+            <af:selectManyChoice label="#{ecrsviewcontrollerBundle.RISK_PURPOSES}" id="smc1"
+                                 value="#{pageFlowScope.manageCRSBean.selRiskPurposesBase}"
+                                 readOnly="true" required="true">
+              <af:selectItem label="SP (SPP)" id="si68" value="SP"/>
+              <af:selectItem label="DS (DSUR)" id="si69" value="DS"/>
+              <af:selectItem label="RM (RMP)" id="si70" value="RM"/>
+              <af:selectItem label="PS (PSUR)" id="si71" value="PS"/>
+              <af:selectItem label="CD (CDS)" id="si72" value="CD"/>
+              <af:selectItem label="IB (Expected in (IB))" id="si74" value="IB"/>
+              <af:selectItem label="OS (Other Search)" id="si73" value="OS"/>
+              <af:selectItem label="MI (Missing Information)" id="si75" value="MI"/>
+              <af:selectItem label="ER (Expediting Rules)" id="si76" value="ER"/>
+            </af:selectManyChoice>
+            <af:inputText label="#{bindings.SocTerm1.label}" id="it27" value="#{pageFlowScope.socTermBase}"
+                visible="#{bindings.DomainId2.inputValue == 1 or bindings.DomainId2.inputValue == null}"
+                          readOnly="true"/>
+          </af:panelFormLayout>
+          <af:panelFormLayout id="pfl8">
+            <af:inputText value="#{bindings.NonMeddraComponentCommentBase.inputValue}"
+                          label="#{bindings.NonMeddraComponentCommentBase.hints.label}"
+                          required="#{bindings.NonMeddraComponentCommentBase.hints.mandatory}"
+                          columns="#{bindings.NonMeddraComponentCommentBase.hints.displayWidth}"
+                          maximumLength="#{bindings.NonMeddraComponentCommentBase.hints.precision}"
+                          shortDesc="#{bindings.NonMeddraComponentCommentBase.hints.tooltip}" id="it20"
+                          contentStyle="width:500px;" rows="3"
+                          readOnly="true"
+                          disabled="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+              <f:validator binding="#{bindings.NonMeddraComponentCommentBase.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.SearchCriteriaDetailsBase.inputValue}"
+                          label="#{bindings.SearchCriteriaDetailsBase.hints.label}"
+                         
+                          columns="#{bindings.SearchCriteriaDetailsBase.hints.displayWidth}"
+                          maximumLength="200"
+                          contentStyle="width:500px;" rows="3"
+                          readOnly="true"
+                          shortDesc="#{bindings.SearchCriteriaDetailsBase.hints.tooltip}" id="it21"
+                          >
+              <f:validator binding="#{bindings.SearchCriteriaDetailsBase.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.MqmCommentBase.inputValue}" label="#{bindings.MqmCommentBase.hints.label}"
+                          required="#{bindings.MqmCommentBase.hints.mandatory}"
+                          columns="#{bindings.MqmCommentBase.hints.displayWidth}"
+                          maximumLength="#{bindings.MqmCommentBase.hints.precision}"
+                          shortDesc="#{bindings.MqmCommentBase.hints.tooltip}" id="it22" contentStyle="width:500px;"
+                          rows="3" 
+                          readOnly="true"
+                          visible="#{securityContext.userInRole['CRS_MQM'] || securityContext.userInRole['CRS_ADMIN'] || securityContext.userInRole['CRS_BSL']}"
+                          disabled="#{!(securityContext.userInRole['CRS_ADMIN'] or (securityContext.userInRole['CRS_MQM'] and (bindings.StateIdBase.inputValue eq 2 || bindings.StateIdBase.inputValue eq 3)))}">
+              <f:validator binding="#{bindings.MqmComment.validator}"/>
+            </af:inputText>
+          </af:panelFormLayout>
+          <af:panelCollection id="pc5" styleClass="AFStretchWidth">
+          <f:facet name="menus"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.CrsRiskDefinitionsBaseVO.collectionModel}" var="row"
+                      rows="#{bindings.CrsRiskDefinitionsBaseVO.rangeSize}"
+                      emptyText="#{bindings.CrsRiskDefinitionsBaseVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.CrsRiskDefinitionsBaseVO.rangeSize}" rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.CrsRiskDefinitionsBaseVO.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.CrsRiskDefinitionsBaseVO.collectionModel.makeCurrent}"
+                      rowSelection="multiple" id="t16" styleClass="AFStretchWidth" 
+                      contentDelivery="immediate"
+                      columnStretching="column:c90">
+              <af:column sortProperty="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.name}" sortable="false"
+                         headerText="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.label}" id="c90">
+                <af:panelGroupLayout id="pgl18">
+                  <af:image source="/images/BlueBall.gif" id="i5"
+                            visible="#{row.bindings.TmsUpdateFlag.inputValue eq 'Y'}"/>
+                  <af:inputText value="#{row.bindings.MeddraTerm.inputValue}"
+                                label="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.label}"
+                                required="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.mandatory}"
+                                columns="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.displayWidth}"
+                                maximumLength="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.precision}"
+                                shortDesc="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.tooltip}" id="it24"
+                                readOnly="true">
+                    <f:validator binding="#{row.bindings.MeddraTerm.validator}"/>
+                  </af:inputText>
+                </af:panelGroupLayout>
+              </af:column>
+              <af:column sortProperty="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraLevel.name}" sortable="false"
+                         headerText="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraLevel.label}" id="c92">
+                <af:inputText value="#{row.bindings.MeddraLevel.inputValue}"
+                              label="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraLevel.label}"
+                              required="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraLevel.mandatory}"
+                              columns="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraLevel.displayWidth}"
+                              maximumLength="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraLevel.precision}"
+                              shortDesc="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraLevel.tooltip}" id="it23"
+                              readOnly="true">
+                  <f:validator binding="#{row.bindings.MeddraLevel.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraQualifier.name}" sortable="false"
+                         headerText="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraQualifier.label}" id="c93">
+                <af:selectOneChoice label="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraQualifier.label}" id="soc14"
+                                    value="#{row.bindings.CrsQualifier.inputValue}" 
+                                    readOnly="true"
+                                    >
+                  <af:selectItem label="BROAD" value="BROAD" id="si79"/>
+                  <af:selectItem label="NARROW" value="NARROW" id="si80"/>
+                </af:selectOneChoice>
+              </af:column>
+              <af:column sortProperty="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraCode.name}" sortable="false"
+                         headerText="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraCode.label}" id="c91">
+                <af:inputText value="#{row.bindings.MeddraCode.inputValue}"
+                              label="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraCode.label}"
+                              required="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraCode.mandatory}"
+                              columns="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraCode.displayWidth}"
+                              maximumLength="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraCode.precision}"
+                              shortDesc="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraCode.tooltip}" id="it26"
+                              readOnly="true">
+                  <f:validator binding="#{row.bindings.MeddraCode.validator}"/>
+                </af:inputText>
+              </af:column>             
+        </af:table>
+            <f:facet name="secondaryToolbar">
+              <af:toolbar id="t15">
+              <af:commandButton text="#{ecrsviewcontrollerBundle.REFRESH_REPOSITORY}" id="cb32"
+                                  icon="/images/database-refresh-icon.png" rendered="false"
+                                  actionListener="#{pageFlowScope.manageCRSBean.refreshRepoInPopup}"/>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" partialSubmit="true"
+                                  id="cb30" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="PTReport.xls" 
+                                                 method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>
+                </af:commandButton>
+                <af:commandImageLink id="cil4" icon="/images/Help-icon.png" rendered="false">
+                  <af:showPopupBehavior triggerType="action"
+                                        popupId="::prplegend"/>
+                </af:commandImageLink>
+              </af:toolbar>
+            </f:facet>
+          </af:panelCollection>
+          </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</jsp:root>

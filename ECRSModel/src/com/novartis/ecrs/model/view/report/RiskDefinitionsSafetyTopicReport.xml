@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="RiskDefinitionsSafetyTopicReport"
+  Version="11.1.2.64.36"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  FetchSize="20">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.novartis.ecrs.model.view.report.RiskDefinitionsSafetyTopicReport_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT m.crs_name,
+           m.safety_topic_of_interest,
+          (SELECT COUNT(*) 
+           FROM crs_risk_relations    r,
+                crs_risk_definitions  d
+           WHERE r.crs_id = m.crs_id
+             AND r.safety_topic_of_interest =  m.safety_topic_of_interest
+             AND r.crs_risk_id = d.crs_risk_id
+             AND d.meddra_extension IN
+                 ('LLT','PT','HLT','HLGT','SOC'))   meddra_term_count,
+          (SELECT COUNT(*) 
+           FROM crs_risk_relations    r,
+                crs_risk_definitions  d
+           WHERE r.crs_id = m.crs_id
+             AND r.safety_topic_of_interest = 
+                  m.safety_topic_of_interest
+             AND r.crs_risk_id = d.crs_risk_id
+             AND d.meddra_extension = 'SMQ')        smq_count,
+          (SELECT COUNT(*) 
+           FROM crs_risk_relations    r,
+                crs_risk_definitions  d
+           WHERE r.crs_id = m.crs_id
+             AND r.safety_topic_of_interest = 
+                  m.safety_topic_of_interest
+             AND r.crs_risk_id = d.crs_risk_id
+             AND d.meddra_extension = 'NMQ')        nmq_count,
+          (SELECT COUNT(*) 
+           FROM crs_risk_relations    r,
+                crs_risk_definitions  d
+           WHERE r.crs_id = m.crs_id
+             AND r.safety_topic_of_interest = 
+                  m.safety_topic_of_interest
+             AND r.crs_risk_id = d.crs_risk_id
+             AND d.meddra_extension = 'CMQ')        cmq_count,
+          (SELECT COUNT(*) 
+           FROM crs_risk_relations            r,
+                crs_risk_relation_purposes_vw v
+           WHERE r.crs_id = m.crs_id
+             AND r.safety_topic_of_interest = 
+                  m.safety_topic_of_interest
+             AND r.crs_risk_id = v.crs_risk_id
+             AND v.risk_purpose_code = 'CD')        adr_count      
+    FROM (SELECT c.crs_id,
+                 c.crs_name,
+                 r.safety_topic_of_interest    
+          FROM crs_content         c,
+               crs_risk_relations  r
+          WHERE c.crs_id = r.crs_id
+          GROUP BY c.crs_id, c.crs_name, r.safety_topic_of_interest) m
+    ORDER BY m.safety_topic_of_interest ,m.crs_name]]></SQLQuery>
+  <ViewAttribute
+    Name="CrsName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="65"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CRS_NAME"
+    Expression="CRS_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="65"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CRS_NAME"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SafetyTopicOfInterest"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SAFETY_TOPIC_OF_INTEREST"
+    Expression="SAFETY_TOPIC_OF_INTEREST"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="SAFETY_TOPIC"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="MeddraTermCount"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="MEDDRA_TERM_COUNT"
+    Expression="MEDDRA_TERM_COUNT"
+    SQLType="NUMERIC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="MEDDRA_TERM"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SmqCount"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="SMQ_COUNT"
+    Expression="SMQ_COUNT"
+    SQLType="NUMERIC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="SMQ"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NmqCount"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="NMQ_COUNT"
+    Expression="NMQ_COUNT"
+    SQLType="NUMERIC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="NMQ"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CmqCount"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="CMQ_COUNT"
+    Expression="CMQ_COUNT"
+    SQLType="NUMERIC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CMQ"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AdrCount"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="ADR_COUNT"
+    Expression="ADR_COUNT"
+    SQLType="NUMERIC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ADR_CDS"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

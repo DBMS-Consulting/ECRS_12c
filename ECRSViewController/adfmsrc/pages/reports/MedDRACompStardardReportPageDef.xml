@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.2.64.36" id="MedDRACompStardardReportPageDef"
+                Package="pages.reports">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="MedDRAStandardReport" RangeSize="25"
+              DataControl="ECRSAppModuleDataControl"
+              id="MedDRAStandardReportIterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="MedDRAStandardReportIterator" id="MedDRAStandardReport1">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.report.MedDRAStandardReport"
+                      Name="MedDRAStandardReport10">
+        <AttrNames>
+          <Item Value="DefinitionType"/>
+          <Item Value="Percentofuse"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

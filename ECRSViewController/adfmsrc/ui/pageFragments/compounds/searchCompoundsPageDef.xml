@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="11.1.2.64.36" id="searchCompoundsPageDef"
+                Package="ui.pageFragments.compounds">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="CompoundTransientVO" RangeSize="25" DataControl="ECRSAppModuleDataControl"
+              id="CompoundTransientVOIterator"/>
+    <iterator Binds="CrsCompoundVO" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="CrsCompoundVOIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="CompoundTransientVOIterator" id="CompoundId">
+      <AttrNames>
+        <Item Value="CompoundId"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="CrsCompoundVOIterator" id="CrsCompoundVO">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.CrsCompoundVO" Name="CrsCompoundVO0">
+        <AttrNames>
+          <Item Value="CompoundId"/>
+          <Item Value="CompoundCode"/>
+          <Item Value="CompoundType"/>
+          <Item Value="CompoundDesc"/>
+          <Item Value="ActiveFlag"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="CompoundTransientVOIterator" id="CompoundCode">
+      <AttrNames>
+        <Item Value="CompoundCode"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="CrsCompoundVOIterator" id="CreateInsert" InstanceName="ECRSAppModuleDataControl.CrsCompoundVO"
+            DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action id="Rollback" InstanceName="ECRSAppModuleDataControl" DataControl="ECRSAppModuleDataControl"
+            RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <attributeValues IterBinding="CompoundTransientVOIterator" id="CompoundType">
+      <AttrNames>
+        <Item Value="CompoundType"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

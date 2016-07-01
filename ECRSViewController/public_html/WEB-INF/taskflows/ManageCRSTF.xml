@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="ManageCRSTF">
+    <default-activity>executeSearchVo</default-activity>
+    <input-parameter-definition id="__4">
+      <name>flowType</name>
+      <value>#{pageFlowScope.flowType}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__1">
+      <managed-bean-name>manageCRSBean</managed-bean-name>
+      <managed-bean-class>com.novartis.ecrs.ui.bean.ManageCRSBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler>exceptionHandler</exception-handler>
+    <view id="serach">
+      <page>/ui/pageFragments/ecrs/searchCRS.jsff</page>
+      <train-stop>
+       <display-name id="__15">Search</display-name>
+        <ignore>#{pageFlowScope.manageCRSBean.flowType == 'C'}</ignore>
+      </train-stop>
+    </view>
+    <view id="create">
+      <page>/ui/pageFragments/ecrs/createCRS.jsff</page>
+      <train-stop>
+       <display-name id="__14">#{pageFlowScope.flowType eq 'S' ? 'Details' : 'Add Details'}</display-name>
+        <outcome>initCreateUpdateCrs</outcome>
+      </train-stop>
+    </view>
+    <view id="RiskDef">
+      <page>/ui/pageFragments/ecrs/AddRiskDefinitions.jsff</page>
+      <train-stop>
+       <display-name id="__16">#{pageFlowScope.flowType eq 'S' ? 'Risk Definitions' : 'Add Risk Definitions'}</display-name>
+        <outcome>initRiskRel</outcome>
+      </train-stop>
+    </view>
+    <router id="crsFlowRouter">
+      <case id="__10">
+        <expression>#{pageFlowScope.flowType == 'C'}</expression>
+        <outcome>toCreate</outcome>
+      </case>
+      <default-outcome>toUpdate</default-outcome>
+    </router>
+    <method-call id="createRow">
+      <method>#{pageFlowScope.manageCRSBean.createCrsRow}</method>
+      <outcome>
+        <fixed-outcome>CreateInsert</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="invokeEmptyRowSet">
+      <method>#{pageFlowScope.manageCRSBean.invokeEmptyRowSetOnContentVO}</method>
+      <outcome>
+        <fixed-outcome>toSearch</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="exceptionHandler">
+      <page>/ui/pageFragments/exception/exceptionHandler.jsff</page>
+    </view>
+    <parent-action id="home">
+      <parent-outcome>home</parent-outcome>
+    </parent-action>
+    <method-call id="initRiskRelation">
+      <method>#{pageFlowScope.manageCRSBean.initRisRel}</method>
+      <outcome>
+        <fixed-outcome>intiated</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="initializeCreateUpdateCrs">
+      <method>#{pageFlowScope.manageCRSBean.initializeCreateUpdateCRS}</method>
+      <outcome>
+        <to-string/>
+      </outcome>
+    </method-call>
+    <method-call id="initManageCrs">
+      <method>#{pageFlowScope.manageCRSBean.initManageCrs}</method>
+      <outcome>
+        <fixed-outcome>init</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="reloadResults">
+      <method>#{pageFlowScope.manageCRSBean.reloadSearchResults}</method>
+      <outcome>
+        <fixed-outcome>toSearchPage</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="executeSearchVo">
+      <method>#{bindings.Execute.execute}</method>
+      <outcome>
+        <fixed-outcome>initSearch</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="Rollback">
+      <method>#{bindings.Rollback.execute}</method>
+      <outcome>
+        <fixed-outcome>Rollback</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="confirm">      
+      <page>/ui/pageFragments/ecrs/confirmCRS.jsff</page>
+      <train-stop>
+      <display-name>Confirm</display-name>
+        <outcome>initConfirmPage</outcome>
+        <ignore>#{pageFlowScope.flowType == 'S'}</ignore>
+      </train-stop>
+    </view>
+    <method-call id="initConfirmPage">
+      <method>#{pageFlowScope.manageCRSBean.initConfirmPage}</method>
+      <outcome>
+        <fixed-outcome>confirm</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="reloadSearchPage">
+      <method>#{pageFlowScope.manageCRSBean.reloadSearchPage}</method>
+      <outcome>
+        <fixed-outcome>toSearchPage</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__5">
+      <from-activity-id>crsFlowRouter</from-activity-id>
+      <control-flow-case id="__6">
+        <from-outcome>toUpdate</from-outcome>
+        <to-activity-id>invokeEmptyRowSet</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__7">
+        <from-outcome>toCreate</from-outcome>
+        <to-activity-id>createRow</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__2">
+      <from-activity-id>createRow</from-activity-id>
+      <control-flow-case id="__3">
+        <from-outcome>CreateInsert</from-outcome>
+        <to-activity-id>create</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__8">
+      <from-activity-id>invokeEmptyRowSet</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>toSearch</from-outcome>
+        <to-activity-id>serach</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__11">
+      <from-activity-id>create</from-activity-id>
+      <control-flow-case id="__12">
+        <from-outcome>home</from-outcome>
+        <to-activity-id>home</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__17">
+      <from-activity-id>*</from-activity-id>
+      <control-flow-case id="__18">
+        <from-outcome>initRiskRel</from-outcome>
+        <to-activity-id>initRiskRelation</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__24">
+        <from-outcome>initCreateUpdateCrs</from-outcome>
+        <to-activity-id>initializeCreateUpdateCrs</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__26">
+        <from-outcome>navToCreate</from-outcome>
+        <to-activity-id>create</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__29">
+        <from-outcome>navToSearch</from-outcome>
+        <to-activity-id>serach</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__30">
+        <from-outcome>reloadSearch</from-outcome>
+        <to-activity-id>reloadResults</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__37">
+        <from-outcome>initConfirmPage</from-outcome>
+        <to-activity-id>initConfirmPage</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__43">
+        <from-outcome>reloadSearchPage</from-outcome>
+        <to-activity-id>reloadSearchPage</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__19">
+      <from-activity-id>initRiskRelation</from-activity-id>
+      <control-flow-case id="__20">
+        <from-outcome>intiated</from-outcome>
+        <to-activity-id>RiskDef</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__21">
+      <from-activity-id>RiskDef</from-activity-id>
+      <control-flow-case id="__22">
+        <from-outcome>home</from-outcome>
+        <to-activity-id>home</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__13">
+      <from-activity-id>serach</from-activity-id>
+      <control-flow-case id="__23">
+        <from-outcome>home</from-outcome>
+        <to-activity-id>home</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__25">
+      <from-activity-id>initializeCreateUpdateCrs</from-activity-id>
+      <control-flow-case id="__27">
+        <from-outcome>toSearch</from-outcome>
+        <to-activity-id>serach</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__28">
+        <from-outcome>createUpdateCRS</from-outcome>
+        <to-activity-id>create</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__70">
+      <from-activity-id>initManageCrs</from-activity-id>
+      <control-flow-case id="__71">
+        <from-outcome>init</from-outcome>
+        <to-activity-id>crsFlowRouter</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__31">
+      <from-activity-id>reloadResults</from-activity-id>
+      <control-flow-case id="__32">
+        <from-outcome>toSearchPage</from-outcome>
+        <to-activity-id>serach</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__33">
+      <from-activity-id>executeSearchVo</from-activity-id>
+      <control-flow-case id="__34">
+        <from-outcome>initSearch</from-outcome>
+        <to-activity-id>Rollback</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__35">
+      <from-activity-id>Rollback</from-activity-id>
+      <control-flow-case id="__36">
+        <from-outcome>Rollback</from-outcome>
+        <to-activity-id>initManageCrs</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__38">
+      <from-activity-id>initConfirmPage</from-activity-id>
+      <control-flow-case id="__39">
+        <from-outcome>confirm</from-outcome>
+        <to-activity-id>confirm</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__40">
+      <from-activity-id>confirm</from-activity-id>
+      <control-flow-case id="__41">
+        <from-outcome>home</from-outcome>
+        <to-activity-id>home</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__42">
+        <from-outcome>toSearch</from-outcome>
+        <to-activity-id>invokeEmptyRowSet</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__44">
+      <from-activity-id>reloadSearchPage</from-activity-id>
+      <control-flow-case id="__45">
+        <from-outcome>toSearchPage</from-outcome>
+        <to-activity-id>serach</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

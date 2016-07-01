@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <c:set var="ecrsviewcontrollerBundle"
+           value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <af:document title="MedDRAComponentsReport.jspx" id="d1">
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/pageTemplate/EcrsTemplate.jspx"
+                                 id="pt1">
+                    <f:facet name="content">
+                    <af:panelGroupLayout id="pgl2">
+                            <af:panelHeader text="#{ecrsviewcontrollerBundle.MEDDRA_COMPONENTS_REPORT}" id="ph3"
+                                            size="1" inlineStyle="padding:5px;">
+                                <f:facet name="context"/>
+                                <f:facet name="menuBar"/>
+                                <f:facet name="toolbar">
+                                    <af:toolbar id="t4">
+                                        <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT}"
+                                                          id="cb1">
+                                            <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                                           filename="MedDRAComponentsReport.xls"
+                                                                           method="#{pageFlowScope.reportsBean.downloadMedDRACompReport}"/>
+                                        </af:commandButton>
+                                    </af:toolbar>
+                                </f:facet>
+                                <f:facet name="legend"/>
+                                <f:facet name="info"/>
+                                <af:panelGroupLayout id="pgl3">
+                                    <af:table value="#{bindings.MedDRAComponentsReport1.collectionModel}"
+                                              var="row"
+                                              rows="#{bindings.MedDRAComponentsReport1.rangeSize}"
+                                              emptyText="#{bindings.MedDRAComponentsReport1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                              fetchSize="#{bindings.MedDRAComponentsReport1.rangeSize}"
+                                              rowBandingInterval="0" id="t1"
+                                              columnStretching="column:c2"
+                                              styleClass="AFStretchWidth" columnBandingInterval="0">
+                                        <af:column sortProperty="#{bindings.MedDRAComponentsReport1.hints.MeddraTerm.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.MedDRAComponentsReport1.hints.MeddraTerm.label}"
+                                                   id="c4" width="200">
+                                            <af:outputText value="#{row.MeddraTerm}"
+                                                           shortDesc="#{bindings.MedDRAComponentsReport1.hints.MeddraTerm.tooltip}"
+                                                           id="ot1"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.MedDRAComponentsReport1.hints.MeddraExtension.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.MedDRAComponentsReport1.hints.MeddraExtension.label}"
+                                                   id="c3">
+                                            <af:outputText value="#{row.MeddraExtension}"
+                                                           shortDesc="#{bindings.MedDRAComponentsReport1.hints.MeddraExtension.tooltip}"
+                                                           id="ot5"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.MedDRAComponentsReport1.hints.SafetyTopicOfInterest.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.MedDRAComponentsReport1.hints.SafetyTopicOfInterest.label}"
+                                                   id="c5">
+                                            <af:outputText value="#{row.SafetyTopicOfInterest}"
+                                                           shortDesc="#{bindings.MedDRAComponentsReport1.hints.SafetyTopicOfInterest.tooltip}"
+                                                           id="ot4"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.MedDRAComponentsReport1.hints.CrsName.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.MedDRAComponentsReport1.hints.CrsName.label}"
+                                                   id="c2" width="200">
+                                            <af:outputText value="#{row.CrsName}"
+                                                           shortDesc="#{bindings.MedDRAComponentsReport1.hints.CrsName.tooltip}"
+                                                           id="ot3"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.MedDRAComponentsReport1.hints.RiskPurposeList.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.MedDRAComponentsReport1.hints.RiskPurposeList.label}"
+                                                   id="c6">
+                                            <af:outputText value="#{row.RiskPurposeList}"
+                                                           shortDesc="#{bindings.MedDRAComponentsReport1.hints.RiskPurposeList.tooltip}"
+                                                           id="ot2"/>
+                                        </af:column>
+                                        <af:column sortProperty="#{bindings.MedDRAComponentsReport1.hints.SocTerm.name}"
+                                                   sortable="false"
+                                                   headerText="#{bindings.MedDRAComponentsReport1.hints.SocTerm.label}"
+                                                   id="c1" width="200">
+                                            <af:outputText value="#{row.SocTerm}"
+                                                           shortDesc="#{bindings.MedDRAComponentsReport1.hints.SocTerm.tooltip}"
+                                                           id="ot6"/>
+                                        </af:column>
+                                    </af:table>
+                                </af:panelGroupLayout>
+                                <af:panelGroupLayout id="pgl4" layout="vertical">
+                                    <af:spacer width="10" height="20" id="s2"/>
+                                    <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb2"
+                                                      action="home"/>
+                                </af:panelGroupLayout>
+                            </af:panelHeader>
+                        </af:panelGroupLayout>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

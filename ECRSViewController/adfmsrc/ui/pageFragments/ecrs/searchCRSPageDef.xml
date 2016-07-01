@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.2.64.36" id="searchCRSPageDef"
+                Package="ui.pageFragments.ecrs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ECrsSearchVO" RangeSize="25"
+              DataControl="ECRSAppModuleDataControl" id="ECrsSearchVOIterator"/>
+    <iterator Binds="CrsContentVO" RangeSize="25"
+              DataControl="ECRSAppModuleDataControl" id="CrsContentVOIterator"/>
+    <iterator Binds="CrsContentBaseVO" RangeSize="25"
+              DataControl="ECRSAppModuleDataControl"
+              id="CrsContentBaseVOIterator"/>
+  </executables>
+  <bindings>
+    <list IterBinding="ECrsSearchVOIterator" StaticList="false"
+          Uses="LOV_CompoundCode" id="CompoundCode" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="ECrsSearchVOIterator" StaticList="false" Uses="LOV_State"
+          id="State" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ECrsSearchVOIterator" id="GenericName">
+      <AttrNames>
+        <Item Value="GenericName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ECrsSearchVOIterator" id="TradeName">
+      <AttrNames>
+        <Item Value="TradeName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ECrsSearchVOIterator" id="Indication">
+      <AttrNames>
+        <Item Value="Indication"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ECrsSearchVOIterator" id="Marketed">
+      <AttrNames>
+        <Item Value="Marketed"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="ECrsSearchVOIterator" StaticList="false"
+          Uses="LOV_Designee" id="Designee" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="ECrsSearchVOIterator" StaticList="false"
+          Uses="LOV_CrsTasl" id="CrsTasl" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="ECrsSearchVOIterator" StaticList="false"
+          Uses="LOV_CrsMedicalLead" id="CrsMedicalLead" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="ECrsSearchVOIterator" StaticList="false"
+          Uses="LOV_CrsBsl" id="CrsBsl" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ECrsSearchVOIterator" id="CrsName">
+      <AttrNames>
+        <Item Value="CrsName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ECrsSearchVOIterator" id="CrsId">
+      <AttrNames>
+        <Item Value="CrsId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ECrsSearchVOIterator" id="ReleaseStatus">
+      <AttrNames>
+        <Item Value="ReleaseStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="CrsContentVOIterator" id="CrsContentVO">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.CrsContentVO" Name="CrsContentVO0">
+        <AttrNames>
+          <Item Value="CrsName"/>
+          <Item Value="StateId"/>
+          <Item Value="CrsId"/>
+          <Item Value="CompoundId"/>
+          <Item Value="GenericName"/>
+          <Item Value="TradeName"/>
+          <Item Value="Indication"/>
+          <Item Value="IsMarketedFlag"/>
+          <Item Value="Designee"/>
+          <Item Value="TaslName"/>
+          <Item Value="MedicalLeadName"/>
+          <Item Value="BslName"/>
+          <Item Value="DesigneeName"/>
+          <Item Value="CreationTs"/>
+          <Item Value="ModificationTs"/>
+          <Item Value="CrsEffectiveDt"/>
+          <Item Value="ReasonForChange"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="filterCRSContent"
+                  InstanceName="data.ECRSAppModuleDataControl.dataProvider"
+                  DataControl="ECRSAppModuleDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="filterCRSContent" IsViewObjectMethod="false">
+      <NamedData NDName="userInRole" NDType="java.lang.String"/>
+      <NamedData NDName="userName" NDType="java.lang.String"/>
+      <NamedData NDName="isInboxDisable" NDType="boolean"/>
+      <NamedData NDName="flowType" NDType="java.lang.String"/>
+    </methodAction>
+    <action id="Rollback" InstanceName="ECRSAppModuleDataControl" DataControl="ECRSAppModuleDataControl"
+            RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <tree IterBinding="CrsContentBaseVOIterator" id="CrsContentBaseVO">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.base.CrsContentBaseVO" Name="CrsContentBaseVO0">
+        <AttrNames>
+          <Item Value="CrsId"/>
+          <Item Value="CrsName"/>
+          <Item Value="StateId"/>
+          <Item Value="CompoundId"/>
+          <Item Value="GenericName"/>
+          <Item Value="TradeName"/>
+          <Item Value="Indication"/>
+          <Item Value="IsMarketedFlag"/>
+          <Item Value="Designee"/>
+          <Item Value="BslName"/>
+          <Item Value="TaslName"/>
+          <Item Value="MedicalLeadName"/>
+          <Item Value="StateName"/>
+          <Item Value="CrsCompoundCode"/>
+          <Item Value="DesigneeName"/>
+          <Item Value="ModificationTs"/>
+          <Item Value="CreationTs"/>
+          <Item Value="CrsEffectiveDt"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="findByCrsFromStg"
+                  InstanceName="data.ECRSAppModuleDataControl.dataProvider"
+                  DataControl="ECRSAppModuleDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findByCrsFromStg" IsViewObjectMethod="false"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.findByCrsFromStg_ECRSAppModuleDataControl_dataProvider_findByCrsFromStg_result">
+      <NamedData NDName="pCrsId" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="modifyCrs"
+                  InstanceName="data.ECRSAppModuleDataControl.dataProvider"
+                  DataControl="ECRSAppModuleDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="modifyCrs" IsViewObjectMethod="false"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.modifyCrs_ECRSAppModuleDataControl_dataProvider_modifyCrs_result">
+      <NamedData NDName="pCRSId" NDType="java.lang.Long"/>
+      <NamedData NDName="pReasonForChange" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="reactivateCrs"
+                  InstanceName="data.ECRSAppModuleDataControl.dataProvider"
+                  DataControl="ECRSAppModuleDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="reactivateCrs" IsViewObjectMethod="false"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.reactivateCrs_ECRSAppModuleDataControl_dataProvider_reactivateCrs_result">
+      <NamedData NDName="pCRSId" NDType="java.lang.Long"/>
+      <NamedData NDName="pReasonForChange" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="retireCrs"
+                  InstanceName="data.ECRSAppModuleDataControl.dataProvider"
+                  DataControl="ECRSAppModuleDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="retireCrs" IsViewObjectMethod="false"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.retireCrs_ECRSAppModuleDataControl_dataProvider_retireCrs_result">
+      <NamedData NDName="pCRSId" NDType="java.lang.Long"/>
+      <NamedData NDName="pReasonForChange" NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="ECrsSearchVOIterator" id="CompoundType">
+      <AttrNames>
+        <Item Value="CompoundType"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

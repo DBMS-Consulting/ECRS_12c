@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://xmlns.oracle.com/adfm/application"
+             version="11.1.2.64.36" id="DataBindings" SeparateXMLFiles="false"
+             Package="com.novartis.ecrs.view" ClientType="Generic">
+  <definitionFactories>
+    <factory nameSpace="http://xmlns.oracle.com/adf/controller/binding"
+             className="oracle.adf.controller.internal.binding.TaskFlowBindingDefFactoryImpl"/>
+    <dtfactory className="oracle.adf.controller.internal.dtrt.binding.BindingDTObjectFactory"/>
+  </definitionFactories>
+  <pageMap>
+    <page path="/ui/pageFragments/ecrs/createCRS.jsff"
+          usageId="com_novartis_ecrs_view_createCRSPageDef"/>
+    <page path="/pages/CrsCreate.jspx"
+          usageId="com_novartis_ecrs_view_CrsCreatePageDef"/>
+    <page path="/pages/SearchCRS.jspx"
+          usageId="com_novartis_ecrs_view_SearchCRSPageDef"/>
+    <page path="/ui/pageFragments/compounds/searchCompounds.jsff"
+          usageId="com_novartis_ecrs_view_searchCompoundsPageDef"/>
+    <page path="/WEB-INF/taskflows/CompoundsTF.xml#CompoundsTF@CreateInsert"
+          usageId="com_novartis_ecrs_view_CompoundsTF_CompoundsTF_CreateInsertPageDef"/>
+    <page path="/ui/pageFragments/compounds/compoundDetails.jsff"
+          usageId="com_novartis_ecrs_view_compoundDetailsPageDef"/>
+    <page path="/pages/ManageCompound.jspx" usageId="com_novartis_ecrs_view_ManageCompoundPageDef"/>
+    <page path="/WEB-INF/taskflows/RiskPurposeTF.xml#RiskPurposeTF@CreateInsert"
+          usageId="com_novartis_ecrs_view_RiskPurposeTF_RiskPurposeTF_CreateInsertPageDef"/>
+    <page path="/ui/pageFragments/riskpurpose/searchRiskPurpose.jsff"
+          usageId="com_novartis_ecrs_view_searchRiskPurposePageDef"/>
+    <page path="/ui/pageFragments/riskpurpose/riskPurposeDetails.jsff"
+          usageId="com_novartis_ecrs_view_riskPurposeDetailsPageDef"/>
+    <page path="/pages/ManageRiskPurpose.jspx" usageId="com_novartis_ecrs_view_ManageRiskPurposePageDef"/>
+    <page path="/WEB-INF/taskflows/ManageRolesTF.xml#ManageRolesTF@CreateInsert"
+          usageId="com_novartis_ecrs_view_ManageRolesTF_ManageRolesTF_CreateInsertPageDef"/>
+    <page path="/ui/pageFragments/roles/searchRoles.jsff" usageId="com_novartis_ecrs_view_searchRolesPageDef"/>
+    <page path="/ui/pageFragments/roles/roleDetails.jsff" usageId="com_novartis_ecrs_view_roleDetailsPageDef"/>
+    <page path="/pages/ManageRoles.jspx" usageId="com_novartis_ecrs_view_ManageRolesPageDef"/>
+    <page path="/ui/pageFragments/ecrs/searchCRS.jsff"
+          usageId="com_novartis_ecrs_view_searchCRSPageDef"/>
+    <page path="/WEB-INF/taskflows/ManageStatesTF.xml#ManageStatesTF@CreateInsert"
+          usageId="com_novartis_ecrs_view_ManageStatesTF_ManageStatesTF_CreateInsertPageDef"/>
+    <page path="/ui/pageFragments/states/searchStates.jsff" usageId="com_novartis_ecrs_view_searchStatesPageDef"/>
+    <page path="/ui/pageFragments/states/stateDetails.jsff" usageId="com_novartis_ecrs_view_stateDetailsPageDef"/>
+    <page path="/pages/ManageStates.jspx" usageId="com_novartis_ecrs_view_ManageStatesPageDef"/>
+    <page path="/pages/ManageUserRoles.jspx" usageId="com_novartis_ecrs_view_ManageUserRolesPageDef"/>
+    <page path="/WEB-INF/taskflows/ManageUserRolesTF.xml#ManageUserRolesTF@CreateInsert"
+          usageId="com_novartis_ecrs_view_ManageUserRolesTF_ManageUserRolesTF_CreateInsertPageDef"/>
+    <page path="/ui/pageFragments/userroles/searchUserRoles.jsff"
+          usageId="com_novartis_ecrs_view_searchUserRolesPageDef"/>
+    <page path="/ui/pageFragments/userroles/userRoleDetails.jsff"
+          usageId="com_novartis_ecrs_view_userRoleDetailsPageDef"/>
+    <page path="/ui/pageFragments/ecrs/AddRiskDefinitions.jsff"
+          usageId="com_novartis_ecrs_view_AddRiskDefinitionsPageDef"/>
+    <page path="/pages/BrowseSearch.jspx"
+          usageId="com_novartis_ecrs_view_BrowseSearchPageDef"/>
+    <page path="/pages/reports/MedDRAComponentsReport.jspx"
+          usageId="com_novartis_ecrs_view_MedDRAComponentsReportPageDef"/>
+    <page path="/pages/reports/MedDRACompStardardReport.jspx"
+          usageId="com_novartis_ecrs_view_MedDRACompStardardReportPageDef"/>
+    <page path="/pages/reports/RiskDefinitionsSafetyTopicReport.jspx"
+          usageId="com_novartis_ecrs_view_RiskDefinitionsSafetyTopicReportPageDef"/>
+    <page path="/pages/reports/CRSCurrentPendingReport.jspx"
+          usageId="com_novartis_ecrs_view_CRSCurrentPendingReportPageDef"/>
+    <page path="/pages/reports/AdminDashBoardReport.jspx"
+          usageId="com_novartis_ecrs_view_AdminDashBoardReportPageDef"/>
+    <page path="/pages/reports/CRSCountperMedDRAReport.jspx"
+          usageId="com_novartis_ecrs_view_CRSCountperMedDRAReportPageDef"/>
+    <page path="/WEB-INF/taskflows/ManageCRSTF.xml#ManageCRSTF@initRiskRelation"
+          usageId="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_initRiskRelationPageDef"/>
+    <page path="/pages/reports/RetiredNMQsCMQsReport.jspx"
+          usageId="com_novartis_ecrs_view_RetiredNMQsCMQsReportPageDef"/>
+    <page path="/WEB-INF/taskflows/ManageCRSTF.xml#ManageCRSTF@initManageCrs"
+          usageId="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_initManageCrsPageDef"/>
+    <page path="/WEB-INF/taskflows/ManageDomainsTF.xml#ManageDomainsTF@CreateInsert"
+          usageId="com_novartis_ecrs_view_ManageDomainsTF_ManageDomainsTF_CreateInsertPageDef"/>
+    <page path="/ui/pageFragments/domains/searchDomains.jsff" usageId="com_novartis_ecrs_view_searchDomainsPageDef"/>
+    <page path="/ui/pageFragments/domains/domainDetails.jsff" usageId="com_novartis_ecrs_view_domainDetailsPageDef"/>
+    <page path="/pages/ManageDomains.jspx" usageId="com_novartis_ecrs_view_ManageDomainsPageDef"/>
+    <page path="/pages/reports/PTReport.jspx" usageId="com_novartis_ecrs_view_PTReportPageDef"/>
+    <page path="/WEB-INF/taskflows/ManageCRSTF.xml#ManageCRSTF@executeSearchVo"
+          usageId="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_ExecutePageDef"/>
+    <page path="/WEB-INF/taskflows/ManageCRSTF.xml#ManageCRSTF@Rollback"
+          usageId="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_RollbackPageDef"/>
+    <page path="/ui/pageFragments/ecrs/confirmCRS.jsff" usageId="com_novartis_ecrs_view_confirmCRSPageDef"/>
+    <page path="/WEB-INF/taskflows/ManageCRSTF.xml#ManageCRSTF@reloadSearchPage"
+          usageId="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_filterCRSContentPageDef"/>
+    <page path="/WEB-INF/taskflows/FreezeMedDRA.xml#FreezeMedDRA@getMedDRAFreezeFlag"
+          usageId="com_novartis_ecrs_view_FreezeMedDRA_FreezeMedDRA_getMedDRAFreezeFlagPageDef"/>
+    <page path="/pages/ManageMedDRAFreeze.jspx" usageId="com_novartis_ecrs_view_ManageMedDRAFreezePageDef"/>
+    <page path="/ui/pageFragments/freeze/freezeMedDRA.jsff" usageId="com_novartis_ecrs_view_freezeMedDRAPageDef"/>
+    <page path="/pages/reports/MedDRAVersionImpact.jspx" usageId="com_novartis_ecrs_view_MedDRAVersionImpactPageDef"/>
+    <page path="/pageTemplate/EcrsTemplate.jspx" usageId="com_novartis_ecrs_view_EcrsTemplatePageDef"/>
+  </pageMap>
+  <pageDefinitionUsages>
+    <page id="com_novartis_ecrs_view_createCRSPageDef"
+          path="ui.pageFragments.ecrs.createCRSPageDef"/>
+    <page id="com_novartis_ecrs_view_CrsCreatePageDef"
+          path="pages.CrsCreatePageDef"/>
+    <page id="com_novartis_ecrs_view_SearchCRSPageDef"
+          path="pages.SearchCRSPageDef"/>
+    <page id="com_novartis_ecrs_view_searchCompoundsPageDef" path="ui.pageFragments.compounds.searchCompoundsPageDef"/>
+    <page id="com_novartis_ecrs_view_CompoundsTF_CompoundsTF_CreateInsertPageDef"
+          path="taskflows.CompoundsTF_CompoundsTF_CreateInsertPageDef"/>
+    <page id="com_novartis_ecrs_view_compoundDetailsPageDef" path="ui.pageFragments.compounds.compoundDetailsPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageCompoundPageDef" path="pages.ManageCompoundPageDef"/>
+    <page id="com_novartis_ecrs_view_RiskPurposeTF_RiskPurposeTF_CreateInsertPageDef"
+          path="taskflows.RiskPurposeTF_RiskPurposeTF_CreateInsertPageDef"/>
+    <page id="com_novartis_ecrs_view_searchRiskPurposePageDef"
+          path="ui.pageFragments.riskpurpose.searchRiskPurposePageDef"/>
+    <page id="com_novartis_ecrs_view_riskPurposeDetailsPageDef"
+          path="ui.pageFragments.riskpurpose.riskPurposeDetailsPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageRiskPurposePageDef" path="pages.ManageRiskPurposePageDef"/>
+    <page id="com_novartis_ecrs_view_ManageRolesTF_ManageRolesTF_CreateInsertPageDef"
+          path="taskflows.ManageRolesTF_ManageRolesTF_CreateInsertPageDef"/>
+    <page id="com_novartis_ecrs_view_searchRolesPageDef" path="ui.pageFragments.roles.searchRolesPageDef"/>
+    <page id="com_novartis_ecrs_view_roleDetailsPageDef" path="ui.pageFragments.roles.roleDetailsPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageRolesPageDef" path="pages.ManageRolesPageDef"/>
+    <page id="com_novartis_ecrs_view_searchCRSPageDef"
+          path="ui.pageFragments.ecrs.searchCRSPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageStatesTF_ManageStatesTF_CreateInsertPageDef"
+          path="taskflows.ManageStatesTF_ManageStatesTF_CreateInsertPageDef"/>
+    <page id="com_novartis_ecrs_view_searchStatesPageDef" path="ui.pageFragments.states.searchStatesPageDef"/>
+    <page id="com_novartis_ecrs_view_stateDetailsPageDef" path="ui.pageFragments.states.stateDetailsPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageStatesPageDef" path="pages.ManageStatesPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageUserRolesPageDef" path="pages.ManageUserRolesPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageUserRolesTF_ManageUserRolesTF_CreateInsertPageDef"
+          path="taskflows.ManageUserRolesTF_ManageUserRolesTF_CreateInsertPageDef"/>
+    <page id="com_novartis_ecrs_view_searchUserRolesPageDef" path="ui.pageFragments.userroles.searchUserRolesPageDef"/>
+    <page id="com_novartis_ecrs_view_userRoleDetailsPageDef" path="ui.pageFragments.userroles.userRoleDetailsPageDef"/>
+    <page id="com_novartis_ecrs_view_AddRiskDefinitionsPageDef" path="ui.pageFragments.ecrs.AddRiskDefinitionsPageDef"/>
+    <page id="com_novartis_ecrs_view_BrowseSearchPageDef"
+          path="pages.BrowseSearchPageDef"/>
+    <page id="com_novartis_ecrs_view_MedDRAComponentsReportPageDef"
+          path="pages.reports.MedDRAComponentsReportPageDef"/>
+    <page id="com_novartis_ecrs_view_MedDRACompStardardReportPageDef"
+          path="pages.reports.MedDRACompStardardReportPageDef"/>
+    <page id="com_novartis_ecrs_view_RiskDefinitionsSafetyTopicReportPageDef"
+          path="pages.reports.RiskDefinitionsSafetyTopicReportPageDef"/>
+    <page id="com_novartis_ecrs_view_CRSCurrentPendingReportPageDef"
+          path="pages.reports.CRSCurrentPendingReportPageDef"/>
+    <page id="com_novartis_ecrs_view_AdminDashBoardReportPageDef"
+          path="pages.reports.AdminDashBoardReportPageDef"/>
+    <page id="com_novartis_ecrs_view_CRSCountperMedDRAReportPageDef"
+          path="pages.reports.CRSCountperMedDRAReportPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_initRiskRelationPageDef"
+          path="taskflows.ManageCRSTF_ManageCRSTF_initRiskRelationPageDef"/>
+    <page id="com_novartis_ecrs_view_RetiredNMQsCMQsReportPageDef"
+          path="pages.reports.RetiredNMQsCMQsReportPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_initManageCrsPageDef"
+          path="taskflows.ManageCRSTF_ManageCRSTF_initManageCrsPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageDomainsTF_ManageDomainsTF_CreateInsertPageDef"
+          path="taskflows.ManageDomainsTF_ManageDomainsTF_CreateInsertPageDef"/>
+    <page id="com_novartis_ecrs_view_searchDomainsPageDef" path="ui.pageFragments.domains.searchDomainsPageDef"/>
+    <page id="com_novartis_ecrs_view_domainDetailsPageDef" path="ui.pageFragments.domains.domainDetailsPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageDomainsPageDef" path="pages.ManageDomainsPageDef"/>
+    <page id="com_novartis_ecrs_view_PTReportPageDef" path="pages.reports.PTReportPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_ExecutePageDef"
+          path="taskflows.ManageCRSTF_ManageCRSTF_ExecutePageDef"/>
+    <page id="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_RollbackPageDef"
+          path="taskflows.ManageCRSTF_ManageCRSTF_RollbackPageDef"/>
+    <page id="com_novartis_ecrs_view_confirmCRSPageDef" path="ui.pageFragments.ecrs.confirmCRSPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_filterCRSContentPageDef"
+          path="taskflows.ManageCRSTF_ManageCRSTF_filterCRSContentPageDef"/>
+    <page id="com_novartis_ecrs_view_MedDRAFreezePageDef" path="pages.MedDRAFreezePageDef"/>
+    <page id="com_novartis_ecrs_view_FreezeMedDRA_FreezeMedDRA_getMedDRAFreezeFlagPageDef"
+          path="taskflows.FreezeMedDRA_FreezeMedDRA_getMedDRAFreezeFlagPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageMedDRAFreezePageDef" path="pages.ManageMedDRAFreezePageDef"/>
+    <page id="com_novartis_ecrs_view_freezeMedDRAPageDef" path="ui.pageFragments.freeze.freezeMedDRAPageDef"/>
+    <page id="com_novartis_ecrs_view_MedDRAVersionImpactPageDef" path="pages.reports.MedDRAVersionImpactPageDef"/>
+    <page id="com_novartis_ecrs_view_EcrsTemplatePageDef" path="pageTemplate.EcrsTemplatePageDef"/>
+  </pageDefinitionUsages>
+  <dataControlUsages>
+    
+    <BC4JDataControl id="ECRSAppModuleDataControl"
+                     Package="com.novartis.ecrs.model.am"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true" Configuration="ECRSAppModule"
+                     syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+  </dataControlUsages>
+</Application>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MedDRAStandardReport"
+  Version="11.1.2.64.36"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  FetchSize="20">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.novartis.ecrs.model.view.report.MedDRAStandardReport_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT definition_type,
+          CAST(ROUND((definition_count/total_defn_recs)*100)||'%' AS VARCHAR2(15)) as PercentOfUse
+   FROM (SELECT DECODE(INSTR(d.meddra_dict,'SMQ'),
+                    0,'Single MedDRA Term',
+                       d.meddra_extension)       definition_type,
+                COUNT(*)                         definition_count,
+               (SELECT COUNT(*)
+                FROM crs_content          c,
+                     crs_risk_relations   r,
+                     crs_risk_definitions d
+                WHERE c.crs_id = r.crs_id
+                  AND r.crs_risk_id = d.crs_risk_id )       total_defn_recs
+          FROM crs_content          c,
+               crs_risk_relations   r,
+               crs_risk_definitions d
+           WHERE c.crs_id = r.crs_id
+             AND r.crs_risk_id = d.crs_risk_id 
+           GROUP BY DECODE(INSTR(d.meddra_dict,'SMQ'),
+                      0,'Single MedDRA Term',
+                         d.meddra_extension))]]></SQLQuery>
+  <ViewAttribute
+    Name="DefinitionType"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DEFINITION_TYPE"
+    Expression="DEFINITION_TYPE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="18"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="DEFINITIONS_TYPE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Percentofuse"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="15"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PERCENTOFUSE"
+    Expression="PERCENTOFUSE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="15"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="_OF_USE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
+  </ResourceBundle>
+</ViewObject>
