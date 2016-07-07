@@ -600,12 +600,12 @@ public class ManageCRSBean implements Serializable {
                 ADFUtils.setEL("#{bindings.IsMarketedFlag.inputValue}", "N");
                 ADFUtils.setEL("#{bindings.BslName.inputValue}", null);
                 ADFUtils.setEL("#{bindings.TaslName.inputValue}", null);
-                ADFUtils.setEL("#{bindings.MedicalLeadName.inputValue}", null);
+//                ADFUtils.setEL("#{bindings.MedicalLeadName.inputValue}", null);
                 ADFUtils.setEL("#{bindings.ReviewApproveRequiredFlag1.inputValue}",
                                "N");
                 ADFUtils.setEL("#{bindings.ReviewApproveRequiredFlag.inputValue}",
                                "N");
-                ADFUtils.setEL("#{bindings.MedicalLeadName.inputValue}", null);
+//                ADFUtils.setEL("#{bindings.MedicalLeadName.inputValue}", null);
                 setSelDesigneeList(null);
                 setNonCompoundSelected(Boolean.TRUE);
                 logger.info("--------------Selected non compound value----------");
@@ -1116,7 +1116,9 @@ public class ManageCRSBean implements Serializable {
      public void processTaslApprove(DialogEvent dialogEvent) {
          logger.info("--------processing TaslApprove action---------");
          if(DialogEvent.Outcome.yes.equals(dialogEvent.getOutcome())) 
-             processStateChange(ModelConstants.STATE_MLAPPROVE, getCrsApprovePopup());
+             //AS ML is no more there, we are directly changing to approved
+//             processStateChange(ModelConstants.STATE_MLAPPROVE, getCrsApprovePopup());
+             processStateChange(ModelConstants.STATE_APPROVED, getCrsApprovePopup());
      }
       
     /** TASL APPROVE to DRAFT */ 
@@ -1213,10 +1215,11 @@ public class ManageCRSBean implements Serializable {
         if (newState != ModelConstants.STATE_DRAFT && !isRiskRelationsExistsForCRS()){
             ADFUtils.showFacesMessage(uiBundle.getString("RISK_RELATION_REQURIED_MSG"), FacesMessage.SEVERITY_ERROR);
         } else {
-            if (ModelConstants.STATE_MLAPPROVE.equals(newState)){
+//            if (ModelConstants.STATE_MLAPPROVE.equals(newState)){
+//                ADFUtils.setEL("#{bindings.TaslRejectComment.inputValue}", null);
+//            } else 
+              if (ModelConstants.STATE_APPROVED.equals(newState)){
                 ADFUtils.setEL("#{bindings.TaslRejectComment.inputValue}", null);
-            } else if (ModelConstants.STATE_APPROVED.equals(newState)){
-                ADFUtils.setEL("#{bindings.MedicalLeadRejectComment.inputValue}", null);
             }
             OperationBinding oper = ADFUtils.findOperation("Commit");
             oper.execute();
@@ -3392,20 +3395,20 @@ public class ManageCRSBean implements Serializable {
                                             CellStyle.ALIGN_LEFT);
         sheet.addMergedRegion(new CellRangeAddress(count, count, firstPalletStartIndx, firstPalletEndIndx));
         //ML name
-        Cell cell52 = row5.createCell((short)secondPalletStartIndx);
-        String medLLead = null;
-        if (ModelConstants.BASE_FACET.equals(getBaseOrStaging())) {
-            medLLead =
-                    (String)ADFUtils.evaluateEL("#{bindings.MedicalLeadNameBase.inputValue}");
-        } else
-            medLLead =
-                    (String)ADFUtils.evaluateEL("#{bindings.MedicalLeadName.inputValue}");
-        medLLead = getFullNamesForAccName(medLLead);
-        cell52.setCellValue("Medical Lead: " + medLLead);
-        ExcelExportUtils.setHeaderCellStyle(sheet, count,
-                                            cell52.getColumnIndex(), false,
-                                            CellStyle.ALIGN_LEFT);
-        sheet.addMergedRegion(new CellRangeAddress(count, count, secondPalletStartIndx, secondPalletEndIndx));
+//        Cell cell52 = row5.createCell((short)secondPalletStartIndx);
+//        String medLLead = null;
+//        if (ModelConstants.BASE_FACET.equals(getBaseOrStaging())) {
+//            medLLead =
+//                    (String)ADFUtils.evaluateEL("#{bindings.MedicalLeadNameBase.inputValue}");
+//        } else
+//            medLLead =
+//                    (String)ADFUtils.evaluateEL("#{bindings.MedicalLeadName.inputValue}");
+//        medLLead = getFullNamesForAccName(medLLead);
+//        cell52.setCellValue("Medical Lead: " + medLLead);
+//        ExcelExportUtils.setHeaderCellStyle(sheet, count,
+//                                            cell52.getColumnIndex(), false,
+//                                            CellStyle.ALIGN_LEFT);
+//        sheet.addMergedRegion(new CellRangeAddress(count, count, secondPalletStartIndx, secondPalletEndIndx));
         count++;
         org.apache.poi.ss.usermodel.Row row6 = sheet.createRow(count);
         String designee = "";

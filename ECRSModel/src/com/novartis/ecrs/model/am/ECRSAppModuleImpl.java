@@ -228,8 +228,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
                 whereClause += "DESIGNEE LIKE '%" + row.getDesignee() + "%' AND ";
             if (row.getCrsTasl() != null)
                 whereClause += "TASL_NAME ='" + row.getCrsTasl() + "' AND ";
-            if (row.getCrsMedicalLead() != null)
-                whereClause += "MEDICAL_LEAD_NAME ='" + row.getCrsMedicalLead() + "' AND ";            
+//            if (row.getCrsMedicalLead() != null)
+//                whereClause += "MEDICAL_LEAD_NAME ='" + row.getCrsMedicalLead() + "' AND ";            
             if (row.getCrsBsl() != null)
                 whereClause += "BSL_NAME = '" + row.getCrsBsl() + "' AND ";
             if (row.getCrsName() != null)

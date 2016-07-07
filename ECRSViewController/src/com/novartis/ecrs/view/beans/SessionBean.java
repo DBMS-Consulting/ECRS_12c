@@ -73,7 +73,7 @@ public class SessionBean {
             String[] roles = secCtx.getUserRoles();
             if(roles != null){
                 for(String role : roles){
-                    if("CRS_ADMIN".equalsIgnoreCase(role) || "CRS_BSL".equalsIgnoreCase(role) || "CRS_MQM".equalsIgnoreCase(role) || "CRS_TASL".equalsIgnoreCase(role) || "CRS_ML".equalsIgnoreCase(role)){
+                    if("CRS_ADMIN".equalsIgnoreCase(role) || "CRS_BSL".equalsIgnoreCase(role) || "CRS_MQM".equalsIgnoreCase(role) || "CRS_TASL".equalsIgnoreCase(role)){
                         userRole = role;
                         logger.info("Logged in user role - "+userRole);
                         break;

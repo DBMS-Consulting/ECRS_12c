@@ -716,7 +716,7 @@
                               value="#{pageFlowScope.manageCRSBean.dictionary}" autoSubmit="true"
                               valueChangeListener="#{pageFlowScope.manageCRSBean.dictionaryVC}">
             <af:selectItem label="MedDRA" value="NMATMED" id="si13"/>
-            <af:selectItem label="Filter" value="NMATSMQ" id="si14"/>
+            <af:selectItem label="MQ" value="NMATSMQ" id="si14"/>
           </af:selectOneChoice>
           <af:selectOneChoice label="#{ecrsviewcontrollerBundle.LEVEL}" id="soc3"
                               value="#{pageFlowScope.manageCRSBean.level}" autoSubmit="true" partialTriggers="soc2">

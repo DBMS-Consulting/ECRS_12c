@@ -21,7 +21,7 @@
         <f:facet name="toolbar"/>
         <af:panelFormLayout id="pfl1" maxColumns="3" rows="4" labelWidth="120">
           <af:switcher id="s8" defaultFacet="CURRENT_ONLY"
-                       facetName="#{securityContext.userInRole['anonymous'] ?  'CURRENT_ONLY' :  ((pageFlowScope.flowType eq 'U' and (securityContext.userInRole['CRS_MQM'] or securityContext.userInRole['CRS_TASL'] or securityContext.userInRole['CRS_ML'])) ? 'PENDING_ONLY' : 'BOTH')}">
+                       facetName="#{securityContext.userInRole['anonymous'] ?  'CURRENT_ONLY' :  ((pageFlowScope.flowType eq 'U' and (securityContext.userInRole['CRS_MQM'] or securityContext.userInRole['CRS_TASL'])) ? 'PENDING_ONLY' : 'BOTH')}">
             <f:facet name="CURRENT_ONLY">
               <af:selectOneChoice
                                   label="#{ecrsviewcontrollerBundle.RELEASE_STATUS}"
@@ -149,14 +149,14 @@
                               >
             <f:selectItems value="#{bindings.CrsTasl.items}" id="si5"/>
           </af:selectOneChoice>
-          <af:selectOneChoice value="#{bindings.CrsMedicalLead.inputValue}"
+          <!--<af:selectOneChoice value="#{bindings.CrsMedicalLead.inputValue}"
                               shortDesc="#{bindings.CrsMedicalLead.hints.tooltip}"
                               id="soc6"
                               label="#{ecrsviewcontrollerBundle.CRS_MEDICAL_LEAD}"
                               contentStyle="width:170px;"
                               >
             <f:selectItems value="#{bindings.CrsMedicalLead.items}" id="si6"/>
-          </af:selectOneChoice>
+          </af:selectOneChoice>-->
           <af:selectOneChoice value="#{bindings.CrsBsl.inputValue}"
                               shortDesc="#{bindings.CrsBsl.hints.tooltip}"
                               id="soc7"
@@ -305,7 +305,7 @@
                 <f:selectItems value="#{row.bindings.TaslName.items}" id="si19"/>
               </af:selectOneChoice>
             </af:column>
-            <af:column sortProperty="#{bindings.CrsContentBaseVO.hints.MedicalLeadName.name}"
+            <!--<af:column sortProperty="#{bindings.CrsContentBaseVO.hints.MedicalLeadName.name}"
                        sortable="false"
                        headerText="#{bindings.CrsContentBaseVO.hints.MedicalLeadName.label}"
                        id="c24">
@@ -316,7 +316,7 @@
                                   readOnly="true">
                 <f:selectItems value="#{row.bindings.MedicalLeadName.items}" id="si18"/>
               </af:selectOneChoice>
-            </af:column>
+            </af:column>-->
             <af:column id="c25" headerText="#{ecrsviewcontrollerBundle.RELEASE_DATE}">
               <af:outputText value="#{row.CrsEffectiveDt}" id="ot19">
                 <af:convertDateTime pattern="dd-MMM-yyy HH:mm:ss"/>
@@ -467,7 +467,7 @@
                                id="si13"/>
               </af:selectOneChoice>
             </af:column>
-            <af:column sortProperty="#{bindings.CrsContentVO.hints.MedicalLeadName.name}"
+            <!--<af:column sortProperty="#{bindings.CrsContentVO.hints.MedicalLeadName.name}"
                        sortable="false"
                        headerText="#{ecrsviewcontrollerBundle.CRS_MEDICAL_LEAD}"
                        id="c11" width="70">
@@ -479,7 +479,7 @@
                 <f:selectItems value="#{row.bindings.MedicalLeadName.items}"
                                id="si14"/>
               </af:selectOneChoice>
-            </af:column>
+            </af:column>-->
             <af:column id="c27" headerText="#{ecrsviewcontrollerBundle.RELEASE_DATE}">
               <af:outputText value="#{row.CrsEffectiveDt}" id="ot20"
                              visible="#{!(row.bindings.ReasonForChange.inputValue eq 'None' or row.bindings.ReasonForChange.inputValue eq 'Initial Version')}">

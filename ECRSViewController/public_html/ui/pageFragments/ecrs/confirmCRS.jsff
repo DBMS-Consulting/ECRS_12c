@@ -77,7 +77,7 @@
                         <af:showPopupBehavior popupId="taslReject"
                                               triggerType="action"/>
                     </af:commandButton>
-                    <af:commandButton text="#{securityContext.userInRole['CRS_ADMIN'] ? ecrsviewcontrollerBundle.ML_APPROVE : ecrsviewcontrollerBundle.APPROVE}"
+                    <!--<af:commandButton text="#{securityContext.userInRole['CRS_ADMIN'] ? ecrsviewcontrollerBundle.ML_APPROVE : ecrsviewcontrollerBundle.APPROVE}"
                                       id="cb15"
                                       disabled="#{bindings.StateId.inputValue ne 5}"
                                       visible="#{(securityContext.userInRole['CRS_ML'] || securityContext.userInRole['CRS_ADMIN']) and bindings.ReleaseStatusFlag.inputValue eq 'P'}"
@@ -94,10 +94,10 @@
                                       inlineStyle="margin-right:10px;">
                         <af:showPopupBehavior popupId="mlReject"
                                               triggerType="action"/>
-                    </af:commandButton>
+                    </af:commandButton>-->
                     <af:commandButton text="#{ecrsviewcontrollerBundle.PUBLISHED}"
                                       id="cb14"
-                                      disabled="#{!(bindings.StateId.inputValue eq 6 || (bindings.StateId.inputValue eq 1 and bindings.ReviewApproveRequiredFlag1.inputValue eq 'N')) || (securityContext.userInRole['CRS_BSL'] and (null != bindings.TaslRejectComment.inputValue || null != bindings.MedicalLeadRejectComment.inputValue))}"
+                                      disabled="#{!(bindings.StateId.inputValue eq 6 || (bindings.StateId.inputValue eq 1 and bindings.ReviewApproveRequiredFlag1.inputValue eq 'N')) || (securityContext.userInRole['CRS_BSL'] and (null != bindings.TaslRejectComment.inputValue))}"
                                       visible="#{(securityContext.userInRole['CRS_BSL'] or securityContext.userInRole['CRS_ADMIN'] or pageFlowScope.manageCRSBean.currentUserInDesignee) and bindings.ReleaseStatusFlag.inputValue eq 'P'}"
                                       inlineStyle="margin-right:10px;"
                                       actionListener="#{pageFlowScope.manageCRSBean.onClickPublish}"
@@ -148,18 +148,18 @@
                               >
                   <f:validator binding="#{bindings.TaslRejectComment.validator}"/>
                 </af:inputText>
-                <af:inputText value="#{bindings.MedicalLeadRejectComment.inputValue}"
+                <!--<af:inputText value="#{bindings.MedicalLeadRejectComment.inputValue}"
                               label="#{ecrsviewcontrollerBundle.MEDICAL_LEAD_REJECT_COMMENT}"
                               required="#{bindings.MedicalLeadRejectComment.hints.mandatory}"
                               columns="100" rows="3"
                               contentStyle="width:75%;"
-                              disabled="#{!((securityContext.userInRole['CRS_ADMIN']  or securityContext.userInRole['CRS_BSL'] or securityContext.userInRole['CRS_ML']) and bindings.StateId.inputValue eq 5 and bindings.ReviewApproveRequiredFlag1.inputValue eq 'Y')}"
+                              disabled="#{!((securityContext.userInRole['CRS_ADMIN']  or securityContext.userInRole['CRS_BSL']) and bindings.StateId.inputValue eq 5 and bindings.ReviewApproveRequiredFlag1.inputValue eq 'Y')}"
                               styleClass="AFStretchWidth"
                               readOnly="true"
                               maximumLength="#{bindings.MedicalLeadRejectComment.hints.precision}"
                               shortDesc="#{bindings.MedicalLeadRejectComment.hints.tooltip}" id="it3" autoSubmit="true">
                   <f:validator binding="#{bindings.MedicalLeadRejectComment.validator}"/>
-                </af:inputText>
+                </af:inputText>-->
                <af:selectBooleanCheckbox value="#{bindings.ReviewApproveRequiredFlag.inputValue}"
                                           label="#{ecrsviewcontrollerBundle.REVIEW_APPROVAL_REQUIRED}"
                                           shortDesc="#{bindings.ReviewApproveRequiredFlag.hints.tooltip}" id="sbc1"
@@ -203,7 +203,7 @@
                               shortDesc="#{bindings.TaslRejectCommentBase.hints.tooltip}" id="it5">
                   <f:validator binding="#{bindings.TaslRejectCommentBase.validator}"/>
                 </af:inputText>
-                <af:inputText value="#{bindings.MedicalLeadRejectCommentBase.inputValue}"
+                <!--<af:inputText value="#{bindings.MedicalLeadRejectCommentBase.inputValue}"
                               label="#{ecrsviewcontrollerBundle.MEDICAL_LEAD_REJECT_COMMENT}"
                               required="#{bindings.MedicalLeadRejectCommentBase.hints.mandatory}"
                               columns="100" rows="3"
@@ -213,7 +213,7 @@
                               maximumLength="#{bindings.MedicalLeadRejectCommentBase.hints.precision}"
                               shortDesc="#{bindings.MedicalLeadRejectCommentBase.hints.tooltip}" id="it6">
                   <f:validator binding="#{bindings.MedicalLeadRejectCommentBase.validator}"/>
-                </af:inputText>
+                </af:inputText>-->
                 <af:selectBooleanCheckbox value="#{bindings.ReviewApproveRequiredFlagBase.inputValue}"
                                           label="#{ecrsviewcontrollerBundle.REVIEW_APPROVAL_REQUIRED}"
                                           shortDesc="#{bindings.ReviewApproveRequiredFlagBase.hints.tooltip}" id="sbc2"
