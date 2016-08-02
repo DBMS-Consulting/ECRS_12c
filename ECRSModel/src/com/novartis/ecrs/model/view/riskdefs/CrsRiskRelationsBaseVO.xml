@@ -107,14 +107,14 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="200"
+    Precision="400"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
     AliasName="MQM_COMMENT"
     Expression="MQM_COMMENT"
     SQLType="VARCHAR">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="200"/>
+      <Attr Name="_DisplaySize" Value="400"/>
     </DesignTime>
     <Properties>
       <SchemaBasedProperties>

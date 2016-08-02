@@ -38,10 +38,10 @@ public class ViewConstants {
     public static final String NMQ4 = "NMQ4";
     public static final String NMQ5 = "NMQ5";   
     public static final String CUSTOM1 = "NMQ/CMQ 1";
-    public static final String CUSTOM2 = "NMQ/CMQ 2";
-    public static final String CUSTOM3 = "NMQ/CMQ 3";
-    public static final String CUSTOM4 = "NMQ/CMQ 4";
-    public static final String CUSTOM5 = "NMQ/CMQ 5";
+    public static final String CUSTOM2 = "NMQ 2";
+    public static final String CUSTOM3 = "NMQ 3";
+    public static final String CUSTOM4 = "NMQ 4";
+    public static final String CUSTOM5 = "NMQ 5";
     
     public static final String SOC = "SOC";
     public static final String HLGT = "HLGT";

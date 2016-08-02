@@ -3,8 +3,7 @@
                 id="ManageCRSTF_ManageCRSTF_ExecutePageDef" Package="taskflows" SkipValidation="true">
   <parameters/>
   <executables>
-    <iterator Binds="ECrsSearchVO" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="ECrsSearchVOIterator"
-              Refresh="never"/>
+    <iterator Binds="ECrsSearchTransVO" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="ECrsSearchVOIterator"/>
   </executables>
   <bindings>
     <action IterBinding="ECrsSearchVOIterator" id="Execute" RequiresUpdateModel="true" Action="iteratorExecute"/>

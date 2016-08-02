@@ -5,7 +5,7 @@
   <parameters/>
   <executables>
     <variableIterator id="variables"/>
-    <iterator Binds="ECrsSearchVO" RangeSize="25"
+    <iterator Binds="ECrsSearchTransVO" RangeSize="25"
               DataControl="ECRSAppModuleDataControl" id="ECrsSearchVOIterator"/>
     <iterator Binds="CrsContentVO" RangeSize="25"
               DataControl="ECRSAppModuleDataControl" id="CrsContentVOIterator"/>

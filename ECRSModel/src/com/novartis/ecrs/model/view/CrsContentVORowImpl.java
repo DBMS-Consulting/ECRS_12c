@@ -31,7 +31,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCrsId((Long)value);
+                obj.setCrsId((Long) value);
             }
         }
         ,
@@ -41,7 +41,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCrsName((String)value);
+                obj.setCrsName((String) value);
             }
         }
         ,
@@ -51,7 +51,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setStateId((Integer)value);
+                obj.setStateId((Integer) value);
             }
         }
         ,
@@ -61,7 +61,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCompoundId((Integer)value);
+                obj.setCompoundId((Integer) value);
             }
         }
         ,
@@ -71,7 +71,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setGenericName((String)value);
+                obj.setGenericName((String) value);
             }
         }
         ,
@@ -81,7 +81,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setTradeName((String)value);
+                obj.setTradeName((String) value);
             }
         }
         ,
@@ -91,7 +91,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setIndication((String)value);
+                obj.setIndication((String) value);
             }
         }
         ,
@@ -101,7 +101,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setIsMarketedFlag((String)value);
+                obj.setIsMarketedFlag((String) value);
             }
         }
         ,
@@ -111,7 +111,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setReleaseStatusFlag((String)value);
+                obj.setReleaseStatusFlag((String) value);
             }
         }
         ,
@@ -121,7 +121,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setBslName((String)value);
+                obj.setBslName((String) value);
             }
         }
         ,
@@ -131,7 +131,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setDesignee((String)value);
+                obj.setDesignee((String) value);
             }
         }
         ,
@@ -141,7 +141,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setMqmComment((String)value);
+                obj.setMqmComment((String) value);
             }
         }
         ,
@@ -151,7 +151,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setTaslName((String)value);
+                obj.setTaslName((String) value);
             }
         }
         ,
@@ -161,7 +161,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setTaslRejectComment((String)value);
+                obj.setTaslRejectComment((String) value);
             }
         }
         ,
@@ -171,7 +171,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setMedicalLeadName((String)value);
+                obj.setMedicalLeadName((String) value);
             }
         }
         ,
@@ -181,7 +181,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setMedicalLeadRejectComment((String)value);
+                obj.setMedicalLeadRejectComment((String) value);
             }
         }
         ,
@@ -191,7 +191,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCrsEffectiveDt((Timestamp)value);
+                obj.setCrsEffectiveDt((Timestamp) value);
             }
         }
         ,
@@ -201,7 +201,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setReviewApproveRequiredFlag((String)value);
+                obj.setReviewApproveRequiredFlag((String) value);
             }
         }
         ,
@@ -211,7 +211,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setUiVersionNumber((Integer)value);
+                obj.setUiVersionNumber((Integer) value);
             }
         }
         ,
@@ -221,7 +221,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setReasonForChange((String)value);
+                obj.setReasonForChange((String) value);
             }
         }
         ,
@@ -231,7 +231,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCrsCompoundType((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -241,7 +241,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCrsCompoundCode((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -251,7 +251,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setDesigneeName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -261,7 +261,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCreationTs((Timestamp)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -271,7 +271,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setModificationTs((Timestamp)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -281,7 +281,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCompoundType((String)value);
+                obj.setCompoundType((String) value);
             }
         }
         ,
@@ -291,7 +291,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setCompoundCode((String)value);
+                obj.setCompoundCode((String) value);
             }
         }
         ,
@@ -301,7 +301,7 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentVORowImpl obj, Object value) {
-                obj.setEntityState((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -395,7 +395,8 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
         }
         ;
-        private static AttributesEnum[] vals = null;
+        static AttributesEnum[] vals = null;
+        ;
         private static int firstIndex = 0;
 
         public abstract Object get(CrsContentVORowImpl object);
@@ -765,13 +766,6 @@ public class CrsContentVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(CRSCOMPOUNDTYPE);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CrsCompoundType.
-     * @param value value to set the  CrsCompoundType
-     */
-    public void setCrsCompoundType(String value) {
-        setAttributeInternal(CRSCOMPOUNDTYPE, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute CrsCompoundCode.
@@ -779,14 +773,6 @@ public class CrsContentVORowImpl extends ViewRowImpl {
      */
     public String getCrsCompoundCode() {
         return (String) getAttributeInternal(CRSCOMPOUNDCODE);
-    }
-
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CrsCompoundCode.
-     * @param value value to set the  CrsCompoundCode
-     */
-    public void setCrsCompoundCode(String value) {
-        setAttributeInternal(CRSCOMPOUNDCODE, value);
     }
 
 
@@ -798,13 +784,6 @@ public class CrsContentVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(DESIGNEENAME);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute DesigneeName.
-     * @param value value to set the  DesigneeName
-     */
-    public void setDesigneeName(String value) {
-        setAttributeInternal(DESIGNEENAME, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute CompoundType.
@@ -858,13 +837,6 @@ public class CrsContentVORowImpl extends ViewRowImpl {
         else return null;
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute EntityState.
-     * @param value value to set the  EntityState
-     */
-    public void setEntityState(String value) {
-        setAttributeInternal(ENTITYSTATE, value);
-    }
 
     /**
      * Gets the attribute value for CREATION_TS using the alias name CreationTs.
@@ -874,13 +846,6 @@ public class CrsContentVORowImpl extends ViewRowImpl {
         return (Timestamp) getAttributeInternal(CREATIONTS);
     }
 
-    /**
-     * Sets <code>value</code> as attribute value for CREATION_TS using the alias name CreationTs.
-     * @param value value to set the CREATION_TS
-     */
-    public void setCreationTs(Timestamp value) {
-        setAttributeInternal(CREATIONTS, value);
-    }
 
     /**
      * Gets the attribute value for MODIFICATION_TS using the alias name ModificationTs.
@@ -890,13 +855,6 @@ public class CrsContentVORowImpl extends ViewRowImpl {
         return (Timestamp) getAttributeInternal(MODIFICATIONTS);
     }
 
-    /**
-     * Sets <code>value</code> as attribute value for MODIFICATION_TS using the alias name ModificationTs.
-     * @param value value to set the MODIFICATION_TS
-     */
-    public void setModificationTs(Timestamp value) {
-        setAttributeInternal(MODIFICATIONTS, value);
-    }
 
     /**
      * Gets the attribute value for REASON_FOR_CHANGE using the alias name ReasonForChange.

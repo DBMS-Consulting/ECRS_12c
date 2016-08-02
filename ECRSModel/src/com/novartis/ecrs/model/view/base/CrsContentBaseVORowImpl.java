@@ -22,7 +22,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setCrsId((Long)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -32,7 +32,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setCrsName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -42,7 +42,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setStateId((Integer)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -52,7 +52,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setCompoundId((Integer)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -62,7 +62,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setGenericName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -72,7 +72,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setTradeName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -82,7 +82,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setIndication((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -92,7 +92,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setIsMarketedFlag((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -102,7 +102,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setReleaseStatusFlag((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -112,7 +112,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setBslName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -122,7 +122,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setDesignee((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -132,7 +132,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setMqmComment((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -142,7 +142,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setTaslName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -152,7 +152,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setTaslRejectComment((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -162,7 +162,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setMedicalLeadName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -172,7 +172,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setMedicalLeadRejectComment((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -182,7 +182,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setCrsEffectiveDt((Timestamp)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -192,7 +192,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setReviewApproveRequiredFlag((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -202,7 +202,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setUiVersionNumber((Integer)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -212,7 +212,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setCrsCompoundType((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -222,7 +222,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setCrsCompoundCode((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -232,7 +232,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setStateName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -242,7 +242,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setDesigneeName((String)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -252,7 +252,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setCreationTs((Timestamp)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -262,7 +262,7 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsContentBaseVORowImpl obj, Object value) {
-                obj.setModificationTs((Timestamp)value);
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
@@ -367,13 +367,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (Long) getAttributeInternal(CRSID);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CrsId.
-     * @param value value to set the  CrsId
-     */
-    public void setCrsId(Long value) {
-        setAttributeInternal(CRSID, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute CrsName.
@@ -383,13 +376,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(CRSNAME);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CrsName.
-     * @param value value to set the  CrsName
-     */
-    public void setCrsName(String value) {
-        setAttributeInternal(CRSNAME, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute StateId.
@@ -399,13 +385,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (Integer) getAttributeInternal(STATEID);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute StateId.
-     * @param value value to set the  StateId
-     */
-    public void setStateId(Integer value) {
-        setAttributeInternal(STATEID, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute CompoundId.
@@ -415,13 +394,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (Integer) getAttributeInternal(COMPOUNDID);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CompoundId.
-     * @param value value to set the  CompoundId
-     */
-    public void setCompoundId(Integer value) {
-        setAttributeInternal(COMPOUNDID, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute GenericName.
@@ -431,13 +403,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(GENERICNAME);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute GenericName.
-     * @param value value to set the  GenericName
-     */
-    public void setGenericName(String value) {
-        setAttributeInternal(GENERICNAME, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute TradeName.
@@ -447,13 +412,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(TRADENAME);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute TradeName.
-     * @param value value to set the  TradeName
-     */
-    public void setTradeName(String value) {
-        setAttributeInternal(TRADENAME, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute Indication.
@@ -463,13 +421,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(INDICATION);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute Indication.
-     * @param value value to set the  Indication
-     */
-    public void setIndication(String value) {
-        setAttributeInternal(INDICATION, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute IsMarketedFlag.
@@ -479,13 +430,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(ISMARKETEDFLAG);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute IsMarketedFlag.
-     * @param value value to set the  IsMarketedFlag
-     */
-    public void setIsMarketedFlag(String value) {
-        setAttributeInternal(ISMARKETEDFLAG, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute ReleaseStatusFlag.
@@ -495,13 +439,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(RELEASESTATUSFLAG);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute ReleaseStatusFlag.
-     * @param value value to set the  ReleaseStatusFlag
-     */
-    public void setReleaseStatusFlag(String value) {
-        setAttributeInternal(RELEASESTATUSFLAG, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute BslName.
@@ -511,13 +448,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(BSLNAME);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute BslName.
-     * @param value value to set the  BslName
-     */
-    public void setBslName(String value) {
-        setAttributeInternal(BSLNAME, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute Designee.
@@ -527,13 +457,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(DESIGNEE);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute Designee.
-     * @param value value to set the  Designee
-     */
-    public void setDesignee(String value) {
-        setAttributeInternal(DESIGNEE, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute MqmComment.
@@ -543,13 +466,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(MQMCOMMENT);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute MqmComment.
-     * @param value value to set the  MqmComment
-     */
-    public void setMqmComment(String value) {
-        setAttributeInternal(MQMCOMMENT, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute TaslName.
@@ -559,13 +475,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(TASLNAME);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute TaslName.
-     * @param value value to set the  TaslName
-     */
-    public void setTaslName(String value) {
-        setAttributeInternal(TASLNAME, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute TaslRejectComment.
@@ -575,13 +484,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(TASLREJECTCOMMENT);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute TaslRejectComment.
-     * @param value value to set the  TaslRejectComment
-     */
-    public void setTaslRejectComment(String value) {
-        setAttributeInternal(TASLREJECTCOMMENT, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute MedicalLeadName.
@@ -591,13 +493,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(MEDICALLEADNAME);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute MedicalLeadName.
-     * @param value value to set the  MedicalLeadName
-     */
-    public void setMedicalLeadName(String value) {
-        setAttributeInternal(MEDICALLEADNAME, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute MedicalLeadRejectComment.
@@ -607,13 +502,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(MEDICALLEADREJECTCOMMENT);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute MedicalLeadRejectComment.
-     * @param value value to set the  MedicalLeadRejectComment
-     */
-    public void setMedicalLeadRejectComment(String value) {
-        setAttributeInternal(MEDICALLEADREJECTCOMMENT, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute CrsEffectiveDt.
@@ -623,13 +511,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (Timestamp) getAttributeInternal(CRSEFFECTIVEDT);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CrsEffectiveDt.
-     * @param value value to set the  CrsEffectiveDt
-     */
-    public void setCrsEffectiveDt(Timestamp value) {
-        setAttributeInternal(CRSEFFECTIVEDT, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute ReviewApproveRequiredFlag.
@@ -639,13 +520,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(REVIEWAPPROVEREQUIREDFLAG);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute ReviewApproveRequiredFlag.
-     * @param value value to set the  ReviewApproveRequiredFlag
-     */
-    public void setReviewApproveRequiredFlag(String value) {
-        setAttributeInternal(REVIEWAPPROVEREQUIREDFLAG, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute UiVersionNumber.
@@ -655,13 +529,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (Integer) getAttributeInternal(UIVERSIONNUMBER);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute UiVersionNumber.
-     * @param value value to set the  UiVersionNumber
-     */
-    public void setUiVersionNumber(Integer value) {
-        setAttributeInternal(UIVERSIONNUMBER, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute CrsCompoundType.
@@ -671,13 +538,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(CRSCOMPOUNDTYPE);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CrsCompoundType.
-     * @param value value to set the  CrsCompoundType
-     */
-    public void setCrsCompoundType(String value) {
-        setAttributeInternal(CRSCOMPOUNDTYPE, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute CrsCompoundCode.
@@ -687,13 +547,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(CRSCOMPOUNDCODE);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CrsCompoundCode.
-     * @param value value to set the  CrsCompoundCode
-     */
-    public void setCrsCompoundCode(String value) {
-        setAttributeInternal(CRSCOMPOUNDCODE, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute StateName.
@@ -701,14 +554,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
      */
     public String getStateName() {
         return (String) getAttributeInternal(STATENAME);
-    }
-
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute StateName.
-     * @param value value to set the  StateName
-     */
-    public void setStateName(String value) {
-        setAttributeInternal(STATENAME, value);
     }
 
 
@@ -720,13 +565,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(DESIGNEENAME);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute DesigneeName.
-     * @param value value to set the  DesigneeName
-     */
-    public void setDesigneeName(String value) {
-        setAttributeInternal(DESIGNEENAME, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute CreationTs.
@@ -736,13 +574,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (Timestamp) getAttributeInternal(CREATIONTS);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute CreationTs.
-     * @param value value to set the  CreationTs
-     */
-    public void setCreationTs(Timestamp value) {
-        setAttributeInternal(CREATIONTS, value);
-    }
 
     /**
      * Gets the attribute value for the calculated attribute ModificationTs.
@@ -752,13 +583,6 @@ public class CrsContentBaseVORowImpl extends ViewRowImpl {
         return (Timestamp) getAttributeInternal(MODIFICATIONTS);
     }
 
-    /**
-     * Sets <code>value</code> as the attribute value for the calculated attribute ModificationTs.
-     * @param value value to set the  ModificationTs
-     */
-    public void setModificationTs(Timestamp value) {
-        setAttributeInternal(MODIFICATIONTS, value);
-    }
 
     /**
      * Gets the view accessor <code>RowSet</code> BSLUserVA.

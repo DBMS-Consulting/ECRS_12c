@@ -3,23 +3,23 @@
 <!---->
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
-  Name="ECrsSearchVO"
+  Name="ECrsSearchTransVO"
   Version="12.1.3.2.1"
+  InheritPersonalization="merge"
   BindingStyle="OracleName"
   CustomQuery="true"
-  PageIterMode="Full"
-  RowClass="com.novartis.ecrs.model.view.ECrsSearchVORowImpl"
-  FetchSize="30"
-  FetchMode="FETCH_AS_NEEDED">
+  RowClass="com.novartis.ecrs.model.view.trans.ECrsSearchTransVORowImpl"
+  ComponentClass="com.novartis.ecrs.model.view.trans.ECrsSearchTransVOImpl"
+  PageIterMode="Full">
   <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
     <Attr Name="_isExpertMode" Value="true"/>
-    <Attr Name="_codeGenFlag2" Value="Access"/>
     <Attr Name="_isCodegen" Value="true"/>
   </DesignTime>
   <Properties>
     <SchemaBasedProperties>
       <LABEL
-        ResId="com.novartis.ecrs.model.view.ECrsSearchVO_LABEL"/>
+        ResId="com.novartis.ecrs.model.view.trans.ECrsSearchTransVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
   <ViewAccessor
@@ -31,7 +31,8 @@
       FullName="com.novartis.ecrs.model.view.CrsCompoundVO.findByCompoundType"/>
     <ParameterMap>
       <PIMap Variable="bindCompoundType">
-        <TransientExpression><![CDATA[CompoundType]]></TransientExpression>
+        <TransientExpression
+          trustMode="untrusted"><![CDATA[CompoundType]]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -40,41 +41,13 @@
     ViewObjectName="com.novartis.ecrs.model.view.CrsStateVO"
     RowLevelBinds="true"/>
   <ViewAccessor
-    Name="CrsUserBSLVA"
-    ViewObjectName="com.novartis.ecrs.model.view.CrsUserRolesVO"
+    Name="BSLVA"
+    ViewObjectName="com.novartis.ecrs.model.lov.UserRoleVO"
     RowLevelBinds="true">
-    <ViewCriteriaUsage
-      Name="findByRoleName"
-      FullName="com.novartis.ecrs.model.view.CrsUserRolesVO.findByRoleName"/>
     <ParameterMap>
-      <PIMap Variable="bindRoleName">
-        <TransientExpression><![CDATA['CRS_BSL']]></TransientExpression>
-      </PIMap>
-    </ParameterMap>
-  </ViewAccessor>
-  <ViewAccessor
-    Name="CrsUserTASLVA"
-    ViewObjectName="com.novartis.ecrs.model.view.CrsUserRolesVO"
-    RowLevelBinds="true">
-    <ViewCriteriaUsage
-      Name="findByRoleName"
-      FullName="com.novartis.ecrs.model.view.CrsUserRolesVO.findByRoleName"/>
-    <ParameterMap>
-      <PIMap Variable="bindRoleName">
-        <TransientExpression><![CDATA['CRS_TASL']]></TransientExpression>
-      </PIMap>
-    </ParameterMap>
-  </ViewAccessor>
-  <ViewAccessor
-    Name="CrsUserMLVA"
-    ViewObjectName="com.novartis.ecrs.model.view.CrsUserRolesVO"
-    RowLevelBinds="true">
-    <ViewCriteriaUsage
-      Name="findByRoleName"
-      FullName="com.novartis.ecrs.model.view.CrsUserRolesVO.findByRoleName"/>
-    <ParameterMap>
-      <PIMap Variable="bindRoleName">
-        <TransientExpression><![CDATA['CRS_ML']]></TransientExpression>
+      <PIMap Variable="roleName">
+        <TransientExpression
+          trustMode="untrusted"><![CDATA['CRS_BSL']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -84,7 +57,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_TASL']]></TransientExpression>
+        <TransientExpression
+          trustMode="untrusted"><![CDATA['CRS_TASL']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -94,17 +68,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_ML']]></TransientExpression>
-      </PIMap>
-    </ParameterMap>
-  </ViewAccessor>
-  <ViewAccessor
-    Name="BSLVA"
-    ViewObjectName="com.novartis.ecrs.model.lov.UserRoleVO"
-    RowLevelBinds="true">
-    <ParameterMap>
-      <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_BSL']]></TransientExpression>
+        <TransientExpression
+          trustMode="untrusted"><![CDATA['CRS_ML']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -145,6 +110,25 @@
     </AttrArray>
     <AttrArray Name="ListDisplayAttrNames">
       <Item Value="StateName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_CrsBsl"
+    ListVOName="BSLVA"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="CrsBsl"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="UserName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="FullName"/>
     </AttrArray>
     <DisplayCriteria/>
   </ListBinding>
@@ -205,213 +189,74 @@
     </AttrArray>
     <DisplayCriteria/>
   </ListBinding>
-  <ListBinding
-    Name="LOV_CrsBsl"
-    ListVOName="BSLVA"
-    ListRangeSize="-1"
-    NullValueFlag="start"
-    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
-    MRUCount="0">
-    <AttrArray Name="AttrNames">
-      <Item Value="CrsBsl"/>
-    </AttrArray>
-    <AttrArray Name="AttrExpressions"/>
-    <AttrArray Name="ListAttrNames">
-      <Item Value="UserName"/>
-    </AttrArray>
-    <AttrArray Name="ListDisplayAttrNames">
-      <Item Value="FullName"/>
-    </AttrArray>
-    <DisplayCriteria/>
-  </ListBinding>
-  <SQLQuery><![CDATA[select '' as CompoundCodeId, 
-'' as CompoundType, 
-'' as CompoundCode, 
-'' as State, 
-'' as GenericName, 
-'' as TradeName, 
-'' as Indication, 
-'' as Marketed, 
-'' as Designee, 
-'' as CrsTasl, 
-'' as CrsMedicalLead, 
-'' as CrsBsl, 
-'' as CrsName, 
-'' as CrsId, 
-'' as ReleaseStatus from dual]]></SQLQuery>
-  <ViewAttribute
-    Name="CompoundCodeId"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="java.lang.Integer"
-    ColumnType="INTEGER"
-    AliasName="COMPOUNDCODEID"
-    Expression="COMPOUNDCODEID"
-    SQLType="INTEGER"/>
-  <ViewAttribute
-    Name="CompoundType"
-    IsSelected="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="java.lang.String"
-    ColumnType="VARCHAR"
-    AliasName="COMPOUNDTYPE"
-    Expression="COMPOUNDTYPE"
-    SQLType="VARCHAR">
-    <Properties>
-      <SchemaBasedProperties>
-        <AUTOSUBMIT
-          Value="true"/>
-      </SchemaBasedProperties>
-    </Properties>
-  </ViewAttribute>
   <ViewAttribute
     Name="CompoundCode"
     IsSelected="false"
     IsPersistent="false"
     PrecisionRule="true"
     Type="java.lang.String"
-    ColumnType="INTEGER"
-    AliasName="COMPOUNDCODE"
-    Expression="COMPOUNDCODE"
+    ColumnType="$none$"
     SQLType="VARCHAR"
     LOVName="LOV_CompoundCode">
-    <Dependencies>
-      <Item
-        Value="CompoundType"/>
-    </Dependencies>
     <Properties>
       <SchemaBasedProperties>
         <CONTROLTYPE
           Value="choice"/>
-        <AUTOSUBMIT
-          Value="true"/>
       </SchemaBasedProperties>
     </Properties>
   </ViewAttribute>
   <ViewAttribute
-    Name="State"
-    IsSelected="false"
+    Name="CompoundCodeId"
     IsPersistent="false"
     PrecisionRule="true"
     Type="java.lang.Integer"
-    ColumnType="INTEGER"
-    AliasName="STATE"
-    Expression="STATE"
-    SQLType="INTEGER"
-    LOVName="LOV_State">
-    <Properties>
-      <SchemaBasedProperties>
-        <CONTROLTYPE
-          Value="choice"/>
-      </SchemaBasedProperties>
-    </Properties>
-  </ViewAttribute>
+    ColumnType="$none$"
+    SQLType="NCLOB"/>
   <ViewAttribute
-    Name="GenericName"
+    Name="CompoundType"
     IsSelected="false"
     IsPersistent="false"
     PrecisionRule="true"
+    Precision="255"
     Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="GENERICNAME"
-    Expression="GENERICNAME"
+    ColumnType="VARCHAR2"
     SQLType="VARCHAR"/>
-  <ViewAttribute
-    Name="TradeName"
-    IsSelected="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="TRADENAME"
-    Expression="TRADENAME"
-    SQLType="VARCHAR"/>
-  <ViewAttribute
-    Name="Indication"
-    IsSelected="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="INDICATION"
-    Expression="INDICATION"
-    SQLType="VARCHAR"/>
-  <ViewAttribute
-    Name="Marketed"
-    IsSelected="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="MARKETED"
-    Expression="MARKETED"
-    SQLType="VARCHAR"/>
-  <ViewAttribute
-    Name="Designee"
-    IsSelected="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="DESIGNEE"
-    Expression="DESIGNEE"
-    SQLType="VARCHAR"
-    LOVName="LOV_Designee">
-    <Properties>
-      <SchemaBasedProperties>
-        <CONTROLTYPE
-          Value="choice"/>
-      </SchemaBasedProperties>
-    </Properties>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="CrsTasl"
-    IsSelected="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="java.lang.String"
-    ColumnType="VARCHAR"
-    AliasName="CRSTASL"
-    Expression="CRSTASL"
-    SQLType="VARCHAR"
-    LOVName="LOV_CrsTasl">
-    <Properties>
-      <SchemaBasedProperties>
-        <CONTROLTYPE
-          Value="choice"/>
-      </SchemaBasedProperties>
-    </Properties>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="CrsMedicalLead"
-    IsSelected="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="CRSMEDICALLEAD"
-    Expression="CRSMEDICALLEAD"
-    SQLType="VARCHAR"
-    LOVName="LOV_CrsMedicalLead">
-    <Properties>
-      <SchemaBasedProperties>
-        <CONTROLTYPE
-          Value="choice"/>
-      </SchemaBasedProperties>
-    </Properties>
-  </ViewAttribute>
   <ViewAttribute
     Name="CrsBsl"
     IsSelected="false"
     IsPersistent="false"
     PrecisionRule="true"
+    Precision="255"
     Type="java.lang.String"
-    ColumnType="VARCHAR"
-    AliasName="CRSBSL"
-    Expression="CRSBSL"
+    ColumnType="VARCHAR2"
     SQLType="VARCHAR"
     LOVName="LOV_CrsBsl">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CrsId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="CrsMedicalLead"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    SQLType="VARCHAR"
+    LOVName="LOV_CrsMedicalLead">
     <Properties>
       <SchemaBasedProperties>
         <CONTROLTYPE
@@ -424,31 +269,114 @@
     IsSelected="false"
     IsPersistent="false"
     PrecisionRule="true"
+    Precision="255"
     Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="CRSNAME"
-    Expression="CRSNAME"
+    ColumnType="VARCHAR2"
     SQLType="VARCHAR"/>
   <ViewAttribute
-    Name="CrsId"
+    Name="CrsTasl"
     IsSelected="false"
     IsPersistent="false"
     PrecisionRule="true"
+    Precision="255"
     Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="CRSID"
-    Expression="CRSID"
+    ColumnType="VARCHAR2"
+    SQLType="VARCHAR"
+    LOVName="LOV_CrsTasl">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Designee"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    SQLType="VARCHAR"
+    LOVName="LOV_Designee">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="GenericName"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="Indication"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="Marketed"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
     SQLType="VARCHAR"/>
   <ViewAttribute
     Name="ReleaseStatus"
     IsSelected="false"
     IsPersistent="false"
     PrecisionRule="true"
+    Precision="255"
     Type="java.lang.String"
-     ColumnType="VARCHAR"
-    AliasName="RELEASESTATUS"
-    Expression="RELEASESTATUS"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
     SQLType="VARCHAR"/>
+  <ViewAttribute
+    Name="State"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    AliasName="VIEW_ATTR"
+    SQLType="INTEGER"
+    LOVName="LOV_State">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TradeName"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="CompoundCodeId"/>
+  </AttrArray>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>

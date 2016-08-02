@@ -126,6 +126,24 @@
                     <af:outputText value="#{row.RiskPurposeErFlag eq 'Y' ? 'Y' : ''}" id="ot65"
                                    shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}"/>
                   </af:column>
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeUdFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.UD}" id="c271" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.UNDERLYING_DISEASES}">
+                    <af:outputText value="#{row.RiskPurposeUdFlag eq 'Y' ? 'Y' : ''}" id="ot248"
+                                   shortDesc="#{ecrsviewcontrollerBundle.UNDERLYING_DISEASES}"/>
+                  </af:column>
+                       <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeA1Flag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.A1}" id="c272" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.AESI_FOR_NIS_PROTOCOL}">
+                    <af:outputText value="#{row.RiskPurposeA1Flag eq 'Y' ? 'Y' : ''}" id="ot249"
+                                   shortDesc="#{ecrsviewcontrollerBundle.AESI_FOR_NIS_PROTOCOL}"/>
+                  </af:column>     
+                  <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeA2Flag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.A2}" id="c273" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.AESI_NOT_RMP}">
+                    <af:outputText value="#{row.RiskPurposeA2Flag eq 'Y' ? 'Y' : ''}" id="ot250"
+                                   shortDesc="#{ecrsviewcontrollerBundle.AESI_NOT_RMP}"/>
+                  </af:column>
                   <f:facet name="header">
                     <af:panelGroupLayout id="pgl13" layout="horizontal">
                       <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot79"/>
@@ -296,6 +314,24 @@
                     <af:outputText value="#{row.RiskPurposeErFlag eq 'Y' ? 'Y' : ''}" id="ot47"
                                    shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}"/>
                   </af:column>
+                       <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeUdFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.UD}" id="c71" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.UNDERLYING_DISEASES}">
+                    <af:outputText value="#{row.RiskPurposeUdFlag eq 'Y' ? 'Y' : ''}" id="ot48"
+                                   shortDesc="#{ecrsviewcontrollerBundle.UNDERLYING_DISEASES}"/>
+                  </af:column>
+                       <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeA1Flag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.A1}" id="c72" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.AESI_FOR_NIS_PROTOCOL}">
+                    <af:outputText value="#{row.RiskPurposeA1Flag eq 'Y' ? 'Y' : ''}" id="ot49"
+                                   shortDesc="#{ecrsviewcontrollerBundle.AESI_FOR_NIS_PROTOCOL}"/>
+                  </af:column>     
+                  <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeA2Flag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.A2}" id="c73" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.AESI_NOT_RMP}">
+                    <af:outputText value="#{row.RiskPurposeA2Flag eq 'Y' ? 'Y' : ''}" id="ot50"
+                                   shortDesc="#{ecrsviewcontrollerBundle.AESI_NOT_RMP}"/>
+                  </af:column>
                   <f:facet name="header">
                     <af:panelGroupLayout id="pgl12" layout="horizontal">
                       <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot78"/>
@@ -309,9 +345,9 @@
                   </f:facet>
                 </af:column>
                 <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.SocTerm.name}" filterable="true" sortable="true"
-                           headerText="#{ecrsviewcontrollerBundle.SOC}" id="c71" width="170">
+                           headerText="#{ecrsviewcontrollerBundle.SOC}" id="c171" width="170">
                   <af:outputText value="#{row.SocTerm}" shortDesc="#{bindings.CrsRiskBaseVO.hints.SocTerm.tooltip}"
-                                 id="ot48"/>
+                                 id="ot148"/>
                 </af:column>
                 <!--<af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.DatabaseList.name}" filterable="true"
                            sortable="true" headerText="#{ecrsviewcontrollerBundle.DATABASE}" id="c72" rendered="false">
@@ -319,9 +355,9 @@
                                  shortDesc="#{bindings.CrsRiskBaseVO.hints.DatabaseList.tooltip}" id="ot49"/>
                 </af:column>-->
                 <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.DataDomain.name}" filterable="true"
-                           sortable="true" headerText="#{ecrsviewcontrollerBundle.DATA_DOMAIN}" id="c73">
+                           sortable="true" headerText="#{ecrsviewcontrollerBundle.DATA_DOMAIN}" id="c173">
                   <af:outputText value="#{row.DataDomain}"
-                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.DataDomain.tooltip}" id="ot50"/>
+                                 shortDesc="#{bindings.CrsRiskBaseVO.hints.DataDomain.tooltip}" id="ot150"/>
                 </af:column>
                 <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.SearchCriteriaDetails.name}" filterable="true"
                            sortable="true" headerText="#{ecrsviewcontrollerBundle.SEARCH_CRITERIA_DETAILS}" id="c77"
@@ -407,7 +443,7 @@
     <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
               binding="#{pageFlowScope.manageCRSBean.riskDefPopup}" contentDelivery="lazyUncached"
               popupCanceledListener="#{pageFlowScope.manageCRSBean.onCloseRiskPopup}">
-      <af:dialog id="d1" title="Detail Risk Definitions" contentWidth="900" type="none">
+      <af:dialog id="d1" title="Detail Risk Definitions" contentWidth="900" type="none" closeIconVisible="false">
         <f:facet name="buttonBar">
           <af:panelGroupLayout id="pgl3">
             <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb14"
@@ -464,7 +500,7 @@
             </af:selectOneChoice>-->
             <af:selectManyChoice label="#{ecrsviewcontrollerBundle.RISK_PURPOSES}" id="smc2"
                                  value="#{pageFlowScope.manageCRSBean.selRiskPurposes}" autoSubmit="true"
-                                 valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}"
+                                 valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskPurposeVC}"
                                  readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true">
               <af:selectItem label="SP (SPP)" id="si4" value="SP"/>
               <af:selectItem label="DS (DSUR)" id="si5" value="DS"/>
@@ -475,6 +511,9 @@
               <af:selectItem label="OS (Other Search)" id="si10" value="OS"/>
               <af:selectItem label="MI (Missing Information)" id="si11" value="MI"/>
               <af:selectItem label="ER (Expediting Rules)" id="si12" value="ER"/>
+                <af:selectItem label="UD (Underlying Diseases)" id="si7611" value="UD"/>
+              <af:selectItem label="A1 (AESI for NIS Protocol)" id="si7621" value="A1"/>
+              <af:selectItem label="A2 (AESI not RMP)" id="si7631" value="A2"/>
             </af:selectManyChoice>
             
             <af:selectOneChoice value="#{bindings.SocTerm.inputValue}" label="#{bindings.SocTerm.label}"
@@ -579,6 +618,9 @@
                     <f:validator binding="#{row.bindings.MeddraTerm.validator}"/>
                   </af:inputText>
                 </af:panelGroupLayout>
+              </af:column>
+              <af:column id="c59" headerText="Status">
+                <af:outputText value="#{row.bindings.TmsStatus.inputValue eq 'I' ? 'Retired' : 'Active'}" id="ot1"/>
               </af:column>
               <af:column sortProperty="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.name}" sortable="false"
                          headerText="#{bindings.CrsRiskDefinitionsVO.hints.MeddraLevel.label}" id="c25">
@@ -811,7 +853,8 @@
     <af:popup childCreation="deferred" autoCancel="disabled" id="p7" contentDelivery="lazyUncached"
               binding="#{pageFlowScope.manageCRSBean.copyPopup}"
               popupCanceledListener="#{pageFlowScope.manageCRSBean.onCloseRiskPopup}">
-      <af:dialog id="d7" title="#{ecrsviewcontrollerBundle.COPY_RISK_DEFINTION}" type="none" contentWidth="800">
+      <af:dialog id="d7" title="#{ecrsviewcontrollerBundle.COPY_RISK_DEFINTION}" type="none" contentWidth="800"
+                 closeIconVisible="false">
         <f:facet name="buttonBar">
           <af:panelGroupLayout id="pgl7">
             <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb20"
@@ -902,6 +945,24 @@
                   <af:outputText value="#{copyRow.RiskPurposeErFlag eq 'Y' ? 'Y' : ''}" id="ot76"
                                  shortDesc="#{ecrsviewcontrollerBundle.EXPEDITING_RULES}"/>
                 </af:column>
+                <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeUdFlag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.UD}" id="c371" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.UNDERLYING_DISEASES}">
+                    <af:outputText value="#{row.RiskPurposeUdFlag eq 'Y' ? 'Y' : ''}" id="ot348"
+                                   shortDesc="#{ecrsviewcontrollerBundle.UNDERLYING_DISEASES}"/>
+                  </af:column>
+                       <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeA1Flag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.A1}" id="c372" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.AESI_FOR_NIS_PROTOCOL}">
+                    <af:outputText value="#{row.RiskPurposeA1Flag eq 'Y' ? 'Y' : ''}" id="ot349"
+                                   shortDesc="#{ecrsviewcontrollerBundle.AESI_FOR_NIS_PROTOCOL}"/>
+                  </af:column>     
+                  <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeA2Flag.name}" filterable="true"
+                             sortable="true" headerText="#{ecrsviewcontrollerBundle.A2}" id="c373" width="20"
+                             align="center" shortDesc="#{ecrsviewcontrollerBundle.AESI_NOT_RMP}">
+                    <af:outputText value="#{row.RiskPurposeA2Flag eq 'Y' ? 'Y' : ''}" id="ot350"
+                                   shortDesc="#{ecrsviewcontrollerBundle.AESI_NOT_RMP}"/>
+                  </af:column>
                 <f:facet name="header">
                   <af:panelGroupLayout id="pgl14" layout="horizontal">
                     <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot80"/>
@@ -1005,7 +1066,7 @@
               <af:selectManyChoice label="#{ecrsviewcontrollerBundle.RISK_PURPOSES}" id="smc4"
                                    value="#{pageFlowScope.manageCRSBean.selRiskPurposes}" autoSubmit="true"
                                    binding="#{pageFlowScope.manageCRSBean.copyRPListBinding}"
-                                   valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
+                                   valueChangeListener="#{pageFlowScope.manageCRSBean.onCopyRiskPurposeVC}">
                 <af:selectItem label="SP (SPP)" id="si1" value="SP"/>
                 <af:selectItem label="DS (DSUR)" id="si2" value="DS"/>
                 <af:selectItem label="RM (RMP)" id="si3" value="RM"/>
@@ -1015,6 +1076,9 @@
                 <af:selectItem label="OS (Other Search)" id="si21" value="OS"/>
                 <af:selectItem label="MI (Missing Information)" id="si22" value="MI"/>
                 <af:selectItem label="ER (Expediting Rules)" id="si23" value="ER"/>
+                       <af:selectItem label="UD (Underlying Diseases)" id="si7612" value="UD"/>
+              <af:selectItem label="A1 (AESI for NIS Protocol)" id="si7622" value="A1"/>
+              <af:selectItem label="A2 (AESI not RMP)" id="si7623" value="A2"/>
               </af:selectManyChoice>
               
               <af:selectOneChoice value="#{bindings.SocTerm.inputValue}" label="#{bindings.SocTerm.label}"
@@ -1251,7 +1315,7 @@
           <af:column sortProperty="#{bindings.PurposeLegendStaticVO.hints.Name.name}"
                      sortable="false"
                      headerText="#{bindings.PurposeLegendStaticVO.hints.Name.label}"
-                     id="c72" width="100">
+                     id="c172" width="100">
             <af:outputText value="#{row.Name}"
                            shortDesc="#{bindings.PurposeLegendStaticVO.hints.Name.tooltip}"
                            id="ot26"/>
@@ -1262,7 +1326,7 @@
                      id="c83" noWrap="false">
             <af:outputText value="#{row.Description}"
                            shortDesc="#{bindings.PurposeLegendStaticVO.hints.Description.tooltip}"
-                           id="ot49"/>
+                           id="ot149"/>
           </af:column>
         </af:table>
       </af:dialog>
@@ -1289,7 +1353,7 @@
         </af:popup>
   <af:popup childCreation="deferred" autoCancel="disabled" id="p10" contentDelivery="lazyUncached"
               binding="#{pageFlowScope.manageCRSBean.riskBasePopup}">
-      <af:dialog id="d13" title="Detail Risk Definitions" contentWidth="900" type="none">
+      <af:dialog id="d13" title="Detail Risk Definitions" contentWidth="900" type="none" closeIconVisible="false">
         <f:facet name="buttonBar">
         <af:panelGroupLayout id="pgl11">
             <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb29"
@@ -1338,6 +1402,9 @@
               <af:selectItem label="OS (Other Search)" id="si73" value="OS"/>
               <af:selectItem label="MI (Missing Information)" id="si75" value="MI"/>
               <af:selectItem label="ER (Expediting Rules)" id="si76" value="ER"/>
+              <af:selectItem label="UD (Underlying Diseases)" id="si761" value="UD"/>
+              <af:selectItem label="A1 (AESI for NIS Protocol)" id="si762" value="A1"/>
+              <af:selectItem label="A2 (AESI not RMP)" id="si763" value="A2"/>
             </af:selectManyChoice>
             <af:inputText label="#{bindings.SocTerm1.label}" id="it27" value="#{pageFlowScope.socTermBase}"
                 visible="#{bindings.DomainId2.inputValue == 1 or bindings.DomainId2.inputValue == null}"
@@ -1461,6 +1528,24 @@
             </f:facet>
           </af:panelCollection>
           </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p11"
+              binding="#{pageFlowScope.manageCRSBean.cancelWarningPopup}">
+      <af:dialog id="d14" type="none" title="Warning" titleIconSource="/images/warning.png">
+        <f:facet name="buttonBar">
+          <af:panelGroupLayout id="pgl19" layout="horizontal">
+            <af:button text="Save" id="b1" actionListener="#{pageFlowScope.manageCRSBean.onSaveRiskDefsWarningPopup}"
+                       visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"/>
+            <af:button text="Save" id="b3"
+                       actionListener="#{pageFlowScope.manageCRSBean.onClickRiskDefSaveWarningPopup}"
+                       visible="#{securityContext.userInRole['CRS_MQM'] and pageFlowScope.manageCRSBean.flowType eq 'U'}"/>
+            <af:spacer width="10" height="10" id="s11"/>
+            <af:button text="Cancel" id="b2" actionListener="#{pageFlowScope.manageCRSBean.onCancelCrsRiskWarningPopup}"
+                       immediate="true"/>
+          </af:panelGroupLayout>
+        </f:facet>
+        <af:outputText value="There are some unsaved changes. Do you want to save the last modifications?" id="ot38"/>
       </af:dialog>
     </af:popup>
   </af:panelGroupLayout>

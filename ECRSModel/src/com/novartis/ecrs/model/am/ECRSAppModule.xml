@@ -4,7 +4,7 @@
 <AppModule
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="ECRSAppModule"
-  Version="11.1.2.64.36"
+  Version="12.1.3.2.1"
   ClearCacheOnRollback="true"
   ComponentClass="com.novartis.ecrs.model.am.ECRSAppModuleImpl"
   ComponentInterface="com.novartis.ecrs.model.am.common.ECRSAppModule"
@@ -150,6 +150,9 @@
   <ViewUsage
     Name="CrsRiskDefinitionsBaseVO"
     ViewObjectName="com.novartis.ecrs.model.view.riskdefs.CrsRiskDefinitionsBaseVO"/>
+  <ViewUsage
+    Name="ECrsSearchTransVO"
+    ViewObjectName="com.novartis.ecrs.model.view.trans.ECrsSearchTransVO"/>
   <ViewLinkUsage
     Name="CrsRiskRelationToRiskDefintionLink1"
     ViewLinkObjectName="com.novartis.ecrs.model.view.link.CrsRiskRelationToRiskDefintionLink"
@@ -168,12 +171,14 @@
     SrcViewUsageName="com.novartis.ecrs.model.am.ECRSAppModule.CrsRiskRelationsBaseVO"
     DstViewUsageName="com.novartis.ecrs.model.am.ECRSAppModule.CrsRiskDefinitionsBaseVO"
     Reversed="false"/>
-  <ClientInterface>
+  <ClientInterface
+    Name="__clientInterface">
     <Method
       Name="isRiskRelationsExistForCRS"
       MethodName="isRiskRelationsExistForCRS">
       <Return
-        Type="java.lang.Boolean"/>
+        Type="java.lang.Boolean"
+        Name="_return_type_"/>
       <Parameter
         Name="crsId"
         Type="java.lang.Long"/>
@@ -182,7 +187,8 @@
       Name="deleteCrs"
       MethodName="deleteCrs">
       <Return
-        Type="java.lang.String"/>
+        Type="java.lang.String"
+        Name="_return_type_"/>
       <Parameter
         Name="crsId"
         Type="java.lang.Long"/>
@@ -191,7 +197,8 @@
       Name="activateCrs"
       MethodName="activateCrs">
       <Return
-        Type="java.lang.String"/>
+        Type="java.lang.String"
+        Name="_return_type_"/>
       <Parameter
         Name="pCRSId"
         Type="java.lang.Long"/>
@@ -203,7 +210,8 @@
       Name="copyCurrentRiskRelation"
       MethodName="copyCurrentRiskRelation">
       <Return
-        Type="void"/>
+        Type="void"
+        Name="_return_type_"/>
       <Parameter
         Name="srcRiskId"
         Type="java.lang.Long"/>
@@ -215,7 +223,8 @@
       Name="copyRoutineDefinition"
       MethodName="copyRoutineDefinition">
       <Return
-        Type="void"/>
+        Type="void"
+        Name="_return_type_"/>
       <Parameter
         Name="crsId"
         Type="java.lang.Long"/>
@@ -224,25 +233,29 @@
       Name="fetchDatabases"
       MethodName="fetchDatabases">
       <Return
-        Type="java.util.List"/>
+        Type="java.util.List"
+        Name="_return_type_"/>
     </Method>
     <Method
       Name="fetchDesignees"
       MethodName="fetchDesignees">
       <Return
-        Type="java.util.List"/>
+        Type="java.util.List"
+        Name="_return_type_"/>
     </Method>
     <Method
       Name="fetchDictionaryVersion"
       MethodName="fetchDictionaryVersion">
       <Return
-        Type="java.lang.String"/>
+        Type="java.lang.String"
+        Name="_return_type_"/>
     </Method>
     <Method
       Name="fetchDomainIdFromName"
       MethodName="fetchDomainIdFromName">
       <Return
-        Type="java.lang.Integer"/>
+        Type="java.lang.Integer"
+        Name="_return_type_"/>
       <Parameter
         Name="domainName"
         Type="java.lang.String"/>
@@ -251,7 +264,8 @@
       Name="filterCRSContent"
       MethodName="filterCRSContent">
       <Return
-        Type="void"/>
+        Type="void"
+        Name="_return_type_"/>
       <Parameter
         Name="userInRole"
         Type="java.lang.String"/>
@@ -269,7 +283,8 @@
       Name="findByCrsFromStg"
       MethodName="findByCrsFromStg">
       <Return
-        Type="boolean"/>
+        Type="boolean"
+        Name="_return_type_"/>
       <Parameter
         Name="pCrsId"
         Type="java.lang.Long"/>
@@ -278,7 +293,8 @@
       Name="initRiskRelation"
       MethodName="initRiskRelation">
       <Return
-        Type="void"/>
+        Type="void"
+        Name="_return_type_"/>
       <Parameter
         Name="crsId"
         Type="java.lang.Long"/>
@@ -290,7 +306,8 @@
       Name="modifyCrs"
       MethodName="modifyCrs">
       <Return
-        Type="java.lang.String"/>
+        Type="java.lang.String"
+        Name="_return_type_"/>
       <Parameter
         Name="pCRSId"
         Type="java.lang.Long"/>
@@ -302,7 +319,8 @@
       Name="reactivateCrs"
       MethodName="reactivateCrs">
       <Return
-        Type="java.lang.String"/>
+        Type="java.lang.String"
+        Name="_return_type_"/>
       <Parameter
         Name="pCRSId"
         Type="java.lang.Long"/>
@@ -314,7 +332,8 @@
       Name="refreshRepository"
       MethodName="refreshRepository">
       <Return
-        Type="boolean"/>
+        Type="boolean"
+        Name="_return_type_"/>
       <Parameter
         Name="crsId"
         Type="java.lang.Long"/>
@@ -323,7 +342,8 @@
       Name="retireCrs"
       MethodName="retireCrs">
       <Return
-        Type="java.lang.String"/>
+        Type="java.lang.String"
+        Name="_return_type_"/>
       <Parameter
         Name="pCRSId"
         Type="java.lang.Long"/>
@@ -335,7 +355,8 @@
       Name="validateSafetyTopic"
       MethodName="validateSafetyTopic">
       <Return
-        Type="java.lang.Boolean"/>
+        Type="java.lang.Boolean"
+        Name="_return_type_"/>
       <Parameter
         Name="crsId"
         Type="java.lang.Long"/>
@@ -356,7 +377,8 @@
       Name="isCRSVersionInitial"
       MethodName="isCRSVersionInitial">
       <Return
-        Type="java.lang.Boolean"/>
+        Type="java.lang.Boolean"
+        Name="_return_type_"/>
       <Parameter
         Name="crsId"
         Type="java.lang.Long"/>
@@ -365,13 +387,15 @@
       Name="getMedDRAFreezeFlag"
       MethodName="getMedDRAFreezeFlag">
       <Return
-        Type="java.lang.String"/>
+        Type="java.lang.String"
+        Name="_return_type_"/>
     </Method>
     <Method
       Name="updateMedDRAFreezeFlag"
       MethodName="updateMedDRAFreezeFlag">
       <Return
-        Type="java.lang.String"/>
+        Type="java.lang.String"
+        Name="_return_type_"/>
       <Parameter
         Name="freezeFlag"
         Type="java.lang.String"/>

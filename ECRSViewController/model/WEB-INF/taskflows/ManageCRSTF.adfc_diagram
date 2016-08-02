@@ -48,7 +48,7 @@
       <property
          name="fromOutcome">toUpdate</property>
       <property
-         name="sdm:polyPoints">R46,261.0,236.61816,323.0,148.19531,L50</property>
+         name="sdm:polyPoints">R46,261.0,236.61816,323.0,145.74121,L50</property>
    </ControlFlowCase>
    <TrainFlow
       islink="true"
@@ -142,7 +142,7 @@
       <property
          name="exceptionHandler">false</property>
       <property
-         name="y">148.5459</property>
+         name="y">145.74121</property>
       <property
          name="x">364.0</property>
    </MethodCall>
@@ -154,7 +154,7 @@
       <property
          name="fromOutcome">toSearch</property>
       <property
-         name="sdm:polyPoints">R46,405.15585,144.69531,488.0,146.5459,L50</property>
+         name="sdm:polyPoints">R46,405.21356,142.24121,488.0,146.5459,L50</property>
    </ControlFlowCase>
    <ParentAction
       id="ParentAction17">
@@ -241,23 +241,6 @@
       <property
          name="sdm:polyPoints">B50,529.0,200.5459,792.87555,296.74707,L54</property>
    </ControlFlowCase>
-   <View
-      id="View26">
-      <property
-         name="activityId">exceptionHandler</property>
-      <property
-         name="page">/ui/pageFragments/exception/exceptionHandler.jsff</property>
-      <property
-         name="description">&lt;html>&lt;p>&lt;b>exceptionHandler&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
-      <property
-         name="exceptionHandler">true</property>
-      <property
-         name="y">32.0459</property>
-      <property
-         name="x">-100.22363</property>
-      <property
-         name="pageFragment">true</property>
-   </View>
    <MethodCall
       id="MethodCall27">
       <property
@@ -289,7 +272,7 @@
       <property
          name="fromOutcome">toSearch</property>
       <property
-         name="sdm:polyPoints">B44,525.5,-97.91992,522.0,89.66324,T39</property>
+         name="sdm:polyPoints">B44,525.5,-97.91992,522.0,89.66418,T39</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -505,7 +488,7 @@
       <property
          name="fromOutcome">toSearch</property>
       <property
-         name="sdm:polyPoints">L50,1112.9697,199.0459,405.0,151.69531,R54</property>
+         name="sdm:polyPoints">L50,1112.9983,199.0459,405.0,149.24121,R54</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall53">

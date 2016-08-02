@@ -4,12 +4,11 @@
 <Entity
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskDefinitionsEO"
-  Version="11.1.2.64.36"
+  Version="12.1.3.2.1"
   DBObjectType="TABLE"
   DBObjectName="CRS_RISK_DEFINITIONS_STG"
   AliasName="CrsRiskDefinitionsEO"
   BindingStyle="OracleName"
-  UseGlueCode="false"
   RowClass="com.novartis.ecrs.model.entity.CrsRiskDefinitionsEOImpl">
   <DesignTime>
     <Attr Name="_codeGenFlag2" Value="Access"/>
@@ -269,6 +268,18 @@
     Name="CrsQualifier"
     Precision="15"
     ColumnName="CRS_QUALIFIER"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="CRS_RISK_DEFINITIONS_STG">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="15"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="TmsStatus"
+    Precision="15"
+    ColumnName="TMS_STATUS"
     SQLType="VARCHAR"
     Type="java.lang.String"
     ColumnType="VARCHAR2"

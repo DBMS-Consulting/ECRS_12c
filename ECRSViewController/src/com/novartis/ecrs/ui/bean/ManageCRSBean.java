@@ -213,7 +213,8 @@ public class ManageCRSBean implements Serializable {
     private transient RichPopup riskBasePopup;
     private transient RichPanelGroupLayout riskBasePopupPanel;
     private List<String> selRiskPurposesBase;
-    
+    private RichPopup cancelWarningPopup;
+
     public ManageCRSBean() {
         super();
         getUserRole();
@@ -445,6 +446,11 @@ public class ManageCRSBean implements Serializable {
         DCBindingContainer bc =
             ADFUtils.findBindingContainerByName(ViewConstants.PAGE_DEF_SEARCH);
         DCIteratorBinding searchIter =  bc.findIteratorBinding("ECrsSearchVOIterator");
+        if(searchIter.getEstimatedRowCount() == 0){
+            Row row = searchIter.getViewObject().createRow();
+            searchIter.getViewObject().insertRow(row);
+            searchIter.getViewObject().setCurrentRow(row);
+        }
         //Mode is Update and role is BSL,settting CompoundType to COMPOUND
         if (searchIter != null && searchIter.getCurrentRow() != null &&
             ViewConstants.FLOW_TYPE_UPDATE.equals(getFlowType()) &&
@@ -803,6 +809,10 @@ public class ManageCRSBean implements Serializable {
                 }
                 String riskPurposes = "";
                 if(selRiskPurposes != null && selRiskPurposes.size() > 0){
+                    if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
+                        ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
+                        return;
+                    }
                     for(String riskPurpose : selRiskPurposes){
                         riskPurposes = riskPurposes + "," + riskPurpose;
                     }
@@ -2029,6 +2039,25 @@ public class ManageCRSBean implements Serializable {
      * @param actionEvent
      */
     public void onCancelCrsRiskPopup(ActionEvent actionEvent) {
+        if(this.iconCRSChanged.isVisible()){
+            ADFUtils.showPopup(getCancelWarningPopup());
+        }
+        else{
+            cancelRisk();
+        }
+        
+    }
+    
+    /**
+     * @param actionEvent
+     */
+    public void onCancelCrsRiskWarningPopup(ActionEvent actionEvent) {
+
+            cancelRisk();
+        getCancelWarningPopup().hide();
+    }
+    
+    private void cancelRisk(){
         logger.info("Closing CrsRisk Popup, rolling back any unsaved changes.");
         DCIteratorBinding iter = ADFUtils.findIterator("CrsRiskDefinitionsVOIterator");
         ViewObject riskDefVO = iter.getViewObject();
@@ -2045,10 +2074,10 @@ public class ManageCRSBean implements Serializable {
             logger.info("Closing CrsRisk Popup -- refresh risk relations row.");
         }
         
-//        OperationBinding oper = ADFUtils.findOperation("Rollback");
-//        oper.execute();
-//        if (oper.getErrors().size() > 0) 
-//            ADFUtils.showFacesMessage("An internal error has occured. Please try later.", FacesMessage.SEVERITY_ERROR);
+        //        OperationBinding oper = ADFUtils.findOperation("Rollback");
+        //        oper.execute();
+        //        if (oper.getErrors().size() > 0)
+        //            ADFUtils.showFacesMessage("An internal error has occured. Please try later.", FacesMessage.SEVERITY_ERROR);
         Long crsId = (Long)ADFUtils.getPageFlowScopeValue("crsId");
         OperationBinding oper1 = ADFUtils.findOperation("initRiskRelation");
         oper1.getParamsMap().put("crsId", crsId);
@@ -2057,8 +2086,8 @@ public class ManageCRSBean implements Serializable {
         oper1.execute();
         if (oper1.getErrors().size() > 0) 
             ADFUtils.showFacesMessage(uiBundle.getString("INTERNAL_ERROR"), FacesMessage.SEVERITY_ERROR);
-//        if(riskDefTable != null)
-//            ADFUtils.addPartialTarget(riskDefTable);
+        //        if(riskDefTable != null)
+        //            ADFUtils.addPartialTarget(riskDefTable);
         if(stagingTable != null){
             ADFUtils.addPartialTarget(stagingTable);
         }
@@ -4351,4 +4380,49 @@ public class ManageCRSBean implements Serializable {
         ADFUtils.showPopup(riskBasePopup);
     }
 
+    public void setCancelWarningPopup(RichPopup cancelWarningPopup) {
+        this.cancelWarningPopup = cancelWarningPopup;
+    }
+
+    public RichPopup getCancelWarningPopup() {
+        return cancelWarningPopup;
+    }
+
+    public void onRiskPurposeVC(ValueChangeEvent valueChangeEvent) {
+        if(valueChangeEvent.getNewValue() != valueChangeEvent.getOldValue() && valueChangeEvent.getNewValue()!= null){
+            List<String> selRiskPurposes = (List<String>) valueChangeEvent.getNewValue();
+            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
+                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
+            }
+        }
+        onRiskDetailsUpdate(valueChangeEvent);
+    }
+
+    public void onCopyRiskPurposeVC(ValueChangeEvent valueChangeEvent) {
+        if(valueChangeEvent.getNewValue() != valueChangeEvent.getOldValue() && valueChangeEvent.getNewValue()!= null){
+            List<String> selRiskPurposes = (List<String>) valueChangeEvent.getNewValue();
+            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
+                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
+            }
+        }
+        onRiskDetailsUpdate(valueChangeEvent);
+    }
+
+    public void onSaveRiskDefsWarningPopup(ActionEvent actionEvent) {
+        if(selRiskPurposes != null && selRiskPurposes.size() > 0){
+            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
+                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
+                return;
+            }
+        }
+        saveRiskDefs(actionEvent);
+        getCancelWarningPopup().hide();
+        getRiskDefPopup().hide();
+    }
+
+    public void onClickRiskDefSaveWarningPopup(ActionEvent actionEvent) {
+        onClickRiskDefSave(actionEvent);
+        getCancelWarningPopup().hide();
+        getRiskDefPopup().hide();
+    }
 }

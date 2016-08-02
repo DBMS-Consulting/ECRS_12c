@@ -4,12 +4,11 @@
 <Entity
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsContentEO"
-  Version="11.1.2.64.36"
+  Version="12.1.3.2.1"
   DBObjectType="table"
   DBObjectName="CRS_CONTENT_STG"
   AliasName="CrsContentEO"
   BindingStyle="OracleName"
-  UseGlueCode="false"
   xmlns:validation="http://xmlns.oracle.com/adfm/validation"
   RowClass="com.novartis.ecrs.model.entity.CrsContentEOImpl">
   <DesignTime>
@@ -171,14 +170,14 @@
   </Attribute>
   <Attribute
     Name="MqmComment"
-    Precision="200"
+    Precision="400"
     ColumnName="MQM_COMMENT"
     SQLType="VARCHAR"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
     TableName="CRS_CONTENT_STG">
     <DesignTime>
-      <Attr Name="_DisplaySize" Value="200"/>
+      <Attr Name="_DisplaySize" Value="400"/>
     </DesignTime>
   </Attribute>
   <Attribute
@@ -208,11 +207,12 @@
   <Attribute
     Name="MedicalLeadName"
     Precision="50"
-    ColumnName="MEDICAL_LEAD_NAME"
+    ColumnName="&quot;Synchronize:Fix_SQL&quot;"
     SQLType="VARCHAR"
     Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    TableName="CRS_CONTENT_STG">
+    ColumnType="$none$"
+    IsQueriable="false"
+    IsPersistent="false">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="50"/>
     </DesignTime>
@@ -220,11 +220,12 @@
   <Attribute
     Name="MedicalLeadRejectComment"
     Precision="200"
-    ColumnName="MEDICAL_LEAD_REJECT_COMMENT"
+    ColumnName="&quot;Synchronize:Fix_SQL&quot;"
     SQLType="VARCHAR"
     Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    TableName="CRS_CONTENT_STG">
+    ColumnType="$none$"
+    IsQueriable="false"
+    IsPersistent="false">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="200"/>
     </DesignTime>
@@ -426,13 +427,15 @@
       <validation:Item
         Value="CrsId"/>
     </validation:OnAttributes>
-    <validation:OnCondition><![CDATA[CrsId!=null]]></validation:OnCondition>
+    <validation:OnCondition
+      Name="OnConditionExpr"><![CDATA[CrsId!=null]]></validation:OnCondition>
   </validation:UniqueKeyValidationBean>
   <validation:MethodValidationBean
     Name="CrsContentEO_Rule_2"
     ResId="A_CRS_IS_ALREADY_EXISTS_WITH_T"
     MethodName="validateDuplicateCheckOnCrs">
-    <validation:OnCondition><![CDATA[CrsId!=null]]></validation:OnCondition>
+    <validation:OnCondition
+      Name="OnConditionExpr"><![CDATA[CrsId!=null]]></validation:OnCondition>
   </validation:MethodValidationBean>
   <ResourceBundle>
     <PropertiesBundle

@@ -24,7 +24,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setCrsRiskDefnId((Long)value);
+                obj.setCrsRiskDefnId((Long) value);
             }
         }
         ,
@@ -34,7 +34,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setCrsRiskId((Long)value);
+                obj.setCrsRiskId((Long) value);
             }
         }
         ,
@@ -44,7 +44,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraLevel((String)value);
+                obj.setMeddraLevel((String) value);
             }
         }
         ,
@@ -54,7 +54,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraCode((String)value);
+                obj.setMeddraCode((String) value);
             }
         }
         ,
@@ -64,7 +64,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraTerm((String)value);
+                obj.setMeddraTerm((String) value);
             }
         }
         ,
@@ -74,7 +74,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraVersion((String)value);
+                obj.setMeddraVersion((String) value);
             }
         }
         ,
@@ -84,7 +84,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraVersionDate((Timestamp)value);
+                obj.setMeddraVersionDate((Timestamp) value);
             }
         }
         ,
@@ -94,7 +94,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setTmsDictContentId((Long)value);
+                obj.setTmsDictContentId((Long) value);
             }
         }
         ,
@@ -104,7 +104,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setTmsDictContentEntryTs((Timestamp)value);
+                obj.setTmsDictContentEntryTs((Timestamp) value);
             }
         }
         ,
@@ -114,7 +114,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setTmsEndTs((Timestamp)value);
+                obj.setTmsEndTs((Timestamp) value);
             }
         }
         ,
@@ -124,7 +124,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setTmsUpdateFlag((String)value);
+                obj.setTmsUpdateFlag((String) value);
             }
         }
         ,
@@ -144,7 +144,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraQualifier((String)value);
+                obj.setMeddraQualifier((String) value);
             }
         }
         ,
@@ -164,7 +164,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraDict((String)value);
+                obj.setMeddraDict((String) value);
             }
         }
         ,
@@ -174,7 +174,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraExtension((String)value);
+                obj.setMeddraExtension((String) value);
             }
         }
         ,
@@ -194,7 +194,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setMeddraQualifierUpdFlag((String)value);
+                obj.setMeddraQualifierUpdFlag((String) value);
             }
         }
         ,
@@ -244,7 +244,17 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
-                obj.setCrsQualifier((String)value);
+                obj.setCrsQualifier((String) value);
+            }
+        }
+        ,
+        TmsStatus {
+            public Object get(CrsRiskDefinitionsEOImpl obj) {
+                return obj.getTmsStatus();
+            }
+
+            public void put(CrsRiskDefinitionsEOImpl obj, Object value) {
+                obj.setTmsStatus((String) value);
             }
         }
         ;
@@ -299,6 +309,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
     public static final int MODIFIEDBY = AttributesEnum.ModifiedBy.index();
     public static final int MODIFICATIONTS = AttributesEnum.ModificationTs.index();
     public static final int CRSQUALIFIER = AttributesEnum.CrsQualifier.index();
+    public static final int TMSSTATUS = AttributesEnum.TmsStatus.index();
 
     /**
      * This is the default constructor (do not remove).
@@ -306,13 +317,13 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
     public CrsRiskDefinitionsEOImpl() {
     }
 
-
     /**
      * @return the definition object for this instance class.
      */
     public static synchronized EntityDefImpl getDefinitionObject() {
         return EntityDefImpl.findDefObject("com.novartis.ecrs.model.entity.CrsRiskDefinitionsEO");
     }
+
 
     /**
      * Gets the attribute value for CrsRiskDefnId, using the alias name CrsRiskDefnId.
@@ -640,6 +651,22 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
     }
 
     /**
+     * Gets the attribute value for TmsStatus, using the alias name TmsStatus.
+     * @return the value of TmsStatus
+     */
+    public String getTmsStatus() {
+        return (String) getAttributeInternal(TMSSTATUS);
+    }
+
+    /**
+     * Sets <code>value</code> as the attribute value for TmsStatus.
+     * @param value value to set the TmsStatus
+     */
+    public void setTmsStatus(String value) {
+        setAttributeInternal(TMSSTATUS, value);
+    }
+
+    /**
      * getAttrInvokeAccessor: generated method. Do not modify.
      * @param index the index identifying the attribute
      * @param attrDef the attribute
@@ -676,7 +703,7 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
      * @return a Key object based on given key constituents.
      */
     public static Key createPrimaryKey(Long crsRiskDefnId) {
-        return new Key(new Object[]{crsRiskDefnId});
+        return new Key(new Object[] { crsRiskDefnId });
     }
 
 

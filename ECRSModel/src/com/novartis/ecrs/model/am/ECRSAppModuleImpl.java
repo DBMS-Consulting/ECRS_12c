@@ -9,6 +9,8 @@ import com.novartis.ecrs.model.view.HierarchyChildDetailVOImpl;
 import com.novartis.ecrs.model.view.report.PTReportVOImpl;
 import com.novartis.ecrs.model.view.trans.CompoundTransientVOImpl;
 import com.novartis.ecrs.model.view.trans.DomainsTransientVOImpl;
+import com.novartis.ecrs.model.view.trans.ECrsSearchTransVOImpl;
+import com.novartis.ecrs.model.view.trans.ECrsSearchTransVORowImpl;
 import com.novartis.ecrs.model.view.trans.RiskPurposeTransientVOImpl;
 import com.novartis.ecrs.model.view.trans.RolesTransientVOImpl;
 import com.novartis.ecrs.model.view.trans.StateTransientVOImpl;
@@ -182,10 +184,10 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      */
     public void filterCRSContent(String userInRole,String userName,boolean isInboxDisable, String flowType){
         String whereClause = "";
-        ViewObjectImpl searchVO = this.getECrsSearchVO();
+        ViewObjectImpl searchVO = this.getECrsSearchTransVO();
         
         //IF INBOX SELECTED - PENDING ONES IN USER'S QUEUE
-        ECrsSearchVORowImpl row = null;
+        ECrsSearchTransVORowImpl row = null;
 //        if (isInboxDisable) {
 //            whereClause +=
 //                    "RELEASE_STATUS_FLAG = '" + ModelConstants.STATUS_PENDING +
@@ -205,7 +207,7 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
 //        // INBOX NOT SELECTED
 //        } else {
 
-            row = (ECrsSearchVORowImpl)searchVO.getCurrentRow();
+            row = (ECrsSearchTransVORowImpl)searchVO.getCurrentRow();
 
             //Appending Where clause based on the entered search criteria in the form.s
             if (row.getReleaseStatus() != null)
@@ -1244,5 +1246,13 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      */
     public ViewLinkImpl getCrsRiskRelationBaseToRiskDefinitiinBaseLink() {
         return (ViewLinkImpl)findViewLink("CrsRiskRelationBaseToRiskDefinitiinBaseLink");
+    }
+
+    /**
+     * Container's getter for ECrsSearchTransVO1.
+     * @return ECrsSearchTransVO1
+     */
+    public ECrsSearchTransVOImpl getECrsSearchTransVO() {
+        return (ECrsSearchTransVOImpl) findViewObject("ECrsSearchTransVO");
     }
 }

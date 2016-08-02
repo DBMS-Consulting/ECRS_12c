@@ -20,7 +20,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setCompoundCodeId((Integer)value);
+                obj.setCompoundCodeId((Integer) value);
             }
         }
         ,
@@ -30,7 +30,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setCompoundType((String)value);
+                obj.setCompoundType((String) value);
             }
         }
         ,
@@ -40,7 +40,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setCompoundCode((String)value);
+                obj.setCompoundCode((String) value);
             }
         }
         ,
@@ -50,7 +50,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setState((Integer)value);
+                obj.setState((Integer) value);
             }
         }
         ,
@@ -60,7 +60,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setGenericName((String)value);
+                obj.setGenericName((String) value);
             }
         }
         ,
@@ -70,7 +70,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setTradeName((String)value);
+                obj.setTradeName((String) value);
             }
         }
         ,
@@ -80,7 +80,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setIndication((String)value);
+                obj.setIndication((String) value);
             }
         }
         ,
@@ -90,7 +90,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setMarketed((String)value);
+                obj.setMarketed((String) value);
             }
         }
         ,
@@ -100,7 +100,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setDesignee((String)value);
+                obj.setDesignee((String) value);
             }
         }
         ,
@@ -110,7 +110,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setCrsTasl((String)value);
+                obj.setCrsTasl((String) value);
             }
         }
         ,
@@ -120,7 +120,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setCrsMedicalLead((String)value);
+                obj.setCrsMedicalLead((String) value);
             }
         }
         ,
@@ -130,7 +130,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setCrsBsl((String)value);
+                obj.setCrsBsl((String) value);
             }
         }
         ,
@@ -140,7 +140,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setCrsName((String)value);
+                obj.setCrsName((String) value);
             }
         }
         ,
@@ -150,7 +150,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setCrsId((String)value);
+                obj.setCrsId((String) value);
             }
         }
         ,
@@ -160,7 +160,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
 
             public void put(ECrsSearchVORowImpl obj, Object value) {
-                obj.setReleaseStatus((String)value);
+                obj.setReleaseStatus((String) value);
             }
         }
         ,
@@ -244,7 +244,8 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
             }
         }
         ;
-        private static AttributesEnum[] vals = null;
+        static AttributesEnum[] vals = null;
+        ;
         private static int firstIndex = 0;
 
         public abstract Object get(ECrsSearchVORowImpl object);
@@ -319,6 +320,22 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
     }
 
     /**
+     * Gets the attribute value for the calculated attribute Compoundtype.
+     * @return the Compoundtype
+     */
+    public String getCompoundtype() {
+        return (String) getAttributeInternal(COMPOUNDTYPE);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Compoundcode.
+     * @return the Compoundcode
+     */
+    public String getCompoundcode() {
+        return (String) getAttributeInternal(COMPOUNDCODE);
+    }
+
+    /**
      * Gets the attribute value for the calculated attribute CompoundType.
      * @return the CompoundType
      */
@@ -358,12 +375,29 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
         return (Integer) getAttributeInternal(STATE);
     }
 
+
     /**
      * Sets <code>value</code> as the attribute value for the calculated attribute State.
      * @param value value to set the  State
      */
     public void setState(Integer value) {
         setAttributeInternal(STATE, value);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Genericname.
+     * @return the Genericname
+     */
+    public String getGenericname() {
+        return (String) getAttributeInternal(GENERICNAME);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Tradename.
+     * @return the Tradename
+     */
+    public String getTradename() {
+        return (String) getAttributeInternal(TRADENAME);
     }
 
     /**
@@ -406,6 +440,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(INDICATION);
     }
 
+
     /**
      * Sets <code>value</code> as the attribute value for the calculated attribute Indication.
      * @param value value to set the  Indication
@@ -421,6 +456,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
     public String getMarketed() {
         return (String) getAttributeInternal(MARKETED);
     }
+
 
     /**
      * Sets <code>value</code> as the attribute value for the calculated attribute Marketed.
@@ -438,6 +474,7 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(DESIGNEE);
     }
 
+
     /**
      * Sets <code>value</code> as the attribute value for the calculated attribute Designee.
      * @param value value to set the  Designee
@@ -445,6 +482,55 @@ public class ECrsSearchVORowImpl extends ViewRowImpl {
     public void setDesignee(String value) {
         setAttributeInternal(DESIGNEE, value);
     }
+
+    /**
+     * Gets the attribute value for the calculated attribute Crstasl.
+     * @return the Crstasl
+     */
+    public String getCrstasl() {
+        return (String) getAttributeInternal(CRSTASL);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Crsmedicallead.
+     * @return the Crsmedicallead
+     */
+    public String getCrsmedicallead() {
+        return (String) getAttributeInternal(CRSMEDICALLEAD);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Crsbsl.
+     * @return the Crsbsl
+     */
+    public String getCrsbsl() {
+        return (String) getAttributeInternal(CRSBSL);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Crsname.
+     * @return the Crsname
+     */
+    public String getCrsname() {
+        return (String) getAttributeInternal(CRSNAME);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Crsid.
+     * @return the Crsid
+     */
+    public String getCrsid() {
+        return (String) getAttributeInternal(CRSID);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Releasestatus.
+     * @return the Releasestatus
+     */
+    public String getReleasestatus() {
+        return (String) getAttributeInternal(RELEASESTATUS);
+    }
+
 
     /**
      * Gets the attribute value for the calculated attribute CrsTasl.
