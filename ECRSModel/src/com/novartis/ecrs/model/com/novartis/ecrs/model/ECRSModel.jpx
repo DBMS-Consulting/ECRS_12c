@@ -9,9 +9,9 @@
   PackageName="com.novartis.ecrs.model">
   <DesignTime>
     <Attr Name="_jprName" Value="../../../../../../../../../../ECRSViewController/ECRSViewController.jpr"/>
+    <Attr Name="_appModuleNames0" Value="com.novartis.ecrs.model.am.ECRSAppModule"/>
     <Attr Name="_jbo.TypeMapEntries" Value="OracleApps"/>
     <Attr Name="_NamedConnection" Value="CRSConn"/>
-    <Attr Name="_appModuleNames0" Value="com.novartis.ecrs.model.am.ECRSAppModule"/>
   </DesignTime>
   <Containee
     Name="am"
@@ -35,6 +35,7 @@
     ObjectType="JboPackage">
     <DesignTime>
       <Attr Name="_EO" Value="true"/>
+      <Attr Name="_AS" Value="true"/>
     </DesignTime>
   </Containee>
   <Containee
@@ -94,7 +95,15 @@
     </DesignTime>
   </Containee>
   <Containee
+    Name="entity"
+    PackageName="entity"
+    ObjectType="JboPackage"/>
+  <Containee
     Name="view"
     PackageName="view"
-    ObjectType="JboPackage"/>
+    ObjectType="JboPackage">
+    <DesignTime>
+      <Attr Name="_VO" Value="true"/>
+    </DesignTime>
+  </Containee>
 </JboProject>

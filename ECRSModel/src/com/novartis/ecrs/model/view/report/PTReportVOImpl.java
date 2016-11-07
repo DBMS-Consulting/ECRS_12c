@@ -54,7 +54,7 @@ public class PTReportVOImpl extends ViewObjectImpl {
      * @return bind variable value for pRelScope
      */
     public String getpRelScope() {
-        return (String) getNamedWhereClauseParam("pRelScope");
+        return (String)getNamedWhereClauseParam("pRelScope");
     }
 
     /**

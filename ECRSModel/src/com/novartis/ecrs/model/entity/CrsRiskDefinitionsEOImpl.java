@@ -340,6 +340,11 @@ public class CrsRiskDefinitionsEOImpl extends EntityImpl {
     public void setCrsRiskDefnId(Long value) {
         setAttributeInternal(CRSRISKDEFNID, value);
     }
+    
+    public void remove() {
+            refresh(REFRESH_WITH_DB_FORGET_CHANGES);
+            super.remove();
+        }
 
     /**
      * Gets the attribute value for CrsRiskId, using the alias name CrsRiskId.

@@ -4,6 +4,7 @@ package com.novartis.ecrs.ui.bean;
 import com.novartis.ecrs.model.constants.ModelConstants;
 import com.novartis.ecrs.model.lov.UserRoleVORowImpl;
 import com.novartis.ecrs.model.view.CrsContentVORowImpl;
+import com.novartis.ecrs.model.view.CrsRiskRelationVORowImpl;
 import com.novartis.ecrs.model.view.HierarchyChildVORowImpl;
 import com.novartis.ecrs.model.view.base.CrsContentBaseVORowImpl;
 import com.novartis.ecrs.model.view.report.PTReportVOImpl;
@@ -214,6 +215,7 @@ public class ManageCRSBean implements Serializable {
     private transient RichPanelGroupLayout riskBasePopupPanel;
     private List<String> selRiskPurposesBase;
     private RichPopup cancelWarningPopup;
+    private RichDialog riskDialog;
 
     public ManageCRSBean() {
         super();
@@ -386,6 +388,10 @@ public class ManageCRSBean implements Serializable {
      */
     public void onClickSearch(ActionEvent actionEvent) {
         logger.info("--Start-ManageCRSBean:onClickSearch--");
+        
+        DCBindingContainer bc =
+            ADFUtils.findBindingContainerByName(ViewConstants.PAGE_DEF_SEARCH);
+        
         //set release staus to binding
         String releaseStatus = "";
         if ("anonymous".equalsIgnoreCase(userName)){
@@ -399,6 +405,7 @@ public class ManageCRSBean implements Serializable {
         } else {
             releaseStatus = getCurrReleaseStatus();
         }
+        
         //set releaseStatus variable to current row attribute
         ADFUtils.setEL("#{bindings.ReleaseStatus.inputValue}",
                        releaseStatus);
@@ -415,7 +422,7 @@ public class ManageCRSBean implements Serializable {
             ADFUtils.setEL("#{bindings.CompoundType.inputValue}", ModelConstants.COMPOUND_TYPE_COMPOUND);
         }
         
-        DCBindingContainer bc = ADFUtils.getDCBindingContainer();
+        
         OperationBinding ob = bc.getOperationBinding("filterCRSContent");
         ob.getParamsMap().put("userInRole", loggedInUserRole);
         ob.getParamsMap().put("userName", getUserName());
@@ -697,7 +704,11 @@ public class ManageCRSBean implements Serializable {
     public void editRiskDefinition(ActionEvent actionEvent) {
         //Added because, when coming from copy current flow, the new ID is not there in the EO and giving error while setting current row.
         DCIteratorBinding relationIter = ADFUtils.findIterator("CrsRiskRelationVOIterator");
+        relationIter.getViewObject().clearCache();
         relationIter.executeQuery();
+        
+         CrsRiskRelationVORowImpl relationRow = (CrsRiskRelationVORowImpl)relationIter.getCurrentRow();
+         relationRow.getCrsRiskDefinitionsVO().reset();
         
         logger.info("Editing Risk definition, popup mode edit.");
         ADFUtils.setPageFlowScopeValue("popupMode", "Edit");
@@ -768,7 +779,17 @@ public class ManageCRSBean implements Serializable {
             this.iconCRSSaveError.setVisible(false);
             ADFUtils.addPartialTarget(cntrlStatusBar);
         }
+        ViewObject riskDefVO = ADFUtils.findIterator("CrsRiskDefinitionsVOIterator").getViewObject();
+        RowSetIterator rs = riskDefVO.createRowSetIterator(null);
+        while(rs.hasNext()){
+            Row row = rs.next();
+            if(row != null){
+                row.refresh(Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES | Row.REFRESH_UNDO_CHANGES);
+                logger.info("Closing CrsRisk Popup -- refresh risk def row.");
+            }
+        }
         ADFUtils.showPopup(riskDefPopup);
+        System.err.println("NITISH 2 :: "+relationRow.getCrsRiskDefinitionsVO().getRowCount());
     }
 
     public void deleteRiskDefinitions() {
@@ -803,6 +824,10 @@ public class ManageCRSBean implements Serializable {
             Row relationRow = riskRelIter.getCurrentRow();
             if (null != relationRow){
                 String safetyTopic = (String) relationRow.getAttribute("SafetyTopicOfInterest");
+                if(safetyTopic != null && safetyTopic.contains("'")){
+                    String[] str = safetyTopic.split("'");
+                    safetyTopic = str[0]+ "''" + str[1];
+                }
                 if(safetyTopic == null || "".equals(safetyTopic)){
                     ADFUtils.addMessage(FacesMessage.SEVERITY_ERROR, uiBundle.getString("STOI_MANDATE_ERROR"));
                     return;
@@ -945,6 +970,11 @@ public class ManageCRSBean implements Serializable {
             currRow.refresh(Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES | Row.REFRESH_UNDO_CHANGES);
             logger.info("Closing CrsRisk Popup -- refresh risk def row.");
         }
+        riskDefVO.clearCache();
+        riskDefVO.executeQuery();
+        ResetUtils.reset(riskDefTable);
+        riskDefTable.resetStampState();
+        System.err.println("NIITSH");
         DCIteratorBinding relIter = ADFUtils.findIterator("CrsRiskRelationVOIterator");
         ViewObject riskRelVO = relIter.getViewObject();
         Row relCurrRow = riskRelVO.getCurrentRow();
@@ -1364,6 +1394,12 @@ public class ManageCRSBean implements Serializable {
         hierVO.setNamedWhereClauseParam("pLevel", level != null ? level : null);
         hierVO.setNamedWhereClauseParam("pDict", dictionary != null ? dictionary : null);
         logger.info(" Hierarchy search Query..." + hierVO.getQuery());
+        if("NMATSMQ".equalsIgnoreCase(dictionary) || "MEDSMQ".equalsIgnoreCase(dictionary)){
+            hierVO.setWhereClause("MQSTATUS <> 'I'");
+        }
+        else{
+            hierVO.setWhereClause(null);
+        }
         hierVO.executeQuery();
         if (null != this.childTreeTable){
             this.childTreeTable.setVisible(false);
@@ -1961,21 +1997,25 @@ public class ManageCRSBean implements Serializable {
             SelectItem item3 = new SelectItem(ViewConstants.MQ3, ViewConstants.SMQ3);
             SelectItem item4 = new SelectItem(ViewConstants.MQ4, ViewConstants.SMQ4);
             SelectItem item5 = new SelectItem(ViewConstants.MQ5, ViewConstants.SMQ5);
+            SelectItem item11 = new SelectItem(ViewConstants.MQ6, ViewConstants.SMQ6);
             SelectItem item6 = new SelectItem(ViewConstants.NMQ1, ViewConstants.CUSTOM1);
             SelectItem item7 = new SelectItem(ViewConstants.NMQ2, ViewConstants.CUSTOM2);
             SelectItem item8 = new SelectItem(ViewConstants.NMQ3, ViewConstants.CUSTOM3);
             SelectItem item9 = new SelectItem(ViewConstants.NMQ4, ViewConstants.CUSTOM4);
             SelectItem item10 = new SelectItem(ViewConstants.NMQ5, ViewConstants.CUSTOM5);
+            SelectItem item12 = new SelectItem(ViewConstants.NMQ6, ViewConstants.CUSTOM6);
             filterItems.add(item1);
             filterItems.add(item2);
             filterItems.add(item3);
             filterItems.add(item4);
             filterItems.add(item5);
+            filterItems.add(item11);
             filterItems.add(item6);
             filterItems.add(item7);
             filterItems.add(item8);
             filterItems.add(item9);
             filterItems.add(item10);
+            filterItems.add(item12);
         }
         return filterItems;
     }
@@ -2061,6 +2101,21 @@ public class ManageCRSBean implements Serializable {
         logger.info("Closing CrsRisk Popup, rolling back any unsaved changes.");
         DCIteratorBinding iter = ADFUtils.findIterator("CrsRiskDefinitionsVOIterator");
         ViewObject riskDefVO = iter.getViewObject();
+        riskDefVO.clearCache();
+        riskDefVO.executeQuery();
+        ResetUtils.reset(riskDefTable);
+        riskDefTable.resetStampState();
+        System.err.println("NIITSH");
+        ADFUtils.addPartialTarget(riskDialog);
+        riskDefVO.executeEmptyRowSet();
+        RowSetIterator rs = riskDefVO.createRowSetIterator(null);
+        while(rs.hasNext()){
+            Row row = rs.next();
+            if(row != null){
+                row.refresh(Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES | Row.REFRESH_UNDO_CHANGES);
+                logger.info("Closing CrsRisk Popup -- refresh risk def row.");
+            }
+        }
         Row currRow = riskDefVO.getCurrentRow();
         if(currRow != null){
             currRow.refresh(Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES | Row.REFRESH_UNDO_CHANGES);
@@ -2069,15 +2124,62 @@ public class ManageCRSBean implements Serializable {
         DCIteratorBinding relIter = ADFUtils.findIterator("CrsRiskRelationVOIterator");
         ViewObject riskRelVO = relIter.getViewObject();
         Row relCurrRow = riskRelVO.getCurrentRow();
+        
         if(relCurrRow != null){
             relCurrRow.refresh(Row.REFRESH_REMOVE_NEW_ROWS | Row.REFRESH_WITH_DB_FORGET_CHANGES | Row.REFRESH_UNDO_CHANGES);
             logger.info("Closing CrsRisk Popup -- refresh risk relations row.");
         }
         
-        //        OperationBinding oper = ADFUtils.findOperation("Rollback");
-        //        oper.execute();
-        //        if (oper.getErrors().size() > 0)
-        //            ADFUtils.showFacesMessage("An internal error has occured. Please try later.", FacesMessage.SEVERITY_ERROR);
+        riskRelVO.clearCache();
+        riskRelVO.executeQuery();
+        riskRelVO.executeEmptyRowSet();
+        
+        
+        //START ADDITION BY NITISH FOR CANCEL ISSUE
+        CrsContentVORowImpl selectedRow =
+                   (CrsContentVORowImpl)ADFUtils.evaluateEL("#{bindings.CrsContentVOIterator.currentRow}");
+        
+        
+                OperationBinding oper = ADFUtils.findOperation("Rollback");
+                oper.execute();
+                if (oper.getErrors().size() > 0)
+                    ADFUtils.showFacesMessage("An internal error has occured. Please try later.", FacesMessage.SEVERITY_ERROR);
+        DCBindingContainer bc =
+            ADFUtils.findBindingContainerByName(ViewConstants.PAGE_DEF_SEARCH);
+        DCIteratorBinding searchIter =  bc.findIteratorBinding("ECrsSearchVOIterator");
+        if(searchIter.getEstimatedRowCount() == 0){
+            Row row = searchIter.getViewObject().createRow();
+            searchIter.getViewObject().insertRow(row);
+            searchIter.getViewObject().setCurrentRow(row);
+        }
+        
+        // get the selected row , by this you can get any attribute of that row
+   System.err.println("NITISH : : " +selectedRow);
+        ViewObject vo = (ViewObject)ADFUtils.findIterator("CrsContentVOIterator").getViewObject();
+        vo.setWhereClause("CRS_ID = "+selectedRow.getAttribute("CrsId"));
+        vo.executeQuery();
+        
+        System.err.println("NITISH 2 :: "+vo);
+        
+        if(vo.getEstimatedRowCount() > 0)
+            vo.setCurrentRow(vo.first());
+
+        setSelectedCrsName(selectedRow.getCrsName());
+        setSelDesigneeList(null);
+        List<String> designeeList = new ArrayList<String>();
+        if (selectedRow.getDesignee() != null) {
+            String[] designeeArray = selectedRow.getDesignee().split("[,]");
+            if (designeeArray.length > 0) {
+                for (int i = 0; i < designeeArray.length; i++) {
+                    designeeList.add(designeeArray[i]);
+                }
+            }
+            setSelDesigneeList(designeeList);
+        }
+        onClickSearch(null);
+        
+        //END ADDITION BY NITISH -- For cancel issue
+                        
         Long crsId = (Long)ADFUtils.getPageFlowScopeValue("crsId");
         OperationBinding oper1 = ADFUtils.findOperation("initRiskRelation");
         oper1.getParamsMap().put("crsId", crsId);
@@ -2147,6 +2249,7 @@ public class ManageCRSBean implements Serializable {
             ViewObject childVO = childIter.getViewObject();
             logger.info("Executing hierachy child for selected content ID");
             childVO.setNamedWhereClauseParam("bContentId", ADFUtils.evaluateEL("#{row.ContentId}"));
+            childVO.setRangeSize(-1);
             childVO.executeQuery();
             if (childVO.getEstimatedRowCount() > 0) {
                 HierarchyChildUIBean parRow = new HierarchyChildUIBean(childVO.first());
@@ -2155,9 +2258,12 @@ public class ManageCRSBean implements Serializable {
                 childVO.setCurrentRow(childVO.first());
                 HierarchyChildVORowImpl parVORow = (HierarchyChildVORowImpl)childVO.first();
                 RowIterator rs = parVORow.getHierarchyChildDetailVO();
+                parVORow.getHierarchyChildDetailVO().setRangeSize(-1);
+                Row[] rows = parVORow.getHierarchyChildDetailVO().getAllRowsInRange();
                 List<HierarchyChildUIBean> childRows = new ArrayList<HierarchyChildUIBean>();
-                while (rs.hasNext()) {
-                    Row childRow = rs.next();
+//                while (rs.hasNext()) {
+                for(Row childRow : rows){
+//                    Row childRow = rs.next();
                     childRows.add(new HierarchyChildUIBean(childRow));
                 }
                 parRow.setChildren(childRows);
@@ -4416,6 +4522,7 @@ public class ManageCRSBean implements Serializable {
             }
         }
         saveRiskDefs(actionEvent);
+        cancelRisk();
         getCancelWarningPopup().hide();
         getRiskDefPopup().hide();
     }
@@ -4424,5 +4531,23 @@ public class ManageCRSBean implements Serializable {
         onClickRiskDefSave(actionEvent);
         getCancelWarningPopup().hide();
         getRiskDefPopup().hide();
+    }
+
+    public void stoiVC(ValueChangeEvent valueChangeEvent) {
+        String val = (String)valueChangeEvent.getNewValue();
+               if(val != null && val.contains("'")){
+                   String[] str = val.split("'");
+                   val = str[0]+ "''" + str[1];
+                   ADFUtils.setEL("#{bindings.SafetyTopicOfInterest.inputValue}", (val));
+               }
+               ADFUtils.addPartialTarget(valueChangeEvent.getComponent());
+    }
+
+    public void setRiskDialog(RichDialog riskDialog) {
+        this.riskDialog = riskDialog;
+    }
+
+    public RichDialog getRiskDialog() {
+        return riskDialog;
     }
 }

@@ -4,10 +4,11 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="PTReportVO"
-  Version="12.2.1.0.31"
+  Version="11.1.2.64.36"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
+  UseGlueCode="false"
   FetchSize="100"
   FetchMode="FETCH_AS_NEEDED"
   ComponentClass="com.novartis.ecrs.model.view.report.PTReportVOImpl"

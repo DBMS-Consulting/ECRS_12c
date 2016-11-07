@@ -268,7 +268,7 @@ ORDER BY
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Precision="30"
+    Precision="50"
     Type="java.lang.String"
     ColumnType="VARCHAR2"
     AliasName="TRADE_NAME"

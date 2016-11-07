@@ -14,7 +14,7 @@
     <iterator Binds="HierarchySearchVO" RangeSize="25" DataControl="ECRSAppModuleDataControl"
               id="HierarchySearchVOIterator"/>
     <iterator Binds="CrsContentVO" RangeSize="10" DataControl="ECRSAppModuleDataControl" id="CrsContentVOIterator"/>
-    <iterator Binds="HierarchyChildVO" RangeSize="25" DataControl="ECRSAppModuleDataControl"
+    <iterator Binds="HierarchyChildVO" RangeSize="-1" DataControl="ECRSAppModuleDataControl"
               id="HierarchyChildVOIterator"/>
     <iterator Binds="CopyCrsRiskVO" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="CopyCrsRiskVOIterator"/>
     <iterator Binds="CrsRiskBaseVO" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="CrsRiskBaseVOIterator"/>
@@ -38,6 +38,8 @@
     <iterator id="CrsRiskRelationsBaseVOIterator" Binds="CrsRiskRelationsBaseVO" DataControl="ECRSAppModuleDataControl"
               RangeSize="25"/>
     <iterator id="CrsRiskDefinitionsBaseVOIterator" Binds="CrsRiskDefinitionsBaseVO"
+              DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
+    <iterator id="EcrsSearchTransVOIterator" Binds="ECrsSearchTransVO"
               DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
   </executables>
   <bindings>
@@ -850,5 +852,24 @@
     <listOfValues StaticList="false" Uses="LOV_SocTerm" IterBinding="CrsRiskRelationsBaseVOIterator" id="SocTerm1"
           DTSupportsMRU="true"        SelectItemValueMode="ListObject"/>
     <listOfValues StaticList="false" Uses="LOV_DomainId" IterBinding="CrsRiskRelationsBaseVOIterator" id="DomainId2"/>
+    <methodAction id="undoDelete" RequiresUpdateModel="true" Action="invokeMethod" MethodName="undoDelete"
+                  IsViewObjectMethod="true" DataControl="ECRSAppModuleDataControl1"
+                  InstanceName="data.ECRSAppModuleDataControl1.CrsRiskDefinitionsVO"
+                  ReturnName="data.ECRSAppModuleDataControl1.methodResults.undoDelete_ECRSAppModuleDataControl1_CrsRiskDefinitionsVO_undoDelete_result"/>
+    <attributeValues IterBinding="EcrsSearchTransVOIterator" id="ReleaseStatus">
+      <AttrNames>
+        <Item Value="ReleaseStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcrsSearchTransVOIterator" id="State">
+      <AttrNames>
+        <Item Value="State"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="EcrsSearchTransVOIterator" id="CompoundType">
+      <AttrNames>
+        <Item Value="CompoundType"/>
+      </AttrNames>
+    </attributeValues>
   </bindings>
 </pageDefinition>

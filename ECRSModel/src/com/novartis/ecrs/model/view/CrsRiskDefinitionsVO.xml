@@ -4,12 +4,17 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskDefinitionsVO"
-  Version="12.1.3.2.1"
+  Version="11.1.2.64.36"
   BindingStyle="OracleName"
   CustomQuery="true"
-  PageIterMode="Full">
+  PageIterMode="Full"
+  ComponentClass="com.novartis.ecrs.model.view.CrsRiskDefinitionsVOImpl"
+  UseGlueCode="false"
+  ComponentInterface="com.novartis.ecrs.model.view.common.CrsRiskDefinitionsVO"
+  ClientProxyName="com.novartis.ecrs.model.view.client.CrsRiskDefinitionsVOClient">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Coll|VarAccess"/>
   </DesignTime>
   <Properties>
     <SchemaBasedProperties>
@@ -264,4 +269,12 @@ FROM
     <PropertiesBundle
       PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
   </ResourceBundle>
+  <ClientInterface>
+    <Method
+      Name="undoDelete"
+      MethodName="undoDelete">
+      <Return
+        Type="void"/>
+    </Method>
+  </ClientInterface>
 </ViewObject>

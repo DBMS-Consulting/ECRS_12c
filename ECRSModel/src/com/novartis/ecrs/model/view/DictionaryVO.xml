@@ -18,7 +18,7 @@
         ResId="com.novartis.ecrs.model.view.DictionaryVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
-  <SQLQuery><![CDATA[select dict_version from crs_dict_versions_vw where dict_name = 'NMATMED']]></SQLQuery>
+  <SQLQuery><![CDATA[select dict_version from crs_dict_versions_vw where dict_name = 'MEDDRA']]></SQLQuery>
   <ViewAttribute
     Name="DictVersion"
     IsUpdateable="false"

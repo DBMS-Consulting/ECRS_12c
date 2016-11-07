@@ -46,7 +46,7 @@ FROM tms.tms_def_dictionaries d,
   tms.tms_def_levels l,
 --  crs_dict_versions v,
   tms.tms_dict_contents c
-WHERE d.short_name = 'NMATMED'
+WHERE d.short_name = 'MEDDRA'
 --AND v.dict_id      = d.def_dictionary_id
 AND l.short_name LIKE 'SOC'
 AND d.def_dictionary_id = l.def_dictionary_id

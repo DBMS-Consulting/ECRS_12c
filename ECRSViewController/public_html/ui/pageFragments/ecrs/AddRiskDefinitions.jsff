@@ -6,7 +6,8 @@
   <af:panelGroupLayout id="pg32" layout="vertical" halign="start">
         <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}"
                   id="t1"/>
-    <af:panelHeader text="#{ecrsviewcontrollerBundle.RELATIONS} : #{pageFlowScope.crsName}" id="ph1" styleClass="AFStretchWidth" size="1">
+    <af:panelHeader text="#{ecrsviewcontrollerBundle.RELATIONS} : #{pageFlowScope.crsName}" id="ph1" styleClass="AFStretchWidth" size="1"
+                    partialTriggers="b1 b3 b2">
       <f:facet name="context"/>
       <f:facet name="menuBar"/>
       <f:facet name="toolbar"/>
@@ -443,7 +444,8 @@
     <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
               binding="#{pageFlowScope.manageCRSBean.riskDefPopup}" contentDelivery="lazyUncached"
               popupCanceledListener="#{pageFlowScope.manageCRSBean.onCloseRiskPopup}">
-      <af:dialog id="d1" title="Detail Risk Definitions" contentWidth="900" type="none" closeIconVisible="false">
+      <af:dialog id="d1" title="Detail Risk Definitions" contentWidth="900" type="none" closeIconVisible="false"
+                 binding="#{pageFlowScope.manageCRSBean.riskDialog}">
         <f:facet name="buttonBar">
           <af:panelGroupLayout id="pgl3">
             <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb14"
@@ -475,7 +477,7 @@
                           maximumLength="#{bindings.SafetyTopicOfInterest.hints.precision}"
                           shortDesc="#{bindings.SafetyTopicOfInterest.hints.tooltip}" id="it1"
                           contentStyle="width:200px;" autoSubmit="true"
-                          valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}"
+                          valueChangeListener="#{pageFlowScope.manageCRSBean.stoiVC}"
                           readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true">
               <f:validator binding="#{bindings.SafetyTopicOfInterest.validator}"/>
             </af:inputText>
@@ -513,7 +515,7 @@
               <af:selectItem label="ER (Expediting Rules)" id="si12" value="ER"/>
                 <af:selectItem label="UD (Underlying Diseases)" id="si7611" value="UD"/>
               <af:selectItem label="A1 (AESI for NIS Protocol)" id="si7621" value="A1"/>
-              <af:selectItem label="A2 (AESI not RMP)" id="si7631" value="A2"/>
+              <af:selectItem label="A2 (AESI not RMP/PSUR)" id="si7631" value="A2"/>
             </af:selectManyChoice>
             
             <af:selectOneChoice value="#{bindings.SocTerm.inputValue}" label="#{bindings.SocTerm.label}"
@@ -594,8 +596,9 @@
                       fetchSize="#{bindings.CrsRiskDefinitionsVO.rangeSize}" rowBandingInterval="0"
                       selectedRowKeys="#{bindings.CrsRiskDefinitionsVO.collectionModel.selectedRow}"
                       selectionListener="#{bindings.CrsRiskDefinitionsVO.collectionModel.makeCurrent}"
-                      rowSelection="multiple" id="t4" styleClass="AFStretchWidth" partialTriggers="::cb4"
-                      binding="#{pageFlowScope.manageCRSBean.riskDefTable}" contentDelivery="immediate"
+                      rowSelection="multiple" id="t4" styleClass="AFStretchWidth"
+                      partialTriggers="::cb4 :::cb14 :::b1 :::b3 :::b2"
+                      binding="#{pageFlowScope.manageCRSBean.riskDefTable}"
                       columnStretching="column:c19">
               <af:column id="c85" width="20" visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
                 <af:selectBooleanCheckbox value="#{row.bindings.SelectAttr.inputValue}"
@@ -751,14 +754,14 @@
     <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached"
               binding="#{pageFlowScope.manageCRSBean.hierPopup}">
       <af:dialog id="d3" title="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" modal="false" type="cancel"
-                 contentWidth="350">
+                 contentWidth="450">
         <f:facet name="buttonBar"/>
         <af:panelFormLayout id="pfl1" rows="2" maxColumns="2">
           <af:selectOneChoice label="#{ecrsviewcontrollerBundle.DICTIONARY}" id="soc2" required="true"
                               value="#{pageFlowScope.manageCRSBean.dictionary}" autoSubmit="true"
                               valueChangeListener="#{pageFlowScope.manageCRSBean.dictionaryVC}">
-            <af:selectItem label="MedDRA" value="NMATMED" id="si13"/>
-            <af:selectItem label="MQ" value="NMATSMQ" id="si14"/>
+            <af:selectItem label="MedDRA" value="MEDDRA" id="si13"/>
+            <af:selectItem label="MQ" value="MEDSMQ" id="si14"/>
           </af:selectOneChoice>
           <af:selectOneChoice label="#{ecrsviewcontrollerBundle.LEVEL}" id="soc3"
                               value="#{pageFlowScope.manageCRSBean.level}" autoSubmit="true" partialTriggers="soc2">
@@ -1078,7 +1081,7 @@
                 <af:selectItem label="ER (Expediting Rules)" id="si23" value="ER"/>
                        <af:selectItem label="UD (Underlying Diseases)" id="si7612" value="UD"/>
               <af:selectItem label="A1 (AESI for NIS Protocol)" id="si7622" value="A1"/>
-              <af:selectItem label="A2 (AESI not RMP)" id="si7623" value="A2"/>
+              <af:selectItem label="A2 (AESI not RMP/PSUR)" id="si7623" value="A2"/>
               </af:selectManyChoice>
               
               <af:selectOneChoice value="#{bindings.SocTerm.inputValue}" label="#{bindings.SocTerm.label}"
@@ -1404,7 +1407,7 @@
               <af:selectItem label="ER (Expediting Rules)" id="si76" value="ER"/>
               <af:selectItem label="UD (Underlying Diseases)" id="si761" value="UD"/>
               <af:selectItem label="A1 (AESI for NIS Protocol)" id="si762" value="A1"/>
-              <af:selectItem label="A2 (AESI not RMP)" id="si763" value="A2"/>
+              <af:selectItem label="A2 (AESI not RMP/PSUR)" id="si763" value="A2"/>
             </af:selectManyChoice>
             <af:inputText label="#{bindings.SocTerm1.label}" id="it27" value="#{pageFlowScope.socTermBase}"
                 visible="#{bindings.DomainId2.inputValue == 1 or bindings.DomainId2.inputValue == null}"
@@ -1535,13 +1538,13 @@
       <af:dialog id="d14" type="none" title="Warning" titleIconSource="/images/warning.png">
         <f:facet name="buttonBar">
           <af:panelGroupLayout id="pgl19" layout="horizontal">
-            <af:button text="Save" id="b1" actionListener="#{pageFlowScope.manageCRSBean.onSaveRiskDefsWarningPopup}"
+            <af:commandButton text="Yes" id="b1" actionListener="#{pageFlowScope.manageCRSBean.onSaveRiskDefsWarningPopup}"
                        visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"/>
-            <af:button text="Save" id="b3"
+            <af:commandButton text="Yes" id="b3"
                        actionListener="#{pageFlowScope.manageCRSBean.onClickRiskDefSaveWarningPopup}"
                        visible="#{securityContext.userInRole['CRS_MQM'] and pageFlowScope.manageCRSBean.flowType eq 'U'}"/>
             <af:spacer width="10" height="10" id="s11"/>
-            <af:button text="Cancel" id="b2" actionListener="#{pageFlowScope.manageCRSBean.onCancelCrsRiskWarningPopup}"
+            <af:commandButton text="No" id="b2" actionListener="#{pageFlowScope.manageCRSBean.onCancelCrsRiskWarningPopup}"
                        immediate="true"/>
           </af:panelGroupLayout>
         </f:facet>

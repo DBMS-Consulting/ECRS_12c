@@ -4,13 +4,14 @@
 <Entity
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsContentEO"
-  Version="12.1.3.2.1"
+  Version="11.1.2.64.36"
   DBObjectType="table"
   DBObjectName="CRS_CONTENT_STG"
   AliasName="CrsContentEO"
   BindingStyle="OracleName"
   xmlns:validation="http://xmlns.oracle.com/adfm/validation"
-  RowClass="com.novartis.ecrs.model.entity.CrsContentEOImpl">
+  RowClass="com.novartis.ecrs.model.entity.CrsContentEOImpl"
+  UseGlueCode="false">
   <DesignTime>
     <Attr Name="_codeGenFlag2" Value="Access"/>
     <Attr Name="_isCodegen" Value="true"/>
@@ -90,7 +91,7 @@
   </Attribute>
   <Attribute
     Name="TradeName"
-    Precision="30"
+    Precision="50"
     ColumnName="TRADE_NAME"
     SQLType="VARCHAR"
     Type="java.lang.String"

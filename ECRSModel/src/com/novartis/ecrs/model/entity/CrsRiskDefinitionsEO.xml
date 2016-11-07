@@ -4,12 +4,13 @@
 <Entity
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskDefinitionsEO"
-  Version="12.1.3.2.1"
+  Version="11.1.2.64.36"
   DBObjectType="TABLE"
   DBObjectName="CRS_RISK_DEFINITIONS_STG"
   AliasName="CrsRiskDefinitionsEO"
   BindingStyle="OracleName"
-  RowClass="com.novartis.ecrs.model.entity.CrsRiskDefinitionsEOImpl">
+  RowClass="com.novartis.ecrs.model.entity.CrsRiskDefinitionsEOImpl"
+  UseGlueCode="false">
   <DesignTime>
     <Attr Name="_codeGenFlag2" Value="Access"/>
     <Attr Name="_isCodegen" Value="true"/>
