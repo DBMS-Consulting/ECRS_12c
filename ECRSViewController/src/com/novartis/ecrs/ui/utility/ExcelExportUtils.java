@@ -161,7 +161,10 @@ public class ExcelExportUtils {
                 "RiskPurposeCdFlag".equals(attribute) ||
                 "RiskPurposeOsFlag".equals(attribute) ||
                 "RiskPurposeMiFlag".equals(attribute) ||
-                "RiskPurposeErFlag".equals(attribute))
+                "RiskPurposeErFlag".equals(attribute) || 
+                "RiskPurposeUdFlag".equals(attribute) ||
+                "RiskPurposeA1Flag".equals(attribute) ||
+                "RiskPurposeA2Flag".equals(attribute))
                 sheet.setColumnWidth(cellIndex, 1000);
             else
                 sheet.setColumnWidth(cellIndex, 6000);
@@ -270,7 +273,7 @@ public class ExcelExportUtils {
     public InputStream getExcelInpStream() {
         InputStream inputStreamOfExcel =
              this.getClass().getClassLoader().getResourceAsStream("EcrsReports.xls");
-//            ExcelExportUtils.loadResourceAsStream("E:\\Ecrs_WS\\ecrs\\trunk\\ECRS\\ECRSViewController\\public_html\\exceltemplate\\EcrsReports.xls");
+//            ExcelExportUtils.loadResourceAsStream("C:\\ECRS_12c.git\\trunk\\ECRSViewController\\public_html\\exceltemplate\\EcrsReports.xls");
         return inputStreamOfExcel;
     }
     
@@ -280,7 +283,7 @@ public class ExcelExportUtils {
     public InputStream getImageInpStream() {
         InputStream inputStreamOfExcel =
              this.getClass().getClassLoader().getResourceAsStream("crs.png");
-//            ExcelExportUtils.loadResourceAsStream("E:\\Ecrs_WS\\ecrs\\trunk\\ECRS\\ECRSViewController\\public_html\\images\\crs.png");
+//            ExcelExportUtils.loadResourceAsStream("C:\\ECRS_12c.git\\trunk\\ECRSViewController\\public_html\\images\\crs.png");
         return inputStreamOfExcel;
     }
 }

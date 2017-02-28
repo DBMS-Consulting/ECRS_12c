@@ -819,6 +819,19 @@ public class ManageCRSBean implements Serializable {
     }
 
     public void saveRiskDefs(ActionEvent actionEvent) {
+        String baseOrStaging = (String)ADFUtils.evaluateEL("#{pageFlowScope.manageCRSBean.baseOrStaging}");
+        Row currRow = null;
+        String key = null;
+        if(baseOrStaging != null && "BASE".equalsIgnoreCase(baseOrStaging)){
+            DCIteratorBinding riskBaseIter = ADFUtils.findIterator("CrsRiskBaseVOIterator");
+            currRow = riskBaseIter.getCurrentRow();
+            key = riskBaseIter.getCurrentRowKeyString();
+        }
+        else{
+            DCIteratorBinding riskIter = ADFUtils.findIterator("CrsRiskVOIterator");
+            currRow = riskIter.getCurrentRow();
+            key = riskIter.getCurrentRowKeyString();
+        }
         DCIteratorBinding riskRelIter = ADFUtils.findIterator("CrsRiskRelationVOIterator");
         if(null != riskRelIter){
             Row relationRow = riskRelIter.getCurrentRow();
@@ -950,6 +963,16 @@ public class ManageCRSBean implements Serializable {
                     showStatus(ViewConstants.CRS_SAVED);
                 }
             }
+        }
+        if(baseOrStaging != null && "BASE".equalsIgnoreCase(baseOrStaging)){
+            DCIteratorBinding riskBaseIter = ADFUtils.findIterator("CrsRiskBaseVOIterator");
+            riskBaseIter.setCurrentRowWithKey(key);
+            riskBaseIter.getViewObject().setCurrentRow(currRow);
+        }
+        else{
+            DCIteratorBinding riskIter = ADFUtils.findIterator("CrsRiskVOIterator");
+            riskIter.setCurrentRowWithKey(key);
+            riskIter.getViewObject().setCurrentRow(currRow);
         }
     }
 
@@ -1869,6 +1892,12 @@ public class ManageCRSBean implements Serializable {
                           rsBundle.getString("com.novartis.ecrs.model.view.CrsRiskVO.RiskPurposeMiFlag_LABEL"));
             columnMap.put("RiskPurposeErFlag",
                           rsBundle.getString("com.novartis.ecrs.model.view.CrsRiskVO.RiskPurposeErFlag_LABEL"));
+            columnMap.put("RiskPurposeUdFlag",
+                          rsBundle.getString("com.novartis.ecrs.model.view.CrsRiskVO.RiskPurposeUdFlag_LABEL"));
+            columnMap.put("RiskPurposeA1Flag",
+                          rsBundle.getString("com.novartis.ecrs.model.view.CrsRiskVO.RiskPurposeA1Flag_LABEL"));
+            columnMap.put("RiskPurposeA2Flag",
+                          rsBundle.getString("com.novartis.ecrs.model.view.CrsRiskVO.RiskPurposeA2Flag_LABEL"));
             columnMap.put("SocTerm",
                           rsBundle.getString("SOC_AS_ASSIGNED_TO_THE_ADR"));
 //            columnMap.put("DatabaseList",
@@ -2079,7 +2108,7 @@ public class ManageCRSBean implements Serializable {
      * @param actionEvent
      */
     public void onCancelCrsRiskPopup(ActionEvent actionEvent) {
-        if(this.iconCRSChanged.isVisible()){
+        if(this.iconCRSChanged != null && this.iconCRSChanged.isVisible()){
             ADFUtils.showPopup(getCancelWarningPopup());
         }
         else{
@@ -2098,6 +2127,20 @@ public class ManageCRSBean implements Serializable {
     }
     
     private void cancelRisk(){
+        String baseOrStaging = (String)ADFUtils.evaluateEL("#{pageFlowScope.manageCRSBean.baseOrStaging}");
+        Row currentRow = null;
+        String key = null;
+        if(baseOrStaging != null && "BASE".equalsIgnoreCase(baseOrStaging)){
+            DCIteratorBinding riskBaseIter = ADFUtils.findIterator("CrsContentBaseVOIterator");
+            currentRow = riskBaseIter.getCurrentRow();
+            key = riskBaseIter.getCurrentRowKeyString();
+        }
+        else{
+            DCIteratorBinding riskIter = ADFUtils.findIterator("CrsContentVOIterator");
+            currentRow = riskIter.getCurrentRow();
+            key = riskIter.getCurrentRowKeyString();
+            System.err.println("NIT 3 : "+currentRow.getAttribute("CrsId"));
+        }
         logger.info("Closing CrsRisk Popup, rolling back any unsaved changes.");
         DCIteratorBinding iter = ADFUtils.findIterator("CrsRiskDefinitionsVOIterator");
         ViewObject riskDefVO = iter.getViewObject();
@@ -2105,7 +2148,7 @@ public class ManageCRSBean implements Serializable {
         riskDefVO.executeQuery();
         ResetUtils.reset(riskDefTable);
         riskDefTable.resetStampState();
-        System.err.println("NIITSH");
+        System.err.println("NIT");
         ADFUtils.addPartialTarget(riskDialog);
         riskDefVO.executeEmptyRowSet();
         RowSetIterator rs = riskDefVO.createRowSetIterator(null);
@@ -2154,12 +2197,12 @@ public class ManageCRSBean implements Serializable {
         }
         
         // get the selected row , by this you can get any attribute of that row
-   System.err.println("NITISH : : " +selectedRow);
+   System.err.println("NITKI : : " +selectedRow);
         ViewObject vo = (ViewObject)ADFUtils.findIterator("CrsContentVOIterator").getViewObject();
         vo.setWhereClause("CRS_ID = "+selectedRow.getAttribute("CrsId"));
         vo.executeQuery();
         
-        System.err.println("NITISH 2 :: "+vo);
+        System.err.println("NITKI 2 :: "+vo);
         
         if(vo.getEstimatedRowCount() > 0)
             vo.setCurrentRow(vo.first());
@@ -2210,6 +2253,18 @@ public class ManageCRSBean implements Serializable {
                 ADFUtils.addPartialTarget(cntrlStatusBarCopy);
             }
             copyPopup.hide();
+        }
+        if(baseOrStaging != null && "BASE".equalsIgnoreCase(baseOrStaging)){
+            DCIteratorBinding riskBaseIter = ADFUtils.findIterator("CrsContentBaseVOIterator");
+            riskBaseIter.setCurrentRowWithKey(key);
+            riskBaseIter.getViewObject().setCurrentRow(currentRow);
+        }
+        else{
+            DCIteratorBinding riskIter = ADFUtils.findIterator("CrsContentVOIterator");
+            System.err.println("NIT: "+riskIter.getCurrentRow().getAttribute("CrsId"));
+            riskIter.setCurrentRowWithKey(key);
+            System.err.println("NIT 2 : "+key);
+            riskIter.getViewObject().setCurrentRow(currentRow);
         }
     }
 

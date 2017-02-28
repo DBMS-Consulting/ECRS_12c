@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import oracle.adf.share.logging.ADFLogger;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import weblogic.servlet.security.ServletAuthentication;

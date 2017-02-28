@@ -356,6 +356,7 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
             ViewObject riskBaseVO = this.getCrsRiskBaseVO();
             //for the selected CRSID
             riskBaseVO.setWhereClause("CRS_ID = "+crsId);
+            System.err.println(riskBaseVO.getQuery());
             riskBaseVO.executeQuery();
             ViewObject riskVO = this.getCrsRiskVO();
             riskVO.executeEmptyRowSet();

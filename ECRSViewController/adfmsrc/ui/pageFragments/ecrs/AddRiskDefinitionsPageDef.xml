@@ -301,7 +301,7 @@
           <Item Value="CrsRiskId"/>
           <Item Value="DataDomain"/>
           <Item Value="MqmComment"/>
-          <Item Value="NonMeddraCompo1nentComment"/>
+          <Item Value="NonMeddraComponentComment"/>
           <Item Value="RiskPurposeCdFlag"/>
           <Item Value="RiskPurposeDsFlag"/>
           <Item Value="RiskPurposeErFlag"/>

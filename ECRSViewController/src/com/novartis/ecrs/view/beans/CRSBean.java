@@ -18,9 +18,9 @@ import org.apache.log4j.Logger;
 
 public class CRSBean implements Serializable {
     // ******** VERSION **********
-    public static final String APP_VERSION = "01.09.00";
+    public static final String APP_VERSION = "01.10.00";
     public static final String APP_BUILD = "00";
-    public static final String APP_BUILD_DATE = "21-SEP-2016";
+    public static final String APP_BUILD_DATE = "23-FEB-2017";
     public static final String RESOURCE_BUNDLE_NAME = "eCRS";
     @SuppressWarnings("compatibility:-2309154444791405523")
     private static final long serialVersionUID = -719374587308101131L;
