@@ -781,6 +781,10 @@ public class ManageCRSBean implements Serializable {
         }
         ViewObject riskDefVO = ADFUtils.findIterator("CrsRiskDefinitionsVOIterator").getViewObject();
         RowSetIterator rs = riskDefVO.createRowSetIterator(null);
+        if(!rs.hasNext()){
+            System.err.println(riskDefVO.getQuery());
+            riskDefVO.executeQuery();
+        }
         while(rs.hasNext()){
             Row row = rs.next();
             if(row != null){

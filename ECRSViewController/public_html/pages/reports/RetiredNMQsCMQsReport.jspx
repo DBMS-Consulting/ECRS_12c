@@ -30,45 +30,39 @@
                             </f:facet>
                             <f:facet name="legend"/>
                             <f:facet name="info"/>
-                            <af:panelGroupLayout id="pgl2" halign="center"
-                                                 layout="horizontal"
-                                                 inlineStyle="width:500px;">
-                                <af:table value="#{bindings.RetiredNmqCmqPrevUsedReport.collectionModel}"
-                                          var="row"
-                                          rows="#{bindings.RetiredNmqCmqPrevUsedReport.rangeSize}"
-                                          emptyText="#{bindings.RetiredNmqCmqPrevUsedReport.viewable ? 'No data to display.' : 'Access Denied.'}"
-                                          fetchSize="#{bindings.RetiredNmqCmqPrevUsedReport.rangeSize}"
-                                          rowBandingInterval="0" id="t1"
-                                          inlineStyle="width:500px;"
-                                          columnStretching="column:c1">
-                                    <af:column sortProperty="#{bindings.RetiredNmqCmqPrevUsedReport.hints.MeddraTerm.name}"
-                                               sortable="false"
-                                               headerText="#{bindings.RetiredNmqCmqPrevUsedReport.hints.MeddraTerm.label}"
-                                               id="c1" align="left" width="150">
-                                        <af:outputText value="#{row.MeddraTerm}"
-                                                       shortDesc="#{bindings.RetiredNmqCmqPrevUsedReport.hints.MeddraTerm.tooltip}"
-                                                       id="ot1"/>
-                                    </af:column>
-                                    <af:column sortProperty="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsEffectiveDt.name}"
-                                               sortable="false"
-                                               headerText="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsEffectiveDt.label}"
-                                               id="c2">
-                                        <af:outputText value="#{row.CrsEffectiveDt}"
-                                                       shortDesc="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsEffectiveDt.tooltip}"
-                                                       id="ot2">
-                                            <af:convertDateTime pattern="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsEffectiveDt.format}"/>
-                                        </af:outputText>
-                                    </af:column>
-                                    <af:column sortProperty="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsName.name}"
-                                               sortable="false"
-                                               headerText="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsName.label}"
-                                               id="c3" width="170">
-                                        <af:outputText value="#{row.CrsName}"
-                                                       shortDesc="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsName.tooltip}"
-                                                       id="ot3"/>
-                                    </af:column>
-                                </af:table>
-                            </af:panelGroupLayout>
+                            <af:table value="#{bindings.RetiredNmqCmqPrevUsedReport.collectionModel}" var="row"
+                                      rows="#{bindings.RetiredNmqCmqPrevUsedReport.rangeSize}"
+                                      emptyText="#{bindings.RetiredNmqCmqPrevUsedReport.viewable ? 'No data to display.' : 'Access Denied.'}"
+                                      fetchSize="#{bindings.RetiredNmqCmqPrevUsedReport.rangeSize}"
+                                      rowBandingInterval="0" id="t1"
+                                      columnStretching="column:c1" styleClass="AFStretchWidth">
+                                <af:column sortProperty="#{bindings.RetiredNmqCmqPrevUsedReport.hints.MeddraTerm.name}"
+                                           sortable="false"
+                                           headerText="#{bindings.RetiredNmqCmqPrevUsedReport.hints.MeddraTerm.label}"
+                                           id="c1" align="left" width="150">
+                                    <af:outputText value="#{row.MeddraTerm}"
+                                                   shortDesc="#{bindings.RetiredNmqCmqPrevUsedReport.hints.MeddraTerm.tooltip}"
+                                                   id="ot1"/>
+                                </af:column>
+                                <af:column sortProperty="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsEffectiveDt.name}"
+                                           sortable="false"
+                                           headerText="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsEffectiveDt.label}"
+                                           id="c2">
+                                    <af:outputText value="#{row.CrsEffectiveDt}"
+                                                   shortDesc="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsEffectiveDt.tooltip}"
+                                                   id="ot2">
+                                        <af:convertDateTime pattern="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsEffectiveDt.format}"/>
+                                    </af:outputText>
+                                </af:column>
+                                <af:column sortProperty="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsName.name}"
+                                           sortable="false"
+                                           headerText="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsName.label}"
+                                           id="c3" width="170">
+                                    <af:outputText value="#{row.CrsName}"
+                                                   shortDesc="#{bindings.RetiredNmqCmqPrevUsedReport.hints.CrsName.tooltip}"
+                                                   id="ot3"/>
+                                </af:column>
+                            </af:table>
                             <af:panelGroupLayout id="pgl3" layout="vertical">
                                 <af:spacer width="10" height="10" id="s2"/>
                                 <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb2" action="home"/>

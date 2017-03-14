@@ -4,11 +4,10 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskRelationsBaseVO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.16.48"
   BindingStyle="OracleName"
   CustomQuery="true"
-  PageIterMode="Full"
-  UseGlueCode="false">
+  PageIterMode="Full">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
   </DesignTime>
@@ -36,6 +35,7 @@
     <AttrArray Name="AttrNames">
       <Item Value="DomainId"/>
     </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
     <AttrArray Name="ListAttrNames">
       <Item Value="DomainId"/>
     </AttrArray>
@@ -54,6 +54,7 @@
     <AttrArray Name="AttrNames">
       <Item Value="SocTerm"/>
     </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
     <AttrArray Name="ListAttrNames">
       <Item Value="Term"/>
     </AttrArray>
@@ -250,7 +251,6 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
     SQLType="DATE"/>
   <ViewAttribute
     Name="DomainId"
-    IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="5"
@@ -270,7 +270,6 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
   </ViewAttribute>
   <ViewAttribute
     Name="CreatedBy"
-    IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="30"
@@ -285,7 +284,6 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
   </ViewAttribute>
   <ViewAttribute
     Name="CreationTs"
-    IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Type="java.sql.Timestamp"
@@ -295,7 +293,6 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
     SQLType="DATE"/>
   <ViewAttribute
     Name="ModifiedBy"
-    IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="30"
@@ -310,7 +307,6 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
   </ViewAttribute>
   <ViewAttribute
     Name="ModificationTs"
-    IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Type="java.sql.Timestamp"
@@ -320,7 +316,6 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
     SQLType="DATE"/>
   <ViewAttribute
     Name="SearchCriteriaDetails"
-    IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="200"

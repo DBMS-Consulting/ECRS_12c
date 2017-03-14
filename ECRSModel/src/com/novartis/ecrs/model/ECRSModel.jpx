@@ -8,9 +8,9 @@
   SeparateXMLFiles="true"
   PackageName="com.novartis.ecrs.model">
   <DesignTime>
-    <Attr Name="_jprName" Value="../../../../../../../../../../ECRSViewController/ECRSViewController.jpr"/>
+    <Attr Name="_jprName" Value="../../../../../ECRSModel.jpr"/>
     <Attr Name="_jbo.TypeMapEntries" Value="OracleApps"/>
-    <Attr Name="_NamedConnection" Value="CRSConn"/>
+    <Attr Name="_NamedConnection" Value="ecrs"/>
     <Attr Name="_appModuleNames0" Value="com.novartis.ecrs.model.am.ECRSAppModule"/>
   </DesignTime>
   <Containee

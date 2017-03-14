@@ -33,7 +33,7 @@
             <af:panelGroupLayout id="pt_pgl4" layout="vertical"
                                  inlineStyle="width:#{attrs.contentWidth};margin: 0 auto; background-color: white;">
                 <af:panelGroupLayout id="pt_pgl3" layout="horizontal" styleClass="AFStretchWidth">
-                    <af:commandImageLink id="pt_gil1" icon="/images/crs.png" action="home" immediate="true"
+                    <af:commandImageLink id="pt_gil1" icon="/images/crs_nov.png" action="home" immediate="true"
                                          shortDesc="#{applicationScope.crsBean.version}">
                         <af:showPopupBehavior popupId="pt_p2" triggerType="click" align="overlap"/>
                     </af:commandImageLink>
