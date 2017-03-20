@@ -567,7 +567,7 @@
               <f:validator binding="#{bindings.MqmComment.validator}"/>
             </af:inputText>
           </af:panelFormLayout>
-          <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+          <af:panelCollection id="pc2" styleClass="AFStretchWidth" inlineStyle="height:auto;">
             <f:facet name="menus"/>
             <f:facet name="toolbar"/>
             <f:facet name="statusbar">
@@ -599,7 +599,7 @@
                       rowSelection="multiple" id="t4" styleClass="AFStretchWidth"
                       partialTriggers="::cb4 :::cb14 :::b1 :::b3 :::b2"
                       binding="#{pageFlowScope.manageCRSBean.riskDefTable}"
-                      columnStretching="column:c19">
+                      columnStretching="column:c19" autoHeightRows="-1">
               <af:column id="c85" width="20" visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
                 <af:selectBooleanCheckbox value="#{row.bindings.SelectAttr.inputValue}"
                                           label="#{row.bindings.SelectAttr.label}"
@@ -753,7 +753,7 @@
     </af:popup>
     <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached"
               binding="#{pageFlowScope.manageCRSBean.hierPopup}">
-      <af:dialog id="d3" title="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" modal="false" type="cancel"
+      <af:dialog id="d3" title="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" type="cancel"
                  contentWidth="450">
         <f:facet name="buttonBar"/>
         <af:panelFormLayout id="pfl1" rows="2" maxColumns="2">
@@ -1448,7 +1448,7 @@
               <f:validator binding="#{bindings.MqmComment.validator}"/>
             </af:inputText>
           </af:panelFormLayout>
-          <af:panelCollection id="pc5" styleClass="AFStretchWidth">
+          <af:panelCollection id="pc5" styleClass="AFStretchWidth" inlineStyle="height:auto;">
           <f:facet name="menus"/>
             <f:facet name="toolbar"/>
             <f:facet name="statusbar"/>
@@ -1460,7 +1460,7 @@
                       selectionListener="#{bindings.CrsRiskDefinitionsBaseVO.collectionModel.makeCurrent}"
                       rowSelection="multiple" id="t16" styleClass="AFStretchWidth" 
                       contentDelivery="immediate"
-                      columnStretching="column:c90">
+                      columnStretching="column:c90" autoHeightRows="-1">
               <af:column sortProperty="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.name}" sortable="false"
                          headerText="#{bindings.CrsRiskDefinitionsBaseVO.hints.MeddraTerm.label}" id="c90">
                 <af:panelGroupLayout id="pgl18">
