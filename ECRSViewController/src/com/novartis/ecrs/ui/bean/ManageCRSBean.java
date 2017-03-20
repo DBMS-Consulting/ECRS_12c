@@ -1437,8 +1437,8 @@ public class ManageCRSBean implements Serializable {
         clickHierarchy();
         logger.info("Opening the blank hierarchy popup, aligning to the right of risk definition popup.");
         RichPopup.PopupHints hints = new RichPopup.PopupHints();
-        hints.add(RichPopup.PopupHints.HintTypes.HINT_ALIGN_ID, this.getHiddenPopupAlign());
-        hints.add(RichPopup.PopupHints.HintTypes.HINT_ALIGN, RichPopup.PopupHints.AlignTypes.ALIGN_END_BEFORE);
+//        hints.add(RichPopup.PopupHints.HintTypes.HINT_ALIGN_ID, this.getHiddenPopupAlign());
+//        hints.add(RichPopup.PopupHints.HintTypes.HINT_ALIGN, RichPopup.PopupHints.AlignTypes.ALIGN_END_BEFORE);
         hierPopup.show(hints);
 //        ADFUtils.showPopup(hierPopup);
     }
@@ -1447,8 +1447,8 @@ public class ManageCRSBean implements Serializable {
         clickHierarchy();
         logger.info("Opening the blank hierarchy popup, aligning to the right of copy risk definition popup.");
         RichPopup.PopupHints hints = new RichPopup.PopupHints();
-        hints.add(RichPopup.PopupHints.HintTypes.HINT_ALIGN_ID, this.getCopyRiskDefTable());
-        hints.add(RichPopup.PopupHints.HintTypes.HINT_ALIGN, RichPopup.PopupHints.AlignTypes.ALIGN_END_AFTER);
+//        hints.add(RichPopup.PopupHints.HintTypes.HINT_ALIGN_ID, this.getCopyRiskDefTable());
+//        hints.add(RichPopup.PopupHints.HintTypes.HINT_ALIGN, RichPopup.PopupHints.AlignTypes.ALIGN_END_AFTER);
         hierPopup.show(hints);
     }
     
