@@ -2150,10 +2150,13 @@ public class ManageCRSBean implements Serializable {
         ViewObject riskDefVO = iter.getViewObject();
         riskDefVO.clearCache();
         riskDefVO.executeQuery();
-        ResetUtils.reset(riskDefTable);
-        riskDefTable.resetStampState();
-        System.err.println("NIT");
-        ADFUtils.addPartialTarget(riskDialog);
+        if(riskDefTable != null){
+            ResetUtils.reset(riskDefTable);
+            riskDefTable.resetStampState();
+        }
+        if(riskDialog != null){
+            ADFUtils.addPartialTarget(riskDialog);
+        }
         riskDefVO.executeEmptyRowSet();
         RowSetIterator rs = riskDefVO.createRowSetIterator(null);
         while(rs.hasNext()){
@@ -2242,18 +2245,23 @@ public class ManageCRSBean implements Serializable {
         }
         if(riskDefPopup != null){
             if (null != cntrlStatusBar && cntrlStatusBar.isRendered()){
-                this.iconCRSSaved.setVisible(false);
-                this.iconCRSSaveError.setVisible(false);
-                this.iconCRSChanged.setVisible(false);
+                if(this.iconCRSSaved !=null)
+                    this.iconCRSSaved.setVisible(false);
+                if(this.iconCRSSaveError !=null)
+                    this.iconCRSSaveError.setVisible(false);
+                if(this.iconCRSChanged !=null)
+                    this.iconCRSChanged.setVisible(false);
                 ADFUtils.addPartialTarget(cntrlStatusBar);
             }
             riskDefPopup.hide();
         }
         if(copyPopup != null){
             if (null != cntrlStatusBarCopy && cntrlStatusBarCopy.isRendered()){
-                this.iconCopyCRSSaved.setVisible(false);
+                if(this.iconCRSSaved !=null)
+                    this.iconCopyCRSSaved.setVisible(false);
                 this.iconCopyCRSSaveError.setVisible(false);
-                this.iconCopyCRSChanged.setVisible(false);
+                if(this.iconCopyCRSChanged !=null)
+                    this.iconCopyCRSChanged.setVisible(false);
                 ADFUtils.addPartialTarget(cntrlStatusBarCopy);
             }
             copyPopup.hide();
