@@ -2273,9 +2273,7 @@ public class ManageCRSBean implements Serializable {
         }
         else{
             DCIteratorBinding riskIter = ADFUtils.findIterator("CrsContentVOIterator");
-            System.err.println("NIT: "+riskIter.getCurrentRow().getAttribute("CrsId"));
             riskIter.setCurrentRowWithKey(key);
-            System.err.println("NIT 2 : "+key);
             riskIter.getViewObject().setCurrentRow(currentRow);
         }
     }
