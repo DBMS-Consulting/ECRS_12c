@@ -8,4 +8,8 @@
     <managed-bean-class>com.novartis.ecrs.view.beans.CRSBean</managed-bean-class>
     <managed-bean-scope>application</managed-bean-scope>
   </managed-bean>
+  <converter>
+    <converter-id>TrimEndSpaces</converter-id>
+    <converter-class>com.novartis.ecrs.view.converter.TrimEndSpacesConverter</converter-class>
+  </converter>
 </faces-config>

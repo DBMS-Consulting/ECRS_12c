@@ -82,6 +82,7 @@
                                                   readOnly="#{bindings.CrsCompoundType.inputValue eq 'NON-COMPOUND' || !pageFlowScope.manageCRSBean.crsFieldsUpdatable || bindings.CompoundType.inputValue eq 'NON-COMPOUND'}"
                                                   autoSubmit="true">
                                         <f:validator binding="#{bindings.TradeName.validator}"/>
+                                        <f:converter converterId="TrimEndSpaces"/>
                                     </af:inputText>
                                     <af:inputText value="#{bindings.GenericName.inputValue}"
                                                   label="#{bindings.GenericName.hints.label}"
@@ -94,6 +95,7 @@
                                                   readOnly="#{bindings.CrsCompoundType.inputValue eq 'NON-COMPOUND' || !pageFlowScope.manageCRSBean.crsFieldsUpdatable || bindings.CompoundType.inputValue eq 'NON-COMPOUND'}"
                                                   autoSubmit="true">
                                         <f:validator binding="#{bindings.GenericName.validator}"/>
+                                        <f:converter converterId="TrimEndSpaces"/>
                                     </af:inputText>
                                     <af:inputText value="#{bindings.Indication.inputValue}"
                                                   label="#{bindings.Indication.hints.label}"
@@ -108,6 +110,7 @@
                                                   valueChangeListener="#{pageFlowScope.manageCRSBean.onChangeIndication}"
                                                   requiredMessageDetail="#{ecrsviewcontrollerBundle.INDICATION_REQ_MSG}">
                                         <f:validator binding="#{bindings.Indication.validator}"/>
+                                        <f:converter converterId="TrimEndSpaces"/>
                                     </af:inputText>
                                     <af:selectOneChoice label="#{ecrsviewcontrollerBundle.MARKETED}"
                                                         id="soc8"
@@ -270,19 +273,25 @@
                                                   shortDesc="#{bindings.TradeNameBase.hints.tooltip}"
                                                   id="it14"
                                                   contentStyle="width:150px;"
-                                                  readOnly="true"/>
+                                                  readOnly="true" autoSubmit="true">
+                                    <f:converter converterId="TrimEndSpaces"/>
+                                    </af:inputText>
                                     <af:inputText value="#{bindings.GenericNameBase.inputValue}"
                                                   label="#{bindings.GenericNameBase.hints.label}"
                                                   shortDesc="#{bindings.GenericNameBase.hints.tooltip}"
                                                   id="it15"
                                                   contentStyle="width:150px;"
-                                                  readOnly="true"/>
+                                                  readOnly="true" autoSubmit="true">
+                                    <f:converter converterId="TrimEndSpaces"/>
+                                    </af:inputText>
                                     <af:inputText value="#{bindings.IndicationBase.inputValue}"
                                                   label="#{bindings.IndicationBase.hints.label}"
                                                   shortDesc="#{bindings.IndicationBase.hints.tooltip}"
                                                   id="it16"
                                                   contentStyle="width:150px;"
-                                                  readOnly="true"/>
+                                                  readOnly="true" autoSubmit="true">
+                                    <f:converter converterId="TrimEndSpaces"/>
+                                    </af:inputText>
                                     <af:inputText label="#{ecrsviewcontrollerBundle.MARKETED}"
                                                   id="soc10"
                                                   value="#{bindings.IsMarketedFlagBase.inputValue}"

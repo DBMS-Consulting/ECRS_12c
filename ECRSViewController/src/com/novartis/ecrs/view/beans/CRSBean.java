@@ -34,6 +34,7 @@ public class CRSBean implements Serializable {
     private static Hashtable properties;
     private String initialize;
     private String version;
+    private String tmsURL;
 
     public CRSBean() {
         super();
@@ -147,5 +148,13 @@ public class CRSBean implements Serializable {
     public String getVersion() {
         version = "Version: " + APP_VERSION + "\nDate: " + APP_BUILD_DATE;
         return version;
+    }
+
+    public void setTmsURL(String tmsURL) {
+        this.tmsURL = tmsURL;
+    }
+
+    public String getTmsURL() {
+        return tmsURL;
     }
 }

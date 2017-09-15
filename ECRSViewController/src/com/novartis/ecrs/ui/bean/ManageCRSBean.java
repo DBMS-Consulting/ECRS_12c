@@ -33,12 +33,17 @@ import java.util.ResourceBundle;
 
 import java.util.Set;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
+
+import javax.faces.validator.ValidatorException;
 
 import oracle.adf.model.BindingContext;
 import oracle.adf.model.binding.DCBindingContainer;
@@ -4614,5 +4619,18 @@ public class ManageCRSBean implements Serializable {
 
     public RichDialog getRiskDialog() {
         return riskDialog;
+    }
+
+    public void validateSpecialCharactors(FacesContext facesContext, UIComponent uIComponent, Object object) {
+                if(object!=null){
+                    String name=object.toString();
+                    String msg="Special charectors @:,$=.+?;&\\/ are not allowed";
+            if (name.contains("@") || name.contains(":") || name.contains(",") || name.contains("$") ||
+                name.contains("=") || name.contains(".") || name.contains("+") || name.contains("?") ||
+                name.contains(";") || name.contains("&") || name.contains("\\") || name.contains("/")) {
+                throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,msg,null));
+            }
+                }
+
     }
 }

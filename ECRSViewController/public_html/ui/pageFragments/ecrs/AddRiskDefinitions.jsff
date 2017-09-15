@@ -471,16 +471,17 @@
             </f:facet>
           </af:panelGroupLayout>
           <af:panelFormLayout id="pfl2" maxColumns="2" rows="2" inlineStyle="white-space: nowrap;">
-            <af:inputText value="#{bindings.SafetyTopicOfInterest.inputValue}"
-                          label="#{bindings.SafetyTopicOfInterest.hints.label}"
-                          columns="#{bindings.SafetyTopicOfInterest.hints.displayWidth}"
-                          maximumLength="#{bindings.SafetyTopicOfInterest.hints.precision}"
-                          shortDesc="#{bindings.SafetyTopicOfInterest.hints.tooltip}" id="it1"
-                          contentStyle="width:200px;" autoSubmit="true"
-                          valueChangeListener="#{pageFlowScope.manageCRSBean.stoiVC}"
-                          readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true">
-              <f:validator binding="#{bindings.SafetyTopicOfInterest.validator}"/>
-            </af:inputText>
+                <af:inputText value="#{bindings.SafetyTopicOfInterest.inputValue}"
+                              label="#{bindings.SafetyTopicOfInterest.hints.label}"
+                              columns="#{bindings.SafetyTopicOfInterest.hints.displayWidth}"
+                              maximumLength="#{bindings.SafetyTopicOfInterest.hints.precision}"
+                              shortDesc="Special charectors @:,$=.+?;&amp;\\ / are not allowed" id="it1"
+                              contentStyle="width:200px;" autoSubmit="true"
+                              valueChangeListener="#{pageFlowScope.manageCRSBean.stoiVC}"
+                              readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"
+                              validator="#{pageFlowScope.manageCRSBean.validateSpecialCharactors}">
+                  <f:validator binding="#{bindings.SafetyTopicOfInterest.validator}"/>
+                </af:inputText>
             <!--<af:selectManyChoice label="#{ecrsviewcontrollerBundle.DATABASE}" id="smc1"
                                  value="#{pageFlowScope.manageCRSBean.selDatabases}" autoSubmit="true"
                                  readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"

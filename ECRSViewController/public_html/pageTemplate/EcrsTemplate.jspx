@@ -52,6 +52,9 @@
                                 <af:outputText value="#{sessionBean.userRole}" id="pt_ot2" inlineStyle="font-weight:bold;"/>
                             </af:panelLabelAndMessage>
                         </af:panelFormLayout>
+                        <af:spacer width="10" height="10" id="pt_s8"/>
+                        <af:goButton destination='#{crsBean.tmsURL}' text="Change Password" id="pt_gb1"
+                                      targetFrame="_blank"/>
                     </af:panelGroupLayout>
                 </af:panelGroupLayout>
                 <af:panelGroupLayout id="pgl1" layout="scroll">
@@ -137,8 +140,13 @@
             <af:popup childCreation="deferred" autoCancel="disabled" id="pt_p1">
                 <af:noteWindow id="pt_nw1">
                     <af:panelFormLayout id="pt_pfl2">
-                        <af:inputText label="Username" id="pt_it1" value="#{sessionBean.username}"/>
-                        <af:inputText label="Password" id="pt_it2" secret="true" value="#{sessionBean.password}"/>
+                        <af:inputText label="Username" id="pt_it1" value="#{sessionBean.username}" autoSubmit="true">
+                        <f:converter converterId="TrimEndSpaces"/>
+                        </af:inputText>
+                        <af:inputText label="Password" id="pt_it2" secret="true" value="#{sessionBean.password}"
+                                      autoSubmit="true">
+                        <f:converter converterId="TrimEndSpaces"/>
+                        </af:inputText>
                         <af:commandButton text="Login" id="pt_cb3" action="#{sessionBean.doLogin}"/>
                     </af:panelFormLayout>
                 </af:noteWindow>
