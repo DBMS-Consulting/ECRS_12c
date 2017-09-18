@@ -71,6 +71,7 @@ public class CRSBean implements Serializable {
             
             this.defaultFilterDictionaryShortName = getProperty("DEFAULT_FILTER_DICTIONARY_SHORT_NAME");
             this.defaultBaseDictionaryShortName = getProperty("DEFAULT_BASE_DICTIONARY_SHORT_NAME");
+            this.tmsURL = getProperty("TMS_URL");
         }
     private boolean loadPropsFromDB () {
            
