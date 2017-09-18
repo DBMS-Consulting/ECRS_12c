@@ -8,28 +8,28 @@
         <user>
           <name>TEST_MQM</name>
           <display-name>Test MQM</display-name>
-          <credentials>{903}f/dAJjBo7lYmg8eIbXoBAWJ4d7cYXVJy</credentials>
+          <credentials>{903}CnL75qmfi7ehj4NIkqprvZamRzit7WLm</credentials>
         </user>
         <user>
-          <name>TEST_BSL1</name>
+          <name>welcome1</name>
           <display-name>Test BSL1</display-name>
-          <credentials>{903}NOzSZq/dlXBQ3TPO31qzofU1fhPRMW+G</credentials>
+          <credentials>{903}+mn8RH5rugFiEDPU6MZTg+NheDi2Oh3A</credentials>
         </user>
         <user>
           <name>TEST_TASL1</name>
           <display-name>Test TASL1</display-name>
-          <credentials>{903}ZWALd7+ZsOCB+AQRFY+ZKCbo2F8r43vN</credentials>
+          <credentials>{903}AZ22667HI5/s8czJzDzwq87vKF3CdRFc</credentials>
         </user>
         <user>
           <name>TEST_ML1</name>
           <display-name>Test ML1</display-name>
-          <credentials>{903}992ughQa0wtYC0002WWH02RJMIB0DBKD</credentials>
+          <credentials>{903}YdRKv2Ss50hdGOA/FaY0PTydtGAovym0</credentials>
         </user>
         <user>
           <name>Test_Admin</name>
           <display-name>Test Admin</display-name>
           <description>Test Admin</description>
-          <credentials>{903}DcnNSV1i8nvNwQCErC5eY6m8oieEJy4z12Z5CblwlK8=</credentials>
+          <credentials>{903}FJTCCMV9LKt+HFoBDIW0goiUn0UILRYo</credentials>
         </user>
       </users>
       <roles>
@@ -40,7 +40,7 @@
           <members>
             <member>
               <type>user</type>
-              <name>TEST_BSL1</name>
+              <name>welcome1</name>
             </member>
           </members>
         </role>
