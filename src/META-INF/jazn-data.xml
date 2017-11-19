@@ -11,7 +11,7 @@
           <credentials>{903}CnL75qmfi7ehj4NIkqprvZamRzit7WLm</credentials>
         </user>
         <user>
-          <name>welcome1</name>
+          <name>Test_BSL1</name>
           <display-name>Test BSL1</display-name>
           <credentials>{903}+mn8RH5rugFiEDPU6MZTg+NheDi2Oh3A</credentials>
         </user>
@@ -40,7 +40,7 @@
           <members>
             <member>
               <type>user</type>
-              <name>welcome1</name>
+              <name>Test_BSL1</name>
             </member>
           </members>
         </role>
@@ -95,6 +95,44 @@
     <applications>
       <application>
         <name>ECRS</name>
+        <app-roles>
+          <app-role>
+            <name>Admin</name>
+            <class>oracle.security.jps.service.policystore.ApplicationRole</class>
+            <display-name>Admin</display-name>
+            <members>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlUserImpl</class>
+                <name>Test_Admin</name>
+              </member>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlEnterpriseRoleImpl</class>
+                <name>CRS_ADMIN</name>
+              </member>
+            </members>
+          </app-role>
+          <app-role>
+            <name>MQM</name>
+            <class>oracle.security.jps.service.policystore.ApplicationRole</class>
+            <display-name>MQM</display-name>
+            <members>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlUserImpl</class>
+                <name>TEST_MQM</name>
+              </member>
+            </members>
+          </app-role>
+          <app-role>
+            <name>Requestor</name>
+            <class>oracle.security.jps.service.policystore.ApplicationRole</class>
+            <display-name>Requestor</display-name>
+          </app-role>
+          <app-role>
+            <name>User</name>
+            <class>oracle.security.jps.service.policystore.ApplicationRole</class>
+            <display-name>User</display-name>
+          </app-role>
+        </app-roles>
         <jazn-policy>
           <grant>
             <grantee>
