@@ -37,12 +37,6 @@
           <name>CRS_BSL</name>
           <display-name>CRS_BSL</display-name>
           <description>Brand Safety Leader</description>
-          <members>
-            <member>
-              <type>user</type>
-              <name>Test_BSL1</name>
-            </member>
-          </members>
         </role>
         <role>
           <name>CRS_MQM</name>
@@ -88,6 +82,18 @@
             </member>
           </members>
         </role>
+        <role>
+          <name>TMS_CRS_MQM</name>
+          <display-name>TMS_CRS_MQM</display-name>
+        </role>
+        <role>
+          <name>TMS_CRS_TASL</name>
+          <display-name>TMS_CRS_TASL</display-name>
+        </role>
+        <role>
+          <name>TMS_CRS_BSL</name>
+          <display-name>TMS_CRS_BSL</display-name>
+        </role>
       </roles>
     </realm>
   </jazn-realm>
@@ -120,6 +126,14 @@
                 <class>oracle.security.jps.internal.core.principals.JpsXmlUserImpl</class>
                 <name>TEST_MQM</name>
               </member>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlEnterpriseRoleImpl</class>
+                <name>TMS_CRS_MQM</name>
+              </member>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlEnterpriseRoleImpl</class>
+                <name>CRS_MQM</name>
+              </member>
             </members>
           </app-role>
           <app-role>
@@ -131,6 +145,40 @@
             <name>User</name>
             <class>oracle.security.jps.service.policystore.ApplicationRole</class>
             <display-name>User</display-name>
+          </app-role>
+          <app-role>
+            <name>TASL</name>
+            <class>oracle.security.jps.service.policystore.ApplicationRole</class>
+            <display-name>TASL</display-name>
+            <members>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlEnterpriseRoleImpl</class>
+                <name>TMS_CRS_TASL</name>
+              </member>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlEnterpriseRoleImpl</class>
+                <name>CRS_TASL</name>
+              </member>
+            </members>
+          </app-role>
+          <app-role>
+            <name>BSL</name>
+            <class>oracle.security.jps.service.policystore.ApplicationRole</class>
+            <display-name>BSL</display-name>
+            <members>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlEnterpriseRoleImpl</class>
+                <name>TMS_CRS_BSL</name>
+              </member>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlEnterpriseRoleImpl</class>
+                <name>CRS_BSL</name>
+              </member>
+              <member>
+                <class>oracle.security.jps.internal.core.principals.JpsXmlUserImpl</class>
+                <name>Test_BSL1</name>
+              </member>
+            </members>
           </app-role>
         </app-roles>
         <jazn-policy>
