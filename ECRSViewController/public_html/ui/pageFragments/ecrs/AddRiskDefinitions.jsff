@@ -50,7 +50,7 @@
                                   visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"/>
                 <af:commandButton text="#{ecrsviewcontrollerBundle.REFRESH_REPOSITORY}" id="cb22"
                                   icon="/images/database-refresh-icon.png"
-                                  actionListener="#{pageFlowScope.manageCRSBean.refreshRepository}"/>
+                                  actionListener="#{pageFlowScope.manageCRSBean.refreshRepository}" rendered="false"/>
               </af:toolbar>
             </f:facet>
             <af:table value="#{bindings.CrsRiskVO.collectionModel}" var="row" rows="#{bindings.CrsRiskVO.rangeSize}"
@@ -192,7 +192,7 @@
                            headerText="#{bindings.CrsRiskVO.hints.MeddraTerm.label}" id="c14" width="200">
                   <af:panelGroupLayout id="pgl9">
                     <af:image source="/images/BlueBall.gif" id="i6"
-                              visible="#{row.TmsUpdateFlag eq 'Y'}"/>
+                              visible="#{row.TmsUpdateFlag eq 'Y'}" rendered="false"/>
                     <af:outputText value="#{row.MeddraTerm}" shortDesc="#{bindings.CrsRiskVO.hints.MeddraTerm.tooltip}"
                                    id="ot14"/>
                   </af:panelGroupLayout>
@@ -475,7 +475,7 @@
                               label="#{bindings.SafetyTopicOfInterest.hints.label}"
                               columns="#{bindings.SafetyTopicOfInterest.hints.displayWidth}"
                               maximumLength="#{bindings.SafetyTopicOfInterest.hints.precision}"
-                              shortDesc="Special charectors @:,$=.+?;&amp;\\ / are not allowed" id="it1"
+                              shortDesc="Special characters @:,$=.+?;&amp;\\ / are not allowed" id="it1"
                               contentStyle="width:200px;" autoSubmit="true"
                               valueChangeListener="#{pageFlowScope.manageCRSBean.stoiVC}"
                               readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"
@@ -505,18 +505,18 @@
                                  value="#{pageFlowScope.manageCRSBean.selRiskPurposes}" autoSubmit="true"
                                  valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskPurposeVC}"
                                  readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true">
-              <af:selectItem label="SP (SPP)" id="si4" value="SP"/>
+              <af:selectItem label="SP (Core safety topic)" id="si4" value="SP"/>
               <af:selectItem label="DS (DSUR)" id="si5" value="DS"/>
-              <af:selectItem label="RM (RMP)" id="si6" value="RM"/>
-              <af:selectItem label="PS (PSUR)" id="si7" value="PS"/>
+              <af:selectItem label="RM (RMP update)" id="si6" value="RM"/>
+              <af:selectItem label="PS (PSUR safety topic)" id="si7" value="PS"/>
               <af:selectItem label="CD (CDS)" id="si8" value="CD"/>
               <af:selectItem label="IB (Expected in (IB))" id="si9" value="IB"/>
               <af:selectItem label="OS (Other Search)" id="si10" value="OS"/>
-              <af:selectItem label="MI (Missing Information)" id="si11" value="MI"/>
+              <af:selectItem label="MI (Missing information)" id="si11" value="MI"/>
               <af:selectItem label="ER (Expediting Rules)" id="si12" value="ER"/>
                 <af:selectItem label="UD (Underlying Diseases)" id="si7611" value="UD"/>
-              <af:selectItem label="A1 (AESI for NIS Protocol)" id="si7621" value="A1"/>
-              <af:selectItem label="A2 (AESI not RMP/PSUR)" id="si7631" value="A2"/>
+              <af:selectItem label="A1 (USPI ADRs)" id="si7621" value="A1"/>
+              <af:selectItem label="A2 (JPI ADRs)" id="si7631" value="A2"/>
             </af:selectManyChoice>
             
             <af:selectOneChoice value="#{bindings.SocTerm.inputValue}" label="#{bindings.SocTerm.label}"
@@ -722,7 +722,7 @@
                 </af:commandButton>
                 <af:commandButton text="#{ecrsviewcontrollerBundle.REFRESH_REPOSITORY}" id="cb23"
                                   icon="/images/database-refresh-icon.png"
-                                  actionListener="#{pageFlowScope.manageCRSBean.refreshRepoInPopup}"/>
+                                  actionListener="#{pageFlowScope.manageCRSBean.refreshRepoInPopup}" rendered="false"/>
                 <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" partialSubmit="true"               
                                   id="cb28" icon="/images/excel_icon.gif">
                   <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

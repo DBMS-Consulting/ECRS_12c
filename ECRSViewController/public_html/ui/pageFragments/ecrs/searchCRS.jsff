@@ -318,6 +318,12 @@
                    headerText="#{ecrsviewcontrollerBundle.CRS_NAME}" id="c1" width="100">
           <af:outputText value="#{row.CrsName}" shortDesc="#{bindings.CrsContentVO.hints.CrsName.tooltip}" id="ot1"/>
         </af:column>
+        <af:column headerText="Last Sync Date" id="c11">
+          <af:outputText value="#{row.LastSyncDate}" shortDesc="#{bindings.CrsContentVO.hints.LastSyncDate.tooltip}"
+                         id="ot21">
+             <af:convertDateTime pattern="dd-MMM-yyy HH:mm:ss"/>
+          </af:outputText>
+        </af:column>
         <af:column sortProperty="#{bindings.CrsContentVO.hints.StateId.name}" sortable="false"
                    headerText="#{ecrsviewcontrollerBundle.STATE}" id="c2" width="50">
           <af:selectOneChoice value="#{row.bindings.StateId.inputValue}" label="#{row.bindings.StateId.label}"

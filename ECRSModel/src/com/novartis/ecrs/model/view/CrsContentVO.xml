@@ -4,17 +4,18 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsContentVO"
-  Version="12.1.3.2.1"
+  Version="12.2.1.12.24"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
-  RowClass="com.novartis.ecrs.model.view.CrsContentVORowImpl"
   FetchSize="20"
-  FetchMode="FETCH_AS_NEEDED">
+  FetchMode="FETCH_AS_NEEDED"
+  ComponentClass="com.novartis.ecrs.model.view.CrsContentVOImpl"
+  RowClass="com.novartis.ecrs.model.view.CrsContentVORowImpl">
   <DesignTime>
-    <Attr Name="_codeGenFlag2" Value="Access"/>
-    <Attr Name="_isCodegen" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
     <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
   </DesignTime>
   <Variable
     Name="pCrsId"
@@ -26,7 +27,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="bindCompoundType">
-        <TransientExpression><![CDATA[CompoundType]]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA[CompoundType]]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -39,7 +41,8 @@
       FullName="com.novartis.ecrs.model.view.CrsUserRolesVO.findByRoleName"/>
     <ParameterMap>
       <PIMap Variable="bindRoleName">
-        <TransientExpression><![CDATA['CRS_BSL']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_BSL']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -52,7 +55,8 @@
       FullName="com.novartis.ecrs.model.view.CrsUserRolesVO.findByRoleName"/>
     <ParameterMap>
       <PIMap Variable="bindRoleName">
-        <TransientExpression><![CDATA['CRS_TASL']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_TASL']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -65,7 +69,8 @@
       FullName="com.novartis.ecrs.model.view.CrsUserRolesVO.findByRoleName"/>
     <ParameterMap>
       <PIMap Variable="bindRoleName">
-        <TransientExpression><![CDATA['CRS_ML']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_ML']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -83,7 +88,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_BSL']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_BSL']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -93,7 +99,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_ML']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_ML']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -103,7 +110,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_TASL']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_TASL']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -225,34 +233,35 @@
     </AttrArray>
     <DisplayCriteria/>
   </ListBinding>
-  <SQLQuery><![CDATA[SELECT  
-    CrsContentEO.CRS_ID,  
-    CrsContentEO.CRS_NAME,  
-    CrsContentEO.STATE_ID,  
-    CrsContentEO.COMPOUND_ID,  
-    CrsContentEO.GENERIC_NAME,  
-    CrsContentEO.TRADE_NAME,  
-    CrsContentEO.INDICATION,  
-    CrsContentEO.IS_MARKETED_FLAG,  
-    CrsContentEO.RELEASE_STATUS_FLAG,  
-    CrsContentEO.BSL_NAME,  
-    CrsContentEO.DESIGNEE,  
-    CrsContentEO.MQM_COMMENT,  
-    CrsContentEO.TASL_NAME,  
-    CrsContentEO.TASL_REJECT_COMMENT,  
-    '' MEDICAL_LEAD_NAME,  
-    '' MEDICAL_LEAD_REJECT_COMMENT,  
-    CrsContentEO.CRS_EFFECTIVE_DT,  
-    CrsContentEO.REVIEW_APPROVE_REQUIRED_FLAG,  
-    CrsContentEO.UI_VERSION_NUMBER, 
-    CrsContentEO.REASON_FOR_CHANGE, 
-    CrsCompoundEO.COMPOUND_TYPE AS CRS_COMPOUND_TYPE,  
-    CrsCompoundEO.COMPOUND_CODE AS CRS_COMPOUND_CODE, 
-crs_ui_tms_utils.get_name_list_from_usernames(CrsContentEO.DESIGNEE) designee_name, 
-CrsContentEO.CREATION_TS, 
-CrsContentEO.MODIFICATION_TS  
-FROM CRS_CONTENT_STG CrsContentEO,CRS_COMPOUNDS CrsCompoundEO  
-WHERE  
+  <SQLQuery><![CDATA[SELECT    
+    CrsContentEO.CRS_ID,    
+    CrsContentEO.CRS_NAME,    
+    CrsContentEO.STATE_ID,    
+    CrsContentEO.COMPOUND_ID,    
+    CrsContentEO.GENERIC_NAME,    
+    CrsContentEO.TRADE_NAME,    
+    CrsContentEO.INDICATION,    
+    CrsContentEO.IS_MARKETED_FLAG,    
+    CrsContentEO.RELEASE_STATUS_FLAG,    
+    CrsContentEO.BSL_NAME,    
+    CrsContentEO.DESIGNEE,    
+    CrsContentEO.MQM_COMMENT,    
+    CrsContentEO.TASL_NAME,    
+    CrsContentEO.TASL_REJECT_COMMENT,    
+    '' MEDICAL_LEAD_NAME,    
+    '' MEDICAL_LEAD_REJECT_COMMENT,    
+    CrsContentEO.CRS_EFFECTIVE_DT,    
+    CrsContentEO.REVIEW_APPROVE_REQUIRED_FLAG,    
+    CrsContentEO.UI_VERSION_NUMBER,   
+    CrsContentEO.REASON_FOR_CHANGE,   
+    CrsCompoundEO.COMPOUND_TYPE AS CRS_COMPOUND_TYPE,    
+    CrsCompoundEO.COMPOUND_CODE AS CRS_COMPOUND_CODE,   
+crs_ui_tms_utils.get_name_list_from_usernames(CrsContentEO.DESIGNEE) designee_name,  
+(SELECT MAX(NEW_TMS_UPDATE_FLAG_DT) FROM CRS_HIST_SYNC_CHANGE WHERE CRS_ID = CrsContentEO.CRS_ID) AS LAST_SYNC_DATE,  
+CrsContentEO.CREATION_TS,   
+CrsContentEO.MODIFICATION_TS    
+FROM CRS_CONTENT_STG CrsContentEO,CRS_COMPOUNDS CrsCompoundEO    
+WHERE    
     CrsContentEO.COMPOUND_ID(+) = CrsCompoundEO.COMPOUND_ID]]></SQLQuery>
   <EntityUsage
     Name="CrsContentEO"
@@ -361,7 +370,8 @@ WHERE
     EntityAttrName="IsMarketedFlag"
     EntityUsage="CrsContentEO"
     AliasName="IS_MARKETED_FLAG">
-    <TransientExpression><![CDATA['N']]></TransientExpression>
+    <TransientExpression
+      Name="ExpressionScript"><![CDATA['N']]></TransientExpression>
   </ViewAttribute>
   <ViewAttribute
     Name="ReleaseStatusFlag"
@@ -472,7 +482,8 @@ WHERE
     EntityAttrName="ReviewApproveRequiredFlag"
     EntityUsage="CrsContentEO"
     AliasName="REVIEW_APPROVE_REQUIRED_FLAG">
-    <TransientExpression><![CDATA['N']]></TransientExpression>
+    <TransientExpression
+      Name="ExpressionScript"><![CDATA['N']]></TransientExpression>
   </ViewAttribute>
   <ViewAttribute
     Name="UiVersionNumber"
@@ -537,6 +548,17 @@ WHERE
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
+    Name="LastSyncDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    AliasName="LAST_SYNC_DATE"
+    SQLType="DATE"
+    IsQueriable="false"
+    Expression="SELECT NEW_TMS_UPDATE_FLAG_DT FROM (SELECT NEW_TMS_UPDATE_FLAG_DT FROM CRS_HIST_SYNC_CHANGE WHERE CRS_ID = CrsContentEO.CRS_ID ORDER BY NEW_TMS_UPDATE_FLAG_DT DESC) WHERE ROWNUM = 1"/>
+  <ViewAttribute
     Name="CreationTs"
     IsUpdateable="false"
     IsNotNull="true"
@@ -590,7 +612,7 @@ WHERE
     Name="findByCrsId"
     ViewObjectName="com.novartis.ecrs.model.view.CrsContentVO"
     Conjunction="AND">
-    <Properties>
+    <Properties Name="_Props">
       <CustomProperties>
         <Property
           Name="displayOperators"

@@ -86,6 +86,7 @@
           <Item Value="ModificationTs"/>
           <Item Value="CrsEffectiveDt"/>
           <Item Value="ReasonForChange"/>
+          <Item Value="LastSyncDate"/>
         </AttrNames>
       </nodeDefinition>
     </tree>

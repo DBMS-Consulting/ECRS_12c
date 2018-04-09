@@ -4,7 +4,7 @@
 <AppModule
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="ECRSAppModule"
-  Version="12.1.3.2.1"
+  Version="12.2.1.12.24"
   ClearCacheOnRollback="true"
   ComponentClass="com.novartis.ecrs.model.am.ECRSAppModuleImpl"
   ComponentInterface="com.novartis.ecrs.model.am.common.ECRSAppModule"
@@ -153,6 +153,20 @@
   <ViewUsage
     Name="ECrsSearchTransVO"
     ViewObjectName="com.novartis.ecrs.model.view.trans.ECrsSearchTransVO"/>
+  <ViewUsage
+    Name="CrsContentVO1"
+    ViewObjectName="com.novartis.ecrs.model.view.CrsContentVO">
+    <ViewCriteriaUsage
+      Name="findByCrsId"
+      FullName="com.novartis.ecrs.model.view.CrsContentVO.findByCrsId"/>
+  </ViewUsage>
+  <ViewUsage
+    Name="CrsRiskRelationVO1"
+    ViewObjectName="com.novartis.ecrs.model.view.CrsRiskRelationVO">
+    <ViewCriteriaUsage
+      Name="FilterByCrsID"
+      FullName="com.novartis.ecrs.model.view.CrsRiskRelationVO.FilterByCrsID"/>
+  </ViewUsage>
   <ViewLinkUsage
     Name="CrsRiskRelationToRiskDefintionLink1"
     ViewLinkObjectName="com.novartis.ecrs.model.view.link.CrsRiskRelationToRiskDefintionLink"
@@ -399,6 +413,13 @@
       <Parameter
         Name="freezeFlag"
         Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="removeMQMComments"
+      MethodName="removeMQMComments">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
     </Method>
   </ClientInterface>
 </AppModule>

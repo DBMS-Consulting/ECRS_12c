@@ -57,7 +57,7 @@
                         </af:commandButton>
                                         <af:spacer width="10" height="10" id="pt_s8"/>
                         <af:goButton destination='#{crsBean.tmsURL}' text="Change Password" id="pt_gb1"
-                                      targetFrame="_blank"/>
+                                      targetFrame="_blank" visible="#{!securityContext.authenticated}"/>
                                     </af:panelGroupLayout>
                                     <af:spacer width="10" height="5" id="pt_s1a"/>
                                     <af:panelGroupLayout id="pt_pgl9" layout="horizontal">
@@ -82,6 +82,12 @@
                                                 <af:spacer width="10" height="10" id="pt_s2"/>
                                                 <af:outputText id="pt_ot5" inlineStyle="font-weight:bold;" value="Admin"
                                                                rendered="#{securityContext.userInRole['Admin']}"/>
+                                                <af:spacer width="10" height="10" id="pt_s7"/>
+                                                <af:outputText id="pt_ot3" inlineStyle="font-weight:bold;" value="TASL"
+                                                               rendered="#{securityContext.userInRole['CRS_TASL']}"/>
+                                                <af:spacer width="10" height="10" id="pt_s9"/>
+                                                <af:outputText id="pt_ot6" inlineStyle="font-weight:bold;" value="BSL"
+                                                               rendered="#{securityContext.userInRole['BSL']}"/>
                                             </af:panelGroupLayout>
                                         </af:panelFormLayout>
                                     </af:panelGroupLayout>
@@ -174,11 +180,11 @@
                 <af:noteWindow id="pt_nw1">
                     <af:panelFormLayout id="pt_pfl2">
                         <af:inputText label="Username" id="pt_it1" value="#{sessionBean.username}" autoSubmit="true">
-                        <f:converter converterId="TrimEndSpaces"/>
+                        <!--<f:converter converterId="TrimEndSpaces"/>-->
                         </af:inputText>
                         <af:inputText label="Password" id="pt_it2" secret="true" value="#{sessionBean.password}"
                                       autoSubmit="true">
-                        <f:converter converterId="TrimEndSpaces"/>
+                        <!--<f:converter converterId="TrimEndSpaces"/>-->
                         </af:inputText>
                         <af:commandButton text="Login" id="pt_cb3" action="#{sessionBean.doLogin}"/>
                     </af:panelFormLayout>

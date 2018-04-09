@@ -856,10 +856,10 @@ public class ManageCRSBean implements Serializable {
                 }
                 String riskPurposes = "";
                 if(selRiskPurposes != null && selRiskPurposes.size() > 0){
-                    if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
-                        ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
-                        return;
-                    }
+//                    if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
+//                        ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
+//                        return;
+//                    }
                     for(String riskPurpose : selRiskPurposes){
                         riskPurposes = riskPurposes + "," + riskPurpose;
                     }
@@ -1293,6 +1293,14 @@ public class ManageCRSBean implements Serializable {
               if (ModelConstants.STATE_APPROVED.equals(newState)){
                 ADFUtils.setEL("#{bindings.TaslRejectComment.inputValue}", null);
             }
+            
+            if (ModelConstants.STATE_TASLAPPROVE.equals(newState)){
+                OperationBinding oper = ADFUtils.findOperation("removeMQMComments");
+                oper.execute();
+                if (oper.getErrors().size() > 0)
+                    ADFUtils.showFacesMessage(uiBundle.getString("INTERNAL_ERROR"), FacesMessage.SEVERITY_ERROR);
+            }
+            
             OperationBinding oper = ADFUtils.findOperation("Commit");
             oper.execute();
             if (oper.getErrors().size() > 0)
@@ -4567,9 +4575,9 @@ public class ManageCRSBean implements Serializable {
     public void onRiskPurposeVC(ValueChangeEvent valueChangeEvent) {
         if(valueChangeEvent.getNewValue() != valueChangeEvent.getOldValue() && valueChangeEvent.getNewValue()!= null){
             List<String> selRiskPurposes = (List<String>) valueChangeEvent.getNewValue();
-            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
-                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
-            }
+//            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
+//                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
+//            }
         }
         onRiskDetailsUpdate(valueChangeEvent);
     }
@@ -4577,19 +4585,19 @@ public class ManageCRSBean implements Serializable {
     public void onCopyRiskPurposeVC(ValueChangeEvent valueChangeEvent) {
         if(valueChangeEvent.getNewValue() != valueChangeEvent.getOldValue() && valueChangeEvent.getNewValue()!= null){
             List<String> selRiskPurposes = (List<String>) valueChangeEvent.getNewValue();
-            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
-                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
-            }
+//            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
+//                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
+//            }
         }
         onRiskDetailsUpdate(valueChangeEvent);
     }
 
     public void onSaveRiskDefsWarningPopup(ActionEvent actionEvent) {
         if(selRiskPurposes != null && selRiskPurposes.size() > 0){
-            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
-                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
-                return;
-            }
+//            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
+//                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
+//                return;
+//            }
         }
         saveRiskDefs(actionEvent);
         cancelRisk();
@@ -4624,7 +4632,7 @@ public class ManageCRSBean implements Serializable {
     public void validateSpecialCharactors(FacesContext facesContext, UIComponent uIComponent, Object object) {
                 if(object!=null){
                     String name=object.toString();
-                    String msg="Special charectors @:,$=.+?;&\\/ are not allowed";
+                    String msg="Special characters @:,$=.+?;&\\/ are not allowed";
             if (name.contains("@") || name.contains(":") || name.contains(",") || name.contains("$") ||
                 name.contains("=") || name.contains(".") || name.contains("+") || name.contains("?") ||
                 name.contains(";") || name.contains("&") || name.contains("\\") || name.contains("/")) {

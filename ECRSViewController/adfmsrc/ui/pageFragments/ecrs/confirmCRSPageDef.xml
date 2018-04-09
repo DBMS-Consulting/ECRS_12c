@@ -175,5 +175,8 @@
                   ReturnName="data.ECRSAppModuleDataControl.methodResults.isCRSVersionInitial_ECRSAppModuleDataControl_dataProvider_isCRSVersionInitial_result">
       <NamedData NDName="crsId" NDValue="#{bindings.CrsId.inputValue}" NDType="java.lang.Long"/>
     </methodAction>
+    <methodAction id="removeMQMComments" RequiresUpdateModel="true" Action="invokeMethod" MethodName="removeMQMComments"
+                  IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.removeMQMComments.dataControl.dataProvider"/>
   </bindings>
 </pageDefinition>

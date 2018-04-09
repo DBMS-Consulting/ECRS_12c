@@ -49,4 +49,6 @@ public interface ECRSAppModule extends ApplicationModule {
     String getMedDRAFreezeFlag();
 
     String updateMedDRAFreezeFlag(String freezeFlag);
+
+    void removeMQMComments();
 }

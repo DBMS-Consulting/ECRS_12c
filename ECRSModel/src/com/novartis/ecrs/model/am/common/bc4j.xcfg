@@ -1,4 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
+<!---->
 <BC4JConfig version="11.1" xmlns="http://xmlns.oracle.com/bc4j/configuration">
    <AppModuleConfigBag ApplicationName="com.novartis.ecrs.model.am.ECRSAppModule">
       <AppModuleConfig DeployPlatform="LOCAL" jbo.project="com.novartis.ecrs.model.ECRSModel" name="ECRSAppModule" ApplicationName="com.novartis.ecrs.model.am.ECRSAppModule" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">

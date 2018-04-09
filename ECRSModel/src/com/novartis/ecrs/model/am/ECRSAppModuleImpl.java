@@ -4,6 +4,11 @@ package com.novartis.ecrs.model.am;
 import com.novartis.ecrs.model.am.common.ECRSAppModule;
 import com.novartis.ecrs.model.constants.ModelConstants;
 import com.novartis.ecrs.model.lov.UserRoleVORowImpl;
+import com.novartis.ecrs.model.view.CrsContentVOImpl;
+import com.novartis.ecrs.model.view.CrsContentVORowImpl;
+import com.novartis.ecrs.model.view.CrsRiskDefinitionsVOImpl;
+import com.novartis.ecrs.model.view.CrsRiskRelationVOImpl;
+import com.novartis.ecrs.model.view.CrsRiskRelationVORowImpl;
 import com.novartis.ecrs.model.view.ECrsSearchVORowImpl;
 import com.novartis.ecrs.model.view.HierarchyChildDetailVOImpl;
 import com.novartis.ecrs.model.view.report.PTReportVOImpl;
@@ -61,8 +66,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for CrsContentVO.
      * @return CrsContentVO
      */
-    public ViewObjectImpl getCrsContentVO() {
-        return (ViewObjectImpl)findViewObject("CrsContentVO");
+    public CrsContentVOImpl getCrsContentVO() {
+        return (CrsContentVOImpl) findViewObject("CrsContentVO");
     }
 
 
@@ -324,8 +329,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for CrsRiskRelationVO.
      * @return CrsRiskRelationVO
      */
-    public ViewObjectImpl getCrsRiskRelationVO() {
-        return (ViewObjectImpl)findViewObject("CrsRiskRelationVO");
+    public CrsRiskRelationVOImpl getCrsRiskRelationVO() {
+        return (CrsRiskRelationVOImpl) findViewObject("CrsRiskRelationVO");
     }
 
     /**
@@ -603,8 +608,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for FetchCrsContentVO.
      * @return FetchCrsContentVO
      */
-    public ViewObjectImpl getFetchCrsContentVO() {
-        return (ViewObjectImpl)findViewObject("FetchCrsContentVO");
+    public CrsContentVOImpl getFetchCrsContentVO() {
+        return (CrsContentVOImpl) findViewObject("FetchCrsContentVO");
     }
 
     /**
@@ -816,7 +821,7 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
         String cs = null;
         String returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
         if (pCRSId != null) {
-            cs = "{?=call CRS_UI_TMS_UTILS.activate_crs(?,?)}";
+            cs = "{?=call CRS_UI_TMS_UTILS.publish_crs(?,?)}";
             cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
             try {
                 cstmt.registerOutParameter(1, Types.VARCHAR);
@@ -1091,8 +1096,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for FetchCrsRiskRelationVO.
      * @return FetchCrsRiskRelationVO
      */
-    public ViewObjectImpl getFetchCrsRiskRelationVO() {
-        return (ViewObjectImpl)findViewObject("FetchCrsRiskRelationVO");
+    public CrsRiskRelationVOImpl getFetchCrsRiskRelationVO() {
+        return (CrsRiskRelationVOImpl) findViewObject("FetchCrsRiskRelationVO");
     }
 
     /**
@@ -1255,5 +1260,51 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      */
     public ECrsSearchTransVOImpl getECrsSearchTransVO() {
         return (ECrsSearchTransVOImpl) findViewObject("ECrsSearchTransVO");
+    }
+
+    /**
+     * Container's getter for CrsContentVO1.
+     * @return CrsContentVO1
+     */
+    public CrsContentVOImpl getCrsContentVO1() {
+        return (CrsContentVOImpl) findViewObject("CrsContentVO1");
+    }
+
+    /**
+     * Container's getter for CrsRiskRelationVO1.
+     * @return CrsRiskRelationVO1
+     */
+    public CrsRiskRelationVOImpl getCrsRiskRelationVO1() {
+        return (CrsRiskRelationVOImpl) findViewObject("CrsRiskRelationVO1"); 
+    }
+    
+    public void removeMQMComments(){
+        CrsContentVORowImpl crsContentVORowImpl = (CrsContentVORowImpl)this.getCrsContentVO().getCurrentRow();
+        if(crsContentVORowImpl != null && crsContentVORowImpl.getCrsId() != null){
+            CrsContentVOImpl crsContentVOImpl1 =  this.getCrsContentVO1();
+            crsContentVOImpl1.setpCrsId(crsContentVORowImpl.getCrsId());
+            crsContentVOImpl1.executeQuery();
+            
+            RowSetIterator crsContentiterator = crsContentVOImpl1.createRowSetIterator(null);
+            crsContentiterator.reset();
+            while (crsContentiterator.hasNext()) {
+                      CrsContentVORowImpl crsContentrow = (CrsContentVORowImpl)crsContentiterator.next();
+                       crsContentrow.setMqmComment(null);
+                       crsContentrow.setTaslRejectComment(null);
+                   }
+            crsContentiterator.closeRowSetIterator();
+            
+            CrsRiskRelationVOImpl crsRiskRelationVOImpl1 =  this.getCrsRiskRelationVO1();
+            crsRiskRelationVOImpl1.setpCrsId(crsContentVORowImpl.getCrsId());
+            crsRiskRelationVOImpl1.executeQuery();
+            
+            RowSetIterator crsRiskRelationsiterator = crsRiskRelationVOImpl1.createRowSetIterator(null);
+            crsRiskRelationsiterator.reset();
+            while (crsRiskRelationsiterator.hasNext()) {
+                      CrsRiskRelationVORowImpl crsRiskRelationsRow = (CrsRiskRelationVORowImpl)crsRiskRelationsiterator.next();
+                       crsRiskRelationsRow.setMqmComment(null);
+                   }
+            crsRiskRelationsiterator.closeRowSetIterator();
+        }
     }
 }

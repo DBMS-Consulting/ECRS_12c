@@ -18,9 +18,9 @@ import org.apache.log4j.Logger;
 
 public class CRSBean implements Serializable {
     // ******** VERSION **********
-    public static final String APP_VERSION = "01.11.00";
+    public static final String APP_VERSION = "01.13.00";
     public static final String APP_BUILD = "00";
-    public static final String APP_BUILD_DATE = "15-MAR-2017";
+    public static final String APP_BUILD_DATE = "24-JAN-2018";
     public static final String RESOURCE_BUNDLE_NAME = "eCRS";
     @SuppressWarnings("compatibility:-2309154444791405523")
     private static final long serialVersionUID = -719374587308101131L;
@@ -82,7 +82,7 @@ public class CRSBean implements Serializable {
        Connection conn = getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-    
+        String nmatSql = "SELECT * FROM NMAT.NMAT_PROPERTIES WHERE PROP_NAME = 'TMS_URL'";
        try {
            pstmt = conn.prepareCall(sql);
            rs = pstmt.executeQuery();
@@ -98,6 +98,19 @@ public class CRSBean implements Serializable {
                logger.info ("*** " + p + "=" + v);
                properties.put(p,v);
             }
+           pstmt = conn.prepareCall(nmatSql);
+           rs = pstmt.executeQuery();
+           
+           while (rs.next()) {
+              p = rs.getString("PROP_NAME");
+              v = rs.getString("PROP_VALUE") + "";
+              
+              logger.info ("*** " + p + "=" + v);
+               if(p != null && "TMS_URL".equalsIgnoreCase(p)){
+                    properties.put(p,v);
+               }
+           }
+           
        } catch (SQLException e){
                 logger.error("Error while loading CRS Properties", e);
             return false;
@@ -110,6 +123,10 @@ public class CRSBean implements Serializable {
                 logger.error("Error while closing connection", e);
             }
         }
+       
+       
+       
+       
        return true;
        
     }

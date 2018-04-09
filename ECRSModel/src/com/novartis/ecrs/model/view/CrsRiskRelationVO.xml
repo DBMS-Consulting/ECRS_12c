@@ -4,11 +4,10 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskRelationVO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.12.24"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
-  UseGlueCode="false"
   ComponentClass="com.novartis.ecrs.model.view.CrsRiskRelationVOImpl"
   RowClass="com.novartis.ecrs.model.view.CrsRiskRelationVORowImpl">
   <DesignTime>
@@ -22,6 +21,10 @@
         ResId="com.novartis.ecrs.model.view.CrsRiskRelationVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
+  <Variable
+    Name="pCrsId"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
   <ViewAccessor
     Name="SocLOVO"
     ViewObjectName="com.novartis.ecrs.model.lov.SocLOVO"
@@ -39,6 +42,7 @@
     <AttrArray Name="AttrNames">
       <Item Value="SocTerm"/>
     </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
     <AttrArray Name="DerivedAttrNames">
       <Item Value="SocDictContentId"/>
       <Item Value="SocDictContentEntryTs"/>
@@ -63,6 +67,7 @@
     <AttrArray Name="AttrNames">
       <Item Value="DomainId"/>
     </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
     <AttrArray Name="ListAttrNames">
       <Item Value="DomainId"/>
     </AttrArray>
@@ -257,6 +262,42 @@ FROM CRS_RISK_RELATIONS_STG CrsRiskRelationsEO]]></SQLQuery>
       </SchemaBasedProperties>
     </Properties>
   </ViewAttribute>
+  <ViewCriteria
+    Name="FilterByCrsID"
+    ViewObjectName="com.novartis.ecrs.model.view.CrsRiskRelationVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="CrsRiskRelationVOCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="CrsId"
+        ViewAttribute="CrsId"
+        Operator="="
+        Conjunction="AND"
+        Value=":pCrsId"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
   <ViewLinkAccessor
     Name="CrsRiskDefinitionsVO"
     ViewLink="com.novartis.ecrs.model.view.link.CrsRiskRelationToRiskDefintionLink"
