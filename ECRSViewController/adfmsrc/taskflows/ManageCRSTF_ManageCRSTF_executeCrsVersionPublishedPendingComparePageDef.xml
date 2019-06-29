@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="ManageCRSTF_ManageCRSTF_executeCrsVersionPublishedPendingComparePageDef" Package="taskflows"
+                SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <methodAction id="executeCrsVersionPublishedPendingCompare" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeCrsVersionPublishedPendingCompare" IsViewObjectMethod="false"
+                  DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.executeCrsVersionPublishedPendingCompare.dataControl.dataProvider">
+      <NamedData NDName="crsId" NDValue="#{pageFlowScope.crsId}" NDType="java.lang.Long"/>
+      <NamedData NDName="releaseStatus" NDValue="#{pageFlowScope.manageCRSBean.currReleaseStatus}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="isCurrentPublished" NDValue="#{pageFlowScope.crsCurrentPublished}" NDType="java.lang.String"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

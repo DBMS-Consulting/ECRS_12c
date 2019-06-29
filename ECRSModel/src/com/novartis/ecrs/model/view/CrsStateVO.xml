@@ -4,7 +4,7 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsStateVO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.12.24"
   SelectList="CrsStateEO.STATE_ID, 
        CrsStateEO.STATE_NAME, 
        CrsStateEO.STATE_DESC, 
@@ -13,9 +13,14 @@
   BindingStyle="OracleName"
   CustomQuery="false"
   PageIterMode="Full"
-  UseGlueCode="false"
   FetchSize="10"
-  FetchMode="FETCH_ALL">
+  FetchMode="FETCH_ALL"
+  RowClass="com.novartis.ecrs.model.view.CrsStateVORowImpl"
+  ComponentClass="com.novartis.ecrs.model.view.CrsStateVOImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
   <Variable
     Name="bindStateId"
     Kind="viewcriteria"
@@ -58,7 +63,7 @@
     Name="searchStates"
     ViewObjectName="com.novartis.ecrs.model.view.CrsStateVO"
     Conjunction="AND">
-    <Properties>
+    <Properties Name="_Props">
       <CustomProperties>
         <Property
           Name="displayOperators"
@@ -102,7 +107,7 @@
     Name="activeStates"
     ViewObjectName="com.novartis.ecrs.model.view.CrsStateVO"
     Conjunction="AND">
-    <Properties>
+    <Properties Name="_Props">
       <CustomProperties>
         <Property
           Name="displayOperators"

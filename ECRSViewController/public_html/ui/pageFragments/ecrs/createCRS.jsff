@@ -23,10 +23,19 @@
                         <af:panelBox text="#{pageFlowScope.flowType eq 'S' ? ecrsviewcontrollerBundle.DETAILS : ecrsviewcontrollerBundle.ADD_DETAILS} #{pageFlowScope.flowType eq 'U' ? ecrsviewcontrollerBundle.COLON : ''} #{pageFlowScope.flowType eq 'U' ? bindings.CrsName.inputValue  : ''}"
                                      id="pb1">
                             <f:facet name="toolbar">
-                                <af:commandButton text="#{ecrsviewcontrollerBundle.SAVE}"
-                                                  id="cb4"
-                                                  actionListener="#{pageFlowScope.manageCRSBean.onClickCreateSave}"
-                                                  visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable or (securityContext.userInRole['CRS_MQM'] and bindings.StateId.inputValue eq 2) or (securityContext.userInRole['CRS_TASL'] and bindings.StateId.inputValue eq 4)}"/>
+                                <af:toolbar id="t2">
+                                    <af:commandButton text="Completion Guideline" id="cb41"
+                                               immediate="true" rendered="#{pageFlowScope.flowType eq 'C'}">
+                                                      <af:showPopupBehavior popupId="p11"/>
+                                                      </af:commandButton>
+                                    <af:commandButton text="Completion Guideline" id="cb1" immediate="true" rendered="#{pageFlowScope.flowType eq 'U'}">
+                                                      <af:showPopupBehavior popupId="p12"/>
+                                                      </af:commandButton>
+                                    <af:spacer width="10" id="s15"/>
+                                    <af:commandButton text="#{ecrsviewcontrollerBundle.SAVE}" id="cb4"
+                                                      actionListener="#{pageFlowScope.manageCRSBean.onClickCreateSave}"
+                                                      visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable or (securityContext.userInRole['CRS_MQM'] and bindings.StateId.inputValue eq 2) or (securityContext.userInRole['CRS_TASL'] and bindings.StateId.inputValue eq 4)}"/>
+                                </af:toolbar>
                             </f:facet>
                             <af:panelGroupLayout id="pgl3" layout="horizontal">
                                 
@@ -210,7 +219,7 @@
                                                   columns="#{bindings.CrsEffectiveDt.hints.displayWidth}"
                                                   autoSubmit="true"
                                                   readOnly="true"
-                                                  visible="#{!pageFlowScope.manageCRSBean.isCRSVersionInitial}"
+                                                  visible="#{(!pageFlowScope.manageCRSBean.isCRSVersionInitial) and (pageFlowScope.manageCRSBean.currReleaseStatus ne 'P')}"
                                                   shortDesc="#{bindings.CrsEffectiveDt.hints.tooltip}" id="id1">
                                         <f:validator binding="#{bindings.CrsEffectiveDt.validator}"/>
                                         <af:convertDateTime pattern="dd-MMM-yyyy"/>
@@ -634,5 +643,21 @@
                                id="ot22"/>
             </af:dialog>
         </af:popup>
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p11" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw2" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Create CRS Page Completion Guidelines">
+        <af:inlineFrame id="if3" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 01 CREATE CRS PAGE.pdf'}"
+                        shortDesc="Create CRS Page Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p12" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw1" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Update CRS Assignment Completion Guidelines">
+        <af:inlineFrame id="if1" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 02 UPDATE CRS ASSIGNMENT.pdf'}"
+                        shortDesc="Update CRS Assignment Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
     </af:panelHeader>
 </jsp:root>

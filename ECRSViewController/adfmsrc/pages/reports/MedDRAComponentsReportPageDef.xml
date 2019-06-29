@@ -8,6 +8,8 @@
     <iterator Binds="MedDRAComponentsReport" RangeSize="25"
               DataControl="ECRSAppModuleDataControl"
               id="MedDRAComponentsReportIterator"/>
+    <page path="pageTemplate.EcrsTemplatePageDef" id="ptb1" Refresh="ifNeeded"/>
+    <iterator Binds="CrsBatchJob" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="CrsBatchJobIterator"/>
   </executables>
   <bindings>
     <tree IterBinding="MedDRAComponentsReportIterator"
@@ -24,5 +26,30 @@
         </AttrNames>
       </nodeDefinition>
     </tree>
+    <attributeValues IterBinding="CrsBatchJobIterator" id="JobDesc">
+      <AttrNames>
+        <Item Value="JobDesc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CrsBatchJobIterator" id="JobId">
+      <AttrNames>
+        <Item Value="JobId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CrsBatchJobIterator" id="JobName">
+      <AttrNames>
+        <Item Value="JobName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CrsBatchJobIterator" id="JobStatus">
+      <AttrNames>
+        <Item Value="JobStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CrsBatchJobIterator" id="JobSubmitDate">
+      <AttrNames>
+        <Item Value="JobSubmitDate"/>
+      </AttrNames>
+    </attributeValues>
   </bindings>
 </pageDefinition>

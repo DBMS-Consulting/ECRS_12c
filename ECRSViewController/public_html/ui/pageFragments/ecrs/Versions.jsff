@@ -1,0 +1,1235 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="ecrsviewcontrollerBundle" value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+  <af:panelHeader text="#{pageFlowScope.flowType eq 'S' ? ecrsviewcontrollerBundle.BROWSE__SEARCH : (pageFlowScope.flowType eq 'C' ? ecrsviewcontrollerBundle.CREATE : ecrsviewcontrollerBundle.UPDATE)}" id="ph1">
+    <f:facet name="context"/>
+    <f:facet name="toolbar"/>
+    <f:facet name="menuBar"/>
+    <f:facet name="legend"/>
+    <f:facet name="info"/>
+    <af:panelGroupLayout id="pgl1" layout="horizontal">
+      <af:train id="t1" value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}"/>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl2" layout="vertical" rendered="#{(pageFlowScope.manageCRSBean.currReleaseStatus eq 'C') and (securityContext.userName ne null) and (pageFlowScope.crsCurrentPublished eq 'Z')}">
+      <af:panelCollection id="pc1" rendered="#{pageFlowScope.manageCRSBean.baseOrStaging eq 'STAGING'}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t2">
+            <af:button text="Compare with Current Version" id="b1" visible="#{securityContext.userName ne null}"
+                       actionListener="#{pageFlowScope.manageCRSBean.compareCurrentVersion}" partialTriggers="t3:sbc2"
+                       disabled="#{pageFlowScope.manageCRSBean.crsVersionsCurrent}"/>
+            <af:button text="Compare Previous Versions" id="b2" visible="#{securityContext.userName ne null}"
+                       actionListener="#{pageFlowScope.manageCRSBean.comparePreviousVersions}"
+                       partialTriggers="t3:sbc2" disabled="#{pageFlowScope.manageCRSBean.crsVersionsPrevious}"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.CrsVersions.collectionModel}" var="row" rows="#{bindings.CrsVersions.rangeSize}"
+                  emptyText="#{bindings.CrsVersions.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.CrsVersions.collectionModel.selectedRow}"
+                  rowSelection="multiple" fetchSize="#{bindings.CrsVersions.rangeSize}" id="t3"
+                  styleClass="AFStretchWidth" columnStretching="last"
+                  binding="#{pageFlowScope.manageCRSBean.crsVersionsTable}" contentDelivery="immediate">
+          <af:column headerText="" id="c7" width="12">
+            <af:selectBooleanCheckbox value="#{row.bindings.SelectRow.inputValue}"
+                                      label="#{row.bindings.SelectRow.label}"
+                                      shortDesc="#{bindings.CrsVersions.hints.SelectRow.tooltip}" id="sbc2"
+                                      valueChangeListener="#{pageFlowScope.manageCRSBean.onVersionRowSelection}"
+                                      autoSubmit="true"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.CrsVersions.hints.CrsEffectiveDt.name}" sortable="true"
+                     headerText="Effective Date" id="c1">
+            <af:outputText value="#{row.CrsEffectiveDt}"
+                           shortDesc="#{bindings.CrsVersions.hints.CrsEffectiveDt.tooltip}" id="ot1">
+              <af:convertDateTime pattern="#{bindings.CrsVersions.hints.CrsEffectiveDt.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.CrsVersions.hints.ReasonForChange.name}" sortable="true"
+                     headerText="Reason for Change" id="c2">
+            <af:outputText value="#{row.ReasonForChange}"
+                           shortDesc="#{bindings.CrsVersions.hints.ReasonForChange.tooltip}" id="ot2"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+      <af:panelCollection id="pc2" rendered="#{pageFlowScope.manageCRSBean.baseOrStaging eq 'BASE'}">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t5">
+            <af:button text="Compare with Current Version" id="b3" visible="#{securityContext.userName ne null}"
+                       actionListener="#{pageFlowScope.manageCRSBean.baseCompareCurrentVersion}"
+                       partialTriggers="t4:sbc1" disabled="#{pageFlowScope.manageCRSBean.baseCrsVersionsCurrent}"/>
+            <af:button text="Compare Previous Versions" id="b4" visible="#{securityContext.userName ne null}"
+                       actionListener="#{pageFlowScope.manageCRSBean.baseComparePreviousVersions}"
+                       partialTriggers="t4:sbc1" disabled="#{pageFlowScope.manageCRSBean.baseCrsVersionsPrevious}"/>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.CrsBaseVersions.collectionModel}" var="row"
+                  rows="#{bindings.CrsBaseVersions.rangeSize}"
+                  emptyText="#{bindings.CrsBaseVersions.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" selectedRowKeys="#{bindings.CrsBaseVersions.collectionModel.selectedRow}"
+                  rowSelection="multiple" fetchSize="#{bindings.CrsBaseVersions.rangeSize}" id="t4" rendered="true"
+                  styleClass="AFStretchWidth" columnStretching="last"
+                  binding="#{pageFlowScope.manageCRSBean.baseCrsVersionsTable}" contentDelivery="immediate">
+          <af:column headerText="" id="c5" width="12">
+            <af:selectBooleanCheckbox value="#{row.bindings.SelectRow.inputValue}"
+                                      label="#{row.bindings.SelectRow.label}"
+                                      shortDesc="#{bindings.CrsBaseVersions.hints.SelectRow.tooltip}" id="sbc1"
+                                      valueChangeListener="#{pageFlowScope.manageCRSBean.onBaseVersionRowSelection}"
+                                      autoSubmit="true"/>
+          </af:column>
+          <af:column headerText="Effective Date" id="c3">
+            <af:outputText value="#{row.CrsEffectiveDt}"
+                           shortDesc="#{bindings.CrsBaseVersions.hints.CrsEffectiveDt.tooltip}" id="ot5">
+              <af:convertDateTime pattern="#{bindings.CrsBaseVersions.hints.CrsEffectiveDt.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="Reason for Change" id="c4">
+            <af:outputText value="#{row.ReasonForChange}"
+                           shortDesc="#{bindings.CrsBaseVersions.hints.ReasonForChange.tooltip}" id="ot6"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="p1"
+                binding="#{pageFlowScope.manageCRSBean.versionComparePopup}">
+        <af:dialog id="d1" type="none" title="Versions: #{pageFlowScope.manageCRSBean.selectedCrsName}"
+                   closeIconVisible="false">
+          <f:facet name="buttonBar">
+            <af:button text="Ok" id="b5" actionListener="#{pageFlowScope.manageCRSBean.deleteVersionsAndClosePopup}"/>
+          </f:facet>
+           <af:panelGroupLayout id="pgl4" layout="horizontal">
+            <af:panelBox text="Name: #{bindings.EarliestCrsName} Version: #{bindings.EarliestCrsVersionStrtDate} (#{bindings.EarliestMeddraVersionDict})" id="pb3" inlineStyle="width:700px;">
+             <f:facet name="toolbar">
+          <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT}" id="cb1" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="VersionCompare.xls"
+                                                 method="#{pageFlowScope.manageCRSBean.versionComapareCurrent}"/>
+                </af:commandButton>
+        </f:facet>
+              <af:table value="#{bindings.CrsVersionCompare.collectionModel}" var="row"
+                        rows="#{bindings.CrsVersionCompare.rangeSize}"
+                        emptyText="#{bindings.CrsVersionCompare.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" fetchSize="#{bindings.CrsVersionCompare.rangeSize}"
+                        filterModel="#{bindings.CrsVersionCompare1Query.queryDescriptor}" filterVisible="false"
+                        queryListener="#{bindings.CrsVersionCompare1Query.processQuery}" varStatus="vs" id="t8"
+                        contentDelivery="immediate">
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSafetyTopic.name}" filterable="true"
+                           sortable="true" headerText="Safety Topic of Interest"
+                           id="c51">
+                  <af:outputText value="#{row.EarliestSafetyTopic}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSafetyTopic.tooltip}" id="ot70"
+                                 inlineStyle="#{row.EarliestSafetyTopicColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSafetyTopicColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSafetyTopicColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column id="c93" headerText="Purpose Of Risk Definition">
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSpp.name}" filterable="true"
+                             sortable="true" headerText="SP"
+                             id="c52" width="15">
+                    <af:outputText value="#{row.EarliestSpp}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSpp.tooltip}" id="ot71"
+                                   inlineStyle="#{row.EarliestSppColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSppColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSppColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestDsur.name}" filterable="true"
+                             sortable="true" headerText="DS"
+                             id="c53" width="15">
+                    <af:outputText value="#{row.EarliestDsur}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestDsur.tooltip}" id="ot72"
+                                   inlineStyle="#{row.EarliestDsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestDsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestDsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestRmp.name}" filterable="true"
+                             sortable="true" headerText="RM"
+                             id="c54" width="15">
+                    <af:outputText value="#{row.EarliestRmp}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestRmp.tooltip}" id="ot73"
+                                   inlineStyle="#{row.EarliestRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestPsur.name}" filterable="true"
+                             sortable="true" headerText="PS"
+                             id="c55" width="15">
+                    <af:outputText value="#{row.EarliestPsur}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestPsur.tooltip}" id="ot74"
+                                   inlineStyle="#{row.EarliestPsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestPsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestPsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestIb.name}" filterable="true"
+                             sortable="true" headerText="IB" id="c56" width="15">
+                    <af:outputText value="#{row.EarliestIb}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestIb.tooltip}" id="ot75"
+                                   inlineStyle="#{row.EarliestIbColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestIbColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestIbColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestCds.name}" filterable="true"
+                             sortable="true" headerText="CD"
+                             id="c57" width="15">
+                    <af:outputText value="#{row.EarliestCds}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestCds.tooltip}" id="ot76"
+                                   inlineStyle="#{row.EarliestCdsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestCdsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestCdsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestOtherSearch.name}"
+                             filterable="true" sortable="true"
+                             headerText="OS" id="c58" width="15">
+                    <af:outputText value="#{row.EarliestOtherSearch}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestOtherSearch.tooltip}"
+                                   id="ot77" inlineStyle="#{row.EarliestOtherSearchColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestOtherSearchColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestOtherSearchColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMissingInformation.name}"
+                             filterable="true" sortable="true"
+                             headerText="MI" id="c59" width="15">
+                    <af:outputText value="#{row.EarliestMissingInformation}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMissingInformation.tooltip}"
+                                   id="ot78" inlineStyle="#{row.EarliestMissingInformColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMissingInformColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMissingInformColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestExpeditingRules.name}"
+                             filterable="true" sortable="true"
+                             headerText="ER" id="c60" width="15">
+                    <af:outputText value="#{row.EarliestExpeditingRules}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestExpeditingRules.tooltip}"
+                                   id="ot79" inlineStyle="#{row.EarliestExpeditingRulColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestExpeditingRulColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestExpeditingRulColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestUnderlyingDisease.name}"
+                             filterable="true" sortable="true"
+                             headerText="UD" id="c61" width="15">
+                    <af:outputText value="#{row.EarliestUnderlyingDisease}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestUnderlyingDisease.tooltip}"
+                                   id="ot80" inlineStyle="#{row.EarliestUnderlyingDisColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestUnderlyingDisColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestUnderlyingDisColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestAesiForNisProtcol.name}"
+                             filterable="true" sortable="true"
+                             headerText="A1" id="c62" width="15">
+                    <af:outputText value="#{row.EarliestAesiForNisProtcol}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestAesiForNisProtcol.tooltip}"
+                                   id="ot81" inlineStyle="#{row.EarliestAesiFrNisProClr eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestAesiFrNisProClr eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestAesiFrNisProClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestAesiNotRmp.name}"
+                             filterable="true" sortable="true"
+                             headerText="A2" id="c63" width="15">
+                    <af:outputText value="#{row.EarliestAesiNotRmp}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestAesiNotRmp.tooltip}"
+                                   id="ot82" inlineStyle="#{row.EarliestAesiNotRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestAesiNotRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestAesiNotRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <f:facet name="header">
+                    <af:panelGroupLayout id="pgl13" layout="horizontal">
+                      <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot7"/>
+                      <af:commandImageLink id="cil5" icon="/images/Help-icon.png">
+                        <af:showPopupBehavior triggerType="action" popupId=":::prplegend"/>
+                      </af:commandImageLink>
+                      <f:facet name="separator">
+                        <af:spacer width="10" height="10" id="s7"/>
+                      </f:facet>
+                    </af:panelGroupLayout>
+                  </f:facet>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSoc.name}" filterable="true"
+                           sortable="true" headerText="SOC" id="c64">
+                  <af:outputText value="#{row.EarliestSoc}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSoc.tooltip}" id="ot83"
+                                 inlineStyle="#{row.EarliestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestDataDomain.name}" filterable="true"
+                           sortable="true" headerText="Data Domain"
+                           id="c65">
+                  <af:outputText value="#{row.EarliestDataDomain}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestDataDomain.tooltip}" id="ot84"
+                                 inlineStyle="#{row.EarliestDataDomainColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestDataDomainColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestDataDomainColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSearchDetails.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Criteria Details" id="c66">
+                  <af:outputText value="#{row.EarliestSearchDetails}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSearchDetails.tooltip}"
+                                 id="ot85" inlineStyle="#{row.EarliestSearchDetailsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSearchDetailsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSearchDetailsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraCode.name}" filterable="true"
+                           sortable="true" headerText="MedDRA Code"
+                           id="c67">
+                  <af:outputText value="#{row.EarliestMeddraCode}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMeddraCode.tooltip}" id="ot86"
+                                 inlineStyle="#{row.EarliestMeddraCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.CrsVersionCompare.hints.EarliestMeddraCode.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column id="c95" headerText="Safety Topic Definition">
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraTerm.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Term" id="c68">
+                    <af:outputText value="#{row.EarliestMeddraTerm}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMeddraTerm.tooltip}"
+                                   id="ot87"
+                                   inlineStyle="#{row.EarliestMeddraTermColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraTermColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraTermColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraExtension.name}"
+                             filterable="true" sortable="true" headerText="MedDRA Level" id="c69">
+                    <af:outputText value="#{row.EarliestMeddraExtension}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMeddraExtension.tooltip}"
+                                   id="ot88" inlineStyle="#{row.EarliestMeddraExtColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraExtColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraExtColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraQualifier.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Qualifier" id="c70">
+                    <af:outputText value="#{row.EarliestMeddraQualifier}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMeddraQualifier.tooltip}"
+                                   id="ot89" inlineStyle="#{row.EarliestMeddraQualColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraQualColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraQualColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestNonMeddraCompCmt.name}"
+                             filterable="true" sortable="true"
+                             headerText="Comment" id="c71">
+                    <af:outputText value="#{row.EarliestNonMeddraCompCmt}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestNonMeddraCompCmt.tooltip}"
+                                   id="ot90" inlineStyle="#{row.EarliestNonMedCompCmtClr eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestNonMedCompCmtClr eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestNonMedCompCmtClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
+              </af:table>
+            </af:panelBox>
+            <af:panelBox text="Name: #{bindings.LatestCrsName} Version: #{bindings.LatestCrsVersionStartDate} (#{bindings.LatestMedVersionDictionary})" id="pb4" inlineStyle="width:700px;">
+              <f:facet name="toolbar"/>
+              <af:table value="#{bindings.CrsVersionCompare1.collectionModel}" var="row"
+                        rows="#{bindings.CrsVersionCompare1.rangeSize}"
+                        emptyText="#{bindings.CrsVersionCompare1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" fetchSize="#{bindings.CrsVersionCompare1.rangeSize}"
+                        filterModel="#{bindings.CrsVersionCompare1Query.queryDescriptor}" filterVisible="false"
+                        queryListener="#{bindings.CrsVersionCompare1Query.processQuery}" varStatus="vs" id="t9"
+                        contentDelivery="immediate">
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestSafetyTopic.name}" filterable="true"
+                           sortable="true" headerText="Safety Topic of Interest"
+                           id="c72">
+                  <af:outputText value="#{row.LatestSafetyTopic}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSafetyTopic.tooltip}" id="ot21"
+                                 inlineStyle="#{row.LatestSafetyTopicColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSafetyTopicColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSafetyTopicColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column id="c94" headerText="Purpose Of Risk Definition">
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestSpp.name}" filterable="true"
+                             sortable="true" headerText="SP" id="c73" width="15">
+                    <af:outputText value="#{row.LatestSpp}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSpp.tooltip}" id="ot50"
+                                   inlineStyle="#{row.LatestSppColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSppColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSppColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestDsur.name}" filterable="true"
+                             sortable="true" headerText="DS"
+                             id="c74" width="15">
+                    <af:outputText value="#{row.LatestDsur}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestDsur.tooltip}" id="ot51"
+                                   inlineStyle="#{row.LatestDsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestDsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestDsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestRmp.name}" filterable="true"
+                             sortable="true" headerText="RM" id="c75" width="15">
+                    <af:outputText value="#{row.LatestRmp}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestRmp.tooltip}" id="ot52"
+                                   inlineStyle="#{row.LatestRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestPsur.name}" filterable="true"
+                             sortable="true" headerText="PS"
+                             id="c76" width="15">
+                    <af:outputText value="#{row.LatestPsur}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestPsur.tooltip}" id="ot53"
+                                   inlineStyle="#{row.LatestPsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestPsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestPsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestIb.name}" filterable="true"
+                             sortable="true" headerText="IB" id="c77" width="15">
+                    <af:outputText value="#{row.LatestIb}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestIb.tooltip}" id="ot54"
+                                   inlineStyle="#{row.LatestIbColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestIbColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestIbColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestCds.name}" filterable="true"
+                             sortable="true" headerText="CD" id="c78" width="15">
+                    <af:outputText value="#{row.LatestCds}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestCds.tooltip}" id="ot55"
+                                   inlineStyle="#{row.LatestCdsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestCdsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestCdsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestOtherSearch.name}"
+                             filterable="true" sortable="true"
+                             headerText="OS" id="c79" width="15">
+                    <af:outputText value="#{row.LatestOtherSearch}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestOtherSearch.tooltip}"
+                                   id="ot56" inlineStyle="#{row.LatestOtherSearchColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestOtherSearchColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestOtherSearchColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMissingInformation.name}"
+                             filterable="true" sortable="true"
+                             headerText="MI" id="c80" width="15">
+                    <af:outputText value="#{row.LatestMissingInformation}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMissingInformation.tooltip}"
+                                   id="ot57" inlineStyle="#{row.LatestMissingInfoColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMissingInfoColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMissingInfoColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestExpeditingRules.name}"
+                             filterable="true" sortable="true"
+                             headerText="ER" id="c81" width="15">
+                    <af:outputText value="#{row.LatestExpeditingRules}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestExpeditingRules.tooltip}"
+                                   id="ot58" inlineStyle="#{row.LatestExpeditingRulesColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestExpeditingRulesColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestExpeditingRulesColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestUnderlyingDisease.name}"
+                             filterable="true" sortable="true"
+                             headerText="UD" id="c82" width="15">
+                    <af:outputText value="#{row.LatestUnderlyingDisease}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestUnderlyingDisease.tooltip}"
+                                   id="ot59" inlineStyle="#{row.LatestUnderlyingDisColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestUnderlyingDisColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestUnderlyingDisColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestAesiForNisProtocol.name}"
+                             filterable="true" sortable="true"
+                             headerText="A1" id="c83" width="15">
+                    <af:outputText value="#{row.LatestAesiForNisProtocol}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestAesiForNisProtocol.tooltip}"
+                                   id="ot60" inlineStyle="#{row.LatestAesiForNisProColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestAesiForNisProColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestAesiForNisProColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestAesiNotRmp.name}" filterable="true"
+                             sortable="true" headerText="A2"
+                             id="c84" width="15">
+                    <af:outputText value="#{row.LatestAesiNotRmp}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestAesiNotRmp.tooltip}" id="ot61"
+                                   inlineStyle="#{row.LatestAesiNotRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestAesiNotRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestAesiNotRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <f:facet name="header">
+                    <af:panelGroupLayout id="pgl3" layout="horizontal">
+                      <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot8"/>
+                      <af:commandImageLink id="cil1" icon="/images/Help-icon.png">
+                        <af:showPopupBehavior triggerType="action" popupId=":::prplegend"/>
+                      </af:commandImageLink>
+                      <f:facet name="separator">
+                        <af:spacer width="10" height="10" id="s3"/>
+                      </f:facet>
+                    </af:panelGroupLayout>
+                  </f:facet>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestSoc.name}" filterable="true"
+                           sortable="true" headerText="SOC" id="c85">
+                  <af:outputText value="#{row.LatestSoc}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSoc.tooltip}" id="ot62"
+                                 inlineStyle="#{row.LatestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestDataDomain.name}" filterable="true"
+                           sortable="true" headerText="Data Domain"
+                           id="c86">
+                  <af:outputText value="#{row.LatestDataDomain}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestDataDomain.tooltip}" id="ot63"
+                                 inlineStyle="#{row.LatestDataDomainColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestDataDomainColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestDataDomainColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestSearchDetails.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Criteria Details" id="c87">
+                  <af:outputText value="#{row.LatestSearchDetails}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSearchDetails.tooltip}"
+                                 id="ot64" inlineStyle="#{row.LatestSearchDetailsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSearchDetailsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSearchDetailsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraCode.name}" filterable="true"
+                           sortable="true" headerText="MedDRA Code"
+                           id="c88">
+                  <af:outputText value="#{row.LatestMeddraCode}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMeddraCode.tooltip}" id="ot65"
+                                 inlineStyle="#{row.LatestMeddraCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.CrsVersionCompare1.hints.LatestMeddraCode.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column id="c96" headerText="Safety Topic Definition">
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraTerm.name}" filterable="true"
+                             sortable="true" headerText="MedDRA Term"
+                             id="c89">
+                    <af:outputText value="#{row.LatestMeddraTerm}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMeddraTerm.tooltip}" id="ot66"
+                                   inlineStyle="#{row.LatestMeddraTermColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraTermColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraTermColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraExtension.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Level" id="c90">
+                    <af:outputText value="#{row.LatestMeddraExtension}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMeddraExtension.tooltip}"
+                                   id="ot67" inlineStyle="#{row.LatestMeddraExtensionColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraExtensionColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraExtensionColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraQualifier.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Qualifier" id="c91">
+                    <af:outputText value="#{row.LatestMeddraQualifier}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMeddraQualifier.tooltip}"
+                                   id="ot68" inlineStyle="#{row.LatestMeddraQualifierColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraQualifierColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraQualifierColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestNonMeddraCompCmt.name}"
+                             filterable="true" sortable="true"
+                             headerText="Comment" id="c92">
+                    <af:outputText value="#{row.LatestNonMeddraCompCmt}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestNonMeddraCompCmt.tooltip}"
+                                   id="ot69" inlineStyle="#{row.LatestNonMedCompCmtColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
+              </af:table>
+            </af:panelBox>
+          </af:panelGroupLayout>
+        </af:dialog>
+      </af:popup>
+      <af:popup childCreation="deferred" autoCancel="disabled" id="prplegend">
+      <af:dialog id="d10" type="ok" title="#{ecrsviewcontrollerBundle.INFO}"
+                 titleIconSource="/images/info_icon.png" contentWidth="750">
+        <f:facet name="buttonBar"/>
+        <af:table value="#{bindings.PurposeLegendStaticVO.collectionModel}"
+                  var="row" rows="#{bindings.PurposeLegendStaticVO.rangeSize}"
+                  emptyText="#{bindings.PurposeLegendStaticVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.PurposeLegendStaticVO.rangeSize}"
+                  rowBandingInterval="0" id="t14"
+                  autoHeightRows="#{bindings.PurposeLegendStaticVO.estimatedRowCount}"
+                  styleClass="AFStretchWidth" columnStretching="column:c83">
+          <af:column sortProperty="#{bindings.PurposeLegendStaticVO.hints.RiskCode.name}"
+                     sortable="false"
+                     headerText="#{bindings.PurposeLegendStaticVO.hints.RiskCode.label}"
+                     id="c49" width="60">
+            <af:outputText value="#{row.RiskCode}"
+                           shortDesc="#{bindings.PurposeLegendStaticVO.hints.RiskCode.tooltip}"
+                           id="ot12"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.PurposeLegendStaticVO.hints.Name.name}"
+                     sortable="false"
+                     headerText="#{bindings.PurposeLegendStaticVO.hints.Name.label}"
+                     id="c172" width="100">
+            <af:outputText value="#{row.Name}"
+                           shortDesc="#{bindings.PurposeLegendStaticVO.hints.Name.tooltip}"
+                           id="ot26"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.PurposeLegendStaticVO.hints.Description.name}"
+                     sortable="false"
+                     headerText="#{bindings.PurposeLegendStaticVO.hints.Description.label}"
+                     id="c6" noWrap="false" width="250">
+            <af:outputText value="#{row.Description}"
+                           shortDesc="#{bindings.PurposeLegendStaticVO.hints.Description.tooltip}"
+                           id="ot149"/>
+          </af:column>
+        </af:table>
+      </af:dialog>
+    </af:popup>
+    </af:panelGroupLayout>
+    <af:panelGroupLayout id="pgl5" layout="horizontal" rendered="#{(pageFlowScope.manageCRSBean.currReleaseStatus eq 'P') and (securityContext.userName ne null) and (pageFlowScope.crsPendingPublished eq 'Y')}"
+                         valign="top">
+            <af:panelBox text="Name: #{bindings.EarliestCrsName1} Version: #{bindings.EarliestCrsVersionStrtDate1} (#{bindings.EarliestMeddraVersionDict1})"
+                         id="pb1" inlineStyle="width:580px;">
+              <f:facet name="toolbar">
+              <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT}" id="cb3" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="VersionCompare.xls"
+                                                 method="#{pageFlowScope.manageCRSBean.versionComaparePending}"/>
+                </af:commandButton>
+              </f:facet>
+              <af:table value="#{bindings.CRSVersionComparePending.collectionModel}" var="row"
+                        rows="#{bindings.CRSVersionComparePending.rangeSize}"
+                        emptyText="#{bindings.CRSVersionComparePending.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" fetchSize="#{bindings.CRSVersionComparePending.rangeSize}"
+                        filterModel="#{bindings.CRSVersionComparePendinng1Query.queryDescriptor}" filterVisible="false"
+                        queryListener="#{bindings.CRSVersionComparePendinng1Query.processQuery}" varStatus="vs" id="t6"
+                        contentDelivery="immediate">
+                <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestSafetyTopic.name}" filterable="true"
+                           sortable="true" headerText="Safety Topic of Interest"
+                           id="c8">
+                  <af:outputText value="#{row.EarliestSafetyTopic}"
+                                 shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestSafetyTopic.tooltip}" id="ot10"
+                                 inlineStyle="#{row.EarliestSafetyTopicColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSafetyTopicColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSafetyTopicColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column id="c9" headerText="Purpose Of Risk Definition">
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestSpp.name}" filterable="true"
+                             sortable="true" headerText="SP"
+                             id="c10" width="15">
+                    <af:outputText value="#{row.EarliestSpp}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestSpp.tooltip}" id="ot13"
+                                   inlineStyle="#{row.EarliestSppColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSppColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSppColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestDsur.name}" filterable="true"
+                             sortable="true" headerText="DS"
+                             id="c11" width="15">
+                    <af:outputText value="#{row.EarliestDsur}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestDsur.tooltip}" id="ot14"
+                                   inlineStyle="#{row.EarliestDsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestDsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestDsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestRmp.name}" filterable="true"
+                             sortable="true" headerText="RM"
+                             id="c12" width="15">
+                    <af:outputText value="#{row.EarliestRmp}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestRmp.tooltip}" id="ot15"
+                                   inlineStyle="#{row.EarliestRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestPsur.name}" filterable="true"
+                             sortable="true" headerText="PS"
+                             id="c13" width="15">
+                    <af:outputText value="#{row.EarliestPsur}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestPsur.tooltip}" id="ot16"
+                                   inlineStyle="#{row.EarliestPsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestPsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestPsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestIb.name}" filterable="true"
+                             sortable="true" headerText="IB" id="c14" width="15">
+                    <af:outputText value="#{row.EarliestIb}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestIb.tooltip}" id="ot17"
+                                   inlineStyle="#{row.EarliestIbColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestIbColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestIbColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestCds.name}" filterable="true"
+                             sortable="true" headerText="CD"
+                             id="c15" width="15">
+                    <af:outputText value="#{row.EarliestCds}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestCds.tooltip}" id="ot18"
+                                   inlineStyle="#{row.EarliestCdsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestCdsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestCdsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestOtherSearch.name}"
+                             filterable="true" sortable="true"
+                             headerText="OS" id="c16" width="15">
+                    <af:outputText value="#{row.EarliestOtherSearch}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestOtherSearch.tooltip}"
+                                   id="ot19" inlineStyle="#{row.EarliestOtherSearchColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestOtherSearchColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestOtherSearchColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestMissingInformation.name}"
+                             filterable="true" sortable="true"
+                             headerText="MI" id="c17" width="15">
+                    <af:outputText value="#{row.EarliestMissingInformation}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestMissingInformation.tooltip}"
+                                   id="ot20" inlineStyle="#{row.EarliestMissingInformColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMissingInformColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMissingInformColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestExpeditingRules.name}"
+                             filterable="true" sortable="true"
+                             headerText="ER" id="c18" width="15">
+                    <af:outputText value="#{row.EarliestExpeditingRules}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestExpeditingRules.tooltip}"
+                                   id="ot22" inlineStyle="#{row.EarliestExpeditingRulColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestExpeditingRulColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestExpeditingRulColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestUnderlyingDisease.name}"
+                             filterable="true" sortable="true"
+                             headerText="UD" id="c19" width="15">
+                    <af:outputText value="#{row.EarliestUnderlyingDisease}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestUnderlyingDisease.tooltip}"
+                                   id="ot23" inlineStyle="#{row.EarliestUnderlyingDisColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestUnderlyingDisColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestUnderlyingDisColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestAesiForNisProtcol.name}"
+                             filterable="true" sortable="true"
+                             headerText="A1" id="c20" width="15">
+                    <af:outputText value="#{row.EarliestAesiForNisProtcol}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestAesiForNisProtcol.tooltip}"
+                                   id="ot24" inlineStyle="#{row.EarliestAesiFrNisProClr eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestAesiFrNisProClr eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestAesiFrNisProClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestAesiNotRmp.name}"
+                             filterable="true" sortable="true"
+                             headerText="A2" id="c21" width="15">
+                    <af:outputText value="#{row.EarliestAesiNotRmp}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestAesiNotRmp.tooltip}"
+                                   id="ot25" inlineStyle="#{row.EarliestAesiNotRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestAesiNotRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestAesiNotRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <f:facet name="header">
+                    <af:panelGroupLayout id="pgl7" layout="horizontal">
+                      <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot27"/>
+                      <af:commandImageLink id="cil2" icon="/images/Help-icon.png">
+                        <af:showPopupBehavior triggerType="action" popupId=":::prplegend"/>
+                      </af:commandImageLink>
+                      <f:facet name="separator">
+                        <af:spacer width="10" height="10" id="s2"/>
+                      </f:facet>
+                    </af:panelGroupLayout>
+                  </f:facet>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestSoc.name}" filterable="true"
+                           sortable="true" headerText="SOC" id="c22">
+                  <af:outputText value="#{row.EarliestSoc}"
+                                 shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestSoc.tooltip}" id="ot28"
+                                 inlineStyle="#{row.EarliestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestDataDomain.name}" filterable="true"
+                           sortable="true" headerText="Data Domain"
+                           id="c23">
+                  <af:outputText value="#{row.EarliestDataDomain}"
+                                 shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestDataDomain.tooltip}" id="ot29"
+                                 inlineStyle="#{row.EarliestDataDomainColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestDataDomainColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestDataDomainColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestSearchDetails.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Criteria Details" id="c24">
+                  <af:outputText value="#{row.EarliestSearchDetails}"
+                                 shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestSearchDetails.tooltip}"
+                                 id="ot30" inlineStyle="#{row.EarliestSearchDetailsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSearchDetailsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSearchDetailsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestMeddraCode.name}" filterable="true"
+                           sortable="true" headerText="MedDRA Code"
+                           id="c25">
+                  <af:outputText value="#{row.EarliestMeddraCode}"
+                                 shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestMeddraCode.tooltip}" id="ot31"
+                                 inlineStyle="#{row.EarliestMeddraCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.CRSVersionComparePending.hints.EarliestMeddraCode.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column id="c26" headerText="Safety Topic Definition">
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestMeddraTerm.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Term" id="c27">
+                    <af:outputText value="#{row.EarliestMeddraTerm}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestMeddraTerm.tooltip}"
+                                   id="ot32"
+                                   inlineStyle="#{row.EarliestMeddraTermColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraTermColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraTermColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestMeddraExtension.name}"
+                             filterable="true" sortable="true" headerText="MedDRA Level" id="c28">
+                    <af:outputText value="#{row.EarliestMeddraExtension}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestMeddraExtension.tooltip}"
+                                   id="ot33" inlineStyle="#{row.EarliestMeddraExtColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraExtColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraExtColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestMeddraQualifier.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Qualifier" id="c29">
+                    <af:outputText value="#{row.EarliestMeddraQualifier}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestMeddraQualifier.tooltip}"
+                                   id="ot34" inlineStyle="#{row.EarliestMeddraQualColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraQualColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraQualColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestNonMeddraCompCmt.name}"
+                             filterable="true" sortable="true"
+                             headerText="Comment" id="c30">
+                    <af:outputText value="#{row.EarliestNonMeddraCompCmt}"
+                                   shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestNonMeddraCompCmt.tooltip}"
+                                   id="ot35" inlineStyle="#{row.EarliestNonMedCompCmtClr eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestNonMedCompCmtClr eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestNonMedCompCmtClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
+              </af:table>
+            </af:panelBox>
+            <af:panelBox text="Name: #{bindings.LatestCrsName1} Version: Pending"
+                         id="pb2" inlineStyle="width:580px;">
+              <f:facet name="toolbar"/>
+             <af:table value="#{bindings.CRSVersionComparePending1.collectionModel}" var="row"
+                        rows="#{bindings.CRSVersionComparePending1.rangeSize}"
+                        emptyText="#{bindings.CRSVersionComparePending1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" fetchSize="#{bindings.CRSVersionComparePending1.rangeSize}"
+                        filterModel="#{bindings.CRSVersionComparePendinng1Query.queryDescriptor}" filterVisible="false"
+                        queryListener="#{bindings.CRSVersionComparePendinng1Query.processQuery}" varStatus="vs" id="t10"
+                        contentDelivery="immediate">
+                <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestSafetyTopic.name}" filterable="true"
+                           sortable="true" headerText="Safety Topic of Interest"
+                           id="c31">
+                  <af:outputText value="#{row.LatestSafetyTopic}"
+                                 shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestSafetyTopic.tooltip}" id="ot36"
+                                 inlineStyle="#{row.LatestSafetyTopicColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSafetyTopicColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSafetyTopicColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column id="c32" headerText="Purpose Of Risk Definition">
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestSpp.name}" filterable="true"
+                             sortable="true" headerText="SP" id="c34" width="15">
+                    <af:outputText value="#{row.LatestSpp}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestSpp.tooltip}" id="ot37"
+                                   inlineStyle="#{row.LatestSppColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSppColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSppColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestDsur.name}" filterable="true"
+                             sortable="true" headerText="DS"
+                             id="c33" width="15">
+                    <af:outputText value="#{row.LatestDsur}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestDsur.tooltip}" id="ot38"
+                                   inlineStyle="#{row.LatestDsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestDsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestDsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestRmp.name}" filterable="true"
+                             sortable="true" headerText="RM" id="c35" width="15">
+                    <af:outputText value="#{row.LatestRmp}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestRmp.tooltip}" id="ot39"
+                                   inlineStyle="#{row.LatestRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestPsur.name}" filterable="true"
+                             sortable="true" headerText="PS"
+                             id="c36" width="15">
+                    <af:outputText value="#{row.LatestPsur}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestPsur.tooltip}" id="ot40"
+                                   inlineStyle="#{row.LatestPsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestPsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestPsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestIb.name}" filterable="true"
+                             sortable="true" headerText="IB" id="c38" width="15">
+                    <af:outputText value="#{row.LatestIb}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestIb.tooltip}" id="ot42"
+                                   inlineStyle="#{row.LatestIbColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestIbColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestIbColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestCds.name}" filterable="true"
+                             sortable="true" headerText="CD" id="c37" width="15">
+                    <af:outputText value="#{row.LatestCds}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestCds.tooltip}" id="ot41"
+                                   inlineStyle="#{row.LatestCdsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestCdsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestCdsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestOtherSearch.name}"
+                             filterable="true" sortable="true"
+                             headerText="OS" id="c39" width="15">
+                    <af:outputText value="#{row.LatestOtherSearch}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestOtherSearch.tooltip}"
+                                   id="ot43" inlineStyle="#{row.LatestOtherSearchColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestOtherSearchColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestOtherSearchColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMissingInformation.name}"
+                             filterable="true" sortable="true"
+                             headerText="MI" id="c40" width="15">
+                    <af:outputText value="#{row.LatestMissingInformation}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestMissingInformation.tooltip}"
+                                   id="ot44" inlineStyle="#{row.LatestMissingInfoColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMissingInfoColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMissingInfoColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestExpeditingRules.name}"
+                             filterable="true" sortable="true"
+                             headerText="ER" id="c41" width="15">
+                    <af:outputText value="#{row.LatestExpeditingRules}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestExpeditingRules.tooltip}"
+                                   id="ot45" inlineStyle="#{row.LatestExpeditingRulesColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestExpeditingRulesColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestExpeditingRulesColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestUnderlyingDisease.name}"
+                             filterable="true" sortable="true"
+                             headerText="UD" id="c42" width="15">
+                    <af:outputText value="#{row.LatestUnderlyingDisease}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestUnderlyingDisease.tooltip}"
+                                   id="ot46" inlineStyle="#{row.LatestUnderlyingDisColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestUnderlyingDisColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestUnderlyingDisColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestAesiForNisProtocol.name}"
+                             filterable="true" sortable="true"
+                             headerText="A1" id="c43" width="15">
+                    <af:outputText value="#{row.LatestAesiForNisProtocol}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestAesiForNisProtocol.tooltip}"
+                                   id="ot47" inlineStyle="#{row.LatestAesiForNisProColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestAesiForNisProColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestAesiForNisProColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestAesiNotRmp.name}" filterable="true"
+                             sortable="true" headerText="A2"
+                             id="c44" width="15">
+                    <af:outputText value="#{row.LatestAesiNotRmp}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestAesiNotRmp.tooltip}" id="ot48"
+                                   inlineStyle="#{row.LatestAesiNotRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestAesiNotRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestAesiNotRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <f:facet name="header">
+                    <af:panelGroupLayout id="pgl8" layout="horizontal">
+                      <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot49"/>
+                      <af:commandImageLink id="cil3" icon="/images/Help-icon.png">
+                        <af:showPopupBehavior triggerType="action" popupId=":::prplegend"/>
+                      </af:commandImageLink>
+                      <f:facet name="separator">
+                        <af:spacer width="10" height="10" id="s5"/>
+                      </f:facet>
+                    </af:panelGroupLayout>
+                  </f:facet>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestSoc.name}" filterable="true"
+                           sortable="true" headerText="SOC" id="c45">
+                  <af:outputText value="#{row.LatestSoc}"
+                                 shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestSoc.tooltip}" id="ot91"
+                                 inlineStyle="#{row.LatestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestDataDomain.name}" filterable="true"
+                           sortable="true" headerText="Data Domain"
+                           id="c46">
+                  <af:outputText value="#{row.LatestDataDomain}"
+                                 shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestDataDomain.tooltip}" id="ot92"
+                                 inlineStyle="#{row.LatestDataDomainColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestDataDomainColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestDataDomainColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestSearchDetails.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Criteria Details" id="c47">
+                  <af:outputText value="#{row.LatestSearchDetails}"
+                                 shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestSearchDetails.tooltip}"
+                                 id="ot93" inlineStyle="#{row.LatestSearchDetailsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSearchDetailsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSearchDetailsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMeddraCode.name}" filterable="true"
+                           sortable="true" headerText="MedDRA Code"
+                           id="c48">
+                  <af:outputText value="#{row.LatestMeddraCode}"
+                                 shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestMeddraCode.tooltip}" id="ot94"
+                                 inlineStyle="#{row.LatestMeddraCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.CRSVersionComparePending1.hints.LatestMeddraCode.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column id="c50" headerText="Safety Topic Definition">
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMeddraTerm.name}" filterable="true"
+                             sortable="true" headerText="MedDRA Term"
+                             id="c97">
+                    <af:outputText value="#{row.LatestMeddraTerm}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestMeddraTerm.tooltip}" id="ot95"
+                                   inlineStyle="#{row.LatestMeddraTermColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraTermColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraTermColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMeddraExtension.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Level" id="c98">
+                    <af:outputText value="#{row.LatestMeddraExtension}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestMeddraExtension.tooltip}"
+                                   id="ot96" inlineStyle="#{row.LatestMeddraExtensionColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraExtensionColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraExtensionColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMeddraQualifier.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Qualifier" id="c99">
+                    <af:outputText value="#{row.LatestMeddraQualifier}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestMeddraQualifier.tooltip}"
+                                   id="ot97" inlineStyle="#{row.LatestMeddraQualifierColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraQualifierColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraQualifierColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestNonMeddraCompCmt.name}"
+                             filterable="true" sortable="true"
+                             headerText="Comment" id="c100">
+                    <af:outputText value="#{row.LatestNonMeddraCompCmt}"
+                                   shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestNonMeddraCompCmt.tooltip}"
+                                   id="ot98" inlineStyle="#{row.LatestNonMedCompCmtColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
+              </af:table>
+            </af:panelBox>
+          </af:panelGroupLayout>
+          <af:panelGroupLayout id="pgl9" layout="horizontal" rendered="#{(pageFlowScope.manageCRSBean.currReleaseStatus eq 'C') and (securityContext.userName ne null) and (pageFlowScope.crsCurrentPublished eq 'Y')}">
+            <af:panelBox text="Name: #{bindings.EarliestCrsName} Version: #{bindings.EarliestCrsVersionStrtDate} (#{bindings.EarliestMeddraVersionDict})"
+                         id="pb5" inlineStyle="width:580px;">
+              <f:facet name="toolbar">
+          <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT}" id="cb2" icon="/images/excel_icon.gif">
+                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                 filename="VersionCompare.xls"
+                                                 method="#{pageFlowScope.manageCRSBean.versionComapareCurrent}"/>
+                </af:commandButton>
+        </f:facet>
+              <af:table value="#{bindings.CrsVersionCompare.collectionModel}" var="row"
+                        rows="#{bindings.CrsVersionCompare.rangeSize}"
+                        emptyText="#{bindings.CrsVersionCompare.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" fetchSize="#{bindings.CrsVersionCompare.rangeSize}"
+                        filterModel="#{bindings.CrsVersionCompare1Query.queryDescriptor}" filterVisible="false"
+                        queryListener="#{bindings.CrsVersionCompare1Query.processQuery}" varStatus="vs" id="t7"
+                        contentDelivery="immediate">
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSafetyTopic.name}" filterable="true"
+                           sortable="true" headerText="Safety Topic of Interest"
+                           id="c101">
+                  <af:outputText value="#{row.EarliestSafetyTopic}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSafetyTopic.tooltip}" id="ot100"
+                                 inlineStyle="#{row.EarliestSafetyTopicColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSafetyTopicColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSafetyTopicColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column id="c102" headerText="Purpose Of Risk Definition">
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSpp.name}" filterable="true"
+                             sortable="true" headerText="SP"
+                             id="c103" width="15">
+                    <af:outputText value="#{row.EarliestSpp}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSpp.tooltip}" id="ot101"
+                                   inlineStyle="#{row.EarliestSppColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSppColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSppColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestDsur.name}" filterable="true"
+                             sortable="true" headerText="DS"
+                             id="c104" width="15">
+                    <af:outputText value="#{row.EarliestDsur}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestDsur.tooltip}" id="ot102"
+                                   inlineStyle="#{row.EarliestDsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestDsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestDsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestRmp.name}" filterable="true"
+                             sortable="true" headerText="RM"
+                             id="c105" width="15">
+                    <af:outputText value="#{row.EarliestRmp}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestRmp.tooltip}" id="ot103"
+                                   inlineStyle="#{row.EarliestRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestPsur.name}" filterable="true"
+                             sortable="true" headerText="PS"
+                             id="c106" width="15">
+                    <af:outputText value="#{row.EarliestPsur}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestPsur.tooltip}" id="ot104"
+                                   inlineStyle="#{row.EarliestPsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestPsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestPsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestIb.name}" filterable="true"
+                             sortable="true" headerText="IB" id="c107" width="15">
+                    <af:outputText value="#{row.EarliestIb}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestIb.tooltip}" id="ot105"
+                                   inlineStyle="#{row.EarliestIbColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestIbColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestIbColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestCds.name}" filterable="true"
+                             sortable="true" headerText="CD"
+                             id="c108" width="15">
+                    <af:outputText value="#{row.EarliestCds}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestCds.tooltip}" id="ot106"
+                                   inlineStyle="#{row.EarliestCdsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestCdsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestCdsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestOtherSearch.name}"
+                             filterable="true" sortable="true"
+                             headerText="OS" id="c109" width="15">
+                    <af:outputText value="#{row.EarliestOtherSearch}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestOtherSearch.tooltip}"
+                                   id="ot107" inlineStyle="#{row.EarliestOtherSearchColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestOtherSearchColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestOtherSearchColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMissingInformation.name}"
+                             filterable="true" sortable="true"
+                             headerText="MI" id="c110" width="15">
+                    <af:outputText value="#{row.EarliestMissingInformation}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMissingInformation.tooltip}"
+                                   id="ot108" inlineStyle="#{row.EarliestMissingInformColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMissingInformColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMissingInformColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestExpeditingRules.name}"
+                             filterable="true" sortable="true"
+                             headerText="ER" id="c111" width="15">
+                    <af:outputText value="#{row.EarliestExpeditingRules}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestExpeditingRules.tooltip}"
+                                   id="ot109" inlineStyle="#{row.EarliestExpeditingRulColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestExpeditingRulColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestExpeditingRulColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestUnderlyingDisease.name}"
+                             filterable="true" sortable="true"
+                             headerText="UD" id="c112" width="15">
+                    <af:outputText value="#{row.EarliestUnderlyingDisease}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestUnderlyingDisease.tooltip}"
+                                   id="ot110" inlineStyle="#{row.EarliestUnderlyingDisColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestUnderlyingDisColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestUnderlyingDisColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestAesiForNisProtcol.name}"
+                             filterable="true" sortable="true"
+                             headerText="A1" id="c113" width="15">
+                    <af:outputText value="#{row.EarliestAesiForNisProtcol}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestAesiForNisProtcol.tooltip}"
+                                   id="ot111" inlineStyle="#{row.EarliestAesiFrNisProClr eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestAesiFrNisProClr eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestAesiFrNisProClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestAesiNotRmp.name}"
+                             filterable="true" sortable="true"
+                             headerText="A2" id="c114" width="15">
+                    <af:outputText value="#{row.EarliestAesiNotRmp}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestAesiNotRmp.tooltip}"
+                                   id="ot112" inlineStyle="#{row.EarliestAesiNotRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestAesiNotRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestAesiNotRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <f:facet name="header">
+                    <af:panelGroupLayout id="pgl10" layout="horizontal">
+                      <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot113"/>
+                      <af:commandImageLink id="cil4" icon="/images/Help-icon.png">
+                        <af:showPopupBehavior triggerType="action" popupId=":::prplegend"/>
+                      </af:commandImageLink>
+                      <f:facet name="separator">
+                        <af:spacer width="10" height="10" id="s6"/>
+                      </f:facet>
+                    </af:panelGroupLayout>
+                  </f:facet>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSoc.name}" filterable="true"
+                           sortable="true" headerText="SOC" id="c115">
+                  <af:outputText value="#{row.EarliestSoc}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSoc.tooltip}" id="ot114"
+                                 inlineStyle="#{row.EarliestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestDataDomain.name}" filterable="true"
+                           sortable="true" headerText="Data Domain"
+                           id="c116">
+                  <af:outputText value="#{row.EarliestDataDomain}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestDataDomain.tooltip}" id="ot115"
+                                 inlineStyle="#{row.EarliestDataDomainColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestDataDomainColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestDataDomainColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSearchDetails.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Criteria Details" id="c117">
+                  <af:outputText value="#{row.EarliestSearchDetails}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSearchDetails.tooltip}"
+                                 id="ot116" inlineStyle="#{row.EarliestSearchDetailsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSearchDetailsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSearchDetailsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraCode.name}" filterable="true"
+                           sortable="true" headerText="MedDRA Code"
+                           id="c118">
+                  <af:outputText value="#{row.EarliestMeddraCode}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMeddraCode.tooltip}" id="ot117"
+                                 inlineStyle="#{row.EarliestMeddraCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.CrsVersionCompare.hints.EarliestMeddraCode.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column id="c119" headerText="Safety Topic Definition">
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraTerm.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Term" id="c120">
+                    <af:outputText value="#{row.EarliestMeddraTerm}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMeddraTerm.tooltip}"
+                                   id="ot118"
+                                   inlineStyle="#{row.EarliestMeddraTermColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraTermColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraTermColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraExtension.name}"
+                             filterable="true" sortable="true" headerText="MedDRA Level" id="c121">
+                    <af:outputText value="#{row.EarliestMeddraExtension}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMeddraExtension.tooltip}"
+                                   id="ot119" inlineStyle="#{row.EarliestMeddraExtColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraExtColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraExtColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraQualifier.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Qualifier" id="c122">
+                    <af:outputText value="#{row.EarliestMeddraQualifier}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestMeddraQualifier.tooltip}"
+                                   id="ot120" inlineStyle="#{row.EarliestMeddraQualColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestMeddraQualColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestMeddraQualColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestNonMeddraCompCmt.name}"
+                             filterable="true" sortable="true"
+                             headerText="Comment" id="c123">
+                    <af:outputText value="#{row.EarliestNonMeddraCompCmt}"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestNonMeddraCompCmt.tooltip}"
+                                   id="ot121" inlineStyle="#{row.EarliestNonMedCompCmtClr eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestNonMedCompCmtClr eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestNonMedCompCmtClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
+              </af:table>
+            </af:panelBox>
+            <af:panelBox text="Name: #{bindings.LatestCrsName} Version: #{bindings.LatestCrsVersionStartDate} (#{bindings.LatestMedVersionDictionary})"
+                         id="pb6" inlineStyle="width:580px;">
+              <f:facet name="toolbar"/>
+              <af:table value="#{bindings.CrsVersionCompare1.collectionModel}" var="row"
+                        rows="#{bindings.CrsVersionCompare1.rangeSize}"
+                        emptyText="#{bindings.CrsVersionCompare1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" fetchSize="#{bindings.CrsVersionCompare1.rangeSize}"
+                        filterModel="#{bindings.CrsVersionCompare1Query.queryDescriptor}" filterVisible="false"
+                        queryListener="#{bindings.CrsVersionCompare1Query.processQuery}" varStatus="vs" id="t11"
+                        contentDelivery="immediate">
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestSafetyTopic.name}" filterable="true"
+                           sortable="true" headerText="Safety Topic of Interest"
+                           id="c124">
+                  <af:outputText value="#{row.LatestSafetyTopic}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSafetyTopic.tooltip}" id="ot122"
+                                 inlineStyle="#{row.LatestSafetyTopicColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSafetyTopicColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSafetyTopicColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column id="c125" headerText="Purpose Of Risk Definition">
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestSpp.name}" filterable="true"
+                             sortable="true" headerText="SP" id="c126" width="15">
+                    <af:outputText value="#{row.LatestSpp}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSpp.tooltip}" id="ot123"
+                                   inlineStyle="#{row.LatestSppColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSppColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSppColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestDsur.name}" filterable="true"
+                             sortable="true" headerText="DS"
+                             id="c127" width="15">
+                    <af:outputText value="#{row.LatestDsur}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestDsur.tooltip}" id="ot124"
+                                   inlineStyle="#{row.LatestDsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestDsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestDsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestRmp.name}" filterable="true"
+                             sortable="true" headerText="RM" id="c128" width="15">
+                    <af:outputText value="#{row.LatestRmp}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestRmp.tooltip}" id="ot125"
+                                   inlineStyle="#{row.LatestRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestPsur.name}" filterable="true"
+                             sortable="true" headerText="PS"
+                             id="c129" width="15">
+                    <af:outputText value="#{row.LatestPsur}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestPsur.tooltip}" id="ot126"
+                                   inlineStyle="#{row.LatestPsurColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestPsurColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestPsurColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestIb.name}" filterable="true"
+                             sortable="true" headerText="IB" id="c130" width="15">
+                    <af:outputText value="#{row.LatestIb}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestIb.tooltip}" id="ot127"
+                                   inlineStyle="#{row.LatestIbColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestIbColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestIbColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestCds.name}" filterable="true"
+                             sortable="true" headerText="CD" id="c131" width="15">
+                    <af:outputText value="#{row.LatestCds}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestCds.tooltip}" id="ot128"
+                                   inlineStyle="#{row.LatestCdsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestCdsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestCdsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestOtherSearch.name}"
+                             filterable="true" sortable="true"
+                             headerText="OS" id="c132" width="15">
+                    <af:outputText value="#{row.LatestOtherSearch}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestOtherSearch.tooltip}"
+                                   id="ot129" inlineStyle="#{row.LatestOtherSearchColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestOtherSearchColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestOtherSearchColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMissingInformation.name}"
+                             filterable="true" sortable="true"
+                             headerText="MI" id="c133" width="15">
+                    <af:outputText value="#{row.LatestMissingInformation}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMissingInformation.tooltip}"
+                                   id="ot130" inlineStyle="#{row.LatestMissingInfoColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMissingInfoColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMissingInfoColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestExpeditingRules.name}"
+                             filterable="true" sortable="true"
+                             headerText="ER" id="c134" width="15">
+                    <af:outputText value="#{row.LatestExpeditingRules}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestExpeditingRules.tooltip}"
+                                   id="ot131" inlineStyle="#{row.LatestExpeditingRulesColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestExpeditingRulesColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestExpeditingRulesColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestUnderlyingDisease.name}"
+                             filterable="true" sortable="true"
+                             headerText="UD" id="c135" width="15">
+                    <af:outputText value="#{row.LatestUnderlyingDisease}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestUnderlyingDisease.tooltip}"
+                                   id="ot132" inlineStyle="#{row.LatestUnderlyingDisColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestUnderlyingDisColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestUnderlyingDisColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestAesiForNisProtocol.name}"
+                             filterable="true" sortable="true"
+                             headerText="A1" id="c136" width="15">
+                    <af:outputText value="#{row.LatestAesiForNisProtocol}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestAesiForNisProtocol.tooltip}"
+                                   id="ot133" inlineStyle="#{row.LatestAesiForNisProColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestAesiForNisProColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestAesiForNisProColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestAesiNotRmp.name}" filterable="true"
+                             sortable="true" headerText="A2"
+                             id="c137" width="15">
+                    <af:outputText value="#{row.LatestAesiNotRmp}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestAesiNotRmp.tooltip}" id="ot134"
+                                   inlineStyle="#{row.LatestAesiNotRmpColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestAesiNotRmpColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestAesiNotRmpColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <f:facet name="header">
+                    <af:panelGroupLayout id="pgl11" layout="horizontal">
+                      <af:outputText value="#{ecrsviewcontrollerBundle.PURPOSE_OF_THE_RISK_DEFINTION}" id="ot135"/>
+                      <af:commandImageLink id="cil6" icon="/images/Help-icon.png">
+                        <af:showPopupBehavior triggerType="action" popupId=":::prplegend"/>
+                      </af:commandImageLink>
+                      <f:facet name="separator">
+                        <af:spacer width="10" height="10" id="s8"/>
+                      </f:facet>
+                    </af:panelGroupLayout>
+                  </f:facet>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestSoc.name}" filterable="true"
+                           sortable="true" headerText="SOC" id="c138">
+                  <af:outputText value="#{row.LatestSoc}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSoc.tooltip}" id="ot136"
+                                 inlineStyle="#{row.LatestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestDataDomain.name}" filterable="true"
+                           sortable="true" headerText="Data Domain"
+                           id="c139">
+                  <af:outputText value="#{row.LatestDataDomain}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestDataDomain.tooltip}" id="ot137"
+                                 inlineStyle="#{row.LatestDataDomainColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestDataDomainColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestDataDomainColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestSearchDetails.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Criteria Details" id="c140">
+                  <af:outputText value="#{row.LatestSearchDetails}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSearchDetails.tooltip}"
+                                 id="ot138" inlineStyle="#{row.LatestSearchDetailsColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSearchDetailsColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSearchDetailsColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraCode.name}" filterable="true"
+                           sortable="true" headerText="MedDRA Code"
+                           id="c141">
+                  <af:outputText value="#{row.LatestMeddraCode}"
+                                 shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMeddraCode.tooltip}" id="ot139"
+                                 inlineStyle="#{row.LatestMeddraCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}">
+                    <af:convertNumber groupingUsed="false"
+                                      pattern="#{bindings.CrsVersionCompare1.hints.LatestMeddraCode.format}"/>
+                  </af:outputText>
+                </af:column>
+                <af:column id="c142" headerText="Safety Topic Definition">
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraTerm.name}" filterable="true"
+                             sortable="true" headerText="MedDRA Term"
+                             id="c143">
+                    <af:outputText value="#{row.LatestMeddraTerm}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMeddraTerm.tooltip}" id="ot140"
+                                   inlineStyle="#{row.LatestMeddraTermColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraTermColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraTermColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraExtension.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Level" id="c144">
+                    <af:outputText value="#{row.LatestMeddraExtension}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMeddraExtension.tooltip}"
+                                   id="ot141" inlineStyle="#{row.LatestMeddraExtensionColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraExtensionColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraExtensionColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraQualifier.name}"
+                             filterable="true" sortable="true"
+                             headerText="MedDRA Qualifier" id="c145">
+                    <af:outputText value="#{row.LatestMeddraQualifier}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestMeddraQualifier.tooltip}"
+                                   id="ot142" inlineStyle="#{row.LatestMeddraQualifierColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraQualifierColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraQualifierColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestNonMeddraCompCmt.name}"
+                             filterable="true" sortable="true"
+                             headerText="Comment" id="c146">
+                    <af:outputText value="#{row.LatestNonMeddraCompCmt}"
+                                   shortDesc="#{bindings.CrsVersionCompare1.hints.LatestNonMeddraCompCmt.tooltip}"
+                                   id="ot143" inlineStyle="#{row.LatestNonMedCompCmtColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
+              </af:table>
+            </af:panelBox>
+          </af:panelGroupLayout>
+    <af:outputText value="No version comparison is possible on the first version of the CRS." id="ot9"
+                   inlineStyle="color:Red; font-weight:bold; font-size:large;"
+                   rendered="#{(pageFlowScope.manageCRSBean.currReleaseStatus eq 'P') and (securityContext.userName ne null) and (pageFlowScope.crsPendingPublished eq 'N')}"/>
+    <af:outputText value="No version comparison is possible on the first version of the CRS." id="ot99"
+                   inlineStyle="color:Red; font-weight:bold; font-size:large;"
+                   rendered="#{(pageFlowScope.manageCRSBean.currReleaseStatus eq 'C') and (securityContext.userName ne null) and (pageFlowScope.crsCurrentPublished eq 'N')}"/>
+    <af:outputText value="Please sign in to use Version Compare feature" id="ot11"
+                   inlineStyle="color:Red; font-weight:bold; font-size:large;"
+                   rendered="#{securityContext.userName eq null}"/>
+    <af:spacer width="10" height="20" id="s10"/>
+    <af:panelGroupLayout id="pgl12" layout="horizontal">
+        <af:commandButton text="#{ecrsviewcontrollerBundle.BACK}" id="cb8"
+                          action="#{controllerContext.currentViewPort.taskFlowContext.trainModel.getPrevious}"/>
+        <af:commandButton text="#{ecrsviewcontrollerBundle.NEXT}" id="cb11" action="#{pageFlowScope.manageCRSBean.onClickNext}"
+        disabled="#{pageFlowScope.manageCRSBean.flowType eq 'S'}"/>
+        <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb12" action="home" immediate="true"
+                          actionListener="#{bindings.Rollback.execute}"/>
+        <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.DICTIONARY_VERSION_}" id="plam4">
+          <af:outputText id="ot144" value="#{sessionScope.dictVersion}"/>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.NAME}#{ecrsviewcontrollerBundle.COLON}" id="plam5">
+          <af:outputText value="#{pageFlowScope.manageCRSBean.selectedCrsName}" id="ot145"/>
+        </af:panelLabelAndMessage>
+        <f:facet name="separator">
+          <af:spacer width="10" height="10" id="s9"/>
+        </f:facet>
+      </af:panelGroupLayout>
+    <af:spacer width="10" height="20" id="s11"/>
+  </af:panelHeader>
+</ui:composition>

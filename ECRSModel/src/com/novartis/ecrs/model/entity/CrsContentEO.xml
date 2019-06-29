@@ -4,14 +4,13 @@
 <Entity
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsContentEO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.12.24"
   DBObjectType="table"
   DBObjectName="CRS_CONTENT_STG"
   AliasName="CrsContentEO"
   BindingStyle="OracleName"
   xmlns:validation="http://xmlns.oracle.com/adfm/validation"
-  RowClass="com.novartis.ecrs.model.entity.CrsContentEOImpl"
-  UseGlueCode="false">
+  RowClass="com.novartis.ecrs.model.entity.CrsContentEOImpl">
   <DesignTime>
     <Attr Name="_codeGenFlag2" Value="Access"/>
     <Attr Name="_isCodegen" Value="true"/>
@@ -36,7 +35,8 @@
     TableName="CRS_CONTENT_STG"
     PrimaryKey="true"
     RetrievedOnInsert="true">
-    <TransientExpression><![CDATA[(new oracle.jbo.server.SequenceImpl("crs_content_seq",adf.object.getDBTransaction())).getSequenceNumber()]]></TransientExpression>
+    <TransientExpression
+      Name="ExpressionScript"><![CDATA[(new oracle.jbo.server.SequenceImpl("crs_content_seq",adf.object.getDBTransaction())).getSequenceNumber()]]></TransientExpression>
   </Attribute>
   <Attribute
     Name="CrsName"
@@ -52,21 +52,21 @@
     </DesignTime>
   </Attribute>
   <Attribute
-    Name="StateId"
-    IsNotNull="true"
-    Precision="5"
-    Scale="0"
-    ColumnName="STATE_ID"
-    SQLType="NUMERIC"
-    Type="java.lang.Integer"
-    ColumnType="NUMBER"
-    TableName="CRS_CONTENT_STG"/>
-  <Attribute
     Name="CompoundId"
     IsNotNull="true"
     Precision="5"
     Scale="0"
     ColumnName="COMPOUND_ID"
+    SQLType="NUMERIC"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    TableName="CRS_CONTENT_STG"/>
+  <Attribute
+    Name="StateId"
+    IsNotNull="true"
+    Precision="5"
+    Scale="0"
+    ColumnName="STATE_ID"
     SQLType="NUMERIC"
     Type="java.lang.Integer"
     ColumnType="NUMBER"

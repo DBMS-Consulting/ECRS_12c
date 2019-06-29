@@ -115,6 +115,10 @@
                         <af:showPopupBehavior popupId="delConfPopup"
                                               triggerType="action"/>
                     </af:commandButton>
+                    <af:spacer width="10" id="s15"/>
+                    <af:commandButton text="Completion Guideline" id="cb31" immediate="true">
+                  <af:showPopupBehavior popupId="p13"/>
+                </af:commandButton>
                     <f:facet name="separator"/>
                 </af:panelGroupLayout>
                 </f:facet>
@@ -482,6 +486,13 @@
                                id="ot22"/>
             </af:dialog>
         </af:popup>
-
+        <af:popup childCreation="deferred" autoCancel="disabled" id="p13" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw2" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Update CRS Confirm Page Completion Guidelines">
+        <af:inlineFrame id="if2" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 06 UPDATE CRS CONFIRM PAGE.pdf'}"
+                        shortDesc="Update CRS Confirm Page Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
   </af:panelHeader>
 </jsp:root>

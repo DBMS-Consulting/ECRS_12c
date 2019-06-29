@@ -3,7 +3,14 @@ package com.novartis.ecrs.ui.bean;
 
 import com.novartis.ecrs.model.constants.ModelConstants;
 import com.novartis.ecrs.model.lov.UserRoleVORowImpl;
+import com.novartis.ecrs.model.view.CRSVersionComparePendingVORowImpl;
+import com.novartis.ecrs.model.view.CRSVersionComparePendingViewRowImpl;
+import com.novartis.ecrs.model.view.CRSVersionCompareVORowImpl;
 import com.novartis.ecrs.model.view.CrsContentVORowImpl;
+import com.novartis.ecrs.model.view.CrsExportPTCurrentVOImpl;
+import com.novartis.ecrs.model.view.CrsExportPTCurrentVORowImpl;
+import com.novartis.ecrs.model.view.CrsExportPTPendingImpl;
+import com.novartis.ecrs.model.view.CrsExportPTPendingRowImpl;
 import com.novartis.ecrs.model.view.CrsRiskRelationVORowImpl;
 import com.novartis.ecrs.model.view.HierarchyChildVORowImpl;
 import com.novartis.ecrs.model.view.base.CrsContentBaseVORowImpl;
@@ -11,8 +18,9 @@ import com.novartis.ecrs.model.view.report.PTReportVOImpl;
 import com.novartis.ecrs.ui.constants.ViewConstants;
 import com.novartis.ecrs.ui.utility.ADFUtils;
 import com.novartis.ecrs.ui.utility.ExcelExportUtils;
+import com.novartis.ecrs.ui.utility.POIExportUtil;
 import com.novartis.ecrs.view.beans.SessionBean;
-
+import oracle.jbo.Row;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -22,7 +30,10 @@ import java.io.Serializable;
 
 import java.math.BigDecimal;
 
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,7 +48,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -71,6 +84,7 @@ import oracle.adf.view.rich.event.DropEvent;
 import oracle.adf.view.rich.event.PopupCanceledEvent;
 import oracle.adf.view.rich.util.ResetUtils;
 
+import oracle.binding.AttributeBinding;
 import oracle.binding.BindingContainer;
 import oracle.binding.OperationBinding;
 
@@ -94,8 +108,15 @@ import org.apache.myfaces.trinidad.model.ChildPropertyTreeModel;
 import org.apache.myfaces.trinidad.model.CollectionModel;
 import org.apache.myfaces.trinidad.model.RowKeySet;
 import org.apache.myfaces.trinidad.model.RowKeySetTreeImpl;
+import org.apache.poi.hssf.usermodel.HSSFBorderFormatting;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -221,6 +242,79 @@ public class ManageCRSBean implements Serializable {
     private List<String> selRiskPurposesBase;
     private RichPopup cancelWarningPopup;
     private RichDialog riskDialog;
+    private RichPopup versionComparePopup;
+    private RichTable crsVersionsTable;
+    private RichTable baseCrsVersionsTable;
+    
+    private Boolean crsVersionsCurrent;
+    private Boolean crsVersionsPrevious;
+    private Boolean baseCrsVersionsCurrent;
+    private Boolean baseCrsVersionsPrevious;
+    private String selectedCrsId;
+    private String selectedState;
+    private String selectedTASL;
+    private String selectedDesignee;
+    private String selectedStatus;
+    private String selectedReleaseStatus;
+    private String selectedBSL;
+    private RichPopup ptExportPendingPopup;
+    private RichPopup ptExportPendingDetailPopup;
+
+    public void setSelectedCrsId(String selectedCrsId) {
+        this.selectedCrsId = selectedCrsId;
+    }
+
+    public String getSelectedCrsId() {
+        return selectedCrsId;
+    }
+
+    public void setSelectedState(String selectedState) {
+        this.selectedState = selectedState;
+    }
+
+    public String getSelectedState() {
+        return selectedState;
+    }
+
+    public void setSelectedTASL(String selectedTASL) {
+        this.selectedTASL = selectedTASL;
+    }
+
+    public String getSelectedTASL() {
+        return selectedTASL;
+    }
+
+    public void setSelectedDesignee(String selectedDesignee) {
+        this.selectedDesignee = selectedDesignee;
+    }
+
+    public String getSelectedDesignee() {
+        return selectedDesignee;
+    }
+
+    public void setSelectedStatus(String selectedStatus) {
+        this.selectedStatus = selectedStatus;
+    }
+
+    public String getSelectedStatus() {
+        return selectedStatus;
+    }
+
+    public void setSelectedReleaseStatus(String selectedReleaseStatus) {
+        this.selectedReleaseStatus = selectedReleaseStatus;
+    }
+
+    public String getSelectedReleaseStatus() {
+        return selectedReleaseStatus;
+    }
+
+    public void setSelectedBSL(String selectedBSL) {
+        this.selectedBSL = selectedBSL;
+    }
+
+    public String getSelectedBSL() {
+        return selectedBSL;
+    }
 
     public ManageCRSBean() {
         super();
@@ -442,7 +536,9 @@ public class ManageCRSBean implements Serializable {
             getSearchBaseTableBinding().resetStampState();
             ADFUtils.addPartialTarget(getSearchBaseTableBinding());
         }
+        if(getSearchSwitherBinding() != null){
         ADFUtils.addPartialTarget(getSearchSwitherBinding());
+        }
         if (ob.getErrors().size() > 0)
             ADFUtils.showFacesMessage(uiBundle.getString("INTERNAL_ERROR"),
                                       FacesMessage.SEVERITY_ERROR);
@@ -492,6 +588,40 @@ public class ManageCRSBean implements Serializable {
         CrsContentVORowImpl selectedRow =
                    (CrsContentVORowImpl)ADFUtils.evaluateEL("#{bindings.CrsContentVOIterator.currentRow}");
         setSelectedCrsName(selectedRow.getCrsName());
+        ADFUtils.setPageFlowScopeValue("crsId", selectedRow.getCrsId());
+        ADFUtils.setPageFlowScopeValue("crsPendingPublished", selectedRow.getCrsPendingPublished());
+        this.setSelectedCrsId(selectedRow.getCrsId().toString());
+        Map params = new HashMap<String, Object>();
+        params.put("stateId", selectedRow.getStateId());
+        
+        Map params1 = new HashMap<String, Object>();
+        params1.put("role", "CRS_TASL");
+        params1.put("userName", selectedRow.getTaslName());
+        
+        Map params2 = new HashMap<String, Object>();
+        params2.put("role", "CRS_BSL");
+        params2.put("userName", selectedRow.getBslName());
+        String state = "";
+        String taslName = "";
+        String bslName = "";
+        try {
+            if(selectedRow.getStateId() != null)
+            state = (String) ADFUtils.executeAction("findStateDescription", params);
+            if(selectedRow.getTaslName() != null && !"".equalsIgnoreCase(selectedRow.getTaslName()))
+            taslName = (String) ADFUtils.executeAction("findRoleDescription", params1);
+            if(selectedRow.getBslName() != null && !"".equalsIgnoreCase(selectedRow.getBslName()))
+            bslName = (String) ADFUtils.executeAction("findRoleDescription", params2);
+        } catch (Exception e) {
+        }
+        this.setSelectedState(state);
+        this.setSelectedTASL(taslName);
+        if(selectedRow.getDesigneeName() != null && !"".equalsIgnoreCase(selectedRow.getDesigneeName())){
+        this.setSelectedDesignee(selectedRow.getDesigneeName());
+        }else{
+            this.setSelectedDesignee("");   
+        }
+        this.setSelectedStatus("");
+        this.setSelectedBSL(bslName);
         setSelDesigneeList(null);
         List<String> designeeList = new ArrayList<String>();
         if (selectedRow.getDesignee() != null) {
@@ -671,12 +801,20 @@ public class ManageCRSBean implements Serializable {
     }
 
     public void addRiskDefinition(ActionEvent actionEvent) {
+        try {
+       // String isMedraDictExists = (String) ADFUtils.executeAction("executeMedraExistsQuery", null);
+        
         DCIteratorBinding realtionIter = ADFUtils.findIterator("CrsRiskRelationVOIterator");
         ViewObject relationVO = realtionIter.getViewObject();
         Row relationRow = relationVO.createRow();
         Long crsId = (Long)ADFUtils.getPageFlowScopeValue("crsId");
         logger.info("AddRiskDefinition crsId "+crsId);
         relationRow.setAttribute("CrsId", crsId);
+////            if("Y".equalsIgnoreCase(isMedraDictExists)){
+////             relationRow.setAttribute("VDomainOther", "OTHER");   
+////            }else{
+//             relationRow.setAttribute("VDomainOther", "OTHER1");  
+//           // }
         relationVO.insertRow(relationRow);
         relationVO.setCurrentRow(relationRow);
         logger.info("Popup mode is add, opens blank risk defintion popup.");
@@ -696,6 +834,8 @@ public class ManageCRSBean implements Serializable {
         if(copyRiskDefPopupPanel != null)
             ResetUtils.reset(copyRiskDefPopupPanel);
         ADFUtils.showPopup(riskDefPopup);
+        } catch (Exception e) {
+        }
     }
 
     public void setRiskDefPopup(RichPopup riskDefPopup) {
@@ -712,7 +852,16 @@ public class ManageCRSBean implements Serializable {
         relationIter.getViewObject().clearCache();
         relationIter.executeQuery();
         
-         CrsRiskRelationVORowImpl relationRow = (CrsRiskRelationVORowImpl)relationIter.getCurrentRow();
+        CrsRiskRelationVORowImpl relationRow = (CrsRiskRelationVORowImpl)relationIter.getCurrentRow();
+//        try {
+//            String isMedraDictExists = (String) ADFUtils.executeAction("executeMedraExistsQuery", null);
+//            if ("Y".equalsIgnoreCase(isMedraDictExists)) {
+//                relationRow.setAttribute("VDomainOther", "OTHER");
+//            } else {
+//                relationRow.setAttribute("VDomainOther", "OTHER1");
+//            }
+//        } catch (Exception e) {
+//        }
          relationRow.getCrsRiskDefinitionsVO().reset();
         
         logger.info("Editing Risk definition, popup mode edit.");
@@ -2392,7 +2541,7 @@ public class ManageCRSBean implements Serializable {
         ViewObject crsSearchVO = iter.getViewObject();
         String stoiParam = "%";
         stoiParam = (null != stoi && !stoi.isEmpty()) ? stoi : stoiParam;
-        crsSearchVO.setWhereClause("SAFETY_TOPIC_OF_INTEREST like '"+stoiParam+"'"+ " and STATE_ID = " + ModelConstants.STATE_ACTIVATED);
+        crsSearchVO.setWhereClause("UPPER(SAFETY_TOPIC_OF_INTEREST) like UPPER('%"+stoiParam+"%')"+ " and STATE_ID = " + ModelConstants.STATE_ACTIVATED);
         logger.info("Searching Safety tpoic of Interest:: " + crsSearchVO.getQuery());
         crsSearchVO.executeQuery();
     }
@@ -2740,6 +2889,64 @@ public class ManageCRSBean implements Serializable {
         CrsContentBaseVORowImpl selectedRow =
                    (CrsContentBaseVORowImpl)ADFUtils.evaluateEL("#{bindings.CrsContentBaseVOIterator.currentRow}");
         setSelectedCrsName(selectedRow.getCrsName());
+        ADFUtils.setPageFlowScopeValue("crsId", selectedRow.getCrsId());
+        ADFUtils.setPageFlowScopeValue("crsCurrentPublished", selectedRow.getCrsCurrentPublished());
+        ADFUtils.setPageFlowScopeValue("flowType", this.getFlowType());
+        
+        Map params1 = new HashMap<String, Object>();
+        params1.put("role", "CRS_TASL");
+        params1.put("userName", selectedRow.getTaslName());
+        
+        Map params2 = new HashMap<String, Object>();
+        params2.put("role", "CRS_BSL");
+        params2.put("userName", selectedRow.getBslName());
+        String taslName = "";
+        String bslName = "";
+        
+        try {
+            if(selectedRow.getTaslName() != null && !"".equalsIgnoreCase(selectedRow.getTaslName()))
+            taslName = (String) ADFUtils.executeAction("findRoleDescription", params1);
+            if(selectedRow.getBslName() != null && !"".equalsIgnoreCase(selectedRow.getBslName()))
+            bslName = (String) ADFUtils.executeAction("findRoleDescription", params2);
+        } catch (Exception e) {
+        }
+        
+        this.setSelectedCrsId(selectedRow.getCrsId().toString());
+        this.setSelectedState(selectedRow.getStateName());
+        this.setSelectedTASL(taslName);
+        if(selectedRow.getDesigneeName() != null && !"".equalsIgnoreCase(selectedRow.getDesigneeName())){
+        this.setSelectedDesignee(selectedRow.getDesigneeName());
+        }else{
+            this.setSelectedDesignee("");   
+        }
+        this.setSelectedStatus("");
+        this.setSelectedBSL(bslName);
+        
+//        this.setSelectedCrsId(selectedRow.getCrsId().toString());
+//        Map params = new HashMap<String, Object>();
+//        params.put("stateId", selectedRow.getStateId());
+//        
+//        Map params1 = new HashMap<String, Object>();
+//        params1.put("role", "CRS_TASL");
+//        params1.put("userName", selectedRow.getTaslName());
+//        
+//        Map params2 = new HashMap<String, Object>();
+//        params2.put("role", "CRS_BSL");
+//        params2.put("userName", selectedRow.getBslName());
+//        String state = "";
+//        String taslName = "";
+//        String bslName = "";
+//        try {
+//            state = (String) ADFUtils.executeAction("findStateDescription", params);
+//            taslName = (String) ADFUtils.executeAction("findRoleDescription", params1);
+//            bslName = (String) ADFUtils.executeAction("findRoleDescription", params2);
+//        } catch (Exception e) {
+//        }
+//        this.setSelectedState(state);
+//        this.setSelectedTASL(taslName);
+//        this.setSelectedDesignee(selectedRow.getDesigneeName());
+//        this.setSelectedStatus("");
+//        this.setSelectedBSL(bslName);
         setSelDesigneeList(null);
         List<String> designeeList = new ArrayList<String>();
         if (selectedRow.getDesignee() != null) {
@@ -2751,6 +2958,20 @@ public class ManageCRSBean implements Serializable {
             }
             setSelDesigneeList(designeeList);
         }
+        try {
+//            Boolean isMultiVersionsAvailable = (Boolean) ADFUtils.executeAction("isMultiVersionsAvailable", null);
+//            if(isMultiVersionsAvailable){
+//            ADFUtils.setPageFlowScopeValue("crsCurrentPublished","Z");
+//            }else{
+//            ADFUtils.setPageFlowScopeValue("crsCurrentPublished","N");    
+//            }
+            
+            String isMultiVersionsAvailable = (String) ADFUtils.executeAction("isMultiVersionsAvailableString", null);
+            ADFUtils.setPageFlowScopeValue("crsCurrentPublished",isMultiVersionsAvailable);
+            
+        } catch (Exception e) {
+        }
+        
         logger.info("End- ManageCRSBean:baseContentVOSelectionListener--");
     }
 
@@ -3118,6 +3339,7 @@ public class ManageCRSBean implements Serializable {
                                 // set mode to staging
                                 setBaseOrStaging(ModelConstants.STAGING_FACET);
                                 ADFUtils.closeDialog(getModifyReasonChngPopup());
+                                this.setCurrReleaseStatus("P");
                                 return "navToCreate";
                             }
                         } else {
@@ -3583,7 +3805,7 @@ public class ManageCRSBean implements Serializable {
             bsl =
 (String)ADFUtils.evaluateEL("#{bindings.BslName.inputValue}");
         bsl = getFullNamesForAccName(bsl);
-        cell42.setCellValue("BSL: " + bsl);
+        cell42.setCellValue("GPSL: " + bsl);
         ExcelExportUtils.setHeaderCellStyle(sheet, count,
                                             cell42.getColumnIndex(), false,
                                             CellStyle.ALIGN_LEFT);
@@ -3602,7 +3824,7 @@ public class ManageCRSBean implements Serializable {
             tasl =
 (String)ADFUtils.evaluateEL("#{bindings.TaslName.inputValue}");
         tasl = getFullNamesForAccName(tasl);
-        cell51.setCellValue("TASL :  " + tasl);
+        cell51.setCellValue("HPS :  " + tasl);
         ExcelExportUtils.setHeaderCellStyle(sheet, count,
                                             cell51.getColumnIndex(), false,
                                             CellStyle.ALIGN_LEFT);
@@ -3696,6 +3918,7 @@ public class ManageCRSBean implements Serializable {
     public void onChangeReleaseStatus(ValueChangeEvent vce) {
         // Add event code here...
         if (vce != null && !vce.getNewValue().equals(vce.getOldValue())) {
+            System.out.println("-------vce.getNewValue()--------"+vce.getNewValue());
 //            if (ViewConstants.FLOW_TYPE_SEARCH.equals(getFlowType())) {
 //                if (ModelConstants.STATUS_PENDING.equals((String)vce.getNewValue())) {
 //                    ADFUtils.setEL("#{bindings.State.inputValue}", null);
@@ -3705,7 +3928,21 @@ public class ManageCRSBean implements Serializable {
 //                }
 //            }
             ADFUtils.addPartialTarget(stateSwitcherBinding);
+            
+//            if("C".equalsIgnoreCase((String)vce.getNewValue())){
+//                refreshPage();
+//            }
         }
+        
+    }
+
+    protected void refreshPage() {
+        FacesContext fctx = FacesContext.getCurrentInstance();
+        String page = fctx.getViewRoot().getViewId();
+        ViewHandler ViewH = fctx.getApplication().getViewHandler();
+        UIViewRoot UIV = ViewH.createView(fctx, page);
+        UIV.setViewId(page);
+        fctx.setViewRoot(UIV);
     }
 
     /**
@@ -3799,6 +4036,66 @@ public class ManageCRSBean implements Serializable {
             }
             }
         logger.info("End of CRSReportsBean:exportPTReport()");
+    }
+    
+    public void exportPTCurrentReport(FacesContext facesContext,
+                               OutputStream outputStream) {
+        // Add event code here...
+        logger.info("Start of CRSReportsBean:versionComapare()");
+        try {
+        List wb = exportPTCurrentReport(); //method for creating WB
+        HSSFWorkbook workbook = (HSSFWorkbook) wb.get(0);
+        workbook.write(outputStream);
+        outputStream.flush();
+        } catch (IOException ex) {
+        ex.printStackTrace();
+        }
+        logger.info("End of CRSReportsBean:versionComapare()");
+    }
+    
+    public void exportPTCurrentReportDetail(FacesContext facesContext,
+                               OutputStream outputStream) {
+        // Add event code here...
+        logger.info("Start of CRSReportsBean:versionComapare()");
+        try {
+        List wb = exportPTCurrentReportDetail(); //method for creating WB
+        HSSFWorkbook workbook = (HSSFWorkbook) wb.get(0);
+        workbook.write(outputStream);
+        outputStream.flush();
+        } catch (IOException ex) {
+        ex.printStackTrace();
+        }
+        logger.info("End of CRSReportsBean:versionComapare()");
+    }
+    
+    public void exportPTPendingReport(FacesContext facesContext,
+                               OutputStream outputStream) {
+        // Add event code here...
+        logger.info("Start of CRSReportsBean:versionComapare()");
+        try {
+        List wb = exportPTPendingReport(); //method for creating WB
+        HSSFWorkbook workbook = (HSSFWorkbook) wb.get(0);
+        workbook.write(outputStream);
+        outputStream.flush();
+        } catch (IOException ex) {
+        ex.printStackTrace();
+        }
+        logger.info("End of CRSReportsBean:versionComapare()");
+    }
+    
+    public void exportPTPendingReportDetail(FacesContext facesContext,
+                               OutputStream outputStream) {
+        // Add event code here...
+        logger.info("Start of CRSReportsBean:versionComapare()");
+        try {
+        List wb = exportPTPendingReportDetail(); //method for creating WB
+        HSSFWorkbook workbook = (HSSFWorkbook) wb.get(0);
+        workbook.write(outputStream);
+        outputStream.flush();
+        } catch (IOException ex) {
+        ex.printStackTrace();
+        }
+        logger.info("End of CRSReportsBean:versionComapare()");
     }
 
     /**
@@ -3910,6 +4207,17 @@ public class ManageCRSBean implements Serializable {
         */
         logger.info("Exit initConfirmPage....");
         return "confirm"; 
+    }
+    
+    public String initVersionsPage(){
+        logger.info("initConfirmPage....enter");
+        Long crsId = (Long)ADFUtils.getPageFlowScopeValue("crsId");
+        String flowTypeConfirm = (String) ADFUtils.getPageFlowScopeValue("flowType");
+        logger.info("initConfirmPage : current flowType :: " + flowTypeConfirm);
+        logger.info("initConfirmPage : current Crs ID :: " + crsId);
+        logger.info("initConfirmPage : Base or Staging :: " + getBaseOrStaging());
+        logger.info("Exit initConfirmPage....");
+        return "versions"; 
     }
     private void loadDesineeList(String designee){
         List<String> designeeList = new ArrayList<String>();
@@ -4640,5 +4948,2939 @@ public class ManageCRSBean implements Serializable {
             }
                 }
 
+    }
+
+    public void setVersionComparePopup(RichPopup versionComparePopup) {
+        this.versionComparePopup = versionComparePopup;
+    }
+
+    public RichPopup getVersionComparePopup() {
+        return versionComparePopup;
+    }
+
+    public void compareCurrentVersion(ActionEvent actionEvent) {
+        try {
+            ADFUtils.executeAction("executeCrsVersionCompare", null);
+        } catch (Exception e) {
+        }
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        this.getVersionComparePopup().show(hints);
+    }
+
+    public void comparePreviousVersions(ActionEvent actionEvent) {
+        try {
+            ADFUtils.executeAction("executeCrsVersionCompare", null);
+        } catch (Exception e) {
+        }
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        this.getVersionComparePopup().show(hints);
+    }
+
+    public void baseCompareCurrentVersion(ActionEvent actionEvent) {      
+        try {
+            ADFUtils.executeAction("executeBaseCrsVersionCompare", null);
+        } catch (Exception e) {
+        }
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        this.getVersionComparePopup().show(hints);
+    }
+
+    public void baseComparePreviousVersions(ActionEvent actionEvent) {
+       
+        try {
+            ADFUtils.executeAction("executeBaseCrsVersionCompare", null);
+        } catch (Exception e) {
+        }
+        RichPopup.PopupHints hints = new RichPopup.PopupHints();
+        this.getVersionComparePopup().show(hints);
+
+    }
+
+    public void setCrsVersionsTable(RichTable crsVersionsTable) {
+        this.crsVersionsTable = crsVersionsTable;
+    }
+
+    public RichTable getCrsVersionsTable() {
+        return crsVersionsTable;
+    }
+
+    public void setBaseCrsVersionsTable(RichTable baseCrsVersionsTable) {
+        this.baseCrsVersionsTable = baseCrsVersionsTable;
+    }
+
+    public RichTable getBaseCrsVersionsTable() {
+        return baseCrsVersionsTable;
+    }
+
+    public void onVersionRowSelection(ValueChangeEvent valueChangeEvent) {
+        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());        
+//        DCBindingContainer bindings = this.getDCBindingContainer();
+//        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsVersionsIterator");
+//        ViewObject vo = itrBinding.getViewObject();
+//        Row[] selectedRows = vo.getFilteredRows("SelectRow", true);
+//        
+//        if(selectedRows.length == 1){
+//            this.setCrsVersionsCurrent(true);
+//            this.setCrsVersionsPrevious(false);
+//        }else if(selectedRows.length == 2){
+//            this.setCrsVersionsCurrent(false);
+//            this.setCrsVersionsPrevious(true);
+//        }else{
+//            this.setCrsVersionsCurrent(false);
+//            this.setCrsVersionsPrevious(false);
+//        }
+}
+    
+
+    public void onBaseVersionRowSelection(ValueChangeEvent valueChangeEvent) {
+                valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());       
+//        DCBindingContainer bindings = this.getDCBindingContainer();
+//        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsBaseVersionsIterator");
+//        ViewObject vo = itrBinding.getViewObject();
+//        Row[] selectedRows = vo.getFilteredRows("SelectRow", true);
+//        
+//        if(selectedRows.length == 1){
+//            this.setBaseCrsVersionsCurrent(true);
+//            this.setBaseCrsVersionsPrevious(false);
+//        }else if(selectedRows.length == 2){
+//            this.setBaseCrsVersionsCurrent(false);
+//            this.setBaseCrsVersionsPrevious(true);
+//        }else{
+//            this.setBaseCrsVersionsCurrent(false);
+//            this.setBaseCrsVersionsPrevious(false);
+//        }
+        
+    }
+
+    public DCBindingContainer getDCBindingContainer(){
+        DCBindingContainer dcBindingContainer = (DCBindingContainer)BindingContext.getCurrent().getCurrentBindingsEntry();
+        return dcBindingContainer;
+    }
+
+    public void setCrsVersionsCurrent(Boolean crsVersionsCurrent) {
+        this.crsVersionsCurrent = crsVersionsCurrent;
+    }
+
+    public Boolean getCrsVersionsCurrent() {
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsVersionsIterator");
+        ViewObject vo = itrBinding.getViewObject();
+        Row[] selectedRows = vo.getFilteredRows("SelectRow", true);
+        
+        if(selectedRows.length == 1){
+            return false;
+        }else if(selectedRows.length == 2){
+            return true;
+        }else{
+            return true;
+        }
+        //return crsVersionsCurrent;
+    }
+
+    public void setCrsVersionsPrevious(Boolean crsVersionsPrevious) {
+        this.crsVersionsPrevious = crsVersionsPrevious;
+    }
+
+    public Boolean getCrsVersionsPrevious() {
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsVersionsIterator");
+        ViewObject vo = itrBinding.getViewObject();
+        Row[] selectedRows = vo.getFilteredRows("SelectRow", true);
+        
+        if(selectedRows.length == 1){
+            return true;
+        }else if(selectedRows.length == 2){
+            return false;
+        }else{
+            return true;
+        }
+        //return crsVersionsPrevious;
+    }
+
+    public void setBaseCrsVersionsCurrent(Boolean baseCrsVersionsCurrent) {
+        this.baseCrsVersionsCurrent = baseCrsVersionsCurrent;
+    }
+
+    public Boolean getBaseCrsVersionsCurrent() {
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsBaseVersionsIterator");
+        ViewObject vo = itrBinding.getViewObject();
+        Row[] selectedRows = vo.getFilteredRows("SelectRow", true);
+        
+        if(selectedRows.length == 1){
+            return false;
+        }else if(selectedRows.length == 2){
+            return true;
+        }else{
+            return true;
+        }
+        //return baseCrsVersionsCurrent;
+    }
+
+    public void setBaseCrsVersionsPrevious(Boolean baseCrsVersionsPrevious) {
+        this.baseCrsVersionsPrevious = baseCrsVersionsPrevious;
+    }
+
+    public Boolean getBaseCrsVersionsPrevious() {
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsBaseVersionsIterator");
+        ViewObject vo = itrBinding.getViewObject();
+        Row[] selectedRows = vo.getFilteredRows("SelectRow", true);
+        
+        if(selectedRows.length == 1){
+            return true;
+        }else if(selectedRows.length == 2){
+            return false;
+        }else{
+            return true;
+        }
+        //return baseCrsVersionsPrevious;
+    }
+
+    public void deleteVersionsAndClosePopup(ActionEvent actionEvent) {
+        try {
+            ADFUtils.executeAction("deleteVersions", null);
+        } catch (Exception e) {
+        }
+        this.getVersionComparePopup().hide();
+    }
+    
+    public void versionComaparePending(FacesContext facesContext, OutputStream outputStream) {
+        // Add event code here...
+        logger.info("Start of CRSReportsBean:versionComapare()");
+        try {
+        List wb = exportVersionComparePending(); //method for creating WB
+        HSSFWorkbook workbook = (HSSFWorkbook) wb.get(0);
+        workbook.write(outputStream);
+        outputStream.flush();
+        } catch (IOException ex) {
+        ex.printStackTrace();
+        }
+        logger.info("End of CRSReportsBean:versionComapare()");
+    }
+    
+    public void versionComapareCurrent(FacesContext facesContext, OutputStream outputStream) {
+        // Add event code here...
+        logger.info("Start of CRSReportsBean:versionComapare()");
+        try {
+        List wb = exportVersionCompareCurrent(); //method for creating WB
+        HSSFWorkbook workbook = (HSSFWorkbook) wb.get(0);
+        workbook.write(outputStream);
+        outputStream.flush();
+        } catch (IOException ex) {
+        ex.printStackTrace();
+        }
+        logger.info("End of CRSReportsBean:versionComapare()");
+    }
+    
+    public List exportVersionComparePending() {
+    HSSFWorkbook wb = new HSSFWorkbook();
+    HSSFSheet sheet = wb.createSheet("Version 1"); //Sheet Name
+    HSSFSheet sheet1 = wb.createSheet("Version 2");
+    int idx = 0; // rows index
+    int idx1 = 0; // rows index
+    //Creating styles code starts
+    HSSFFont colHdrFont = wb.createFont();
+    colHdrFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFFont fontSizeHrd = wb.createFont();
+    fontSizeHrd.setFontHeightInPoints((short) 16); //setting Headding font size
+    fontSizeHrd.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFCellStyle colStyleHrdWithFont = wb.createCellStyle();
+    colStyleHrdWithFont.setFont(fontSizeHrd);
+    
+        HSSFFont greenBoldFont = wb.createFont();
+        greenBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        greenBoldFont.setColor(IndexedColors.GREEN.getIndex());
+        
+        HSSFFont redBoldFont = wb.createFont();
+        redBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        redBoldFont.setColor(IndexedColors.RED.getIndex());
+        
+        HSSFFont orangeBoldFont = wb.createFont();
+        orangeBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        orangeBoldFont.setColor(IndexedColors.ORANGE.getIndex());
+        
+        HSSFCellStyle greenColourCellStyle = wb.createCellStyle();
+        greenColourCellStyle.setFont(greenBoldFont);
+        
+        HSSFCellStyle redColourCellStyle = wb.createCellStyle();
+        redColourCellStyle.setFont(redBoldFont);
+        
+        HSSFCellStyle orangeColourCellStyle = wb.createCellStyle();
+        orangeColourCellStyle.setFont(orangeBoldFont);
+
+    HSSFCellStyle colStyleTopLeft = wb.createCellStyle();
+    colStyleTopLeft.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopLeftWithCenter = wb.createCellStyle();
+    colStyleTopLeftWithCenter.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopLeftWithCenter.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeft = wb.createCellStyle();
+    colStyleLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftDealNo = wb.createCellStyle();
+    colStyleLeftDealNo.setAlignment(CellStyle.ALIGN_LEFT);
+    HSSFCellStyle colStyleLeftDept = wb.createCellStyle();
+    colStyleLeftDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setFont(colHdrFont);
+    HSSFCellStyle colStyleOnlyRight = wb.createCellStyle();
+    colStyleOnlyRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleOnlyRightDept = wb.createCellStyle();
+    colStyleOnlyRightDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleLeftBottom = wb.createCellStyle();
+    colStyleLeftBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftBottomWithOutHrd = wb.createCellStyle();
+    colStyleLeftBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottomWithOutHrd.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrd = wb.createCellStyle();
+    colStyleRightBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrd.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrdDept = wb.createCellStyle();
+    colStyleRightBottomWithOutHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleTop = wb.createCellStyle();
+    colStyleTop.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTop.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopRight = wb.createCellStyle();
+    colStyleTopRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopWithOutHrd = wb.createCellStyle();
+    colStyleTopWithOutHrd.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottom = wb.createCellStyle();
+    colStyleBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottomWithHrd = wb.createCellStyle();
+    colStyleBottomWithHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleBottomWithHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleRight = wb.createCellStyle();
+    colStyleRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrd = wb.createCellStyle();
+    colStyleHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrdDept = wb.createCellStyle();
+    colStyleHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setFont(colHdrFont);
+    //Creating styles code ends
+    HSSFRow row = null;
+    HSSFRow row1 = null;
+    
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CRSVersionComparePendingIterator");
+        ViewObject vo = itrBinding.getViewObject();
+        vo.reset();
+    Boolean flag = false;
+    Boolean firstRow = true;
+    while (vo.hasNext()) { 
+    CRSVersionComparePendingViewRowImpl viewObjectRow;
+            if (!firstRow) {
+                viewObjectRow = (CRSVersionComparePendingViewRowImpl) vo.next();
+            } else {
+                viewObjectRow = (CRSVersionComparePendingViewRowImpl) vo.first();
+            }
+    if(firstRow){
+    row = sheet.createRow(idx); //creating 1st row
+    row.createCell(1).setCellValue("Purpose Of Risk Definition");
+    row.getCell(1).setCellStyle(colStyleTopLeft);
+    sheet.addMergedRegion(new CellRangeAddress(0,0,1,12));
+    row.createCell(16).setCellValue("Safety Topic Definition");
+    row.getCell(16).setCellStyle(colStyleTopLeft);
+    sheet.addMergedRegion(new CellRangeAddress(0,0,16,20));
+    
+    row1 = sheet1.createRow(idx1); //creating 1st row
+    row1.createCell(1).setCellValue("Purpose Of Risk Definition");
+    row1.getCell(1).setCellStyle(colStyleTopLeft);
+    sheet1.addMergedRegion(new CellRangeAddress(0,0,1,12));
+    row1.createCell(16).setCellValue("Safety Topic Definition");
+    row1.getCell(16).setCellStyle(colStyleTopLeft);
+    sheet1.addMergedRegion(new CellRangeAddress(0,0,16,20));
+    idx = idx + 1;
+    idx1 = idx1 + 1;
+    }
+    row = sheet.createRow(idx); //creating 1st row
+    row1 = sheet1.createRow(idx1); //creating 1st row
+    firstRow = false;
+    if(flag == false){
+                row.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
+                sheet.autoSizeColumn(0);
+                row.getCell(0).setCellStyle(colStyleTopLeft);
+                row.createCell(1).setCellValue("SP");
+                sheet.autoSizeColumn(1);
+                row.getCell(1).setCellStyle(colStyleTopLeft);
+                row.createCell(2).setCellValue("DS");
+                sheet.autoSizeColumn(2);
+                row.getCell(2).setCellStyle(colStyleTopLeft);
+                row.createCell(3).setCellValue("RM");
+                sheet.autoSizeColumn(3);
+                row.getCell(3).setCellStyle(colStyleTopLeft);
+                row.createCell(4).setCellValue("PS");
+                sheet.autoSizeColumn(4);
+                row.getCell(4).setCellStyle(colStyleTopLeft);
+                row.createCell(5).setCellValue("IB");
+                sheet.autoSizeColumn(5);
+                row.getCell(5).setCellStyle(colStyleTopLeft);
+                row.createCell(6).setCellValue("CD");
+                sheet.autoSizeColumn(6);
+                row.getCell(6).setCellStyle(colStyleTopLeft);
+                row.createCell(7).setCellValue("OS");
+                sheet.autoSizeColumn(7);
+                row.getCell(7).setCellStyle(colStyleTopLeft);
+                row.createCell(8).setCellValue("MI");
+                sheet.autoSizeColumn(8);
+                row.getCell(8).setCellStyle(colStyleTopLeft);
+                row.createCell(9).setCellValue("ER");
+                sheet.autoSizeColumn(9);
+                row.getCell(9).setCellStyle(colStyleTopLeft);
+                row.createCell(10).setCellValue("UD");
+                sheet.autoSizeColumn(10);
+                row.getCell(10).setCellStyle(colStyleTopLeft);
+                row.createCell(11).setCellValue("A1");
+                sheet.autoSizeColumn(11);
+                row.getCell(11).setCellStyle(colStyleTopLeft);
+                row.createCell(12).setCellValue("A2");
+                sheet.autoSizeColumn(12);
+                row.getCell(12).setCellStyle(colStyleTopLeft);
+                row.createCell(13).setCellValue("SOC");
+                sheet.autoSizeColumn(13);
+                row.getCell(13).setCellStyle(colStyleTopLeft);
+                row.createCell(14).setCellValue("Data Domain");
+                sheet.autoSizeColumn(14);
+                row.getCell(14).setCellStyle(colStyleTopLeft);
+                row.createCell(15).setCellValue("Search Criteria Details");
+                sheet.autoSizeColumn(15);
+                row.getCell(15).setCellStyle(colStyleTopLeft);
+                row.createCell(16).setCellValue("MedDRA Code");
+                sheet.autoSizeColumn(16);
+                row.getCell(16).setCellStyle(colStyleTopLeft);
+                row.createCell(17).setCellValue("MedDRA Term");
+                sheet.autoSizeColumn(17);
+                row.getCell(17).setCellStyle(colStyleTopLeft);
+                row.createCell(18).setCellValue("MedDRA Level");
+                sheet.autoSizeColumn(18);
+                row.getCell(18).setCellStyle(colStyleTopLeft);
+                row.createCell(19).setCellValue("MedDRA Qualifier");
+                sheet.autoSizeColumn(19);
+                row.getCell(19).setCellStyle(colStyleTopLeft); /*  */
+                row.createCell(20).setCellValue("Comment");
+                sheet.autoSizeColumn(20);
+                row.getCell(20).setCellStyle(colStyleTopLeft);
+                
+        row1.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
+        sheet1.autoSizeColumn(0);
+        row1.getCell(0).setCellStyle(colStyleTopLeft);
+        row1.createCell(1).setCellValue("SP");
+        sheet1.autoSizeColumn(1);
+        row1.getCell(1).setCellStyle(colStyleTopLeft);
+        row1.createCell(2).setCellValue("DS");
+        sheet1.autoSizeColumn(2);
+        row1.getCell(2).setCellStyle(colStyleTopLeft);
+        row1.createCell(3).setCellValue("RM");
+        sheet1.autoSizeColumn(3);
+        row1.getCell(3).setCellStyle(colStyleTopLeft);
+        row1.createCell(4).setCellValue("PS");
+        sheet1.autoSizeColumn(4);
+        row1.getCell(4).setCellStyle(colStyleTopLeft);
+        row1.createCell(5).setCellValue("IB");
+        sheet1.autoSizeColumn(5);
+        row1.getCell(5).setCellStyle(colStyleTopLeft);
+        row1.createCell(6).setCellValue("CD");
+        sheet1.autoSizeColumn(6);
+        row1.getCell(6).setCellStyle(colStyleTopLeft);
+        row1.createCell(7).setCellValue("OS");
+        sheet1.autoSizeColumn(7);
+        row1.getCell(7).setCellStyle(colStyleTopLeft);
+        row1.createCell(8).setCellValue("MI");
+        sheet1.autoSizeColumn(8);
+        row1.getCell(8).setCellStyle(colStyleTopLeft);
+        row1.createCell(9).setCellValue("ER");
+        sheet1.autoSizeColumn(9);
+        row1.getCell(9).setCellStyle(colStyleTopLeft);
+        row1.createCell(10).setCellValue("UD");
+        sheet1.autoSizeColumn(10);
+        row1.getCell(10).setCellStyle(colStyleTopLeft);
+        row1.createCell(11).setCellValue("A1");
+        sheet1.autoSizeColumn(11);
+        row1.getCell(11).setCellStyle(colStyleTopLeft);
+        row1.createCell(12).setCellValue("A2");
+        sheet1.autoSizeColumn(12);
+        row1.getCell(12).setCellStyle(colStyleTopLeft);
+        row1.createCell(13).setCellValue("SOC");
+        sheet1.autoSizeColumn(13);
+        row1.getCell(13).setCellStyle(colStyleTopLeft);
+        row1.createCell(14).setCellValue("Data Domain");
+        sheet1.autoSizeColumn(14);
+        row1.getCell(14).setCellStyle(colStyleTopLeft);
+        row1.createCell(15).setCellValue("Search Criteria Details");
+        sheet1.autoSizeColumn(15);
+        row1.getCell(15).setCellStyle(colStyleTopLeft);
+        row1.createCell(16).setCellValue("MedDRA Code");
+        sheet1.autoSizeColumn(16);
+        row1.getCell(16).setCellStyle(colStyleTopLeft);
+        row1.createCell(17).setCellValue("MedDRA Term");
+        sheet1.autoSizeColumn(17);
+        row1.getCell(17).setCellStyle(colStyleTopLeft);
+        row1.createCell(18).setCellValue("MedDRA Level");
+        sheet1.autoSizeColumn(18);
+        row1.getCell(18).setCellStyle(colStyleTopLeft);
+        row1.createCell(19).setCellValue("MedDRA Qualifier");
+        sheet1.autoSizeColumn(19);
+        row1.getCell(19).setCellStyle(colStyleTopLeft); /*  */
+        row1.createCell(20).setCellValue("Comment");
+        sheet1.autoSizeColumn(20);
+        row1.getCell(20).setCellStyle(colStyleTopLeft);
+    
+    idx = idx + 1;
+    idx1 = idx1 + 1;
+    row = sheet.createRow(idx); //creating 2nd row
+    row1 = sheet1.createRow(idx1); //creating 2nd row
+    }
+        
+           
+        if (viewObjectRow.getEarliestSafetyTopic() != null){
+            row.createCell(0).setCellValue(viewObjectRow.getEarliestSafetyTopic().toString());
+            
+            if((viewObjectRow.getEarliestSafetyTopicColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSafetyTopicColor())){
+            row.getCell(0).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestSafetyTopicColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSafetyTopicColor())){
+                row.getCell(0).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestSafetyTopicColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSafetyTopicColor())){
+                row.getCell(0).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(0).setCellValue("");
+        sheet.autoSizeColumn(0);
+
+        if (viewObjectRow.getEarliestSpp() != null){
+            row.createCell(1).setCellValue(viewObjectRow.getEarliestSpp().toString());
+            if((viewObjectRow.getEarliestSppColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSppColor())){
+            row.getCell(1).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestSppColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSppColor())){
+                row.getCell(1).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestSppColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSppColor())){
+                row.getCell(1).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(1).setCellValue("");
+        sheet.autoSizeColumn(1);
+
+        if (viewObjectRow.getEarliestDsur() != null){
+            row.createCell(2).setCellValue(viewObjectRow.getEarliestDsur());
+            if((viewObjectRow.getEarliestDsurColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestDsurColor())){
+            row.getCell(2).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestDsurColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestDsurColor())){
+                row.getCell(2).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestDsurColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestDsurColor())){
+                row.getCell(2).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(2).setCellValue("");
+        sheet.autoSizeColumn(2);
+        
+        if (viewObjectRow.getEarliestRmp() != null){
+            row.createCell(3).setCellValue(viewObjectRow.getEarliestRmp());
+            if((viewObjectRow.getEarliestRmpColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestRmpColor())){
+            row.getCell(3).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestRmpColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestRmpColor())){
+                row.getCell(3).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestRmpColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestRmpColor())){
+                row.getCell(3).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(3).setCellValue("");
+        sheet.autoSizeColumn(3);
+        
+        if (viewObjectRow.getEarliestPsur() != null){
+            row.createCell(4).setCellValue(viewObjectRow.getEarliestPsur());
+            if((viewObjectRow.getEarliestPsurColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestPsurColor())){
+            row.getCell(4).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestPsurColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestPsurColor())){
+                row.getCell(4).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestPsurColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestPsurColor())){
+                row.getCell(4).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(4).setCellValue("");
+        sheet.autoSizeColumn(4);
+        
+        if (viewObjectRow.getEarliestIb() != null){
+            row.createCell(5).setCellValue(viewObjectRow.getEarliestIb());
+        if((viewObjectRow.getEarliestIbColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestIbColor())){
+        row.getCell(5).setCellStyle(greenColourCellStyle);
+        }else if((viewObjectRow.getEarliestIbColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestIbColor())){
+            row.getCell(5).setCellStyle(redColourCellStyle); 
+        }else if((viewObjectRow.getEarliestIbColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestIbColor())){
+            row.getCell(5).setCellStyle(orangeColourCellStyle);
+        }
+        }
+        else
+            row.createCell(5).setCellValue("");
+        sheet.autoSizeColumn(5);
+        
+        if (viewObjectRow.getEarliestCds() != null){
+            row.createCell(6).setCellValue(viewObjectRow.getEarliestCds());
+            if((viewObjectRow.getEarliestCdsColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestCdsColor())){
+            row.getCell(6).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestCdsColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestCdsColor())){
+                row.getCell(6).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestCdsColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestCdsColor())){
+                row.getCell(6).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(6).setCellValue("");
+        sheet.autoSizeColumn(6);
+        
+        if (viewObjectRow.getEarliestOtherSearch() != null){
+            row.createCell(7).setCellValue(viewObjectRow.getEarliestOtherSearch());
+            if((viewObjectRow.getEarliestOtherSearchColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestOtherSearchColor())){
+            row.getCell(7).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestOtherSearchColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestOtherSearchColor())){
+                row.getCell(7).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestOtherSearchColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestOtherSearchColor())){
+                row.getCell(7).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(7).setCellValue("");
+        sheet.autoSizeColumn(7);
+        
+        if (viewObjectRow.getEarliestMissingInformation() != null){
+            row.createCell(8).setCellValue(viewObjectRow.getEarliestMissingInformation());
+            if((viewObjectRow.getEarliestMissingInformColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMissingInformColor())){
+            row.getCell(8).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMissingInformColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMissingInformColor())){
+                row.getCell(8).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMissingInformColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMissingInformColor())){
+                row.getCell(8).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(8).setCellValue("");
+        sheet.autoSizeColumn(8);
+        
+        if (viewObjectRow.getEarliestExpeditingRules() != null){
+            row.createCell(9).setCellValue(viewObjectRow.getEarliestExpeditingRules());
+            if((viewObjectRow.getEarliestExpeditingRulColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestExpeditingRulColor())){
+            row.getCell(9).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestExpeditingRulColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestExpeditingRulColor())){
+                row.getCell(9).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestExpeditingRulColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestExpeditingRulColor())){
+                row.getCell(9).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(9).setCellValue("");
+        sheet.autoSizeColumn(9);
+        
+        if (viewObjectRow.getEarliestUnderlyingDisease() != null){
+            row.createCell(10).setCellValue(viewObjectRow.getEarliestUnderlyingDisease());
+            if((viewObjectRow.getEarliestUnderlyingDisColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestUnderlyingDisColor())){
+            row.getCell(10).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestUnderlyingDisColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestUnderlyingDisColor())){
+                row.getCell(10).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestUnderlyingDisColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestUnderlyingDisColor())){
+                row.getCell(10).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(10).setCellValue("");
+        sheet.autoSizeColumn(10);
+        
+        if (viewObjectRow.getEarliestAesiForNisProtcol() != null){
+            row.createCell(11).setCellValue(viewObjectRow.getEarliestAesiForNisProtcol());
+            if((viewObjectRow.getEarliestAesiFrNisProClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestAesiFrNisProClr())){
+            row.getCell(11).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestAesiFrNisProClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestAesiFrNisProClr())){
+                row.getCell(11).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestAesiFrNisProClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestAesiFrNisProClr())){
+                row.getCell(11).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(11).setCellValue("");
+        sheet.autoSizeColumn(11);
+        
+        if (viewObjectRow.getEarliestAesiNotRmp() != null){
+            row.createCell(12).setCellValue(viewObjectRow.getEarliestAesiNotRmp());
+            if((viewObjectRow.getEarliestAesiNotRmpColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestAesiNotRmpColor())){
+            row.getCell(12).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestAesiNotRmpColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestAesiNotRmpColor())){
+                row.getCell(12).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestAesiNotRmpColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestAesiNotRmpColor())){
+                row.getCell(12).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(12).setCellValue("");
+        sheet.autoSizeColumn(12);
+        
+        if (viewObjectRow.getEarliestSoc() != null){
+            row.createCell(13).setCellValue(viewObjectRow.getEarliestSoc());
+            if((viewObjectRow.getEarliestSocColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSocColor())){
+            row.getCell(13).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestSocColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSocColor())){
+                row.getCell(13).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestSocColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSocColor())){
+                row.getCell(13).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(13).setCellValue("");
+        sheet.autoSizeColumn(13);
+        
+        if (viewObjectRow.getEarliestDataDomain() != null){
+            row.createCell(14).setCellValue(viewObjectRow.getEarliestDataDomain());
+            if((viewObjectRow.getEarliestDataDomainColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestDataDomainColor())){
+            row.getCell(14).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestDataDomainColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestDataDomainColor())){
+                row.getCell(14).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestDataDomainColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestDataDomainColor())){
+                row.getCell(14).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(14).setCellValue("");
+        sheet.autoSizeColumn(14);
+        
+        if (viewObjectRow.getEarliestSearchDetails() != null){
+            row.createCell(15).setCellValue(viewObjectRow.getEarliestSearchDetails());
+            if((viewObjectRow.getEarliestSearchDetailsColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSearchDetailsColor())){
+            row.getCell(15).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestSearchDetailsColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSearchDetailsColor())){
+                row.getCell(15).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestSearchDetailsColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSearchDetailsColor())){
+                row.getCell(15).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(15).setCellValue("");
+        sheet.autoSizeColumn(15);
+        
+        if (viewObjectRow.getEarliestMeddraCode() != null){
+            row.createCell(16).setCellValue(viewObjectRow.getEarliestMeddraCode());
+            if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+            row.getCell(16).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+                row.getCell(16).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+                row.getCell(16).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(16).setCellValue("");
+        sheet.autoSizeColumn(16);
+        
+        if (viewObjectRow.getEarliestMeddraTerm() != null){
+            row.createCell(17).setCellValue(viewObjectRow.getEarliestMeddraTerm());
+            if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+            row.getCell(17).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+                row.getCell(17).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+                row.getCell(17).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(17).setCellValue("");
+        sheet.autoSizeColumn(17);
+        
+        if (viewObjectRow.getEarliestMeddraExtension() != null){
+            row.createCell(18).setCellValue(viewObjectRow.getEarliestMeddraExtension());
+            if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+            row.getCell(18).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+                row.getCell(18).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+                row.getCell(18).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(18).setCellValue("");
+        sheet.autoSizeColumn(18);
+        
+        if (viewObjectRow.getEarliestMeddraQualifier() != null){
+            row.createCell(19).setCellValue(viewObjectRow.getEarliestMeddraQualifier());
+            if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+            row.getCell(19).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+                row.getCell(19).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+                row.getCell(19).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(19).setCellValue("");
+        sheet.autoSizeColumn(19);
+        
+        if (viewObjectRow.getEarliestNonMeddraCompCmt() != null){
+            row.createCell(20).setCellValue(viewObjectRow.getEarliestNonMeddraCompCmt());
+            if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+            row.getCell(20).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+                row.getCell(20).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+                row.getCell(20).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(20).setCellValue("");
+        sheet.autoSizeColumn(20);
+               
+        
+        if (viewObjectRow.getLatestSafetyTopic() != null){
+            row1.createCell(0).setCellValue(viewObjectRow.getLatestSafetyTopic().toString());
+            if((viewObjectRow.getLatestSafetyTopicColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSafetyTopicColor())){
+            row1.getCell(0).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestSafetyTopicColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSafetyTopicColor())){
+                row1.getCell(0).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestSafetyTopicColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSafetyTopicColor())){
+                row1.getCell(0).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(0).setCellValue("");
+        sheet1.autoSizeColumn(0);
+
+        if (viewObjectRow.getLatestSpp() != null){
+            row1.createCell(1).setCellValue(viewObjectRow.getLatestSpp().toString());
+            if((viewObjectRow.getLatestSppColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSppColor())){
+            row1.getCell(1).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestSppColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSppColor())){
+                row1.getCell(1).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestSppColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSppColor())){
+                row1.getCell(1).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(1).setCellValue("");
+        sheet1.autoSizeColumn(1);
+
+        if (viewObjectRow.getLatestDsur() != null){
+            row1.createCell(2).setCellValue(viewObjectRow.getLatestDsur());
+            if((viewObjectRow.getLatestDsurColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestDsurColor())){
+            row1.getCell(2).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestDsurColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestDsurColor())){
+                row1.getCell(2).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestDsurColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestDsurColor())){
+                row1.getCell(2).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(2).setCellValue("");
+        sheet1.autoSizeColumn(2);
+        
+        if (viewObjectRow.getLatestRmp() != null){
+            row1.createCell(3).setCellValue(viewObjectRow.getLatestRmp());
+            if((viewObjectRow.getLatestRmpColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestRmpColor())){
+            row1.getCell(3).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestRmpColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestRmpColor())){
+                row1.getCell(3).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestRmpColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestRmpColor())){
+                row1.getCell(3).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(3).setCellValue("");
+        sheet1.autoSizeColumn(3);
+        
+        if (viewObjectRow.getLatestPsur() != null){
+            row1.createCell(4).setCellValue(viewObjectRow.getLatestPsur());
+            if((viewObjectRow.getLatestPsurColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestPsurColor())){
+            row1.getCell(4).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestPsurColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestPsurColor())){
+                row1.getCell(4).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestPsurColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestPsurColor())){
+                row1.getCell(4).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(4).setCellValue("");
+        sheet1.autoSizeColumn(4);
+        
+        if (viewObjectRow.getLatestIb() != null){
+            row1.createCell(5).setCellValue(viewObjectRow.getLatestIb());
+            if((viewObjectRow.getLatestIbColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestIbColor())){
+                    row1.getCell(5).setCellStyle(greenColourCellStyle);
+                    }else if((viewObjectRow.getLatestIbColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestIbColor())){
+                        row1.getCell(5).setCellStyle(redColourCellStyle); 
+                    }else if((viewObjectRow.getLatestIbColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestIbColor())){
+                        row1.getCell(5).setCellStyle(orangeColourCellStyle);
+                    }
+        }
+        else
+            row1.createCell(5).setCellValue("");
+        sheet1.autoSizeColumn(5);
+        
+        if (viewObjectRow.getLatestCds() != null){
+            row1.createCell(6).setCellValue(viewObjectRow.getLatestCds());
+            if((viewObjectRow.getLatestCdsColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestCdsColor())){
+            row1.getCell(6).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestCdsColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestCdsColor())){
+                row1.getCell(6).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestCdsColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestCdsColor())){
+                row1.getCell(6).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(6).setCellValue("");
+        sheet1.autoSizeColumn(6);
+        
+        if (viewObjectRow.getLatestOtherSearch() != null){
+            row1.createCell(7).setCellValue(viewObjectRow.getLatestOtherSearch());
+            if((viewObjectRow.getLatestOtherSearchColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestOtherSearchColor())){
+            row1.getCell(7).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestOtherSearchColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestOtherSearchColor())){
+                row1.getCell(7).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestOtherSearchColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestOtherSearchColor())){
+                row1.getCell(7).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(7).setCellValue("");
+        sheet1.autoSizeColumn(7);
+        
+        if (viewObjectRow.getLatestMissingInformation() != null){
+            row1.createCell(8).setCellValue(viewObjectRow.getLatestMissingInformation());
+            if((viewObjectRow.getLatestMissingInfoColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMissingInfoColor())){
+            row1.getCell(8).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMissingInfoColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMissingInfoColor())){
+                row1.getCell(8).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMissingInfoColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMissingInfoColor())){
+                row1.getCell(8).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(8).setCellValue("");
+        sheet1.autoSizeColumn(8);
+        
+        if (viewObjectRow.getLatestExpeditingRules() != null){
+            row1.createCell(9).setCellValue(viewObjectRow.getLatestExpeditingRules());
+            if((viewObjectRow.getLatestExpeditingRulesColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestExpeditingRulesColor())){
+            row1.getCell(9).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestExpeditingRulesColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestExpeditingRulesColor())){
+                row1.getCell(9).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestExpeditingRulesColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestExpeditingRulesColor())){
+                row1.getCell(9).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(9).setCellValue("");
+        sheet1.autoSizeColumn(9);
+        
+        if (viewObjectRow.getLatestUnderlyingDisease() != null){
+            row1.createCell(10).setCellValue(viewObjectRow.getLatestUnderlyingDisease());
+                if((viewObjectRow.getLatestUnderlyingDisColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestUnderlyingDisColor())){
+                row1.getCell(10).setCellStyle(greenColourCellStyle);
+                }else if((viewObjectRow.getLatestUnderlyingDisColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestUnderlyingDisColor())){
+                    row1.getCell(10).setCellStyle(redColourCellStyle); 
+                }else if((viewObjectRow.getLatestUnderlyingDisColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestUnderlyingDisColor())){
+                    row1.getCell(10).setCellStyle(orangeColourCellStyle);
+                }
+        }
+        else
+            row1.createCell(10).setCellValue("");
+        sheet1.autoSizeColumn(10);
+        
+        if (viewObjectRow.getLatestAesiForNisProtocol() != null){
+            row1.createCell(11).setCellValue(viewObjectRow.getLatestAesiForNisProtocol());
+            if((viewObjectRow.getLatestAesiForNisProColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestAesiForNisProColor())){
+            row1.getCell(11).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestAesiForNisProColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestAesiForNisProColor())){
+                row1.getCell(11).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestAesiForNisProColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestAesiForNisProColor())){
+                row1.getCell(11).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(11).setCellValue("");
+        sheet1.autoSizeColumn(11);
+        
+        if (viewObjectRow.getLatestAesiNotRmp() != null){
+            row1.createCell(12).setCellValue(viewObjectRow.getLatestAesiNotRmp());
+            if((viewObjectRow.getLatestAesiNotRmpColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestAesiNotRmpColor())){
+            row1.getCell(12).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestAesiNotRmpColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestAesiNotRmpColor())){
+                row1.getCell(12).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestAesiNotRmpColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestAesiNotRmpColor())){
+                row1.getCell(12).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(12).setCellValue("");
+        sheet1.autoSizeColumn(12);
+        
+        if (viewObjectRow.getLatestSoc() != null){
+            row1.createCell(13).setCellValue(viewObjectRow.getLatestSoc());
+            if((viewObjectRow.getLatestSocColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSocColor())){
+            row1.getCell(13).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestSocColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSocColor())){
+                row1.getCell(13).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestSocColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSocColor())){
+                row1.getCell(13).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(13).setCellValue("");
+        sheet1.autoSizeColumn(13);
+        
+        if (viewObjectRow.getLatestDataDomain() != null){
+            row1.createCell(14).setCellValue(viewObjectRow.getLatestDataDomain());
+            if((viewObjectRow.getLatestDataDomainColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestDataDomainColor())){
+            row.getCell(14).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestDataDomainColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestDataDomainColor())){
+                row.getCell(14).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestDataDomainColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestDataDomainColor())){
+                row.getCell(14).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(14).setCellValue("");
+        sheet1.autoSizeColumn(14);
+        
+        if (viewObjectRow.getLatestSearchDetails() != null){
+            row1.createCell(15).setCellValue(viewObjectRow.getLatestSearchDetails());
+            if((viewObjectRow.getLatestSearchDetailsColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSearchDetailsColor())){
+            row1.getCell(15).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestSearchDetailsColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSearchDetailsColor())){
+                row1.getCell(15).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestSearchDetailsColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSearchDetailsColor())){
+                row1.getCell(15).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(15).setCellValue("");
+        sheet1.autoSizeColumn(15);
+        
+        if (viewObjectRow.getLatestMeddraCode() != null){
+            row1.createCell(16).setCellValue(viewObjectRow.getLatestMeddraCode());
+            if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+            row1.getCell(16).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+                row1.getCell(16).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+                row1.getCell(16).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(16).setCellValue("");
+        sheet1.autoSizeColumn(16);
+        
+        if (viewObjectRow.getLatestMeddraTerm() != null){
+            row1.createCell(17).setCellValue(viewObjectRow.getLatestMeddraTerm());
+            if((viewObjectRow.getLatestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+            row1.getCell(17).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+                row1.getCell(17).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+                row1.getCell(17).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(17).setCellValue("");
+        sheet1.autoSizeColumn(17);
+        
+        if (viewObjectRow.getLatestMeddraExtension() != null){
+            row1.createCell(18).setCellValue(viewObjectRow.getLatestMeddraExtension());
+            if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+            row1.getCell(18).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+                row1.getCell(18).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+                row1.getCell(18).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(18).setCellValue("");
+        sheet1.autoSizeColumn(18);
+        
+        if (viewObjectRow.getLatestMeddraQualifier() != null){
+            row1.createCell(19).setCellValue(viewObjectRow.getLatestMeddraQualifier());
+            if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+            row1.getCell(19).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+                row1.getCell(19).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+                row1.getCell(19).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(19).setCellValue("");
+        sheet1.autoSizeColumn(19);
+        
+        if (viewObjectRow.getLatestNonMeddraCompCmt() != null){
+            row1.createCell(20).setCellValue(viewObjectRow.getLatestNonMeddraCompCmt());
+            if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+            row1.getCell(20).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+                row1.getCell(20).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+                row1.getCell(20).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(20).setCellValue("");
+        sheet1.autoSizeColumn(20);
+        
+    //2nd Row ends
+    flag = true; 
+    idx = idx + 1;
+    idx1 = idx1 + 1;
+    }
+    List list = new ArrayList();
+    list.add(wb);
+    return list;
+    }
+    
+    public List exportVersionCompareCurrent() {
+    HSSFWorkbook wb = new HSSFWorkbook();
+    HSSFSheet sheet = wb.createSheet("Version 1"); //Sheet Name
+    HSSFSheet sheet1 = wb.createSheet("Version 2");
+    int idx = 0; // rows index
+    int idx1 = 0; // rows index
+    //Creating styles code starts
+    HSSFFont colHdrFont = wb.createFont();
+    colHdrFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFFont fontSizeHrd = wb.createFont();
+    fontSizeHrd.setFontHeightInPoints((short) 16); //setting Headding font size
+    fontSizeHrd.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFCellStyle colStyleHrdWithFont = wb.createCellStyle();
+    colStyleHrdWithFont.setFont(fontSizeHrd);
+    
+        HSSFFont greenBoldFont = wb.createFont();
+        greenBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        greenBoldFont.setColor(IndexedColors.GREEN.getIndex());
+        
+        HSSFFont redBoldFont = wb.createFont();
+        redBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        redBoldFont.setColor(IndexedColors.RED.getIndex());
+        
+        HSSFFont orangeBoldFont = wb.createFont();
+        orangeBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        orangeBoldFont.setColor(IndexedColors.ORANGE.getIndex());
+        
+        HSSFCellStyle greenColourCellStyle = wb.createCellStyle();
+        greenColourCellStyle.setFont(greenBoldFont);
+        
+        HSSFCellStyle redColourCellStyle = wb.createCellStyle();
+        redColourCellStyle.setFont(redBoldFont);
+        
+        HSSFCellStyle orangeColourCellStyle = wb.createCellStyle();
+        orangeColourCellStyle.setFont(orangeBoldFont);
+
+    HSSFCellStyle colStyleTopLeft = wb.createCellStyle();
+    colStyleTopLeft.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopLeftWithCenter = wb.createCellStyle();
+    colStyleTopLeftWithCenter.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopLeftWithCenter.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeft = wb.createCellStyle();
+    colStyleLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftDealNo = wb.createCellStyle();
+    colStyleLeftDealNo.setAlignment(CellStyle.ALIGN_LEFT);
+    HSSFCellStyle colStyleLeftDept = wb.createCellStyle();
+    colStyleLeftDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setFont(colHdrFont);
+    HSSFCellStyle colStyleOnlyRight = wb.createCellStyle();
+    colStyleOnlyRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleOnlyRightDept = wb.createCellStyle();
+    colStyleOnlyRightDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleLeftBottom = wb.createCellStyle();
+    colStyleLeftBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftBottomWithOutHrd = wb.createCellStyle();
+    colStyleLeftBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottomWithOutHrd.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrd = wb.createCellStyle();
+    colStyleRightBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrd.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrdDept = wb.createCellStyle();
+    colStyleRightBottomWithOutHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleTop = wb.createCellStyle();
+    colStyleTop.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTop.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopRight = wb.createCellStyle();
+    colStyleTopRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopWithOutHrd = wb.createCellStyle();
+    colStyleTopWithOutHrd.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottom = wb.createCellStyle();
+    colStyleBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottomWithHrd = wb.createCellStyle();
+    colStyleBottomWithHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleBottomWithHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleRight = wb.createCellStyle();
+    colStyleRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrd = wb.createCellStyle();
+    colStyleHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrdDept = wb.createCellStyle();
+    colStyleHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setFont(colHdrFont);
+    //Creating styles code ends
+    HSSFRow row = null;
+    HSSFRow row1 = null;
+    
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsVersionCompareIterator");
+        ViewObject vo = itrBinding.getViewObject();
+        vo.reset();
+    Boolean flag = false;
+    Boolean firstRow = true;
+    while (vo.hasNext()) { 
+    CRSVersionCompareVORowImpl viewObjectRow;
+            if (!firstRow) {
+                viewObjectRow = (CRSVersionCompareVORowImpl) vo.next();
+            } else {
+                viewObjectRow = (CRSVersionCompareVORowImpl) vo.first();
+            }
+    if(firstRow){
+    row = sheet.createRow(idx); //creating 1st row
+    row.createCell(1).setCellValue("Purpose Of Risk Definition");
+    row.getCell(1).setCellStyle(colStyleTopLeft);
+    sheet.addMergedRegion(new CellRangeAddress(0,0,1,12));
+    row.createCell(16).setCellValue("Safety Topic Definition");
+    row.getCell(16).setCellStyle(colStyleTopLeft);
+    sheet.addMergedRegion(new CellRangeAddress(0,0,16,20));
+    
+    row1 = sheet1.createRow(idx1); //creating 1st row
+    row1.createCell(1).setCellValue("Purpose Of Risk Definition");
+    row1.getCell(1).setCellStyle(colStyleTopLeft);
+    sheet1.addMergedRegion(new CellRangeAddress(0,0,1,12));
+    row1.createCell(16).setCellValue("Safety Topic Definition");
+    row1.getCell(16).setCellStyle(colStyleTopLeft);
+    sheet1.addMergedRegion(new CellRangeAddress(0,0,16,20));
+    idx = idx + 1;
+    idx1 = idx1 + 1;
+    }
+    row = sheet.createRow(idx); //creating 1st row
+    row1 = sheet1.createRow(idx1); //creating 1st row
+    firstRow = false;
+    if(flag == false){
+                row.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
+                sheet.autoSizeColumn(0);
+                row.getCell(0).setCellStyle(colStyleTopLeft);
+                row.createCell(1).setCellValue("SP");
+                sheet.autoSizeColumn(1);
+                row.getCell(1).setCellStyle(colStyleTopLeft);
+                row.createCell(2).setCellValue("DS");
+                sheet.autoSizeColumn(2);
+                row.getCell(2).setCellStyle(colStyleTopLeft);
+                row.createCell(3).setCellValue("RM");
+                sheet.autoSizeColumn(3);
+                row.getCell(3).setCellStyle(colStyleTopLeft);
+                row.createCell(4).setCellValue("PS");
+                sheet.autoSizeColumn(4);
+                row.getCell(4).setCellStyle(colStyleTopLeft);
+                row.createCell(5).setCellValue("IB");
+                sheet.autoSizeColumn(5);
+                row.getCell(5).setCellStyle(colStyleTopLeft);
+                row.createCell(6).setCellValue("CD");
+                sheet.autoSizeColumn(6);
+                row.getCell(6).setCellStyle(colStyleTopLeft);
+                row.createCell(7).setCellValue("OS");
+                sheet.autoSizeColumn(7);
+                row.getCell(7).setCellStyle(colStyleTopLeft);
+                row.createCell(8).setCellValue("MI");
+                sheet.autoSizeColumn(8);
+                row.getCell(8).setCellStyle(colStyleTopLeft);
+                row.createCell(9).setCellValue("ER");
+                sheet.autoSizeColumn(9);
+                row.getCell(9).setCellStyle(colStyleTopLeft);
+                row.createCell(10).setCellValue("UD");
+                sheet.autoSizeColumn(10);
+                row.getCell(10).setCellStyle(colStyleTopLeft);
+                row.createCell(11).setCellValue("A1");
+                sheet.autoSizeColumn(11);
+                row.getCell(11).setCellStyle(colStyleTopLeft);
+                row.createCell(12).setCellValue("A2");
+                sheet.autoSizeColumn(12);
+                row.getCell(12).setCellStyle(colStyleTopLeft);
+                row.createCell(13).setCellValue("SOC");
+                sheet.autoSizeColumn(13);
+                row.getCell(13).setCellStyle(colStyleTopLeft);
+                row.createCell(14).setCellValue("Data Domain");
+                sheet.autoSizeColumn(14);
+                row.getCell(14).setCellStyle(colStyleTopLeft);
+                row.createCell(15).setCellValue("Search Criteria Details");
+                sheet.autoSizeColumn(15);
+                row.getCell(15).setCellStyle(colStyleTopLeft);
+                row.createCell(16).setCellValue("MedDRA Code");
+                sheet.autoSizeColumn(16);
+                row.getCell(16).setCellStyle(colStyleTopLeft);
+                row.createCell(17).setCellValue("MedDRA Term");
+                sheet.autoSizeColumn(17);
+                row.getCell(17).setCellStyle(colStyleTopLeft);
+                row.createCell(18).setCellValue("MedDRA Level");
+                sheet.autoSizeColumn(18);
+                row.getCell(18).setCellStyle(colStyleTopLeft);
+                row.createCell(19).setCellValue("MedDRA Qualifier");
+                sheet.autoSizeColumn(19);
+                row.getCell(19).setCellStyle(colStyleTopLeft); /*  */
+                row.createCell(20).setCellValue("Comment");
+                sheet.autoSizeColumn(20);
+                row.getCell(20).setCellStyle(colStyleTopLeft);
+                
+        row1.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
+        sheet1.autoSizeColumn(0);
+        row1.getCell(0).setCellStyle(colStyleTopLeft);
+        row1.createCell(1).setCellValue("SP");
+        sheet1.autoSizeColumn(1);
+        row1.getCell(1).setCellStyle(colStyleTopLeft);
+        row1.createCell(2).setCellValue("DS");
+        sheet1.autoSizeColumn(2);
+        row1.getCell(2).setCellStyle(colStyleTopLeft);
+        row1.createCell(3).setCellValue("RM");
+        sheet1.autoSizeColumn(3);
+        row1.getCell(3).setCellStyle(colStyleTopLeft);
+        row1.createCell(4).setCellValue("PS");
+        sheet1.autoSizeColumn(4);
+        row1.getCell(4).setCellStyle(colStyleTopLeft);
+        row1.createCell(5).setCellValue("IB");
+        sheet1.autoSizeColumn(5);
+        row1.getCell(5).setCellStyle(colStyleTopLeft);
+        row1.createCell(6).setCellValue("CD");
+        sheet1.autoSizeColumn(6);
+        row1.getCell(6).setCellStyle(colStyleTopLeft);
+        row1.createCell(7).setCellValue("OS");
+        sheet1.autoSizeColumn(7);
+        row1.getCell(7).setCellStyle(colStyleTopLeft);
+        row1.createCell(8).setCellValue("MI");
+        sheet1.autoSizeColumn(8);
+        row1.getCell(8).setCellStyle(colStyleTopLeft);
+        row1.createCell(9).setCellValue("ER");
+        sheet1.autoSizeColumn(9);
+        row1.getCell(9).setCellStyle(colStyleTopLeft);
+        row1.createCell(10).setCellValue("UD");
+        sheet1.autoSizeColumn(10);
+        row1.getCell(10).setCellStyle(colStyleTopLeft);
+        row1.createCell(11).setCellValue("A1");
+        sheet1.autoSizeColumn(11);
+        row1.getCell(11).setCellStyle(colStyleTopLeft);
+        row1.createCell(12).setCellValue("A2");
+        sheet1.autoSizeColumn(12);
+        row1.getCell(12).setCellStyle(colStyleTopLeft);
+        row1.createCell(13).setCellValue("SOC");
+        sheet1.autoSizeColumn(13);
+        row1.getCell(13).setCellStyle(colStyleTopLeft);
+        row1.createCell(14).setCellValue("Data Domain");
+        sheet1.autoSizeColumn(14);
+        row1.getCell(14).setCellStyle(colStyleTopLeft);
+        row1.createCell(15).setCellValue("Search Criteria Details");
+        sheet1.autoSizeColumn(15);
+        row1.getCell(15).setCellStyle(colStyleTopLeft);
+        row1.createCell(16).setCellValue("MedDRA Code");
+        sheet1.autoSizeColumn(16);
+        row1.getCell(16).setCellStyle(colStyleTopLeft);
+        row1.createCell(17).setCellValue("MedDRA Term");
+        sheet1.autoSizeColumn(17);
+        row1.getCell(17).setCellStyle(colStyleTopLeft);
+        row1.createCell(18).setCellValue("MedDRA Level");
+        sheet1.autoSizeColumn(18);
+        row1.getCell(18).setCellStyle(colStyleTopLeft);
+        row1.createCell(19).setCellValue("MedDRA Qualifier");
+        sheet1.autoSizeColumn(19);
+        row1.getCell(19).setCellStyle(colStyleTopLeft); /*  */
+        row1.createCell(20).setCellValue("Comment");
+        sheet1.autoSizeColumn(20);
+        row1.getCell(20).setCellStyle(colStyleTopLeft);
+    
+    idx = idx + 1;
+    idx1 = idx1 + 1;
+    row = sheet.createRow(idx); //creating 2nd row
+    row1 = sheet1.createRow(idx1); //creating 2nd row
+    }
+        
+           
+        if (viewObjectRow.getEarliestSafetyTopic() != null){
+            row.createCell(0).setCellValue(viewObjectRow.getEarliestSafetyTopic().toString());
+            
+            if((viewObjectRow.getEarliestSafetyTopicColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSafetyTopicColor())){
+            row.getCell(0).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestSafetyTopicColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSafetyTopicColor())){
+                row.getCell(0).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestSafetyTopicColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSafetyTopicColor())){
+                row.getCell(0).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(0).setCellValue("");
+        sheet.autoSizeColumn(0);
+
+        if (viewObjectRow.getEarliestSpp() != null){
+            row.createCell(1).setCellValue(viewObjectRow.getEarliestSpp().toString());
+            if((viewObjectRow.getEarliestSppColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSppColor())){
+            row.getCell(1).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestSppColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSppColor())){
+                row.getCell(1).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestSppColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSppColor())){
+                row.getCell(1).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(1).setCellValue("");
+        sheet.autoSizeColumn(1);
+
+        if (viewObjectRow.getEarliestDsur() != null){
+            row.createCell(2).setCellValue(viewObjectRow.getEarliestDsur());
+            if((viewObjectRow.getEarliestDsurColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestDsurColor())){
+            row.getCell(2).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestDsurColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestDsurColor())){
+                row.getCell(2).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestDsurColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestDsurColor())){
+                row.getCell(2).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(2).setCellValue("");
+        sheet.autoSizeColumn(2);
+        
+        if (viewObjectRow.getEarliestRmp() != null){
+            row.createCell(3).setCellValue(viewObjectRow.getEarliestRmp());
+            if((viewObjectRow.getEarliestRmpColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestRmpColor())){
+            row.getCell(3).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestRmpColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestRmpColor())){
+                row.getCell(3).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestRmpColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestRmpColor())){
+                row.getCell(3).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(3).setCellValue("");
+        sheet.autoSizeColumn(3);
+        
+        if (viewObjectRow.getEarliestPsur() != null){
+            row.createCell(4).setCellValue(viewObjectRow.getEarliestPsur());
+            if((viewObjectRow.getEarliestPsurColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestPsurColor())){
+            row.getCell(4).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestPsurColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestPsurColor())){
+                row.getCell(4).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestPsurColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestPsurColor())){
+                row.getCell(4).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(4).setCellValue("");
+        sheet.autoSizeColumn(4);
+        
+        if (viewObjectRow.getEarliestIb() != null){
+            row.createCell(5).setCellValue(viewObjectRow.getEarliestIb());
+        if((viewObjectRow.getEarliestIbColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestIbColor())){
+        row.getCell(5).setCellStyle(greenColourCellStyle);
+        }else if((viewObjectRow.getEarliestIbColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestIbColor())){
+            row.getCell(5).setCellStyle(redColourCellStyle); 
+        }else if((viewObjectRow.getEarliestIbColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestIbColor())){
+            row.getCell(5).setCellStyle(orangeColourCellStyle);
+        }
+        }
+        else
+            row.createCell(5).setCellValue("");
+        sheet.autoSizeColumn(5);
+        
+        if (viewObjectRow.getEarliestCds() != null){
+            row.createCell(6).setCellValue(viewObjectRow.getEarliestCds());
+            if((viewObjectRow.getEarliestCdsColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestCdsColor())){
+            row.getCell(6).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestCdsColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestCdsColor())){
+                row.getCell(6).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestCdsColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestCdsColor())){
+                row.getCell(6).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(6).setCellValue("");
+        sheet.autoSizeColumn(6);
+        
+        if (viewObjectRow.getEarliestOtherSearch() != null){
+            row.createCell(7).setCellValue(viewObjectRow.getEarliestOtherSearch());
+            if((viewObjectRow.getEarliestOtherSearchColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestOtherSearchColor())){
+            row.getCell(7).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestOtherSearchColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestOtherSearchColor())){
+                row.getCell(7).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestOtherSearchColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestOtherSearchColor())){
+                row.getCell(7).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(7).setCellValue("");
+        sheet.autoSizeColumn(7);
+        
+        if (viewObjectRow.getEarliestMissingInformation() != null){
+            row.createCell(8).setCellValue(viewObjectRow.getEarliestMissingInformation());
+            if((viewObjectRow.getEarliestMissingInformColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMissingInformColor())){
+            row.getCell(8).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMissingInformColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMissingInformColor())){
+                row.getCell(8).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMissingInformColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMissingInformColor())){
+                row.getCell(8).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(8).setCellValue("");
+        sheet.autoSizeColumn(8);
+        
+        if (viewObjectRow.getEarliestExpeditingRules() != null){
+            row.createCell(9).setCellValue(viewObjectRow.getEarliestExpeditingRules());
+            if((viewObjectRow.getEarliestExpeditingRulColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestExpeditingRulColor())){
+            row.getCell(9).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestExpeditingRulColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestExpeditingRulColor())){
+                row.getCell(9).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestExpeditingRulColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestExpeditingRulColor())){
+                row.getCell(9).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(9).setCellValue("");
+        sheet.autoSizeColumn(9);
+        
+        if (viewObjectRow.getEarliestUnderlyingDisease() != null){
+            row.createCell(10).setCellValue(viewObjectRow.getEarliestUnderlyingDisease());
+            if((viewObjectRow.getEarliestUnderlyingDisColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestUnderlyingDisColor())){
+            row.getCell(10).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestUnderlyingDisColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestUnderlyingDisColor())){
+                row.getCell(10).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestUnderlyingDisColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestUnderlyingDisColor())){
+                row.getCell(10).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(10).setCellValue("");
+        sheet.autoSizeColumn(10);
+        
+        if (viewObjectRow.getEarliestAesiForNisProtcol() != null){
+            row.createCell(11).setCellValue(viewObjectRow.getEarliestAesiForNisProtcol());
+            if((viewObjectRow.getEarliestAesiFrNisProClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestAesiFrNisProClr())){
+            row.getCell(11).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestAesiFrNisProClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestAesiFrNisProClr())){
+                row.getCell(11).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestAesiFrNisProClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestAesiFrNisProClr())){
+                row.getCell(11).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(11).setCellValue("");
+        sheet.autoSizeColumn(11);
+        
+        if (viewObjectRow.getEarliestAesiNotRmp() != null){
+            row.createCell(12).setCellValue(viewObjectRow.getEarliestAesiNotRmp());
+            if((viewObjectRow.getEarliestAesiNotRmpColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestAesiNotRmpColor())){
+            row.getCell(12).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestAesiNotRmpColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestAesiNotRmpColor())){
+                row.getCell(12).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestAesiNotRmpColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestAesiNotRmpColor())){
+                row.getCell(12).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(12).setCellValue("");
+        sheet.autoSizeColumn(12);
+        
+        if (viewObjectRow.getEarliestSoc() != null){
+            row.createCell(13).setCellValue(viewObjectRow.getEarliestSoc());
+            if((viewObjectRow.getEarliestSocColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSocColor())){
+            row.getCell(13).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestSocColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSocColor())){
+                row.getCell(13).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestSocColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSocColor())){
+                row.getCell(13).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(13).setCellValue("");
+        sheet.autoSizeColumn(13);
+        
+        if (viewObjectRow.getEarliestDataDomain() != null){
+            row.createCell(14).setCellValue(viewObjectRow.getEarliestDataDomain());
+            if((viewObjectRow.getEarliestDataDomainColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestDataDomainColor())){
+            row.getCell(14).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestDataDomainColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestDataDomainColor())){
+                row.getCell(14).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestDataDomainColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestDataDomainColor())){
+                row.getCell(14).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(14).setCellValue("");
+        sheet.autoSizeColumn(14);
+        
+        if (viewObjectRow.getEarliestSearchDetails() != null){
+            row.createCell(15).setCellValue(viewObjectRow.getEarliestSearchDetails());
+            if((viewObjectRow.getEarliestSearchDetailsColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSearchDetailsColor())){
+            row.getCell(15).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestSearchDetailsColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSearchDetailsColor())){
+                row.getCell(15).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestSearchDetailsColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSearchDetailsColor())){
+                row.getCell(15).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(15).setCellValue("");
+        sheet.autoSizeColumn(15);
+        
+        if (viewObjectRow.getEarliestMeddraCode() != null){
+            row.createCell(16).setCellValue(viewObjectRow.getEarliestMeddraCode());
+            if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+            row.getCell(16).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+                row.getCell(16).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+                row.getCell(16).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(16).setCellValue("");
+        sheet.autoSizeColumn(16);
+        
+        if (viewObjectRow.getEarliestMeddraTerm() != null){
+            row.createCell(17).setCellValue(viewObjectRow.getEarliestMeddraTerm());
+            if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+            row.getCell(17).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+                row.getCell(17).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+                row.getCell(17).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(17).setCellValue("");
+        sheet.autoSizeColumn(17);
+        
+        if (viewObjectRow.getEarliestMeddraExtension() != null){
+            row.createCell(18).setCellValue(viewObjectRow.getEarliestMeddraExtension());
+            if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+            row.getCell(18).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+                row.getCell(18).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+                row.getCell(18).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(18).setCellValue("");
+        sheet.autoSizeColumn(18);
+        
+        if (viewObjectRow.getEarliestMeddraQualifier() != null){
+            row.createCell(19).setCellValue(viewObjectRow.getEarliestMeddraQualifier());
+            if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+            row.getCell(19).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+                row.getCell(19).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+                row.getCell(19).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(19).setCellValue("");
+        sheet.autoSizeColumn(19);
+        
+        if (viewObjectRow.getEarliestNonMeddraCompCmt() != null){
+            row.createCell(20).setCellValue(viewObjectRow.getEarliestNonMeddraCompCmt());
+            if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+            row.getCell(20).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+                row.getCell(20).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+                row.getCell(20).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(20).setCellValue("");
+        sheet.autoSizeColumn(20);
+               
+        
+        if (viewObjectRow.getLatestSafetyTopic() != null){
+            row1.createCell(0).setCellValue(viewObjectRow.getLatestSafetyTopic().toString());
+            if((viewObjectRow.getLatestSafetyTopicColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSafetyTopicColor())){
+            row1.getCell(0).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestSafetyTopicColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSafetyTopicColor())){
+                row1.getCell(0).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestSafetyTopicColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSafetyTopicColor())){
+                row1.getCell(0).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(0).setCellValue("");
+        sheet1.autoSizeColumn(0);
+
+        if (viewObjectRow.getLatestSpp() != null){
+            row1.createCell(1).setCellValue(viewObjectRow.getLatestSpp().toString());
+            if((viewObjectRow.getLatestSppColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSppColor())){
+            row1.getCell(1).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestSppColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSppColor())){
+                row1.getCell(1).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestSppColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSppColor())){
+                row1.getCell(1).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(1).setCellValue("");
+        sheet1.autoSizeColumn(1);
+
+        if (viewObjectRow.getLatestDsur() != null){
+            row1.createCell(2).setCellValue(viewObjectRow.getLatestDsur());
+            if((viewObjectRow.getLatestDsurColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestDsurColor())){
+            row1.getCell(2).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestDsurColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestDsurColor())){
+                row1.getCell(2).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestDsurColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestDsurColor())){
+                row1.getCell(2).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(2).setCellValue("");
+        sheet1.autoSizeColumn(2);
+        
+        if (viewObjectRow.getLatestRmp() != null){
+            row1.createCell(3).setCellValue(viewObjectRow.getLatestRmp());
+            if((viewObjectRow.getLatestRmpColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestRmpColor())){
+            row1.getCell(3).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestRmpColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestRmpColor())){
+                row1.getCell(3).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestRmpColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestRmpColor())){
+                row1.getCell(3).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(3).setCellValue("");
+        sheet1.autoSizeColumn(3);
+        
+        if (viewObjectRow.getLatestPsur() != null){
+            row1.createCell(4).setCellValue(viewObjectRow.getLatestPsur());
+            if((viewObjectRow.getLatestPsurColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestPsurColor())){
+            row1.getCell(4).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestPsurColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestPsurColor())){
+                row1.getCell(4).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestPsurColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestPsurColor())){
+                row1.getCell(4).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(4).setCellValue("");
+        sheet1.autoSizeColumn(4);
+        
+        if (viewObjectRow.getLatestIb() != null){
+            row1.createCell(5).setCellValue(viewObjectRow.getLatestIb());
+            if((viewObjectRow.getLatestIbColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestIbColor())){
+                    row1.getCell(5).setCellStyle(greenColourCellStyle);
+                    }else if((viewObjectRow.getLatestIbColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestIbColor())){
+                        row1.getCell(5).setCellStyle(redColourCellStyle); 
+                    }else if((viewObjectRow.getLatestIbColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestIbColor())){
+                        row1.getCell(5).setCellStyle(orangeColourCellStyle);
+                    }
+        }
+        else
+            row1.createCell(5).setCellValue("");
+        sheet1.autoSizeColumn(5);
+        
+        if (viewObjectRow.getLatestCds() != null){
+            row1.createCell(6).setCellValue(viewObjectRow.getLatestCds());
+            if((viewObjectRow.getLatestCdsColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestCdsColor())){
+            row1.getCell(6).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestCdsColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestCdsColor())){
+                row1.getCell(6).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestCdsColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestCdsColor())){
+                row1.getCell(6).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(6).setCellValue("");
+        sheet1.autoSizeColumn(6);
+        
+        if (viewObjectRow.getLatestOtherSearch() != null){
+            row1.createCell(7).setCellValue(viewObjectRow.getLatestOtherSearch());
+            if((viewObjectRow.getLatestOtherSearchColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestOtherSearchColor())){
+            row1.getCell(7).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestOtherSearchColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestOtherSearchColor())){
+                row1.getCell(7).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestOtherSearchColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestOtherSearchColor())){
+                row1.getCell(7).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(7).setCellValue("");
+        sheet1.autoSizeColumn(7);
+        
+        if (viewObjectRow.getLatestMissingInformation() != null){
+            row1.createCell(8).setCellValue(viewObjectRow.getLatestMissingInformation());
+            if((viewObjectRow.getLatestMissingInfoColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMissingInfoColor())){
+            row1.getCell(8).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMissingInfoColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMissingInfoColor())){
+                row1.getCell(8).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMissingInfoColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMissingInfoColor())){
+                row1.getCell(8).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(8).setCellValue("");
+        sheet1.autoSizeColumn(8);
+        
+        if (viewObjectRow.getLatestExpeditingRules() != null){
+            row1.createCell(9).setCellValue(viewObjectRow.getLatestExpeditingRules());
+            if((viewObjectRow.getLatestExpeditingRulesColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestExpeditingRulesColor())){
+            row1.getCell(9).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestExpeditingRulesColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestExpeditingRulesColor())){
+                row1.getCell(9).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestExpeditingRulesColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestExpeditingRulesColor())){
+                row1.getCell(9).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(9).setCellValue("");
+        sheet1.autoSizeColumn(9);
+        
+        if (viewObjectRow.getLatestUnderlyingDisease() != null){
+            row1.createCell(10).setCellValue(viewObjectRow.getLatestUnderlyingDisease());
+                if((viewObjectRow.getLatestUnderlyingDisColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestUnderlyingDisColor())){
+                row1.getCell(10).setCellStyle(greenColourCellStyle);
+                }else if((viewObjectRow.getLatestUnderlyingDisColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestUnderlyingDisColor())){
+                    row1.getCell(10).setCellStyle(redColourCellStyle); 
+                }else if((viewObjectRow.getLatestUnderlyingDisColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestUnderlyingDisColor())){
+                    row1.getCell(10).setCellStyle(orangeColourCellStyle);
+                }
+        }
+        else
+            row1.createCell(10).setCellValue("");
+        sheet1.autoSizeColumn(10);
+        
+        if (viewObjectRow.getLatestAesiForNisProtocol() != null){
+            row1.createCell(11).setCellValue(viewObjectRow.getLatestAesiForNisProtocol());
+            if((viewObjectRow.getLatestAesiForNisProColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestAesiForNisProColor())){
+            row1.getCell(11).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestAesiForNisProColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestAesiForNisProColor())){
+                row1.getCell(11).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestAesiForNisProColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestAesiForNisProColor())){
+                row1.getCell(11).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(11).setCellValue("");
+        sheet1.autoSizeColumn(11);
+        
+        if (viewObjectRow.getLatestAesiNotRmp() != null){
+            row1.createCell(12).setCellValue(viewObjectRow.getLatestAesiNotRmp());
+            if((viewObjectRow.getLatestAesiNotRmpColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestAesiNotRmpColor())){
+            row1.getCell(12).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestAesiNotRmpColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestAesiNotRmpColor())){
+                row1.getCell(12).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestAesiNotRmpColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestAesiNotRmpColor())){
+                row1.getCell(12).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(12).setCellValue("");
+        sheet1.autoSizeColumn(12);
+        
+        if (viewObjectRow.getLatestSoc() != null){
+            row1.createCell(13).setCellValue(viewObjectRow.getLatestSoc());
+            if((viewObjectRow.getLatestSocColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSocColor())){
+            row1.getCell(13).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestSocColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSocColor())){
+                row1.getCell(13).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestSocColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSocColor())){
+                row1.getCell(13).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(13).setCellValue("");
+        sheet1.autoSizeColumn(13);
+        
+        if (viewObjectRow.getLatestDataDomain() != null){
+            row1.createCell(14).setCellValue(viewObjectRow.getLatestDataDomain());
+                if((viewObjectRow.getLatestDataDomainColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestDataDomainColor())){
+                row.getCell(14).setCellStyle(greenColourCellStyle);
+                }else if((viewObjectRow.getLatestDataDomainColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestDataDomainColor())){
+                    row.getCell(14).setCellStyle(redColourCellStyle);
+                }else if((viewObjectRow.getLatestDataDomainColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestDataDomainColor())){
+                    row.getCell(14).setCellStyle(orangeColourCellStyle);
+                }
+        }
+        else
+            row1.createCell(14).setCellValue("");
+        sheet1.autoSizeColumn(14);
+        
+        if (viewObjectRow.getLatestSearchDetails() != null){
+            row1.createCell(15).setCellValue(viewObjectRow.getLatestSearchDetails());
+            if((viewObjectRow.getLatestSearchDetailsColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSearchDetailsColor())){
+            row1.getCell(15).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestSearchDetailsColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSearchDetailsColor())){
+                row1.getCell(15).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestSearchDetailsColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSearchDetailsColor())){
+                row1.getCell(15).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(15).setCellValue("");
+        sheet1.autoSizeColumn(15);
+        
+        if (viewObjectRow.getLatestMeddraCode() != null){
+            row1.createCell(16).setCellValue(viewObjectRow.getLatestMeddraCode());
+            if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+            row1.getCell(16).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+                row1.getCell(16).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+                row1.getCell(16).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(16).setCellValue("");
+        sheet1.autoSizeColumn(16);
+        
+        if (viewObjectRow.getLatestMeddraTerm() != null){
+            row1.createCell(17).setCellValue(viewObjectRow.getLatestMeddraTerm());
+            if((viewObjectRow.getLatestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+            row1.getCell(17).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+                row1.getCell(17).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+                row1.getCell(17).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(17).setCellValue("");
+        sheet1.autoSizeColumn(17);
+        
+        if (viewObjectRow.getLatestMeddraExtension() != null){
+            row1.createCell(18).setCellValue(viewObjectRow.getLatestMeddraExtension());
+            if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+            row1.getCell(18).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+                row1.getCell(18).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+                row1.getCell(18).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(18).setCellValue("");
+        sheet1.autoSizeColumn(18);
+        
+        if (viewObjectRow.getLatestMeddraQualifier() != null){
+            row1.createCell(19).setCellValue(viewObjectRow.getLatestMeddraQualifier());
+            if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+            row1.getCell(19).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+                row1.getCell(19).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+                row1.getCell(19).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(19).setCellValue("");
+        sheet1.autoSizeColumn(19);
+        
+        if (viewObjectRow.getLatestNonMeddraCompCmt() != null){
+            row1.createCell(20).setCellValue(viewObjectRow.getLatestNonMeddraCompCmt());
+            if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+            row1.getCell(20).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+                row1.getCell(20).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+                row1.getCell(20).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(20).setCellValue("");
+        sheet1.autoSizeColumn(20);
+        
+    //2nd Row ends
+    flag = true; 
+    idx = idx + 1;
+    idx1 = idx1 + 1;
+    }
+    List list = new ArrayList();
+    list.add(wb);
+    return list;
+    }
+    
+    public List exportPTCurrentReport() {
+    HSSFWorkbook wb = new HSSFWorkbook();
+    HSSFSheet sheet = wb.createSheet("PT Export"); //Sheet Name
+    int idx = 0; // rows index
+    //Creating styles code starts
+    HSSFFont colHdrFont = wb.createFont();
+    colHdrFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFFont fontSizeHrd = wb.createFont();
+    fontSizeHrd.setFontHeightInPoints((short) 16); //setting Headding font size
+    fontSizeHrd.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFCellStyle colStyleHrdWithFont = wb.createCellStyle();
+    colStyleHrdWithFont.setFont(fontSizeHrd);
+    
+        HSSFFont greenBoldFont = wb.createFont();
+        greenBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        greenBoldFont.setColor(IndexedColors.GREEN.getIndex());
+        
+        HSSFFont redBoldFont = wb.createFont();
+        redBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        redBoldFont.setColor(IndexedColors.RED.getIndex());
+        
+        HSSFFont orangeBoldFont = wb.createFont();
+        orangeBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        orangeBoldFont.setColor(IndexedColors.ORANGE.getIndex());
+        
+        HSSFCellStyle greenColourCellStyle = wb.createCellStyle();
+        greenColourCellStyle.setFont(greenBoldFont);
+        
+        HSSFCellStyle redColourCellStyle = wb.createCellStyle();
+        redColourCellStyle.setFont(redBoldFont);
+        
+        HSSFCellStyle orangeColourCellStyle = wb.createCellStyle();
+        orangeColourCellStyle.setFont(orangeBoldFont);
+
+    HSSFCellStyle colStyleTopLeft = wb.createCellStyle();
+    colStyleTopLeft.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopLeftWithCenter = wb.createCellStyle();
+    colStyleTopLeftWithCenter.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopLeftWithCenter.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeft = wb.createCellStyle();
+    colStyleLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftDealNo = wb.createCellStyle();
+    colStyleLeftDealNo.setAlignment(CellStyle.ALIGN_LEFT);
+    HSSFCellStyle colStyleLeftDept = wb.createCellStyle();
+    colStyleLeftDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setFont(colHdrFont);
+    HSSFCellStyle colStyleOnlyRight = wb.createCellStyle();
+    colStyleOnlyRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleOnlyRightDept = wb.createCellStyle();
+    colStyleOnlyRightDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleLeftBottom = wb.createCellStyle();
+    colStyleLeftBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftBottomWithOutHrd = wb.createCellStyle();
+    colStyleLeftBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottomWithOutHrd.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrd = wb.createCellStyle();
+    colStyleRightBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrd.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrdDept = wb.createCellStyle();
+    colStyleRightBottomWithOutHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleTop = wb.createCellStyle();
+    colStyleTop.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTop.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopRight = wb.createCellStyle();
+    colStyleTopRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopWithOutHrd = wb.createCellStyle();
+    colStyleTopWithOutHrd.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottom = wb.createCellStyle();
+    colStyleBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottomWithHrd = wb.createCellStyle();
+    colStyleBottomWithHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleBottomWithHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleRight = wb.createCellStyle();
+    colStyleRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrd = wb.createCellStyle();
+    colStyleHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrdDept = wb.createCellStyle();
+    colStyleHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setFont(colHdrFont);
+    //Creating styles code ends
+    HSSFRow row = null;
+    
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsExportPTCurrentIterator");
+        ViewObject vo = itrBinding.getViewObject();
+        vo.reset();
+    Boolean flag = false;
+    Boolean firstRow = true;
+    while (vo.hasNext()) { 
+    CrsExportPTCurrentVORowImpl viewObjectRow;
+            if (!firstRow) {
+                viewObjectRow = (CrsExportPTCurrentVORowImpl) vo.next();
+            } else {
+                viewObjectRow = (CrsExportPTCurrentVORowImpl) vo.first();
+            }
+    if(firstRow){
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("CRS Name: "+this.getSelectedCrsName());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+            row.createCell(2).setCellValue("CRS ID: "+this.getSelectedCrsId());
+            row.getCell(2).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            row.createCell(0).setCellValue("Dictionary Version: "+ADFUtils.evaluateEL("#{sessionScope.dictVersion}").toString());
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            row.createCell(2).setCellValue("Status: "+this.getSelectedStatus());
+            row.getCell(2).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss a");
+            row.createCell(0).setCellValue("Downloaded Time: "+sdf.format(new Date()));
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            row.createCell(2).setCellValue("Release Status: Current");
+            row.getCell(2).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            row.createCell(0).setCellValue("State: "+this.getSelectedState());
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            row.createCell(2).setCellValue("BSL: "+this.getSelectedBSL());
+            row.getCell(2).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            row.createCell(0).setCellValue("TASL: "+this.getSelectedTASL());
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            row.createCell(0).setCellValue("Designee: "+this.getSelectedDesignee());
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            sheet.createRow(idx);
+            idx = idx + 1;
+            sheet.createRow(idx);
+    
+    idx = idx + 1;
+    }
+    row = sheet.createRow(idx); //creating 1st row
+    firstRow = false;
+    if(flag == false){
+                row.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
+                sheet.autoSizeColumn(0);
+                row.getCell(0).setCellStyle(colStyleTopLeft);
+                row.createCell(1).setCellValue("Risk Purpose List");
+                sheet.autoSizeColumn(1);
+                row.getCell(1).setCellStyle(colStyleTopLeft);
+                row.createCell(2).setCellValue("MedDRA Term");
+                sheet.autoSizeColumn(2);
+                row.getCell(2).setCellStyle(colStyleTopLeft);
+                row.createCell(3).setCellValue("PT Name");
+                sheet.autoSizeColumn(3);
+                row.getCell(3).setCellStyle(colStyleTopLeft);
+                row.createCell(4).setCellValue("PT Code");
+                sheet.autoSizeColumn(4);
+                row.getCell(4).setCellStyle(colStyleTopLeft);
+    
+    idx = idx + 1;
+    row = sheet.createRow(idx); //creating 2nd row
+    }
+        
+        if (viewObjectRow.getSafetyTopicOfInterest() != null){
+            row.createCell(0).setCellValue(viewObjectRow.getSafetyTopicOfInterest().toString());
+        }
+        else
+            row.createCell(0).setCellValue("");
+        sheet.autoSizeColumn(0);
+
+        if (viewObjectRow.getRiskPurposeList() != null){
+            row.createCell(1).setCellValue(viewObjectRow.getRiskPurposeList().toString());
+        }
+        else
+            row.createCell(1).setCellValue("");
+        sheet.autoSizeColumn(1);
+
+        if (viewObjectRow.getMeddraTerm() != null){
+            row.createCell(2).setCellValue(viewObjectRow.getMeddraTerm());
+        }
+        else
+            row.createCell(2).setCellValue("");
+        sheet.autoSizeColumn(2);
+        
+        if (viewObjectRow.getPtName() != null){
+            row.createCell(3).setCellValue(viewObjectRow.getPtName());
+        }
+        else
+            row.createCell(3).setCellValue("");
+        sheet.autoSizeColumn(3);
+        
+        if (viewObjectRow.getPtCode() != null){
+            row.createCell(4).setCellValue(viewObjectRow.getPtCode());
+        }
+        else
+            row.createCell(4).setCellValue("");
+        sheet.autoSizeColumn(4);
+        
+    //2nd Row ends
+    flag = true; 
+    idx = idx + 1;
+    }
+    List list = new ArrayList();
+    list.add(wb);
+    return list;
+    }
+    
+    public List exportPTCurrentReportDetail() {
+    HSSFWorkbook wb = new HSSFWorkbook();
+    HSSFSheet sheet = wb.createSheet("PT Export"); //Sheet Name
+    int idx = 0; // rows index
+    //Creating styles code starts
+    HSSFFont colHdrFont = wb.createFont();
+    colHdrFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFFont fontSizeHrd = wb.createFont();
+    fontSizeHrd.setFontHeightInPoints((short) 16); //setting Headding font size
+    fontSizeHrd.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFCellStyle colStyleHrdWithFont = wb.createCellStyle();
+    colStyleHrdWithFont.setFont(fontSizeHrd);
+    
+        HSSFFont greenBoldFont = wb.createFont();
+        greenBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        greenBoldFont.setColor(IndexedColors.GREEN.getIndex());
+        
+        HSSFFont redBoldFont = wb.createFont();
+        redBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        redBoldFont.setColor(IndexedColors.RED.getIndex());
+        
+        HSSFFont orangeBoldFont = wb.createFont();
+        orangeBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        orangeBoldFont.setColor(IndexedColors.ORANGE.getIndex());
+        
+        HSSFCellStyle greenColourCellStyle = wb.createCellStyle();
+        greenColourCellStyle.setFont(greenBoldFont);
+        
+        HSSFCellStyle redColourCellStyle = wb.createCellStyle();
+        redColourCellStyle.setFont(redBoldFont);
+        
+        HSSFCellStyle orangeColourCellStyle = wb.createCellStyle();
+        orangeColourCellStyle.setFont(orangeBoldFont);
+
+    HSSFCellStyle colStyleTopLeft = wb.createCellStyle();
+    colStyleTopLeft.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopLeftWithCenter = wb.createCellStyle();
+    colStyleTopLeftWithCenter.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopLeftWithCenter.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeft = wb.createCellStyle();
+    colStyleLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftDealNo = wb.createCellStyle();
+    colStyleLeftDealNo.setAlignment(CellStyle.ALIGN_LEFT);
+    HSSFCellStyle colStyleLeftDept = wb.createCellStyle();
+    colStyleLeftDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setFont(colHdrFont);
+    HSSFCellStyle colStyleOnlyRight = wb.createCellStyle();
+    colStyleOnlyRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleOnlyRightDept = wb.createCellStyle();
+    colStyleOnlyRightDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleLeftBottom = wb.createCellStyle();
+    colStyleLeftBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftBottomWithOutHrd = wb.createCellStyle();
+    colStyleLeftBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottomWithOutHrd.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrd = wb.createCellStyle();
+    colStyleRightBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrd.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrdDept = wb.createCellStyle();
+    colStyleRightBottomWithOutHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleTop = wb.createCellStyle();
+    colStyleTop.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTop.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopRight = wb.createCellStyle();
+    colStyleTopRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopWithOutHrd = wb.createCellStyle();
+    colStyleTopWithOutHrd.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottom = wb.createCellStyle();
+    colStyleBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottomWithHrd = wb.createCellStyle();
+    colStyleBottomWithHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleBottomWithHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleRight = wb.createCellStyle();
+    colStyleRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrd = wb.createCellStyle();
+    colStyleHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrdDept = wb.createCellStyle();
+    colStyleHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setFont(colHdrFont);
+    //Creating styles code ends
+    HSSFRow row = null;
+        
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsExportPTCurrentDetailIterator");
+        CrsExportPTCurrentVOImpl vo = (CrsExportPTCurrentVOImpl)itrBinding.getViewObject();
+        
+        DCIteratorBinding itrBinding1 = bindings.findIteratorBinding("CrsRiskBaseVOIterator");
+        ViewObject vo1 = itrBinding1.getViewObject();
+        Row crsRiskRelationRow = vo1.getCurrentRow();
+        String safetyTopicOfInterest = (String)crsRiskRelationRow.getAttribute("SafetyTopicOfInterest");
+        String dataDomain = (String)crsRiskRelationRow.getAttribute("DataDomain");
+        vo.setbindSafetyInterestTopic(safetyTopicOfInterest);
+        vo.setbindDomainName(dataDomain);
+        vo.executeQuery();
+        vo.reset();
+    Boolean flag = false;
+    Boolean firstRow = true;
+    while (vo.hasNext()) { 
+    CrsExportPTCurrentVORowImpl viewObjectRow;
+            if (!firstRow) {
+                viewObjectRow = (CrsExportPTCurrentVORowImpl) vo.next();
+            } else {
+                viewObjectRow = (CrsExportPTCurrentVORowImpl) vo.first();
+            }
+    if(firstRow){
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("CRS Name: "+this.getSelectedCrsName());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+            row.createCell(2).setCellValue("CRS ID: "+this.getSelectedCrsId());
+            row.getCell(2).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            row.createCell(0).setCellValue("Dictionary Version: "+ADFUtils.evaluateEL("#{sessionScope.dictVersion}").toString());
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            row.createCell(2).setCellValue("Status: "+this.getSelectedStatus());
+            row.getCell(2).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss a");
+            row.createCell(0).setCellValue("Downloaded Time: "+sdf.format(new Date()));
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            row.createCell(2).setCellValue("Release Status: Current");
+            row.getCell(2).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            row.createCell(0).setCellValue("State: "+this.getSelectedState());
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            row.createCell(2).setCellValue("BSL: "+this.getSelectedBSL());
+            row.getCell(2).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            row.createCell(0).setCellValue("TASL: "+this.getSelectedTASL());
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            row = sheet.createRow(idx); //creating 1st row
+            row.createCell(0).setCellValue("Designee: "+this.getSelectedDesignee());
+            row.getCell(0).setCellStyle(colStyleTopLeft);
+            idx = idx + 1;
+            sheet.createRow(idx);
+            idx = idx + 1;
+            sheet.createRow(idx);
+    
+    idx = idx + 1;
+    }
+    row = sheet.createRow(idx); //creating 1st row
+    firstRow = false;
+    if(flag == false){
+                row.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
+                sheet.autoSizeColumn(0);
+                row.getCell(0).setCellStyle(colStyleTopLeft);
+                row.createCell(1).setCellValue("Risk Purpose List");
+                sheet.autoSizeColumn(1);
+                row.getCell(1).setCellStyle(colStyleTopLeft);
+                row.createCell(2).setCellValue("MedDRA Term");
+                sheet.autoSizeColumn(2);
+                row.getCell(2).setCellStyle(colStyleTopLeft);
+                row.createCell(3).setCellValue("PT Name");
+                sheet.autoSizeColumn(3);
+                row.getCell(3).setCellStyle(colStyleTopLeft);
+                row.createCell(4).setCellValue("PT Code");
+                sheet.autoSizeColumn(4);
+                row.getCell(4).setCellStyle(colStyleTopLeft);
+    
+    idx = idx + 1;
+    row = sheet.createRow(idx); //creating 2nd row
+    }
+        
+        if (viewObjectRow.getSafetyTopicOfInterest() != null){
+            row.createCell(0).setCellValue(viewObjectRow.getSafetyTopicOfInterest().toString());
+        }
+        else
+            row.createCell(0).setCellValue("");
+        sheet.autoSizeColumn(0);
+
+        if (viewObjectRow.getRiskPurposeList() != null){
+            row.createCell(1).setCellValue(viewObjectRow.getRiskPurposeList().toString());
+        }
+        else
+            row.createCell(1).setCellValue("");
+        sheet.autoSizeColumn(1);
+
+        if (viewObjectRow.getMeddraTerm() != null){
+            row.createCell(2).setCellValue(viewObjectRow.getMeddraTerm());
+        }
+        else
+            row.createCell(2).setCellValue("");
+        sheet.autoSizeColumn(2);
+        
+        if (viewObjectRow.getPtName() != null){
+            row.createCell(3).setCellValue(viewObjectRow.getPtName());
+        }
+        else
+            row.createCell(3).setCellValue("");
+        sheet.autoSizeColumn(3);
+        
+        if (viewObjectRow.getPtCode() != null){
+            row.createCell(4).setCellValue(viewObjectRow.getPtCode());
+        }
+        else
+            row.createCell(4).setCellValue("");
+        sheet.autoSizeColumn(4);
+        
+    //2nd Row ends
+    flag = true; 
+    idx = idx + 1;
+    }
+    List list = new ArrayList();
+    list.add(wb);
+    return list;
+    }
+    
+    public List exportPTPendingReport() {
+    HSSFWorkbook wb = new HSSFWorkbook();
+    HSSFSheet sheet = wb.createSheet("PT Export"); //Sheet Name
+    int idx = 0; // rows index
+    //Creating styles code starts
+    HSSFFont colHdrFont = wb.createFont();
+    colHdrFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFFont fontSizeHrd = wb.createFont();
+    fontSizeHrd.setFontHeightInPoints((short) 16); //setting Headding font size
+    fontSizeHrd.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFCellStyle colStyleHrdWithFont = wb.createCellStyle();
+    colStyleHrdWithFont.setFont(fontSizeHrd);
+    
+        HSSFFont greenBoldFont = wb.createFont();
+        greenBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        greenBoldFont.setColor(IndexedColors.GREEN.getIndex());
+        
+        HSSFFont redBoldFont = wb.createFont();
+        redBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        redBoldFont.setColor(IndexedColors.RED.getIndex());
+        
+        HSSFFont orangeBoldFont = wb.createFont();
+        orangeBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        orangeBoldFont.setColor(IndexedColors.ORANGE.getIndex());
+        
+        HSSFCellStyle greenColourCellStyle = wb.createCellStyle();
+        greenColourCellStyle.setFont(greenBoldFont);
+        
+        HSSFCellStyle redColourCellStyle = wb.createCellStyle();
+        redColourCellStyle.setFont(redBoldFont);
+        
+        HSSFCellStyle orangeColourCellStyle = wb.createCellStyle();
+        orangeColourCellStyle.setFont(orangeBoldFont);
+
+    HSSFCellStyle colStyleTopLeft = wb.createCellStyle();
+    colStyleTopLeft.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopLeftWithCenter = wb.createCellStyle();
+    colStyleTopLeftWithCenter.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopLeftWithCenter.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeft = wb.createCellStyle();
+    colStyleLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftDealNo = wb.createCellStyle();
+    colStyleLeftDealNo.setAlignment(CellStyle.ALIGN_LEFT);
+    HSSFCellStyle colStyleLeftDept = wb.createCellStyle();
+    colStyleLeftDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setFont(colHdrFont);
+    HSSFCellStyle colStyleOnlyRight = wb.createCellStyle();
+    colStyleOnlyRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleOnlyRightDept = wb.createCellStyle();
+    colStyleOnlyRightDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleLeftBottom = wb.createCellStyle();
+    colStyleLeftBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftBottomWithOutHrd = wb.createCellStyle();
+    colStyleLeftBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottomWithOutHrd.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrd = wb.createCellStyle();
+    colStyleRightBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrd.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrdDept = wb.createCellStyle();
+    colStyleRightBottomWithOutHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleTop = wb.createCellStyle();
+    colStyleTop.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTop.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopRight = wb.createCellStyle();
+    colStyleTopRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopWithOutHrd = wb.createCellStyle();
+    colStyleTopWithOutHrd.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottom = wb.createCellStyle();
+    colStyleBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottomWithHrd = wb.createCellStyle();
+    colStyleBottomWithHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleBottomWithHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleRight = wb.createCellStyle();
+    colStyleRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrd = wb.createCellStyle();
+    colStyleHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrdDept = wb.createCellStyle();
+    colStyleHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setFont(colHdrFont);
+    //Creating styles code ends
+    HSSFRow row = null;
+    
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsExportPTPendingIterator");
+        ViewObject vo = itrBinding.getViewObject();
+        vo.reset();
+    Boolean flag = false;
+    Boolean firstRow = true;
+    while (vo.hasNext()) { 
+    CrsExportPTPendingRowImpl viewObjectRow;
+            if (!firstRow) {
+                viewObjectRow = (CrsExportPTPendingRowImpl) vo.next();
+            } else {
+                viewObjectRow = (CrsExportPTPendingRowImpl) vo.first();
+            }
+    if(firstRow){
+    row = sheet.createRow(idx); //creating 1st row
+    row.createCell(0).setCellValue("CRS Name: "+this.getSelectedCrsName());
+    row.getCell(0).setCellStyle(colStyleTopLeft);
+        row.createCell(2).setCellValue("CRS ID: "+this.getSelectedCrsId());
+        row.getCell(2).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("Dictionary Version: "+ADFUtils.evaluateEL("#{sessionScope.dictVersion}").toString());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        row.createCell(2).setCellValue("Status: "+this.getSelectedStatus());
+        row.getCell(2).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss a");
+        row.createCell(0).setCellValue("Downloaded Time: "+sdf.format(new Date()));
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        row.createCell(2).setCellValue("Release Status: Pending");
+        row.getCell(2).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("State: "+this.getSelectedState());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        row.createCell(2).setCellValue("BSL: "+this.getSelectedBSL());
+        row.getCell(2).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("TASL: "+this.getSelectedTASL());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("Designee: "+this.getSelectedDesignee());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        sheet.createRow(idx);
+        idx = idx + 1;
+        sheet.createRow(idx);
+    
+    idx = idx + 1;
+    }
+    row = sheet.createRow(idx); //creating 1st row
+    firstRow = false;
+    if(flag == false){
+                row.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
+                sheet.autoSizeColumn(0);
+                row.getCell(0).setCellStyle(colStyleTopLeft);
+                row.createCell(1).setCellValue("Risk Purpose List");
+                sheet.autoSizeColumn(1);
+                row.getCell(1).setCellStyle(colStyleTopLeft);
+                row.createCell(2).setCellValue("MedDRA Term");
+                sheet.autoSizeColumn(2);
+                row.getCell(2).setCellStyle(colStyleTopLeft);
+                row.createCell(3).setCellValue("PT Name");
+                sheet.autoSizeColumn(3);
+                row.getCell(3).setCellStyle(colStyleTopLeft);
+                row.createCell(4).setCellValue("PT Code");
+                sheet.autoSizeColumn(4);
+                row.getCell(4).setCellStyle(colStyleTopLeft);
+    
+    idx = idx + 1;
+    row = sheet.createRow(idx); //creating 2nd row
+    }
+        
+           
+        if (viewObjectRow.getSafetyTopicOfInterest() != null){
+            row.createCell(0).setCellValue(viewObjectRow.getSafetyTopicOfInterest().toString());
+        }
+        else
+            row.createCell(0).setCellValue("");
+        sheet.autoSizeColumn(0);
+
+        if (viewObjectRow.getRiskPurposeList() != null){
+            row.createCell(1).setCellValue(viewObjectRow.getRiskPurposeList().toString());
+        }
+        else
+            row.createCell(1).setCellValue("");
+        sheet.autoSizeColumn(1);
+
+        if (viewObjectRow.getMeddraTerm() != null){
+            row.createCell(2).setCellValue(viewObjectRow.getMeddraTerm());
+        }
+        else
+            row.createCell(2).setCellValue("");
+        sheet.autoSizeColumn(2);
+        
+        if (viewObjectRow.getPtName() != null){
+            row.createCell(3).setCellValue(viewObjectRow.getPtName());
+        }
+        else
+            row.createCell(3).setCellValue("");
+        sheet.autoSizeColumn(3);
+        
+        if (viewObjectRow.getPtCode() != null){
+            row.createCell(4).setCellValue(viewObjectRow.getPtCode());
+        }
+        else
+            row.createCell(4).setCellValue("");
+        sheet.autoSizeColumn(4);
+        
+        
+        
+    //2nd Row ends
+    flag = true; 
+    idx = idx + 1;
+    }
+    List list = new ArrayList();
+    list.add(wb);
+    return list;
+    }
+    
+    public List exportPTPendingReportDetail() {
+    HSSFWorkbook wb = new HSSFWorkbook();
+    HSSFSheet sheet = wb.createSheet("PT Export"); //Sheet Name
+    int idx = 0; // rows index
+    //Creating styles code starts
+    HSSFFont colHdrFont = wb.createFont();
+    colHdrFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFFont fontSizeHrd = wb.createFont();
+    fontSizeHrd.setFontHeightInPoints((short) 16); //setting Headding font size
+    fontSizeHrd.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    HSSFCellStyle colStyleHrdWithFont = wb.createCellStyle();
+    colStyleHrdWithFont.setFont(fontSizeHrd);
+    
+        HSSFFont greenBoldFont = wb.createFont();
+        greenBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        greenBoldFont.setColor(IndexedColors.GREEN.getIndex());
+        
+        HSSFFont redBoldFont = wb.createFont();
+        redBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        redBoldFont.setColor(IndexedColors.RED.getIndex());
+        
+        HSSFFont orangeBoldFont = wb.createFont();
+        orangeBoldFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        orangeBoldFont.setColor(IndexedColors.ORANGE.getIndex());
+        
+        HSSFCellStyle greenColourCellStyle = wb.createCellStyle();
+        greenColourCellStyle.setFont(greenBoldFont);
+        
+        HSSFCellStyle redColourCellStyle = wb.createCellStyle();
+        redColourCellStyle.setFont(redBoldFont);
+        
+        HSSFCellStyle orangeColourCellStyle = wb.createCellStyle();
+        orangeColourCellStyle.setFont(orangeBoldFont);
+
+    HSSFCellStyle colStyleTopLeft = wb.createCellStyle();
+    colStyleTopLeft.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopLeftWithCenter = wb.createCellStyle();
+    colStyleTopLeftWithCenter.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopLeftWithCenter.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopLeftWithCenter.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeft = wb.createCellStyle();
+    colStyleLeft.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeft.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftDealNo = wb.createCellStyle();
+    colStyleLeftDealNo.setAlignment(CellStyle.ALIGN_LEFT);
+    HSSFCellStyle colStyleLeftDept = wb.createCellStyle();
+    colStyleLeftDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftDept.setFont(colHdrFont);
+    HSSFCellStyle colStyleOnlyRight = wb.createCellStyle();
+    colStyleOnlyRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleOnlyRightDept = wb.createCellStyle();
+    colStyleOnlyRightDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleOnlyRightDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleLeftBottom = wb.createCellStyle();
+    colStyleLeftBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottom.setFont(colHdrFont);
+    HSSFCellStyle colStyleLeftBottomWithOutHrd = wb.createCellStyle();
+    colStyleLeftBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleLeftBottomWithOutHrd.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrd = wb.createCellStyle();
+    colStyleRightBottomWithOutHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrd.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleRightBottomWithOutHrdDept = wb.createCellStyle();
+    colStyleRightBottomWithOutHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRightBottomWithOutHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleTop = wb.createCellStyle();
+    colStyleTop.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTop.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTop.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopRight = wb.createCellStyle();
+    colStyleTopRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleTopRight.setAlignment(CellStyle.ALIGN_CENTER);
+    colStyleTopRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleTopWithOutHrd = wb.createCellStyle();
+    colStyleTopWithOutHrd.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottom = wb.createCellStyle();
+    colStyleBottom.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    HSSFCellStyle colStyleBottomWithHrd = wb.createCellStyle();
+    colStyleBottomWithHrd.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleBottomWithHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleRight = wb.createCellStyle();
+    colStyleRight.setBorderRight(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setBorderTop(HSSFBorderFormatting.BORDER_THIN);
+    colStyleRight.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrd = wb.createCellStyle();
+    colStyleHrd.setFont(colHdrFont);
+    HSSFCellStyle colStyleHrdDept = wb.createCellStyle();
+    colStyleHrdDept.setBorderBottom(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setBorderLeft(HSSFBorderFormatting.BORDER_THIN);
+    colStyleHrdDept.setFont(colHdrFont);
+    //Creating styles code ends
+    HSSFRow row = null;
+               
+        DCBindingContainer bindings = this.getDCBindingContainer();
+        DCIteratorBinding itrBinding = bindings.findIteratorBinding("CrsExportPTPendingDetailIterator");
+        CrsExportPTPendingImpl vo = (CrsExportPTPendingImpl)itrBinding.getViewObject();
+        
+        DCIteratorBinding itrBinding1 = bindings.findIteratorBinding("CrsRiskVOIterator");
+        ViewObject vo1 = itrBinding1.getViewObject();
+        Row crsRiskRelationRow = vo1.getCurrentRow();
+        String safetyTopicOfInterest = (String)crsRiskRelationRow.getAttribute("SafetyTopicOfInterest");
+        String dataDomain = (String)crsRiskRelationRow.getAttribute("DataDomain");
+        vo.setbindSafetyInterestTopic(safetyTopicOfInterest);
+        vo.setbindDomainName(dataDomain);
+        vo.executeQuery();
+        vo.reset();
+    Boolean flag = false;
+    Boolean firstRow = true;
+    while (vo.hasNext()) { 
+    CrsExportPTPendingRowImpl viewObjectRow;
+            if (!firstRow) {
+                viewObjectRow = (CrsExportPTPendingRowImpl) vo.next();
+            } else {
+                viewObjectRow = (CrsExportPTPendingRowImpl) vo.first();
+            }
+    if(firstRow){
+    row = sheet.createRow(idx); //creating 1st row
+    row.createCell(0).setCellValue("CRS Name: "+this.getSelectedCrsName());
+    row.getCell(0).setCellStyle(colStyleTopLeft);
+        row.createCell(2).setCellValue("CRS ID: "+this.getSelectedCrsId());
+        row.getCell(2).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("Dictionary Version: "+ADFUtils.evaluateEL("#{sessionScope.dictVersion}").toString());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        row.createCell(2).setCellValue("Status: "+this.getSelectedStatus());
+        row.getCell(2).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss a");
+        row.createCell(0).setCellValue("Downloaded Time: "+sdf.format(new Date()));
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        row.createCell(2).setCellValue("Release Status: Pending");
+        row.getCell(2).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("State: "+this.getSelectedState());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        row.createCell(2).setCellValue("BSL: "+this.getSelectedBSL());
+        row.getCell(2).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("TASL: "+this.getSelectedTASL());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        row = sheet.createRow(idx); //creating 1st row
+        row.createCell(0).setCellValue("Designee: "+this.getSelectedDesignee());
+        row.getCell(0).setCellStyle(colStyleTopLeft);
+        idx = idx + 1;
+        sheet.createRow(idx);
+        idx = idx + 1;
+        sheet.createRow(idx);
+    
+    idx = idx + 1;
+    }
+    row = sheet.createRow(idx); //creating 1st row
+    firstRow = false;
+    if(flag == false){
+                row.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
+                sheet.autoSizeColumn(0);
+                row.getCell(0).setCellStyle(colStyleTopLeft);
+                row.createCell(1).setCellValue("Risk Purpose List");
+                sheet.autoSizeColumn(1);
+                row.getCell(1).setCellStyle(colStyleTopLeft);
+                row.createCell(2).setCellValue("MedDRA Term");
+                sheet.autoSizeColumn(2);
+                row.getCell(2).setCellStyle(colStyleTopLeft);
+                row.createCell(3).setCellValue("PT Name");
+                sheet.autoSizeColumn(3);
+                row.getCell(3).setCellStyle(colStyleTopLeft);
+                row.createCell(4).setCellValue("PT Code");
+                sheet.autoSizeColumn(4);
+                row.getCell(4).setCellStyle(colStyleTopLeft);
+    
+    idx = idx + 1;
+    row = sheet.createRow(idx); //creating 2nd row
+    }
+        
+           
+        if (viewObjectRow.getSafetyTopicOfInterest() != null){
+            row.createCell(0).setCellValue(viewObjectRow.getSafetyTopicOfInterest().toString());
+        }
+        else
+            row.createCell(0).setCellValue("");
+        sheet.autoSizeColumn(0);
+
+        if (viewObjectRow.getRiskPurposeList() != null){
+            row.createCell(1).setCellValue(viewObjectRow.getRiskPurposeList().toString());
+        }
+        else
+            row.createCell(1).setCellValue("");
+        sheet.autoSizeColumn(1);
+
+        if (viewObjectRow.getMeddraTerm() != null){
+            row.createCell(2).setCellValue(viewObjectRow.getMeddraTerm());
+        }
+        else
+            row.createCell(2).setCellValue("");
+        sheet.autoSizeColumn(2);
+        
+        if (viewObjectRow.getPtName() != null){
+            row.createCell(3).setCellValue(viewObjectRow.getPtName());
+        }
+        else
+            row.createCell(3).setCellValue("");
+        sheet.autoSizeColumn(3);
+        
+        if (viewObjectRow.getPtCode() != null){
+            row.createCell(4).setCellValue(viewObjectRow.getPtCode());
+        }
+        else
+            row.createCell(4).setCellValue("");
+        sheet.autoSizeColumn(4);
+        
+        
+        
+    //2nd Row ends
+    flag = true; 
+    idx = idx + 1;
+    }
+    List list = new ArrayList();
+    list.add(wb);
+    return list;
+    }
+
+    public void closeDownloadPTPendingPopup(ActionEvent actionEvent) {
+        this.getPtExportPendingPopup().hide();
+    }
+
+    public void setPtExportPendingPopup(RichPopup ptExportPendingPopup) {
+        this.ptExportPendingPopup = ptExportPendingPopup;
+    }
+
+    public RichPopup getPtExportPendingPopup() {
+        return ptExportPendingPopup;
+    }
+
+    public void setPtExportPendingDetailPopup(RichPopup ptExportPendingDetailPopup) {
+        this.ptExportPendingDetailPopup = ptExportPendingDetailPopup;
+    }
+
+    public RichPopup getPtExportPendingDetailPopup() {
+        return ptExportPendingDetailPopup;
+    }
+
+    public void exportPTPendingDetailReport(FacesContext facesContext, OutputStream outputStream) {
+        // Add event code here...
+
+    }
+
+    public void closeDownloadPTPendingDetailPopup(ActionEvent actionEvent) {
+        this.getPtExportPendingDetailPopup().hide();
     }
 }

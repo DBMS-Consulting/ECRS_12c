@@ -41,6 +41,16 @@
               DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
     <iterator id="EcrsSearchTransVOIterator" Binds="ECrsSearchTransVO"
               DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
+    <iterator id="CrsExportPTCurrentIterator" Binds="CrsExportPTCurrent" DataControl="ECRSAppModuleDataControl"
+              RangeSize="25"/>
+    <iterator id="CrsExportPTPendingIterator" Binds="CrsExportPTPending" DataControl="ECRSAppModuleDataControl"
+              RangeSize="25"/>
+    <iterator id="CrsExportPTCurrentDetailIterator" Binds="CrsExportPTCurrentDetail"
+              DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
+    <iterator id="CrsExportPTPendingDetailIterator" Binds="CrsExportPTPendingDetail"
+              DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
+    <iterator Binds="MedDraDefinitionExits" RangeSize="25" DataControl="ECRSAppModuleDataControl"
+              id="MedDraDefinitionExitsIterator"/>
   </executables>
   <bindings>
     <attributeValues IterBinding="CrsRiskRelationVOIterator" id="SafetyTopicOfInterest">
@@ -871,5 +881,14 @@
         <Item Value="CompoundType"/>
       </AttrNames>
     </attributeValues>
+    <attributeValues IterBinding="MedDraDefinitionExitsIterator" id="RiskDefinitionExists">
+      <AttrNames>
+        <Item Value="RiskDefinitionExists"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="executeMedraExistsQuery" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeMedraExistsQuery" IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.executeMedraExistsQuery.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.executeMedraExistsQuery_executeMedraExistsQuery_dataControl_dataProvider_executeMedraExistsQuery_result"/>
   </bindings>
 </pageDefinition>

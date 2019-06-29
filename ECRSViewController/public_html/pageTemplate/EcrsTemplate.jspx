@@ -83,10 +83,10 @@
                                                 <af:outputText id="pt_ot5" inlineStyle="font-weight:bold;" value="Admin"
                                                                rendered="#{securityContext.userInRole['Admin']}"/>
                                                 <af:spacer width="10" height="10" id="pt_s7"/>
-                                                <af:outputText id="pt_ot3" inlineStyle="font-weight:bold;" value="TASL"
+                                                <af:outputText id="pt_ot3" inlineStyle="font-weight:bold;" value="HPS"
                                                                rendered="#{securityContext.userInRole['CRS_TASL']}"/>
                                                 <af:spacer width="10" height="10" id="pt_s9"/>
-                                                <af:outputText id="pt_ot6" inlineStyle="font-weight:bold;" value="BSL"
+                                                <af:outputText id="pt_ot6" inlineStyle="font-weight:bold;" value="GPSL"
                                                                rendered="#{securityContext.userInRole['BSL']}"/>
                                             </af:panelGroupLayout>
                                         </af:panelFormLayout>

@@ -4,15 +4,16 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="UserRoleVO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.12.24"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
-  UseGlueCode="false"
-  RowClass="com.novartis.ecrs.model.lov.UserRoleVORowImpl">
+  OrderBy='"LAST_NAME","FIRST_NAME"'
+  RowClass="com.novartis.ecrs.model.lov.UserRoleVORowImpl"
+  ComponentClass="com.novartis.ecrs.model.lov.UserRoleVOImpl">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
-    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
     <Attr Name="_isCodegen" Value="true"/>
   </DesignTime>
   <Properties>
@@ -25,16 +26,28 @@
     Name="roleName"
     Kind="where"
     Type="java.lang.String"/>
-  <SQLQuery><![CDATA[SELECT DISTINCT
-                       RTRIM(a.last_name||', '||a.first_name,', ') full_name,
-                       upper(a.account_name)                              user_name,
-                       r.granted_role                              role_name
-                    FROM crs_roles         c,
-                         opa.opa_accounts  a,
-                         dba_role_privs    r
-                    where C.ORACLE_ROLE_NAME = R.GRANTED_ROLE
-                      and R.GRANTEE = a.ACCOUNT_NAME
-                      AND c.role_name = :roleName]]></SQLQuery>
+  <SQLQuery><![CDATA[SELECT DISTINCT RTRIM(last_name  
+  ||', '  
+  ||first_name,', ') full_name,  
+  user_name,  
+  role_name,  
+  last_name,  
+  first_name  
+FROM  
+  (SELECT a.first_name,  
+    a.last_name,  
+    upper(a.account_name) user_name,  
+    r.granted_role role_name  
+  FROM crs_roles c,  
+    opa.opa_accounts a,  
+    dba_role_privs r  
+  WHERE C.ORACLE_ROLE_NAME = R.GRANTED_ROLE  
+  AND R.GRANTEE            = a.ACCOUNT_NAME
+  AND a.END_TS            = '15-AUG-3501'
+  AND c.role_name          = :roleName  
+  ORDER BY a.last_name,  
+    a.first_name  
+  )]]></SQLQuery>
   <ViewAttribute
     Name="FullName"
     IsUpdateable="false"
@@ -80,8 +93,41 @@
       <Attr Name="_DisplaySize" Value="30"/>
     </DesignTime>
   </ViewAttribute>
+  <ViewAttribute
+    Name="LastName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LAST_NAME"
+    Expression="LAST_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FirstName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="FIRST_NAME"
+    Expression="FIRST_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
   </ResourceBundle>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="UserName"/>
+  </AttrArray>
 </ViewObject>

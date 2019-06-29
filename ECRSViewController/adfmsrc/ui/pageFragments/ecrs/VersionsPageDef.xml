@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24" id="VersionsPageDef"
+                Package="ui.pageFragments.ecrs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="CrsVersions" RangeSize="-1" DataControl="ECRSAppModuleDataControl" id="CrsVersionsIterator"/>
+    <iterator Binds="CrsBaseVersions" RangeSize="-1" DataControl="ECRSAppModuleDataControl"
+              id="CrsBaseVersionsIterator"/>
+    <iterator Binds="CrsVersionCompare" RangeSize="-1" DataControl="ECRSAppModuleDataControl"
+              id="CrsVersionCompareIterator"/>
+    <searchRegion Binds="CrsVersionCompareIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="CrsVersionCompare1Query"/>
+    <iterator Binds="PurposeLegendStaticVO" RangeSize="10" DataControl="ECRSAppModuleDataControl"
+              id="PurposeLegendStaticVOIterator"/>
+    <iterator Binds="CRSVersionComparePending" RangeSize="-1" DataControl="ECRSAppModuleDataControl"
+              id="CRSVersionComparePendingIterator"/>
+    <searchRegion Binds="CRSVersionComparePendingIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="CRSVersionComparePendinng1Query"/>
+    <iterator id="CRSVersionEarlierstNameIterator" Binds="CRSVersionEarlierstName"
+              DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
+    <iterator id="CRSVersionLatestNameIterator" Binds="CRSVersionLatestName" DataControl="ECRSAppModuleDataControl"
+              RangeSize="25"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="CrsVersionsIterator" id="CrsVersions">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.VersionsVO" Name="CrsVersions0">
+        <AttrNames>
+          <Item Value="CrsEffectiveDt"/>
+          <Item Value="ReasonForChange"/>
+          <Item Value="SelectRow"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Rollback" DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <tree IterBinding="CrsBaseVersionsIterator" id="CrsBaseVersions">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.VersionsVO" Name="CrsBaseVersions0">
+        <AttrNames>
+          <Item Value="CrsEffectiveDt"/>
+          <Item Value="ReasonForChange"/>
+          <Item Value="SelectRow"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="CrsVersionCompareIterator" id="CrsVersionCompare1">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.CRSVersionCompareVO" Name="CrsVersionCompare10">
+        <AttrNames>
+          <Item Value="LatestSafetyTopic"/>
+          <Item Value="LatestSpp"/>
+          <Item Value="LatestDsur"/>
+          <Item Value="LatestRmp"/>
+          <Item Value="LatestPsur"/>
+          <Item Value="LatestIb"/>
+          <Item Value="LatestCds"/>
+          <Item Value="LatestOtherSearch"/>
+          <Item Value="LatestMissingInformation"/>
+          <Item Value="LatestExpeditingRules"/>
+          <Item Value="LatestUnderlyingDisease"/>
+          <Item Value="LatestAesiForNisProtocol"/>
+          <Item Value="LatestAesiNotRmp"/>
+          <Item Value="LatestSoc"/>
+          <Item Value="LatestDataDomain"/>
+          <Item Value="LatestSearchDetails"/>
+          <Item Value="LatestMeddraCode"/>
+          <Item Value="LatestMeddraTerm"/>
+          <Item Value="LatestMeddraExtension"/>
+          <Item Value="LatestMeddraQualifier"/>
+          <Item Value="LatestNonMeddraCompCmt"/>
+          <Item Value="CrsId"/>
+          <Item Value="EarliestAesiForNisProtcol"/>
+          <Item Value="EarliestAesiFrNisProClr"/>
+          <Item Value="EarliestAesiNotRmp"/>
+          <Item Value="EarliestAesiNotRmpColor"/>
+          <Item Value="EarliestCds"/>
+          <Item Value="EarliestCdsColor"/>
+          <Item Value="EarliestCompound"/>
+          <Item Value="EarliestCompoundColor"/>
+          <Item Value="EarliestCrsName"/>
+          <Item Value="EarliestCrsNameColor"/>
+          <Item Value="EarliestCrsVersionEndDate"/>
+          <Item Value="EarliestCrsVersionStrtDate"/>
+          <Item Value="EarliestDataDomain"/>
+          <Item Value="EarliestDataDomainColor"/>
+          <Item Value="EarliestDate"/>
+          <Item Value="EarliestDsur"/>
+          <Item Value="EarliestDsurColor"/>
+          <Item Value="EarliestExpeditingRulColor"/>
+          <Item Value="EarliestExpeditingRules"/>
+          <Item Value="EarliestIb"/>
+          <Item Value="EarliestIbColor"/>
+          <Item Value="EarliestIndication"/>
+          <Item Value="EarliestIndicationColor"/>
+          <Item Value="EarliestMeddraCode"/>
+          <Item Value="EarliestMeddraCodeColor"/>
+          <Item Value="EarliestMeddraExtColor"/>
+          <Item Value="EarliestMeddraExtension"/>
+          <Item Value="EarliestMeddraQualColor"/>
+          <Item Value="EarliestMeddraQualifier"/>
+          <Item Value="EarliestMeddraTerm"/>
+          <Item Value="EarliestMeddraTermColor"/>
+          <Item Value="EarliestMeddraVersionDict"/>
+          <Item Value="EarliestMissingInformation"/>
+          <Item Value="EarliestMissingInformColor"/>
+          <Item Value="EarliestNonMedCompCmtClr"/>
+          <Item Value="EarliestNonMeddraCompCmt"/>
+          <Item Value="EarliestOtherSearch"/>
+          <Item Value="EarliestOtherSearchColor"/>
+          <Item Value="EarliestPsur"/>
+          <Item Value="EarliestPsurColor"/>
+          <Item Value="EarliestReason"/>
+          <Item Value="EarliestRmp"/>
+          <Item Value="EarliestRmpColor"/>
+          <Item Value="EarliestSafetyTopic"/>
+          <Item Value="EarliestSafetyTopicColor"/>
+          <Item Value="EarliestSearchDetails"/>
+          <Item Value="EarliestSearchDetailsColor"/>
+          <Item Value="EarliestSoc"/>
+          <Item Value="EarliestSocColor"/>
+          <Item Value="EarliestSpp"/>
+          <Item Value="EarliestSppColor"/>
+          <Item Value="EarliestUnderlyingDisColor"/>
+          <Item Value="EarliestUnderlyingDisease"/>
+          <Item Value="LatestAesiForNisProColor"/>
+          <Item Value="LatestAesiNotRmpColor"/>
+          <Item Value="LatestCdsColor"/>
+          <Item Value="LatestCompound"/>
+          <Item Value="LatestCompoundColor"/>
+          <Item Value="LatestCrsName"/>
+          <Item Value="LatestCrsNameColor"/>
+          <Item Value="LatestCrsVersionEndDate"/>
+          <Item Value="LatestCrsVersionStartDate"/>
+          <Item Value="LatestDate"/>
+          <Item Value="LatestDsurColor"/>
+          <Item Value="LatestExpeditingRulesColor"/>
+          <Item Value="LatestIbColor"/>
+          <Item Value="LatestIndication"/>
+          <Item Value="LatestIndicationColor"/>
+          <Item Value="LatestMeddraCodeColor"/>
+          <Item Value="LatestMeddraExtensionColor"/>
+          <Item Value="LatestMeddraQualifierColor"/>
+          <Item Value="LatestMeddraTermColor"/>
+          <Item Value="LatestMedVersionDictionary"/>
+          <Item Value="LatestMissingInfoColor"/>
+          <Item Value="LatestNonMedCompCmtColor"/>
+          <Item Value="LatestOtherSearchColor"/>
+          <Item Value="LatestPsurColor"/>
+          <Item Value="LatestReason"/>
+          <Item Value="LatestRmpColor"/>
+          <Item Value="LatestSafetyTopicColor"/>
+          <Item Value="LatestSearchDetailsColor"/>
+          <Item Value="LatestSocColor"/>
+          <Item Value="LatestSppColor"/>
+          <Item Value="LatestUnderlyingDisColor"/>
+          <Item Value="LatestDataDomainColor"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="CrsVersionCompareIterator" id="CrsVersionCompare">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.CRSVersionCompareVO" Name="CrsVersionCompare0">
+        <AttrNames>
+          <Item Value="EarliestSafetyTopic"/>
+          <Item Value="EarliestSpp"/>
+          <Item Value="EarliestDsur"/>
+          <Item Value="EarliestRmp"/>
+          <Item Value="EarliestPsur"/>
+          <Item Value="EarliestIb"/>
+          <Item Value="EarliestCds"/>
+          <Item Value="EarliestOtherSearch"/>
+          <Item Value="EarliestMissingInformation"/>
+          <Item Value="EarliestExpeditingRules"/>
+          <Item Value="EarliestUnderlyingDisease"/>
+          <Item Value="EarliestAesiForNisProtcol"/>
+          <Item Value="EarliestAesiNotRmp"/>
+          <Item Value="EarliestSoc"/>
+          <Item Value="EarliestDataDomain"/>
+          <Item Value="EarliestSearchDetails"/>
+          <Item Value="EarliestMeddraCode"/>
+          <Item Value="EarliestMeddraTerm"/>
+          <Item Value="EarliestMeddraExtension"/>
+          <Item Value="EarliestMeddraQualifier"/>
+          <Item Value="EarliestNonMeddraCompCmt"/>
+          <Item Value="CrsId"/>
+          <Item Value="EarliestAesiFrNisProClr"/>
+          <Item Value="EarliestAesiNotRmpColor"/>
+          <Item Value="EarliestCdsColor"/>
+          <Item Value="EarliestCompound"/>
+          <Item Value="EarliestCompoundColor"/>
+          <Item Value="EarliestCrsName"/>
+          <Item Value="EarliestCrsNameColor"/>
+          <Item Value="EarliestCrsVersionEndDate"/>
+          <Item Value="EarliestCrsVersionStrtDate"/>
+          <Item Value="EarliestDataDomainColor"/>
+          <Item Value="EarliestDate"/>
+          <Item Value="EarliestDsurColor"/>
+          <Item Value="EarliestExpeditingRulColor"/>
+          <Item Value="EarliestIbColor"/>
+          <Item Value="EarliestIndication"/>
+          <Item Value="EarliestIndicationColor"/>
+          <Item Value="EarliestMeddraCodeColor"/>
+          <Item Value="EarliestMeddraExtColor"/>
+          <Item Value="EarliestMeddraQualColor"/>
+          <Item Value="EarliestMeddraTermColor"/>
+          <Item Value="EarliestMeddraVersionDict"/>
+          <Item Value="EarliestMissingInformColor"/>
+          <Item Value="EarliestNonMedCompCmtClr"/>
+          <Item Value="EarliestOtherSearchColor"/>
+          <Item Value="EarliestPsurColor"/>
+          <Item Value="EarliestReason"/>
+          <Item Value="EarliestRmpColor"/>
+          <Item Value="EarliestSafetyTopicColor"/>
+          <Item Value="EarliestSearchDetailsColor"/>
+          <Item Value="EarliestSocColor"/>
+          <Item Value="EarliestSppColor"/>
+          <Item Value="EarliestUnderlyingDisColor"/>
+          <Item Value="LatestAesiForNisProColor"/>
+          <Item Value="LatestAesiForNisProtocol"/>
+          <Item Value="LatestAesiNotRmp"/>
+          <Item Value="LatestAesiNotRmpColor"/>
+          <Item Value="LatestCds"/>
+          <Item Value="LatestCdsColor"/>
+          <Item Value="LatestCompound"/>
+          <Item Value="LatestCompoundColor"/>
+          <Item Value="LatestCrsName"/>
+          <Item Value="LatestCrsNameColor"/>
+          <Item Value="LatestCrsVersionEndDate"/>
+          <Item Value="LatestCrsVersionStartDate"/>
+          <Item Value="LatestDataDomain"/>
+          <Item Value="LatestDate"/>
+          <Item Value="LatestDsur"/>
+          <Item Value="LatestDsurColor"/>
+          <Item Value="LatestExpeditingRules"/>
+          <Item Value="LatestExpeditingRulesColor"/>
+          <Item Value="LatestIb"/>
+          <Item Value="LatestIbColor"/>
+          <Item Value="LatestIndication"/>
+          <Item Value="LatestIndicationColor"/>
+          <Item Value="LatestMeddraCode"/>
+          <Item Value="LatestMeddraCodeColor"/>
+          <Item Value="LatestMeddraExtension"/>
+          <Item Value="LatestMeddraExtensionColor"/>
+          <Item Value="LatestMeddraQualifier"/>
+          <Item Value="LatestMeddraQualifierColor"/>
+          <Item Value="LatestMeddraTerm"/>
+          <Item Value="LatestMeddraTermColor"/>
+          <Item Value="LatestMedVersionDictionary"/>
+          <Item Value="LatestMissingInfoColor"/>
+          <Item Value="LatestMissingInformation"/>
+          <Item Value="LatestNonMedCompCmtColor"/>
+          <Item Value="LatestNonMeddraCompCmt"/>
+          <Item Value="LatestOtherSearch"/>
+          <Item Value="LatestOtherSearchColor"/>
+          <Item Value="LatestPsur"/>
+          <Item Value="LatestPsurColor"/>
+          <Item Value="LatestReason"/>
+          <Item Value="LatestRmp"/>
+          <Item Value="LatestRmpColor"/>
+          <Item Value="LatestSafetyTopic"/>
+          <Item Value="LatestSafetyTopicColor"/>
+          <Item Value="LatestSearchDetails"/>
+          <Item Value="LatestSearchDetailsColor"/>
+          <Item Value="LatestSoc"/>
+          <Item Value="LatestSocColor"/>
+          <Item Value="LatestSpp"/>
+          <Item Value="LatestSppColor"/>
+          <Item Value="LatestUnderlyingDisColor"/>
+          <Item Value="LatestUnderlyingDisease"/>
+          <Item Value="LatestDataDomainColor"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="executeCrsVersionCompare" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeCrsVersionCompare" IsViewObjectMethod="false"
+                  DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.executeCrsVersionCompare.dataControl.dataProvider"/>
+    <attributeValues IterBinding="CRSVersionEarlierstNameIterator" id="EarliestCrsVersionStrtDate">
+      <AttrNames>
+        <Item Value="EarliestCrsVersionStrtDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionEarlierstNameIterator" id="EarliestCrsName">
+      <AttrNames>
+        <Item Value="EarliestCrsName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionEarlierstNameIterator" id="EarliestMeddraVersionDict">
+      <AttrNames>
+        <Item Value="EarliestMeddraVersionDict"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionLatestNameIterator" id="LatestCrsVersionStartDate">
+      <AttrNames>
+        <Item Value="LatestCrsVersionStartDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionLatestNameIterator" id="LatestCrsName">
+      <AttrNames>
+        <Item Value="LatestCrsName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionLatestNameIterator" id="LatestMedVersionDictionary">
+      <AttrNames>
+        <Item Value="LatestMedVersionDictionary"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="PurposeLegendStaticVOIterator" id="PurposeLegendStaticVO">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.trans.PurposeLegendStaticVO" Name="PurposeLegendStaticVO0">
+        <AttrNames>
+          <Item Value="RiskCode"/>
+          <Item Value="Description"/>
+          <Item Value="Name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="CrsBaseVersionsIterator" id="SelectRow" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="SelectRow"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <button IterBinding="CrsVersionsIterator" id="SelectRow1" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="SelectRow"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="true"/>
+        <Item Value="false"/>
+      </ValueList>
+    </button>
+    <methodAction id="executeBaseCrsVersionCompare" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeBaseCrsVersionCompare" IsViewObjectMethod="false"
+                  DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.executeBaseCrsVersionCompare.dataControl.dataProvider"/>
+    <methodAction id="deleteVersions" RequiresUpdateModel="true" Action="invokeMethod" MethodName="deleteVersions"
+                  IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.deleteVersions.dataControl.dataProvider"/>
+    <attributeValues IterBinding="CRSVersionEarlierstNameIterator" id="EarliestCrsName1">
+      <AttrNames>
+        <Item Value="EarliestCrsName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionEarlierstNameIterator" id="EarliestCrsVersionStrtDate1">
+      <AttrNames>
+        <Item Value="EarliestCrsVersionStrtDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionEarlierstNameIterator" id="EarliestMeddraVersionDict1">
+      <AttrNames>
+        <Item Value="EarliestMeddraVersionDict"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionLatestNameIterator" id="LatestCrsName1">
+      <AttrNames>
+        <Item Value="LatestCrsName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionLatestNameIterator" id="LatestCrsVersionStartDate1">
+      <AttrNames>
+        <Item Value="LatestCrsVersionStartDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CRSVersionLatestNameIterator" id="LatestMedVersionDictionary1">
+      <AttrNames>
+        <Item Value="LatestMedVersionDictionary"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="CRSVersionComparePendingIterator" id="CRSVersionComparePending1">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.CRSVersionComparePendingView"
+                      Name="CRSVersionComparePending10">
+        <AttrNames>
+          <Item Value="CrsId"/>
+          <Item Value="EarliestAesiForNisProtcol"/>
+          <Item Value="EarliestAesiFrNisProClr"/>
+          <Item Value="EarliestAesiNotRmp"/>
+          <Item Value="EarliestAesiNotRmpColor"/>
+          <Item Value="EarliestCds"/>
+          <Item Value="EarliestCdsColor"/>
+          <Item Value="EarliestCompound"/>
+          <Item Value="EarliestCompoundColor"/>
+          <Item Value="EarliestCrsName"/>
+          <Item Value="EarliestCrsNameColor"/>
+          <Item Value="EarliestCrsVersionEndDate"/>
+          <Item Value="EarliestCrsVersionStrtDate"/>
+          <Item Value="EarliestDataDomain"/>
+          <Item Value="EarliestDataDomainColor"/>
+          <Item Value="EarliestDate"/>
+          <Item Value="EarliestDsur"/>
+          <Item Value="EarliestDsurColor"/>
+          <Item Value="EarliestExpeditingRulColor"/>
+          <Item Value="EarliestExpeditingRules"/>
+          <Item Value="EarliestIb"/>
+          <Item Value="EarliestIbColor"/>
+          <Item Value="EarliestIndication"/>
+          <Item Value="EarliestIndicationColor"/>
+          <Item Value="EarliestMeddraCode"/>
+          <Item Value="EarliestMeddraCodeColor"/>
+          <Item Value="EarliestMeddraExtColor"/>
+          <Item Value="EarliestMeddraExtension"/>
+          <Item Value="EarliestMeddraQualColor"/>
+          <Item Value="EarliestMeddraQualifier"/>
+          <Item Value="EarliestMeddraTerm"/>
+          <Item Value="EarliestMeddraTermColor"/>
+          <Item Value="EarliestMeddraVersionDict"/>
+          <Item Value="EarliestMissingInformation"/>
+          <Item Value="EarliestMissingInformColor"/>
+          <Item Value="EarliestNonMedCompCmtClr"/>
+          <Item Value="EarliestNonMeddraCompCmt"/>
+          <Item Value="EarliestOtherSearch"/>
+          <Item Value="EarliestOtherSearchColor"/>
+          <Item Value="EarliestPsur"/>
+          <Item Value="EarliestPsurColor"/>
+          <Item Value="EarliestReason"/>
+          <Item Value="EarliestRmp"/>
+          <Item Value="EarliestRmpColor"/>
+          <Item Value="EarliestSafetyTopic"/>
+          <Item Value="EarliestSafetyTopicColor"/>
+          <Item Value="EarliestSearchDetails"/>
+          <Item Value="EarliestSearchDetailsColor"/>
+          <Item Value="EarliestSoc"/>
+          <Item Value="EarliestSocColor"/>
+          <Item Value="EarliestSpp"/>
+          <Item Value="EarliestSppColor"/>
+          <Item Value="EarliestUnderlyingDisColor"/>
+          <Item Value="EarliestUnderlyingDisease"/>
+          <Item Value="LatestAesiForNisProColor"/>
+          <Item Value="LatestAesiForNisProtocol"/>
+          <Item Value="LatestAesiNotRmp"/>
+          <Item Value="LatestAesiNotRmpColor"/>
+          <Item Value="LatestCds"/>
+          <Item Value="LatestCdsColor"/>
+          <Item Value="LatestCompound"/>
+          <Item Value="LatestCompoundColor"/>
+          <Item Value="LatestCrsName"/>
+          <Item Value="LatestCrsNameColor"/>
+          <Item Value="LatestCrsVersionEndDate"/>
+          <Item Value="LatestCrsVersionStartDate"/>
+          <Item Value="LatestDataDomain"/>
+          <Item Value="LatestDataDomainColor"/>
+          <Item Value="LatestDate"/>
+          <Item Value="LatestDsur"/>
+          <Item Value="LatestDsurColor"/>
+          <Item Value="LatestExpeditingRules"/>
+          <Item Value="LatestExpeditingRulesColor"/>
+          <Item Value="LatestIb"/>
+          <Item Value="LatestIbColor"/>
+          <Item Value="LatestIndication"/>
+          <Item Value="LatestIndicationColor"/>
+          <Item Value="LatestMeddraCode"/>
+          <Item Value="LatestMeddraCodeColor"/>
+          <Item Value="LatestMeddraExtension"/>
+          <Item Value="LatestMeddraExtensionColor"/>
+          <Item Value="LatestMeddraQualifier"/>
+          <Item Value="LatestMeddraQualifierColor"/>
+          <Item Value="LatestMeddraTerm"/>
+          <Item Value="LatestMeddraTermColor"/>
+          <Item Value="LatestMedVersionDictionary"/>
+          <Item Value="LatestMissingInfoColor"/>
+          <Item Value="LatestMissingInformation"/>
+          <Item Value="LatestNonMedCompCmtColor"/>
+          <Item Value="LatestNonMeddraCompCmt"/>
+          <Item Value="LatestOtherSearch"/>
+          <Item Value="LatestOtherSearchColor"/>
+          <Item Value="LatestPsur"/>
+          <Item Value="LatestPsurColor"/>
+          <Item Value="LatestReason"/>
+          <Item Value="LatestRmp"/>
+          <Item Value="LatestRmpColor"/>
+          <Item Value="LatestSafetyTopic"/>
+          <Item Value="LatestSafetyTopicColor"/>
+          <Item Value="LatestSearchDetails"/>
+          <Item Value="LatestSearchDetailsColor"/>
+          <Item Value="LatestSoc"/>
+          <Item Value="LatestSocColor"/>
+          <Item Value="LatestSpp"/>
+          <Item Value="LatestSppColor"/>
+          <Item Value="LatestUnderlyingDisColor"/>
+          <Item Value="LatestUnderlyingDisease"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="CRSVersionComparePendingIterator" id="CRSVersionComparePending">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.CRSVersionComparePendingView"
+                      Name="CRSVersionComparePending0">
+        <AttrNames>
+          <Item Value="CrsId"/>
+          <Item Value="EarliestAesiForNisProtcol"/>
+          <Item Value="EarliestAesiFrNisProClr"/>
+          <Item Value="EarliestAesiNotRmp"/>
+          <Item Value="EarliestAesiNotRmpColor"/>
+          <Item Value="EarliestCds"/>
+          <Item Value="EarliestCdsColor"/>
+          <Item Value="EarliestCompound"/>
+          <Item Value="EarliestCompoundColor"/>
+          <Item Value="EarliestCrsName"/>
+          <Item Value="EarliestCrsNameColor"/>
+          <Item Value="EarliestCrsVersionEndDate"/>
+          <Item Value="EarliestCrsVersionStrtDate"/>
+          <Item Value="EarliestDataDomain"/>
+          <Item Value="EarliestDataDomainColor"/>
+          <Item Value="EarliestDate"/>
+          <Item Value="EarliestDsur"/>
+          <Item Value="EarliestDsurColor"/>
+          <Item Value="EarliestExpeditingRulColor"/>
+          <Item Value="EarliestExpeditingRules"/>
+          <Item Value="EarliestIb"/>
+          <Item Value="EarliestIbColor"/>
+          <Item Value="EarliestIndication"/>
+          <Item Value="EarliestIndicationColor"/>
+          <Item Value="EarliestMeddraCode"/>
+          <Item Value="EarliestMeddraCodeColor"/>
+          <Item Value="EarliestMeddraExtColor"/>
+          <Item Value="EarliestMeddraExtension"/>
+          <Item Value="EarliestMeddraQualColor"/>
+          <Item Value="EarliestMeddraQualifier"/>
+          <Item Value="EarliestMeddraTerm"/>
+          <Item Value="EarliestMeddraTermColor"/>
+          <Item Value="EarliestMeddraVersionDict"/>
+          <Item Value="EarliestMissingInformation"/>
+          <Item Value="EarliestMissingInformColor"/>
+          <Item Value="EarliestNonMedCompCmtClr"/>
+          <Item Value="EarliestNonMeddraCompCmt"/>
+          <Item Value="EarliestOtherSearch"/>
+          <Item Value="EarliestOtherSearchColor"/>
+          <Item Value="EarliestPsur"/>
+          <Item Value="EarliestPsurColor"/>
+          <Item Value="EarliestReason"/>
+          <Item Value="EarliestRmp"/>
+          <Item Value="EarliestRmpColor"/>
+          <Item Value="EarliestSafetyTopic"/>
+          <Item Value="EarliestSafetyTopicColor"/>
+          <Item Value="EarliestSearchDetails"/>
+          <Item Value="EarliestSearchDetailsColor"/>
+          <Item Value="EarliestSoc"/>
+          <Item Value="EarliestSocColor"/>
+          <Item Value="EarliestSpp"/>
+          <Item Value="EarliestSppColor"/>
+          <Item Value="EarliestUnderlyingDisColor"/>
+          <Item Value="EarliestUnderlyingDisease"/>
+          <Item Value="LatestAesiForNisProColor"/>
+          <Item Value="LatestAesiForNisProtocol"/>
+          <Item Value="LatestAesiNotRmp"/>
+          <Item Value="LatestAesiNotRmpColor"/>
+          <Item Value="LatestCds"/>
+          <Item Value="LatestCdsColor"/>
+          <Item Value="LatestCompound"/>
+          <Item Value="LatestCompoundColor"/>
+          <Item Value="LatestCrsName"/>
+          <Item Value="LatestCrsNameColor"/>
+          <Item Value="LatestCrsVersionEndDate"/>
+          <Item Value="LatestCrsVersionStartDate"/>
+          <Item Value="LatestDataDomain"/>
+          <Item Value="LatestDataDomainColor"/>
+          <Item Value="LatestDate"/>
+          <Item Value="LatestDsur"/>
+          <Item Value="LatestDsurColor"/>
+          <Item Value="LatestExpeditingRules"/>
+          <Item Value="LatestExpeditingRulesColor"/>
+          <Item Value="LatestIb"/>
+          <Item Value="LatestIbColor"/>
+          <Item Value="LatestIndication"/>
+          <Item Value="LatestIndicationColor"/>
+          <Item Value="LatestMeddraCode"/>
+          <Item Value="LatestMeddraCodeColor"/>
+          <Item Value="LatestMeddraExtension"/>
+          <Item Value="LatestMeddraExtensionColor"/>
+          <Item Value="LatestMeddraQualifier"/>
+          <Item Value="LatestMeddraQualifierColor"/>
+          <Item Value="LatestMeddraTerm"/>
+          <Item Value="LatestMeddraTermColor"/>
+          <Item Value="LatestMedVersionDictionary"/>
+          <Item Value="LatestMissingInfoColor"/>
+          <Item Value="LatestMissingInformation"/>
+          <Item Value="LatestNonMedCompCmtColor"/>
+          <Item Value="LatestNonMeddraCompCmt"/>
+          <Item Value="LatestOtherSearch"/>
+          <Item Value="LatestOtherSearchColor"/>
+          <Item Value="LatestPsur"/>
+          <Item Value="LatestPsurColor"/>
+          <Item Value="LatestReason"/>
+          <Item Value="LatestRmp"/>
+          <Item Value="LatestRmpColor"/>
+          <Item Value="LatestSafetyTopic"/>
+          <Item Value="LatestSafetyTopicColor"/>
+          <Item Value="LatestSearchDetails"/>
+          <Item Value="LatestSearchDetailsColor"/>
+          <Item Value="LatestSoc"/>
+          <Item Value="LatestSocColor"/>
+          <Item Value="LatestSpp"/>
+          <Item Value="LatestSppColor"/>
+          <Item Value="LatestUnderlyingDisColor"/>
+          <Item Value="LatestUnderlyingDisease"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

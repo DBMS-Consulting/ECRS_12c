@@ -41,9 +41,47 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
         return;
     }
 
+    public void createVersions(Integer crsId, String earliestDate, String earliestReason, String latestDate,
+                               String latestReason) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "createVersions",
+                                        new String[] { "java.lang.Integer", "java.lang.String", "java.lang.String",
+                                                       "java.lang.String", "java.lang.String" },
+                                        new Object[] { crsId, earliestDate, earliestReason, latestDate, latestReason });
+        return;
+    }
+
     public String deleteCrs(Long crsId) {
         Object _ret =
             this.riInvokeExportedMethod(this, "deleteCrs", new String[] { "java.lang.Long" }, new Object[] { crsId });
+        return (String) _ret;
+    }
+
+    public void deleteVersions() {
+        Object _ret = this.riInvokeExportedMethod(this, "deleteVersions", null, null);
+        return;
+    }
+
+    public void executeBaseCrsVersionCompare() {
+        Object _ret = this.riInvokeExportedMethod(this, "executeBaseCrsVersionCompare", null, null);
+        return;
+    }
+
+    public void executeCrsVersionCompare() {
+        Object _ret = this.riInvokeExportedMethod(this, "executeCrsVersionCompare", null, null);
+        return;
+    }
+
+    public void executeCrsVersionPublishedPendingCompare(Long crsId, String releaseStatus, String isCurrentPublished) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "executeCrsVersionPublishedPendingCompare",
+                                        new String[] { "java.lang.Long", "java.lang.String", "java.lang.String" },
+                                        new Object[] { crsId, releaseStatus, isCurrentPublished });
+        return;
+    }
+
+    public String executeMedraExistsQuery() {
+        Object _ret = this.riInvokeExportedMethod(this, "executeMedraExistsQuery", null, null);
         return (String) _ret;
     }
 
@@ -85,9 +123,29 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
         return ((Boolean) _ret).booleanValue();
     }
 
+    public String findRoleDescription(String role, String userName) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "findRoleDescription",
+                                        new String[] { "java.lang.String", "java.lang.String" },
+                                        new Object[] { role, userName });
+        return (String) _ret;
+    }
+
+    public String findStateDescription(Number stateId) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "findStateDescription", new String[] { "java.lang.Number" },
+                                        new Object[] { stateId });
+        return (String) _ret;
+    }
+
     public String getMedDRAFreezeFlag() {
         Object _ret = this.riInvokeExportedMethod(this, "getMedDRAFreezeFlag", null, null);
         return (String) _ret;
+    }
+
+    public void initJobSchedule() {
+        Object _ret = this.riInvokeExportedMethod(this, "initJobSchedule", null, null);
+        return;
     }
 
     public void initRiskRelation(Long crsId, String status) {
@@ -102,6 +160,16 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
             this.riInvokeExportedMethod(this, "isCRSVersionInitial", new String[] { "java.lang.Long" },
                                         new Object[] { crsId });
         return (Boolean) _ret;
+    }
+
+    public Boolean isMultiVersionsAvailable() {
+        Object _ret = this.riInvokeExportedMethod(this, "isMultiVersionsAvailable", null, null);
+        return (Boolean) _ret;
+    }
+
+    public String isMultiVersionsAvailableString() {
+        Object _ret = this.riInvokeExportedMethod(this, "isMultiVersionsAvailableString", null, null);
+        return (String) _ret;
     }
 
     public Boolean isRiskRelationsExistForCRS(Long crsId) {

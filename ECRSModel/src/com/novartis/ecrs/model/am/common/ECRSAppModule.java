@@ -51,4 +51,27 @@ public interface ECRSAppModule extends ApplicationModule {
     String updateMedDRAFreezeFlag(String freezeFlag);
 
     void removeMQMComments();
+
+    void executeCrsVersionCompare();
+
+    void executeBaseCrsVersionCompare();
+
+    void createVersions(Integer crsId, String earliestDate, String earliestReason, String latestDate,
+                        String latestReason);
+
+    void deleteVersions();
+
+    void executeCrsVersionPublishedPendingCompare(Long crsId, String releaseStatus, String isCurrentPublished);
+
+    Boolean isMultiVersionsAvailable();
+
+    String isMultiVersionsAvailableString();
+
+    String findStateDescription(Number stateId);
+
+    String findRoleDescription(String role, String userName);
+
+    void initJobSchedule();
+
+    String executeMedraExistsQuery();
 }

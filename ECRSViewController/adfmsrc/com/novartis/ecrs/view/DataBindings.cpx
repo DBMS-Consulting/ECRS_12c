@@ -88,6 +88,10 @@
     <page path="/ui/pageFragments/freeze/freezeMedDRA.jsff" usageId="com_novartis_ecrs_view_freezeMedDRAPageDef"/>
     <page path="/pages/reports/MedDRAVersionImpact.jspx" usageId="com_novartis_ecrs_view_MedDRAVersionImpactPageDef"/>
     <page path="/pageTemplate/EcrsTemplate.jspx" usageId="com_novartis_ecrs_view_EcrsTemplatePageDef"/>
+    <page path="/ui/pageFragments/ecrs/Versions.jsff" usageId="com_novartis_ecrs_view_VersionsPageDef"/>
+    <page path="/WEB-INF/taskflows/ManageCRSTF.xml#ManageCRSTF@executeCrsVersionPublishedPendingCompare"
+          usageId="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_executeCrsVersionPublishedPendingComparePageDef"/>
+    <page path="PageFlow#initJobSchedule" usageId="com_novartis_ecrs_view_adfc_config___initJobSchedulePageDef"/>
   </pageMap>
   <pageDefinitionUsages>
     <page id="com_novartis_ecrs_view_createCRSPageDef"
@@ -166,6 +170,11 @@
     <page id="com_novartis_ecrs_view_freezeMedDRAPageDef" path="ui.pageFragments.freeze.freezeMedDRAPageDef"/>
     <page id="com_novartis_ecrs_view_MedDRAVersionImpactPageDef" path="pages.reports.MedDRAVersionImpactPageDef"/>
     <page id="com_novartis_ecrs_view_EcrsTemplatePageDef" path="pageTemplate.EcrsTemplatePageDef"/>
+    <page id="com_novartis_ecrs_view_VersionsPageDef" path="ui.pageFragments.ecrs.VersionsPageDef"/>
+    <page id="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_executeCrsVersionPublishedPendingComparePageDef"
+          path="taskflows.ManageCRSTF_ManageCRSTF_executeCrsVersionPublishedPendingComparePageDef"/>
+    <page id="com_novartis_ecrs_view_adfc_config___initJobSchedulePageDef"
+          path="com.novartis.ecrs.view.pageDefs.adfc_config___initJobSchedulePageDef"/>
   </pageDefinitionUsages>
   <dataControlUsages>
     

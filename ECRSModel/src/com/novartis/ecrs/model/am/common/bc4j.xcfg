@@ -8,4 +8,17 @@
          <Custom JDBCDataSource="jdbc/EcrsDS"/>
       </AppModuleConfig>
    </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="com.novartis.ecrs.model.am.AppModule">
+      <AppModuleConfig name="AppModuleLocal" jbo.project="com.novartis.ecrs.model.ECRSModel"
+                       ApplicationName="com.novartis.ecrs.model.am.AppModule" DeployPlatform="LOCAL">
+         <Database jbo.TypeMapEntries="OracleApps" JDBCDataSource="java:comp/env/jdbc/CRSConnDS"/>
+         <Security AppModuleJndiName="com.novartis.ecrs.model.am.AppModule"/>
+      </AppModuleConfig>
+      <AppModuleConfig name="AppModuleShared" jbo.project="com.novartis.ecrs.model.ECRSModel"
+                       ApplicationName="com.novartis.ecrs.model.am.AppModule" DeployPlatform="LOCAL">
+         <AM-Pooling jbo.ampool.maxpoolsize="1" jbo.ampool.isuseexclusive="false"/>
+         <Database jbo.TypeMapEntries="OracleApps" JDBCDataSource="java:comp/env/jdbc/CRSConnDS"/>
+         <Security AppModuleJndiName="com.novartis.ecrs.model.am.AppModule"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
 </BC4JConfig>

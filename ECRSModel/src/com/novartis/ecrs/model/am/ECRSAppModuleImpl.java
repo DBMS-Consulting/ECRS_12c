@@ -3,15 +3,33 @@ package com.novartis.ecrs.model.am;
 
 import com.novartis.ecrs.model.am.common.ECRSAppModule;
 import com.novartis.ecrs.model.constants.ModelConstants;
+import com.novartis.ecrs.model.lov.UserRoleVOImpl;
 import com.novartis.ecrs.model.lov.UserRoleVORowImpl;
+import com.novartis.ecrs.model.view.CRSVersionComparePendingViewImpl;
+import com.novartis.ecrs.model.view.CRSVersionComparePendingViewRowImpl;
+import com.novartis.ecrs.model.view.CRSVersionCompareVOImpl;
+import com.novartis.ecrs.model.view.CRSVersionEarlierstNameVOImpl;
+import com.novartis.ecrs.model.view.CRSVersionLatestNameVOImpl;
+import com.novartis.ecrs.model.view.CrsBatchJobVOImpl;
+import com.novartis.ecrs.model.view.CrsBatchJobVORowImpl;
 import com.novartis.ecrs.model.view.CrsContentVOImpl;
 import com.novartis.ecrs.model.view.CrsContentVORowImpl;
+import com.novartis.ecrs.model.view.CrsExportPTCurrentVOImpl;
+import com.novartis.ecrs.model.view.CrsExportPTPendingImpl;
 import com.novartis.ecrs.model.view.CrsRiskDefinitionsVOImpl;
 import com.novartis.ecrs.model.view.CrsRiskRelationVOImpl;
 import com.novartis.ecrs.model.view.CrsRiskRelationVORowImpl;
+import com.novartis.ecrs.model.view.CrsRiskVORowImpl;
+import com.novartis.ecrs.model.view.CrsStateVOImpl;
+import com.novartis.ecrs.model.view.CrsStateVORowImpl;
 import com.novartis.ecrs.model.view.ECrsSearchVORowImpl;
 import com.novartis.ecrs.model.view.HierarchyChildDetailVOImpl;
+import com.novartis.ecrs.model.view.VersionsVOImpl;
+import com.novartis.ecrs.model.view.VersionsVORowImpl;
+import com.novartis.ecrs.model.view.base.CrsContentBaseVOImpl;
 import com.novartis.ecrs.model.view.report.PTReportVOImpl;
+import com.novartis.ecrs.model.view.riskdefs.MedDraDefinitionExitsVOImpl;
+import com.novartis.ecrs.model.view.riskdefs.MedDraDefinitionExitsVORowImpl;
 import com.novartis.ecrs.model.view.trans.CompoundTransientVOImpl;
 import com.novartis.ecrs.model.view.trans.DomainsTransientVOImpl;
 import com.novartis.ecrs.model.view.trans.ECrsSearchTransVOImpl;
@@ -26,10 +44,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import java.text.DateFormat;
+
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import oracle.adf.share.ADFContext;
+
+import oracle.adf.share.security.SecurityContext;
+
 import oracle.jbo.JboException;
+import oracle.jbo.Key;
 import oracle.jbo.Row;
 import oracle.jbo.RowSetIterator;
 import oracle.jbo.ViewCriteria;
@@ -224,11 +251,11 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
             if (row.getState() != null)
                 whereClause += "STATE_ID =" + row.getState() + " AND ";     
             if (row.getGenericName() != null)
-                whereClause += "GENERIC_NAME LIKE '%" + row.getGenericName() + "%' AND ";
+                whereClause += "UPPER(GENERIC_NAME) LIKE UPPER('%" + row.getGenericName() + "%') AND ";
             if (row.getTradeName() != null)
-                whereClause += "TRADE_NAME LIKE '%" + row.getTradeName() + "%' AND ";
+                whereClause += "UPPER(TRADE_NAME) LIKE UPPER('%" + row.getTradeName() + "%') AND ";
             if (row.getIndication() != null)
-                whereClause += "INDICATION LIKE '%" + row.getIndication() + "%' AND ";
+                whereClause += "UPPER(INDICATION) LIKE UPPER('%" + row.getIndication() + "%') AND ";
             if (row.getMarketed() != null)
                 whereClause += "IS_MARKETED_FLAG ='" + row.getMarketed() + "' AND ";
             if (row.getDesignee() != null)
@@ -296,8 +323,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for CrsStateVO.
      * @return CrsStateVO
      */
-    public ViewObjectImpl getCrsStateVO() {
-        return (ViewObjectImpl)findViewObject("CrsStateVO");
+    public CrsStateVOImpl getCrsStateVO() {
+        return (CrsStateVOImpl) findViewObject("CrsStateVO");
     }
 
     /**
@@ -768,8 +795,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for CrsContentBaseVO1.
      * @return CrsContentBaseVO1
      */
-    public ViewObjectImpl getCrsContentBaseVO() {
-        return (ViewObjectImpl)findViewObject("CrsContentBaseVO");
+    public CrsContentBaseVOImpl getCrsContentBaseVO() {
+        return (CrsContentBaseVOImpl) findViewObject("CrsContentBaseVO");
     }
     
     /**
@@ -958,8 +985,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for FetchCrsContentBaseVO.
      * @return FetchCrsContentBaseVO
      */
-    public ViewObjectImpl getFetchCrsContentBaseVO() {
-        return (ViewObjectImpl)findViewObject("FetchCrsContentBaseVO");
+    public CrsContentBaseVOImpl getFetchCrsContentBaseVO() {
+        return (CrsContentBaseVOImpl) findViewObject("FetchCrsContentBaseVO");
     }
 
     /**
@@ -1059,8 +1086,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for UserRoleVO.
      * @return UserRoleVO
      */
-    public ViewObjectImpl getUserRoleVO() {
-        return (ViewObjectImpl)findViewObject("UserRoleVO");
+    public UserRoleVOImpl getUserRoleVO() {
+        return (UserRoleVOImpl) findViewObject("UserRoleVO");
     }
 
     /**
@@ -1306,5 +1333,511 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
                    }
             crsRiskRelationsiterator.closeRowSetIterator();
         }
+    }
+
+    /**
+     * Container's getter for VersionsVO1.
+     * @return VersionsVO1
+     */
+    public VersionsVOImpl getCrsVersions() {
+        return (VersionsVOImpl) findViewObject("CrsVersions");
+    }
+
+    /**
+     * Container's getter for CrsContentVoToVersionsVO1.
+     * @return CrsContentVoToVersionsVO1
+     */
+    public ViewLinkImpl getCrsContentVoToVersionsVO1() {
+        return (ViewLinkImpl) findViewLink("CrsContentVoToVersionsVO1");
+    }
+
+    /**
+     * Container's getter for VersionsVO1.
+     * @return VersionsVO1
+     */
+    public VersionsVOImpl getCrsBaseVersions() {
+        return (VersionsVOImpl) findViewObject("CrsBaseVersions");
+    }
+
+    /**
+     * Container's getter for CrsContentBaseVoToVersionsVO1.
+     * @return CrsContentBaseVoToVersionsVO1
+     */
+    public ViewLinkImpl getCrsContentBaseVoToVersionsVO1() {
+        return (ViewLinkImpl) findViewLink("CrsContentBaseVoToVersionsVO1");
+    }
+
+
+    /**
+     * Container's getter for CRSVersionCompareVO1.
+     * @return CRSVersionCompareVO1
+     */
+    public CRSVersionCompareVOImpl getCrsVersionCompare() {
+        return (CRSVersionCompareVOImpl) findViewObject("CrsVersionCompare");
+    }
+    
+    public void executeCrsVersionCompare(){
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        Integer crsId = null;
+        String earliestDate = null;
+        String earliestReason = null;
+        String latestDate = null;
+        String latestReason = null;
+        VersionsVOImpl versionsVOImpl = this.getCrsVersions();
+        Row[] selectedRows = versionsVOImpl.getFilteredRows("SelectRow", true);
+        
+        if(selectedRows.length == 1){
+            VersionsVORowImpl versionsVORowImpl = (VersionsVORowImpl)selectedRows[0];
+            crsId = new Integer(versionsVORowImpl.getCrsId().intValue());
+            earliestDate = df.format( new java.util.Date(versionsVORowImpl.getCrsEffectiveDt().getTime()));
+            earliestReason = versionsVORowImpl.getReasonForChange();
+        }else if(selectedRows.length == 2){
+            VersionsVORowImpl versionsVORowImpl = (VersionsVORowImpl)selectedRows[0];
+            crsId = new Integer(versionsVORowImpl.getCrsId().intValue());
+            earliestDate = df.format( new java.util.Date(versionsVORowImpl.getCrsEffectiveDt().getTime()));
+            earliestReason = versionsVORowImpl.getReasonForChange();
+            
+            VersionsVORowImpl versionsVORowImpl1 = (VersionsVORowImpl)selectedRows[1];           
+            latestDate = df.format( new java.util.Date(versionsVORowImpl1.getCrsEffectiveDt().getTime()));;
+            latestReason = versionsVORowImpl1.getReasonForChange();
+        }
+        createVersions(crsId,earliestDate,earliestReason,latestDate,latestReason);
+        
+       CRSVersionCompareVOImpl cRSVersionCompareVOImpl = this.getCrsVersionCompare();
+        cRSVersionCompareVOImpl.setbindCrsId(crsId);
+        cRSVersionCompareVOImpl.setbindEarliestDate(earliestDate);
+        cRSVersionCompareVOImpl.setbindEarliestReason(earliestReason);
+        cRSVersionCompareVOImpl.setbindLatestDate(latestDate);
+        cRSVersionCompareVOImpl.setbindLatestReason(latestReason);
+        cRSVersionCompareVOImpl.executeQuery();
+        
+         CRSVersionEarlierstNameVOImpl cRSVersionEarlierstNameVOImpl = this.getCRSVersionEarlierstName();
+         cRSVersionEarlierstNameVOImpl.setbindCrsId(crsId);
+         cRSVersionEarlierstNameVOImpl.setbindEarliestDate(earliestDate);
+         cRSVersionEarlierstNameVOImpl.setbindEarliestReason(earliestReason);
+         cRSVersionEarlierstNameVOImpl.setbindLatestDate(latestDate);
+         cRSVersionEarlierstNameVOImpl.setbindLatestReason(latestReason);
+         cRSVersionEarlierstNameVOImpl.executeQuery();
+         
+        CRSVersionLatestNameVOImpl cRSVersionLatestNameVOImpl = this.getCRSVersionLatestName();
+        cRSVersionLatestNameVOImpl.setbindCrsId(crsId);
+        cRSVersionLatestNameVOImpl.setbindEarliestDate(earliestDate);
+        cRSVersionLatestNameVOImpl.setbindEarliestReason(earliestReason);
+        cRSVersionLatestNameVOImpl.setbindLatestDate(latestDate);
+        cRSVersionLatestNameVOImpl.setbindLatestReason(latestReason);
+        cRSVersionLatestNameVOImpl.executeQuery();
+    }
+    
+    public void executeCrsVersionPublishedPendingCompare(Long crsId, String releaseStatus, String isCurrentPublished){
+        if("P".equalsIgnoreCase(releaseStatus)){
+        createPendingVersions(crsId);
+        
+       CRSVersionComparePendingViewImpl cRSVersionComparePendingVOImpl = this.getCRSVersionComparePending();
+        cRSVersionComparePendingVOImpl.setbindCrsId(new Integer(crsId.intValue()));
+        cRSVersionComparePendingVOImpl.executeQuery();
+        
+            CRSVersionEarlierstNameVOImpl cRSVersionEarlierstNameVOImpl = this.getCRSVersionEarlierstName();
+            cRSVersionEarlierstNameVOImpl.setbindCrsId(crsId.intValue());
+            cRSVersionEarlierstNameVOImpl.setbindEarliestDate(null);
+            cRSVersionEarlierstNameVOImpl.setbindEarliestReason(null);
+            cRSVersionEarlierstNameVOImpl.setbindLatestDate(null);
+            cRSVersionEarlierstNameVOImpl.setbindLatestReason(null);
+            cRSVersionEarlierstNameVOImpl.executeQuery();
+            
+            CRSVersionLatestNameVOImpl cRSVersionLatestNameVOImpl = this.getCRSVersionLatestName();
+            cRSVersionLatestNameVOImpl.setbindCrsId(crsId.intValue());
+            cRSVersionLatestNameVOImpl.setbindEarliestDate(null);
+            cRSVersionLatestNameVOImpl.setbindEarliestReason(null);
+            cRSVersionLatestNameVOImpl.setbindLatestDate(null);
+            cRSVersionLatestNameVOImpl.setbindLatestReason(null);
+            cRSVersionLatestNameVOImpl.executeQuery();
+        }else{
+            if((isCurrentPublished != null) && ("Y".equalsIgnoreCase(isCurrentPublished))){
+            String earliestDate = null;
+            String earliestReason = null;
+            String latestDate = null;
+            String latestReason = null;
+       
+            createCurrentSingleVersions(crsId.intValue());           
+            CRSVersionCompareVOImpl cRSVersionCompareVOImpl = this.getCrsVersionCompare();
+            cRSVersionCompareVOImpl.setbindCrsId(crsId.intValue());
+            cRSVersionCompareVOImpl.setbindEarliestDate(earliestDate);
+            cRSVersionCompareVOImpl.setbindEarliestReason(earliestReason);
+            cRSVersionCompareVOImpl.setbindLatestDate(latestDate);
+            cRSVersionCompareVOImpl.setbindLatestReason(latestReason);
+            cRSVersionCompareVOImpl.executeQuery();
+            
+                CRSVersionEarlierstNameVOImpl cRSVersionEarlierstNameVOImpl = this.getCRSVersionEarlierstName();
+                cRSVersionEarlierstNameVOImpl.setbindCrsId(crsId.intValue());
+                cRSVersionEarlierstNameVOImpl.setbindEarliestDate(earliestDate);
+                cRSVersionEarlierstNameVOImpl.setbindEarliestReason(earliestReason);
+                cRSVersionEarlierstNameVOImpl.setbindLatestDate(latestDate);
+                cRSVersionEarlierstNameVOImpl.setbindLatestReason(latestReason);
+                cRSVersionEarlierstNameVOImpl.executeQuery();
+                
+                CRSVersionLatestNameVOImpl cRSVersionLatestNameVOImpl = this.getCRSVersionLatestName();
+                cRSVersionLatestNameVOImpl.setbindCrsId(crsId.intValue());
+                cRSVersionLatestNameVOImpl.setbindEarliestDate(earliestDate);
+                cRSVersionLatestNameVOImpl.setbindEarliestReason(earliestReason);
+                cRSVersionLatestNameVOImpl.setbindLatestDate(latestDate);
+                cRSVersionLatestNameVOImpl.setbindLatestReason(latestReason);
+                cRSVersionLatestNameVOImpl.executeQuery();
+                
+            }
+        }
+    }
+    
+    public void executeBaseCrsVersionCompare(){
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        Integer crsId = null;
+        String earliestDate = null;
+        String earliestReason = null;
+        String latestDate = null;
+        String latestReason = null;
+        VersionsVOImpl versionsVOImpl = this.getCrsBaseVersions();
+        Row[] selectedRows = versionsVOImpl.getFilteredRows("SelectRow", true);
+        
+        if(selectedRows.length == 1){
+            VersionsVORowImpl versionsVORowImpl = (VersionsVORowImpl)selectedRows[0];
+            crsId = new Integer(versionsVORowImpl.getCrsId().intValue());
+            earliestDate = df.format( new java.util.Date(versionsVORowImpl.getCrsEffectiveDt().getTime()));
+            earliestReason = versionsVORowImpl.getReasonForChange();
+        }else if(selectedRows.length == 2){
+            VersionsVORowImpl versionsVORowImpl = (VersionsVORowImpl)selectedRows[0];
+            crsId = new Integer(versionsVORowImpl.getCrsId().intValue());
+            earliestDate = df.format( new java.util.Date(versionsVORowImpl.getCrsEffectiveDt().getTime()));
+            earliestReason = versionsVORowImpl.getReasonForChange();
+            
+            VersionsVORowImpl versionsVORowImpl1 = (VersionsVORowImpl)selectedRows[1];           
+            latestDate = df.format( new java.util.Date(versionsVORowImpl1.getCrsEffectiveDt().getTime()));;
+            latestReason = versionsVORowImpl1.getReasonForChange();
+        }
+        createVersions(crsId,earliestDate,earliestReason,latestDate,latestReason);
+        
+        CRSVersionCompareVOImpl cRSVersionCompareVOImpl = this.getCrsVersionCompare();
+        cRSVersionCompareVOImpl.setbindCrsId(crsId);
+        cRSVersionCompareVOImpl.setbindEarliestDate(earliestDate);
+        cRSVersionCompareVOImpl.setbindEarliestReason(earliestReason);
+        cRSVersionCompareVOImpl.setbindLatestDate(latestDate);
+        cRSVersionCompareVOImpl.setbindLatestReason(latestReason);
+        cRSVersionCompareVOImpl.executeQuery();
+        
+        CRSVersionEarlierstNameVOImpl cRSVersionEarlierstNameVOImpl = this.getCRSVersionEarlierstName();
+        cRSVersionEarlierstNameVOImpl.setbindCrsId(crsId);
+        cRSVersionEarlierstNameVOImpl.setbindEarliestDate(earliestDate);
+        cRSVersionEarlierstNameVOImpl.setbindEarliestReason(earliestReason);
+        cRSVersionEarlierstNameVOImpl.setbindLatestDate(latestDate);
+        cRSVersionEarlierstNameVOImpl.setbindLatestReason(latestReason);
+        cRSVersionEarlierstNameVOImpl.executeQuery();
+        
+        CRSVersionLatestNameVOImpl cRSVersionLatestNameVOImpl = this.getCRSVersionLatestName();
+        cRSVersionLatestNameVOImpl.setbindCrsId(crsId);
+        cRSVersionLatestNameVOImpl.setbindEarliestDate(earliestDate);
+        cRSVersionLatestNameVOImpl.setbindEarliestReason(earliestReason);
+        cRSVersionLatestNameVOImpl.setbindLatestDate(latestDate);
+        cRSVersionLatestNameVOImpl.setbindLatestReason(latestReason);
+        cRSVersionLatestNameVOImpl.executeQuery();
+    }
+    
+    public void createVersions(Integer crsId, String earliestDate, String earliestReason, String latestDate, String latestReason){
+        OracleCallableStatement cstmt = null;
+        String cs = null;
+        DBTransaction txn = getDBTransaction();
+        ADFContext adfCtx = ADFContext.getCurrent(); 
+        SecurityContext secCntx = adfCtx.getSecurityContext(); 
+        cs = "{call p_crs_versions_compare.s_insert_crs_versions(?,?,?,?,?,?)}";
+        cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
+        try {
+            cstmt.setString(1, secCntx.getUserName().toUpperCase());
+            cstmt.setNUMBER(2, new oracle.jbo.domain.Number(crsId));
+            cstmt.setString(3, earliestDate);
+            cstmt.setString(4, earliestReason);
+            cstmt.setString(5, latestDate);
+            cstmt.setString(6, latestReason);
+            cstmt.execute();
+        } catch (Exception e) {
+           //e.printStackTrace();
+        } finally {
+            try {
+                if (cstmt != null && !cstmt.isClosed())
+                    cstmt.close();
+            } catch (Exception e) {
+                throw new JboException(e);
+            }
+        }
+    }
+    
+    public void createPendingVersions(Long crsId){
+        OracleCallableStatement cstmt = null;
+        String cs = null;
+        DBTransaction txn = getDBTransaction();
+        ADFContext adfCtx = ADFContext.getCurrent(); 
+        SecurityContext secCntx = adfCtx.getSecurityContext(); 
+        cs = "{call p_crs_versions_compare.s_insert_crs_versions_pending(?,?,?,?)}";
+        cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
+        try {
+            String userName = secCntx.getUserName();
+            Integer crsIdNumber = crsId.intValue();
+            cstmt.setString(1, userName.toUpperCase());
+            cstmt.setNUMBER(2, new oracle.jbo.domain.Number(crsIdNumber));
+            cstmt.setString(3, null);
+            cstmt.setString(4, null);
+            cstmt.execute();
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                if (cstmt != null && !cstmt.isClosed())
+                    cstmt.close();
+            } catch (Exception e) {
+                throw new JboException(e);
+            }
+        }
+    }
+    
+    public void createCurrentSingleVersions(Integer crsId){
+        OracleCallableStatement cstmt = null;
+        String cs = null;
+        DBTransaction txn = getDBTransaction();
+        ADFContext adfCtx = ADFContext.getCurrent(); 
+        SecurityContext secCntx = adfCtx.getSecurityContext(); 
+        cs = "{call p_crs_versions_compare.s_insert_crs_versions_anterior(?,?,?,?)}";
+        cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
+        try {
+            String userName = secCntx.getUserName();
+            Integer crsIdNumber = crsId.intValue();
+            cstmt.setString(1, userName.toUpperCase());
+            cstmt.setNUMBER(2, new oracle.jbo.domain.Number(crsIdNumber));
+            cstmt.setString(3, null);
+            cstmt.setString(4, null);
+            cstmt.execute();
+        } catch (Exception e) {
+           e.printStackTrace();
+        } finally {
+            try {
+                if (cstmt != null && !cstmt.isClosed())
+                    cstmt.close();
+            } catch (Exception e) {
+            }
+        }
+    }
+    
+    public void deleteVersions(){
+        VersionsVOImpl versionsVOImpl = this.getCrsBaseVersions();
+        Row[] selectedRows = versionsVOImpl.getFilteredRows("SelectRow", true);
+        VersionsVORowImpl versionsVORowImpl = (VersionsVORowImpl)selectedRows[0];
+        Integer crsId = new Integer(versionsVORowImpl.getCrsId().intValue());
+        OracleCallableStatement cstmt = null;
+        String cs = null;
+        DBTransaction txn = getDBTransaction();
+        ADFContext adfCtx = ADFContext.getCurrent(); 
+        SecurityContext secCntx = adfCtx.getSecurityContext(); 
+        cs = "{call p_crs_versions_compare.s_crs_compare_delete(?,?)}";
+        cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
+        try {
+            cstmt.setString(1, secCntx.getUserName().toUpperCase());
+            cstmt.setNUMBER(2, new oracle.jbo.domain.Number(crsId));
+            cstmt.execute();
+            txn.commit();
+        } catch (Exception e) {
+           //e.printStackTrace();
+           txn.rollback();
+        } finally {
+            try {
+                if (cstmt != null && !cstmt.isClosed())
+                    cstmt.close();
+            } catch (Exception e) {
+                throw new JboException(e);
+            }
+        }
+    }
+
+
+    public Boolean isMultiVersionsAvailable(){
+        if(this.getCrsBaseVersions().getRowCount() > 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public String isMultiVersionsAvailableString(){
+        if(this.getCrsBaseVersions().getRowCount() > 1){
+            return "Z";
+        }else if(this.getCrsBaseVersions().getRowCount() == 1){
+            return "Y";
+        }else{
+            return "N";
+        }
+    }
+
+    /**
+     * Container's getter for CRSVersionEarlierstNameVO1.
+     * @return CRSVersionEarlierstNameVO1
+     */
+    public CRSVersionEarlierstNameVOImpl getCRSVersionEarlierstName() {
+        return (CRSVersionEarlierstNameVOImpl) findViewObject("CRSVersionEarlierstName");
+    }
+
+    /**
+     * Container's getter for CRSVersionLatestNameVO1.
+     * @return CRSVersionLatestNameVO1
+     */
+    public CRSVersionLatestNameVOImpl getCRSVersionLatestName() {
+        return (CRSVersionLatestNameVOImpl) findViewObject("CRSVersionLatestName");
+    }
+
+    /**
+     * Container's getter for CrsExportPTCurrentVO1.
+     * @return CrsExportPTCurrentVO1
+     */
+    public CrsExportPTCurrentVOImpl getCrsExportPTCurrent() {
+        return (CrsExportPTCurrentVOImpl) findViewObject("CrsExportPTCurrent");
+    }
+
+    /**
+     * Container's getter for CrsContentBaseVoToCrsExportPTCurrentVO1.
+     * @return CrsContentBaseVoToCrsExportPTCurrentVO1
+     */
+    public ViewLinkImpl getCrsContentBaseVoToCrsExportPTCurrentVO1() {
+        return (ViewLinkImpl) findViewLink("CrsContentBaseVoToCrsExportPTCurrentVO1");
+    }
+
+    /**
+     * Container's getter for CrsExportPTPending1.
+     * @return CrsExportPTPending1
+     */
+    public CrsExportPTPendingImpl getCrsExportPTPending() {
+        return (CrsExportPTPendingImpl) findViewObject("CrsExportPTPending");
+    }
+
+    /**
+     * Container's getter for CrsContentVoToCrsExportPTCurrentVO1.
+     * @return CrsContentVoToCrsExportPTCurrentVO1
+     */
+    public ViewLinkImpl getCrsContentVoToCrsExportPTCurrentVO1() {
+        return (ViewLinkImpl) findViewLink("CrsContentVoToCrsExportPTCurrentVO1");
+    }
+    
+    public String findStateDescription(Number stateId){
+        CrsStateVOImpl vo = this.getCrsStateVO();
+        Row[] rows = vo.findByKey(new Key(new Object[]{stateId}), 1);
+        if(rows.length > 0){
+            CrsStateVORowImpl crsStateVORowImpl = (CrsStateVORowImpl)rows[0];
+            return crsStateVORowImpl.getStateName();
+        }else{
+        return null;
+        }
+    }
+    
+    public String findRoleDescription(String role, String userName){
+        UserRoleVOImpl vo = this.getUserRoleVO1();
+        vo.setroleName(role);
+        vo.executeQuery();
+        Row[] rows = vo.findByKey(new Key(new Object[]{userName}), 1);
+        if(rows.length > 0){
+            UserRoleVORowImpl userRoleVORowImpl = (UserRoleVORowImpl)rows[0];
+            return userRoleVORowImpl.getFullName();
+        }else{
+        return null;
+        }
+    }
+
+    /**
+     * Container's getter for UserRoleVO1.
+     * @return UserRoleVO1
+     */
+    public UserRoleVOImpl getUserRoleVO1() {
+        return (UserRoleVOImpl) findViewObject("UserRoleVO1");
+    }
+
+    /**
+     * Container's getter for CrsExportPTCurrentVO1.
+     * @return CrsExportPTCurrentVO1
+     */
+    public CrsExportPTCurrentVOImpl getCrsExportPTCurrentDetail() {
+        return (CrsExportPTCurrentVOImpl) findViewObject("CrsExportPTCurrentDetail");
+    }
+
+    /**
+     * Container's getter for CrsContentBaseVoToCrsExportPTCurrentVO2.
+     * @return CrsContentBaseVoToCrsExportPTCurrentVO2
+     */
+    public ViewLinkImpl getCrsContentBaseVoToCrsExportPTCurrentVO2() {
+        return (ViewLinkImpl) findViewLink("CrsContentBaseVoToCrsExportPTCurrentVO2");
+    }
+
+    /**
+     * Container's getter for CrsExportPTPending1.
+     * @return CrsExportPTPending1
+     */
+    public CrsExportPTPendingImpl getCrsExportPTPendingDetail() {
+        return (CrsExportPTPendingImpl) findViewObject("CrsExportPTPendingDetail");
+    }
+
+    /**
+     * Container's getter for CrsContentVoToCrsExportPTCurrentVO2.
+     * @return CrsContentVoToCrsExportPTCurrentVO2
+     */
+    public ViewLinkImpl getCrsContentVoToCrsExportPTCurrentVO2() {
+        return (ViewLinkImpl) findViewLink("CrsContentVoToCrsExportPTCurrentVO2");
+    }
+
+    /**
+     * Container's getter for CRSVersionComparePendingView1.
+     * @return CRSVersionComparePendingView1
+     */
+    public CRSVersionComparePendingViewImpl getCRSVersionComparePending() {
+        return (CRSVersionComparePendingViewImpl) findViewObject("CRSVersionComparePending");
+    }
+
+    /**
+     * Container's getter for CrsBatchJobVO1.
+     * @return CrsBatchJobVO1
+     */
+    public CrsBatchJobVOImpl getCrsBatchJob() {
+        return (CrsBatchJobVOImpl) findViewObject("CrsBatchJob");
+    }
+    
+    public void initJobSchedule(){
+        CrsBatchJobVOImpl  crsBatchJobVOImpl = this.getCrsBatchJob();
+        CrsBatchJobVORowImpl row = (CrsBatchJobVORowImpl)crsBatchJobVOImpl.first();
+        if((row == null) || (!("IN_PROGRESS".equalsIgnoreCase(row.getJobStatus())))){
+            CrsBatchJobVORowImpl newRow = (CrsBatchJobVORowImpl)crsBatchJobVOImpl.createRow();
+            crsBatchJobVOImpl.insertRow(newRow);
+        }else{
+            crsBatchJobVOImpl.setCurrentRow(row);
+        }
+    }
+
+    /**
+     * Container's getter for MedDraDefinitionExitsVO1.
+     * @return MedDraDefinitionExitsVO1
+     */
+    public MedDraDefinitionExitsVOImpl getMedDraDefinitionExits() {
+        return (MedDraDefinitionExitsVOImpl) findViewObject("MedDraDefinitionExits");
+    }
+    
+    public String executeMedraExistsQuery(){
+        CrsRiskVORowImpl row = (CrsRiskVORowImpl)this.getCrsRiskVO().getCurrentRow();
+        MedDraDefinitionExitsVOImpl medraExistsVO =  this.getMedDraDefinitionExits();
+        System.out.println("---row.getCrsId().toString()----"+row.getCrsId().toString());
+        System.out.println("---row.getSafetyTopicOfInterest()----"+row.getSafetyTopicOfInterest());
+        if(row != null){
+        medraExistsVO.setbindCrsId(row.getCrsId().toString());
+        medraExistsVO.setbindSafetyTopic(row.getSafetyTopicOfInterest());
+        medraExistsVO.executeQuery();
+        MedDraDefinitionExitsVORowImpl medraExists = (MedDraDefinitionExitsVORowImpl)medraExistsVO.first();
+        return medraExists.getRiskDefinitionExists();
+        }
+        return null;
+    }
+
+    /**
+     * Container's getter for DomainLOVVO1.
+     * @return DomainLOVVO1
+     */
+    public ViewObjectImpl getDomainLOV() {
+        return (ViewObjectImpl) findViewObject("DomainLOV");
     }
 }

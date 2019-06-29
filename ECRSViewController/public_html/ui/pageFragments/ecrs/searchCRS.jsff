@@ -191,6 +191,12 @@
                                     visible="false"/>-->
           <af:commandButton text="#{ecrsviewcontrollerBundle.SEARCH}" id="cb1"
                             actionListener="#{pageFlowScope.manageCRSBean.onClickSearch}"/>
+            <af:commandButton text="Completion Guideline" id="cb31" immediate="true" rendered="#{pageFlowScope.flowType eq 'U'}">
+                  <af:showPopupBehavior popupId="p13"/>
+                </af:commandButton>
+                <af:commandButton text="Completion Guideline" id="cb8" immediate="true" rendered="#{pageFlowScope.flowType eq 'S'}">
+                  <af:showPopupBehavior popupId="p14"/>
+                </af:commandButton>
           <f:facet name="separator">
             <af:spacer width="20" height="10" id="s2"/>
           </f:facet>
@@ -284,7 +290,13 @@
             <af:convertDateTime pattern="dd-MMM-yyy HH:mm:ss"/>
           </af:outputText>
         </af:column>
-        <af:column headerText="#{ecrsviewcontrollerBundle.ACTION}" sortable="false" id="c26"
+        <af:column headerText="Last Publish Date" id="c24">
+          <af:outputText value="#{row.LastSyncDate}" shortDesc="#{bindings.CrsContentBaseVO.hints.LastSyncDate.tooltip}"
+                         id="ot24">
+           <af:convertDateTime pattern="dd-MMM-yyy HH:mm:ss"/>
+          </af:outputText>
+        </af:column>
+                <af:column headerText="#{ecrsviewcontrollerBundle.ACTION}" sortable="false" id="c26"
                    rendered="#{pageFlowScope.flowType eq 'U' and (securityContext.userInRole['CRS_BSL'] or securityContext.userInRole['CRS_ADMIN'])}"
                    align="center" width="80">
           <af:switcher id="s6" facetName="#{row.StateId eq 8 ?  'RETIRE' : 'REACTIVATE'}" defaultFacet="RETIRE">
@@ -317,12 +329,6 @@
         <af:column sortProperty="#{bindings.CrsContentVO.hints.CrsName.name}" sortable="false"
                    headerText="#{ecrsviewcontrollerBundle.CRS_NAME}" id="c1" width="100">
           <af:outputText value="#{row.CrsName}" shortDesc="#{bindings.CrsContentVO.hints.CrsName.tooltip}" id="ot1"/>
-        </af:column>
-        <af:column headerText="Last Sync Date" id="c11">
-          <af:outputText value="#{row.LastSyncDate}" shortDesc="#{bindings.CrsContentVO.hints.LastSyncDate.tooltip}"
-                         id="ot21">
-             <af:convertDateTime pattern="dd-MMM-yyy HH:mm:ss"/>
-          </af:outputText>
         </af:column>
         <af:column sortProperty="#{bindings.CrsContentVO.hints.StateId.name}" sortable="false"
                    headerText="#{ecrsviewcontrollerBundle.STATE}" id="c2" width="50">
@@ -396,7 +402,13 @@
             </af:column>-->
         <af:column id="c27" headerText="#{ecrsviewcontrollerBundle.RELEASE_DATE}">
           <af:outputText value="#{row.CrsEffectiveDt}" id="ot20"
-                         visible="#{!(row.bindings.ReasonForChange.inputValue eq 'None' or row.bindings.ReasonForChange.inputValue eq 'Initial Version')}">
+                         visible="#{(!(row.bindings.ReasonForChange.inputValue eq 'None' or row.bindings.ReasonForChange.inputValue eq 'Initial Version')) and (pageFlowScope.manageCRSBean.currReleaseStatus ne 'P')}">
+            <af:convertDateTime pattern="dd-MMM-yyy HH:mm:ss"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="Last Publish Date" id="c11">
+          <af:outputText value="#{row.LastSyncDate}" shortDesc="#{bindings.CrsContentVO.hints.LastSyncDate.tooltip}"
+                         id="ot21">
             <af:convertDateTime pattern="dd-MMM-yyy HH:mm:ss"/>
           </af:outputText>
         </af:column>
@@ -528,4 +540,21 @@
       </af:panelGroupLayout>
     </af:dialog>
   </af:popup>
+  <af:popup childCreation="deferred" autoCancel="disabled" id="p13" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw2" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Update Search CRS Page Completion Guidelines">
+        <af:inlineFrame id="if2" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 05 UPDATE SEARCH CRS PAGE.pdf'}"
+                        shortDesc="Update Search CRS Page Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
+    
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p14" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw1" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Search CRS Page Completion Guidelines">
+        <af:inlineFrame id="if1" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 09 BROWSE SEARCH CRS PAGE.pdf'}"
+                        shortDesc="Update Search CRS Page Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
 </jsp:root>

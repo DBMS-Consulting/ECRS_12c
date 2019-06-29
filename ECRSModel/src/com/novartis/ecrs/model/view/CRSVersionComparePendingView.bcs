@@ -1,0 +1,12 @@
+//Groovy Scripts for com.novartis.ecrs.model.view.CRSVersionComparePendingView
+
+package com.novartis.ecrs.model.view
+
+import oracle.jbo.script.annotation.VariableExpression;
+
+@VariableExpression(path="bindUserId")
+def bindUserId_VariableScript_Variable()
+{
+adf.context.securityContext.getUserName()
+}
+

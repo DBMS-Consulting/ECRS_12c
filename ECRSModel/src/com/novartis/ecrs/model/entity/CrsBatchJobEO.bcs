@@ -1,0 +1,12 @@
+//Groovy Scripts for com.novartis.ecrs.model.entity.CrsBatchJobEO
+
+package com.novartis.ecrs.model.entity
+
+import oracle.jbo.script.annotation.TransientValueExpression;
+
+@TransientValueExpression(attributeName="JobId")
+def JobId_ExpressionScript_Expression()
+{
+(new oracle.jbo.server.SequenceImpl("CRS_BATCH_JOB_ID_SEQ",adf.object.getDBTransaction())).getSequenceNumber()
+}
+

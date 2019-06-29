@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CRSVersionLatestNameVO"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.novartis.ecrs.model.view.CRSVersionLatestNameVORowImpl"
+  ComponentClass="com.novartis.ecrs.model.view.CRSVersionLatestNameVOImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="bindCrsId"
+    Kind="where"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="bindEarliestDate"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="bindEarliestReason"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="bindLatestDate"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="bindLatestReason"
+    Kind="where"
+    Type="java.lang.String"/>
+  <Variable
+    Name="bindUserId"
+    Kind="where"
+    Type="java.lang.String">
+    <TransientExpression
+      Name="VariableScript"
+      CodeSourceName="CRSVersionLatestNameVO"/>
+  </Variable>
+  <SQLQuery><![CDATA[SELECT LATEST_CRS_NAME, LATEST_CRS_VERSION_START_DATE, LATEST_MED_VERSION_DICTIONARY  
+FROM TABLE(P_CRS_VERSIONS_COMPARE.f_crs_versions_compare             
+  (puserID      => :bindUserId,         
+    pCrsID         => :bindCrsId,           
+    PEarliestDate   => :bindEarliestDate,           
+    PEarliestReason => :bindEarliestReason,           
+    PLatestDate     => :bindLatestDate,           
+    pLatestReason   => :bindLatestReason          
+    ))  
+GROUP BY LATEST_CRS_NAME, LATEST_CRS_VERSION_START_DATE, LATEST_MED_VERSION_DICTIONARY  
+ORDER BY LATEST_MED_VERSION_DICTIONARY]]></SQLQuery>
+  <ViewAttribute
+    Name="LatestCrsName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_CRS_NAME"
+    Expression="LATEST_CRS_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestCrsVersionStartDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_CRS_VERSION_START_DATE"
+    Expression="LATEST_CRS_VERSION_START_DATE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestMedVersionDictionary"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_MED_VERSION_DICTIONARY"
+    Expression="LATEST_MED_VERSION_DICTIONARY"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="5"/>
+    </DesignTime>
+  </ViewAttribute>
+</ViewObject>

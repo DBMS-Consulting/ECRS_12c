@@ -87,6 +87,7 @@
           <Item Value="CrsEffectiveDt"/>
           <Item Value="ReasonForChange"/>
           <Item Value="LastSyncDate"/>
+          <Item Value="CrsPendingPublished"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -123,6 +124,8 @@
           <Item Value="ModificationTs"/>
           <Item Value="CreationTs"/>
           <Item Value="CrsEffectiveDt"/>
+          <Item Value="LastSyncDate"/>
+          <Item Value="CrsCurrentPublished"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -166,5 +169,28 @@
         <Item Value="CompoundType"/>
       </AttrNames>
     </attributeValues>
+    <methodAction id="isMultiVersionsAvailable" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isMultiVersionsAvailable" IsViewObjectMethod="false"
+                  DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.isMultiVersionsAvailable.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.isMultiVersionsAvailable_isMultiVersionsAvailable_dataControl_dataProvider_isMultiVersionsAvailable_result"/>
+    <methodAction id="isMultiVersionsAvailableString" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isMultiVersionsAvailableString" IsViewObjectMethod="false"
+                  DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.isMultiVersionsAvailableString.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.isMultiVersionsAvailableString_isMultiVersionsAvailableString_dataControl_dataProvider_isMultiVersionsAvailableString_result"/>
+    <methodAction id="findStateDescription" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findStateDescription" IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.findStateDescription.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.findStateDescription_findStateDescription_dataControl_dataProvider_findStateDescription_result">
+      <NamedData NDName="stateId" NDType="java.lang.Number"/>
+    </methodAction>
+    <methodAction id="findRoleDescription" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findRoleDescription" IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.findRoleDescription.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.findRoleDescription_findRoleDescription_dataControl_dataProvider_findRoleDescription_result">
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="userName" NDType="java.lang.String"/>
+    </methodAction>
   </bindings>
 </pageDefinition>

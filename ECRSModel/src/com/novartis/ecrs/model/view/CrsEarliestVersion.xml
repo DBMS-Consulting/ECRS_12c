@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="CrsEarliestVersion"
+  Version="12.2.1.12.24"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="com.novartis.ecrs.model.view.CrsEarliestVersionRowImpl"
+  ComponentClass="com.novartis.ecrs.model.view.CrsEarliestVersionImpl"
+  PageIterMode="Full">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="com.novartis.ecrs.model.view.CrsEarliestVersion_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery><![CDATA[SELECT CRS_ID,  
+EARLIEST_SAFETY_TOPIC,  
+EARLIEST_SPP,  
+EARLIEST_SPP_COLOR,  
+EARLIEST_DSUR,  
+EARLIEST_DSUR_COLOR,  
+EARLIEST_RMP,  
+EARLIEST_RMP_COLOR,  
+EARLIEST_PSUR,  
+EARLIEST_PSUR_COLOR,  
+EARLIEST_IB,  
+EARLIEST_IB_COLOR,  
+EARLIEST_CDS,  
+EARLIEST_CDS_COLOR,  
+EARLIEST_OTHER_SEARCH,  
+EARLIEST_OTHER_SEARCH_COLOR,  
+EARLIEST_MISSING_INFORMATION,  
+EARLIEST_MISSING_INFORM_COLOR,  
+EARLIEST_EXPEDITING_RULES,  
+EARLIEST_EXPEDITING_RUL_COLOR,  
+EARLIEST_UNDERLYING_DISEASE,  
+EARLIEST_UNDERLYING_DIS_COLOR,  
+EARLIEST_AESI_FOR_NIS_PROTCOL,  
+EARLIEST_AESI_FR_NIS_PRO_CLR,  
+EARLIEST_AESI_NOT_RMP,  
+EARLIEST_AESI_NOT_RMP_COLOR,  
+EARLIEST_SOC,  
+EARLIEST_SOC_COLOR,  
+EARLIEST_DATA_DOMAIN,  
+EARLIEST_DATA_DOMAIN_COLOR,  
+EARLIEST_SEARCH_DETAILS,  
+EARLIEST_SEARCH_DETAILS_COLOR,  
+EARLIEST_MEDDRA_CODE,  
+EARLIEST_MEDDRA_CODE_COLOR,  
+EARLIEST_MEDDRA_TERM,  
+EARLIEST_MEDDRA_TERM_COLOR,  
+EARLIEST_MEDDRA_EXTENSION,  
+EARLIEST_MEDDRA_EXT_COLOR,  
+EARLIEST_MEDDRA_QUALIFIER,  
+EARLIEST_MEDDRA_QUAL_COLOR,  
+EARLIEST_NON_MEDDRA_COMP_CMT,  
+EARLIEST_NON_MED_COMP_CMT_CLR  
+FROM   TABLE(P_CRS_VERSIONS_COMPARE.f_crs_versions_compare  
+  (pCrsID         =>741, 
+    PEarliestDate   =>'01/04/2017', 
+    PEarliestReason =>'Reason Early Test1', 
+    PLatestDate     => '01/06/2017', 
+    pLatestReason   =>'Reason Early Test2' 
+    ))]]></SQLQuery>
+  <ViewAttribute
+    Name="CrsId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Integer"
+    ColumnType="INTEGER"
+    AliasName="CRS_ID"
+    Expression="CRS_ID"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="EarliestSafetyTopic"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SAFETY_TOPIC"
+    Expression="EARLIEST_SAFETY_TOPIC"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSpp"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SPP"
+    Expression="EARLIEST_SPP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSppColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SPP_COLOR"
+    Expression="EARLIEST_SPP_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestDsur"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_DSUR"
+    Expression="EARLIEST_DSUR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestDsurColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_DSUR_COLOR"
+    Expression="EARLIEST_DSUR_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestRmp"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_RMP"
+    Expression="EARLIEST_RMP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestRmpColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_RMP_COLOR"
+    Expression="EARLIEST_RMP_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestPsur"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_PSUR"
+    Expression="EARLIEST_PSUR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestPsurColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_PSUR_COLOR"
+    Expression="EARLIEST_PSUR_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestIb"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_IB"
+    Expression="EARLIEST_IB"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestIbColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_IB_COLOR"
+    Expression="EARLIEST_IB_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestCds"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_CDS"
+    Expression="EARLIEST_CDS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestCdsColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_CDS_COLOR"
+    Expression="EARLIEST_CDS_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestOtherSearch"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_OTHER_SEARCH"
+    Expression="EARLIEST_OTHER_SEARCH"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestOtherSearchColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_OTHER_SEARCH_COLOR"
+    Expression="EARLIEST_OTHER_SEARCH_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMissingInformation"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MISSING_INFORMATION"
+    Expression="EARLIEST_MISSING_INFORMATION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMissingInformColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MISSING_INFORM_COLOR"
+    Expression="EARLIEST_MISSING_INFORM_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestExpeditingRules"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_EXPEDITING_RULES"
+    Expression="EARLIEST_EXPEDITING_RULES"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestExpeditingRulColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_EXPEDITING_RUL_COLOR"
+    Expression="EARLIEST_EXPEDITING_RUL_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestUnderlyingDisease"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_UNDERLYING_DISEASE"
+    Expression="EARLIEST_UNDERLYING_DISEASE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestUnderlyingDisColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_UNDERLYING_DIS_COLOR"
+    Expression="EARLIEST_UNDERLYING_DIS_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestAesiForNisProtcol"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_AESI_FOR_NIS_PROTCOL"
+    Expression="EARLIEST_AESI_FOR_NIS_PROTCOL"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestAesiFrNisProClr"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_AESI_FR_NIS_PRO_CLR"
+    Expression="EARLIEST_AESI_FR_NIS_PRO_CLR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestAesiNotRmp"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_AESI_NOT_RMP"
+    Expression="EARLIEST_AESI_NOT_RMP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestAesiNotRmpColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_AESI_NOT_RMP_COLOR"
+    Expression="EARLIEST_AESI_NOT_RMP_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSoc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SOC"
+    Expression="EARLIEST_SOC"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSocColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SOC_COLOR"
+    Expression="EARLIEST_SOC_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestDataDomain"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="25"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_DATA_DOMAIN"
+    Expression="EARLIEST_DATA_DOMAIN"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="25"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestDataDomainColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_DATA_DOMAIN_COLOR"
+    Expression="EARLIEST_DATA_DOMAIN_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSearchDetails"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SEARCH_DETAILS"
+    Expression="EARLIEST_SEARCH_DETAILS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSearchDetailsColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SEARCH_DETAILS_COLOR"
+    Expression="EARLIEST_SEARCH_DETAILS_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMeddraCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="8"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="EARLIEST_MEDDRA_CODE"
+    Expression="EARLIEST_MEDDRA_CODE"
+    SQLType="INTEGER"/>
+  <ViewAttribute
+    Name="EarliestMeddraCodeColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MEDDRA_CODE_COLOR"
+    Expression="EARLIEST_MEDDRA_CODE_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMeddraTerm"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MEDDRA_TERM"
+    Expression="EARLIEST_MEDDRA_TERM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMeddraTermColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MEDDRA_TERM_COLOR"
+    Expression="EARLIEST_MEDDRA_TERM_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMeddraExtension"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MEDDRA_EXTENSION"
+    Expression="EARLIEST_MEDDRA_EXTENSION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="5"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMeddraExtColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MEDDRA_EXT_COLOR"
+    Expression="EARLIEST_MEDDRA_EXT_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMeddraQualifier"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="15"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MEDDRA_QUALIFIER"
+    Expression="EARLIEST_MEDDRA_QUALIFIER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="15"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestMeddraQualColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_MEDDRA_QUAL_COLOR"
+    Expression="EARLIEST_MEDDRA_QUAL_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestNonMeddraCompCmt"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_NON_MEDDRA_COMP_CMT"
+    Expression="EARLIEST_NON_MEDDRA_COMP_CMT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestNonMedCompCmtClr"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_NON_MED_COMP_CMT_CLR"
+    Expression="EARLIEST_NON_MED_COMP_CMT_CLR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="CrsId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

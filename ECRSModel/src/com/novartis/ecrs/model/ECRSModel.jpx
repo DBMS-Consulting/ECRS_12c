@@ -4,14 +4,15 @@
 <JboProject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="ECRSModel"
-  Version="11.1.2.64.36"
+  Version="12.2.1.12.24"
   SeparateXMLFiles="true"
   PackageName="com.novartis.ecrs.model">
   <DesignTime>
     <Attr Name="_jprName" Value="../../../../../ECRSModel.jpr"/>
     <Attr Name="_jbo.TypeMapEntries" Value="OracleApps"/>
-    <Attr Name="_NamedConnection" Value="ecrs"/>
+    <Attr Name="_NamedConnection" Value="CRSConn"/>
     <Attr Name="_appModuleNames0" Value="com.novartis.ecrs.model.am.ECRSAppModule"/>
+    <Attr Name="_appModuleNames1" Value="com.novartis.ecrs.model.am.AppModule"/>
   </DesignTime>
   <Containee
     Name="am"
@@ -35,6 +36,7 @@
     ObjectType="JboPackage">
     <DesignTime>
       <Attr Name="_EO" Value="true"/>
+      <Attr Name="_AS" Value="true"/>
     </DesignTime>
   </Containee>
   <Containee
@@ -93,8 +95,4 @@
       <Attr Name="_VO" Value="true"/>
     </DesignTime>
   </Containee>
-  <Containee
-    Name="view"
-    PackageName="view"
-    ObjectType="JboPackage"/>
 </JboProject>

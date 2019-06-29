@@ -26,7 +26,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setCrsId((Long)value);
+                obj.setCrsId((Long) value);
             }
         }
         ,
@@ -36,7 +36,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setCrsRiskId((Long)value);
+                obj.setCrsRiskId((Long) value);
             }
         }
         ,
@@ -46,7 +46,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setMqmComment((String)value);
+                obj.setMqmComment((String) value);
             }
         }
         ,
@@ -56,7 +56,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setNonMeddraComponentComment((String)value);
+                obj.setNonMeddraComponentComment((String) value);
             }
         }
         ,
@@ -66,7 +66,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setSafetyTopicOfInterest((String)value);
+                obj.setSafetyTopicOfInterest((String) value);
             }
         }
         ,
@@ -76,7 +76,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setSocDictContentEntryTs((Timestamp)value);
+                obj.setSocDictContentEntryTs((Timestamp) value);
             }
         }
         ,
@@ -86,7 +86,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setSocDictContentId((Long)value);
+                obj.setSocDictContentId((Long) value);
             }
         }
         ,
@@ -96,7 +96,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setSocTerm((String)value);
+                obj.setSocTerm((String) value);
             }
         }
         ,
@@ -116,7 +116,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setRiskPurposeList((String)value);
+                obj.setRiskPurposeList((String) value);
             }
         }
         ,
@@ -136,7 +136,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setDomainId((Integer)value);
+                obj.setDomainId((Integer) value);
             }
         }
         ,
@@ -186,7 +186,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setSearchCriteriaDetails((String)value);
+                obj.setSearchCriteriaDetails((String) value);
             }
         }
         ,
@@ -210,9 +210,9 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
         }
         ,
-        DomainLOVVA {
+        DomainOtherLOVVA {
             public Object get(CrsRiskRelationVORowImpl obj) {
-                return obj.getDomainLOVVA();
+                return obj.getDomainOtherLOVVA();
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
@@ -265,7 +265,7 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
     public static final int SEARCHCRITERIADETAILS = AttributesEnum.SearchCriteriaDetails.index();
     public static final int CRSRISKDEFINITIONSVO = AttributesEnum.CrsRiskDefinitionsVO.index();
     public static final int SOCLOVO = AttributesEnum.SocLOVO.index();
-    public static final int DOMAINLOVVA = AttributesEnum.DomainLOVVA.index();
+    public static final int DOMAINOTHERLOVVA = AttributesEnum.DomainOtherLOVVA.index();
 
     /**
      * This is the default constructor (do not remove).
@@ -568,10 +568,10 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
     }
 
     /**
-     * Gets the view accessor <code>RowSet</code> DomainLOVVA.
+     * Gets the view accessor <code>RowSet</code> DomainOtherLOVVA.
      */
-    public RowSet getDomainLOVVA() {
-        return (RowSet)getAttributeInternal(DOMAINLOVVA);
+    public RowSet getDomainOtherLOVVA() {
+        return (RowSet) getAttributeInternal(DOMAINOTHERLOVVA);
     }
 
     /**

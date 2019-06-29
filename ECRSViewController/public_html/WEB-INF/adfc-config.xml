@@ -61,6 +61,12 @@
   <view id="MedDRAVersionImpact">
     <page>/pages/reports/MedDRAVersionImpact.jspx</page>
   </view>
+  <method-call id="initJobSchedule">
+    <method>#{bindings.initJobSchedule.execute}</method>
+    <outcome>
+      <fixed-outcome>initJobSchedule</fixed-outcome>
+    </outcome>
+  </method-call>
   <control-flow-rule id="__2">
     <from-activity-id>*</from-activity-id>
     <control-flow-case id="__3">
@@ -113,7 +119,7 @@
     </control-flow-case>
     <control-flow-case id="__15">
       <from-outcome>meddraComponents</from-outcome>
-      <to-activity-id>MedDRAComponentsReport</to-activity-id>
+      <to-activity-id>initJobSchedule</to-activity-id>
     </control-flow-case>
     <control-flow-case id="__16">
       <from-outcome>meddraCompStandard</from-outcome>
@@ -144,6 +150,13 @@
       <to-activity-id>MedDRAVersionImpact</to-activity-id>
     </control-flow-case>
   </control-flow-rule>
+  <control-flow-rule id="__24">
+    <from-activity-id>initJobSchedule</from-activity-id>
+    <control-flow-case id="__25">
+      <from-outcome>initJobSchedule</from-outcome>
+      <to-activity-id>MedDRAComponentsReport</to-activity-id>
+    </control-flow-case>
+  </control-flow-rule>
   <managed-bean id="__1">
     <managed-bean-name>sessionBean</managed-bean-name>
     <managed-bean-class>com.novartis.ecrs.view.beans.SessionBean</managed-bean-class>
@@ -153,5 +166,10 @@
     <managed-bean-name>reportsBean</managed-bean-name>
     <managed-bean-class>com.novartis.ecrs.ui.bean.CRSReportsBean</managed-bean-class>
     <managed-bean-scope>pageFlow</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__26">
+    <managed-bean-name>scheduleBatchJobBean</managed-bean-name>
+    <managed-bean-class>com.novartis.ecrs.ui.bean.ScheduleBatchJobBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
 </adfc-config>

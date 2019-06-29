@@ -4,14 +4,15 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsContentBaseVO"
-  Version="12.1.3.2.1"
+  Version="12.2.1.12.24"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
-  RowClass="com.novartis.ecrs.model.view.base.CrsContentBaseVORowImpl">
+  RowClass="com.novartis.ecrs.model.view.base.CrsContentBaseVORowImpl"
+  ComponentClass="com.novartis.ecrs.model.view.base.CrsContentBaseVOImpl">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
-    <Attr Name="_codeGenFlag2" Value="Access"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
     <Attr Name="_isCodegen" Value="true"/>
   </DesignTime>
   <Properties>
@@ -30,7 +31,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_BSL']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_BSL']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -40,7 +42,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_TASL']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_TASL']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -50,7 +53,8 @@
     RowLevelBinds="true">
     <ParameterMap>
       <PIMap Variable="roleName">
-        <TransientExpression><![CDATA['CRS_ML']]></TransientExpression>
+        <TransientExpression
+          Name="BindVariable"><![CDATA['CRS_ML']]></TransientExpression>
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
@@ -130,41 +134,43 @@
     </AttrArray>
     <DisplayCriteria/>
   </ListBinding>
-  <SQLQuery><![CDATA[SELECT  
-    CrsContentEO.CRS_ID,  
-    CrsContentEO.CRS_NAME,  
-    CrsContentEO.STATE_ID,  
-    CrsContentEO.COMPOUND_ID,  
-    CrsContentEO.GENERIC_NAME,  
-    CrsContentEO.TRADE_NAME,  
-    CrsContentEO.INDICATION,  
-    CrsContentEO.IS_MARKETED_FLAG,  
-    CrsContentEO.RELEASE_STATUS_FLAG,  
-    CrsContentEO.BSL_NAME,  
-    CrsContentEO.DESIGNEE,  
-    CrsContentEO.MQM_COMMENT,  
-    CrsContentEO.TASL_NAME,  
-    CrsContentEO.TASL_REJECT_COMMENT,  
-    '' MEDICAL_LEAD_NAME,  
-    '' MEDICAL_LEAD_REJECT_COMMENT,  
-    CrsContentEO.CRS_EFFECTIVE_DT,  
-    CrsContentEO.REVIEW_APPROVE_REQUIRED_FLAG,  
-    CrsContentEO.UI_VERSION_NUMBER,  
-    CrsCompoundEO.COMPOUND_TYPE AS CRS_COMPOUND_TYPE,  
-    CrsCompoundEO.COMPOUND_CODE AS CRS_COMPOUND_CODE,  
-    CrsStatesEO.STATE_NAME STATE_NAME, 
-crs_ui_tms_utils.get_name_list_from_usernames(CrsContentEO.DESIGNEE) designee_name, 
-    CrsContentEO.CREATION_TS, 
-CrsContentEO.MODIFICATION_TS   
-FROM  
-    CRS_CONTENT CrsContentEO,  
-    CRS_COMPOUNDS CrsCompoundEO,  
-    CRS_STATES CrsStatesEO 
-WHERE  
-    CrsContentEO.COMPOUND_ID = CrsCompoundEO.COMPOUND_ID  
-AND  
-    CrsContentEO.STATE_ID = CrsStatesEO.STATE_ID  
-ORDER BY  
+  <SQLQuery><![CDATA[SELECT    
+    CrsContentEO.CRS_ID,    
+    CrsContentEO.CRS_NAME,    
+    CrsContentEO.STATE_ID,    
+    CrsContentEO.COMPOUND_ID,    
+    CrsContentEO.GENERIC_NAME,    
+    CrsContentEO.TRADE_NAME,    
+    CrsContentEO.INDICATION,    
+    CrsContentEO.IS_MARKETED_FLAG,    
+    CrsContentEO.RELEASE_STATUS_FLAG,    
+    CrsContentEO.BSL_NAME,    
+    CrsContentEO.DESIGNEE,    
+    CrsContentEO.MQM_COMMENT,    
+    CrsContentEO.TASL_NAME,    
+    CrsContentEO.TASL_REJECT_COMMENT,    
+    '' MEDICAL_LEAD_NAME,    
+    '' MEDICAL_LEAD_REJECT_COMMENT,    
+    CrsContentEO.CRS_EFFECTIVE_DT,    
+    CrsContentEO.REVIEW_APPROVE_REQUIRED_FLAG,    
+    CrsContentEO.UI_VERSION_NUMBER,    
+    CrsCompoundEO.COMPOUND_TYPE AS CRS_COMPOUND_TYPE,    
+    CrsCompoundEO.COMPOUND_CODE AS CRS_COMPOUND_CODE,    
+    CrsStatesEO.STATE_NAME STATE_NAME,   
+crs_ui_tms_utils.get_name_list_from_usernames(CrsContentEO.DESIGNEE) designee_name,   
+Crs.crs_ui_tms_utils.get_last_published_date (CrsContentEO.CRS_ID) AS LAST_SYNC_DATE, 
+(select DECODE(COUNT(*),0,'N','1','Y','Z') from CRS_CONTENT_JN where CRS_ID = CrsContentEO.CRS_ID) AS CRS_CURRENT_PUBLISHED, 
+    CrsContentEO.CREATION_TS,   
+CrsContentEO.MODIFICATION_TS     
+FROM    
+    CRS_CONTENT CrsContentEO,    
+    CRS_COMPOUNDS CrsCompoundEO,    
+    CRS_STATES CrsStatesEO   
+WHERE    
+    CrsContentEO.COMPOUND_ID = CrsCompoundEO.COMPOUND_ID    
+AND    
+    CrsContentEO.STATE_ID = CrsStatesEO.STATE_ID    
+ORDER BY    
     CRS_ID DESC]]></SQLQuery>
   <ViewAttribute
     Name="CrsId"
@@ -621,6 +627,29 @@ ORDER BY
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
+    Name="LastSyncDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    AliasName="LAST_SYNC_DATE"
+    SQLType="DATE"
+    Expression="Crs.crs_ui_tms_utils.get_last_published_date (CrsContentEO.CRS_ID)"
+    IsQueriable="false"/>
+  <ViewAttribute
+    Name="CrsCurrentPublished"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CRS_CURRENT_PUBLISHED"
+    SQLType="VARCHAR"
+    Expression="select DECODE(COUNT(*),0,'N','1','Y','Z') from CRS_CONTENT_JN where CRS_ID = CrsContentEO.CRS_ID"
+    IsQueriable="false"/>
+  <ViewAttribute
     Name="CreationTs"
     IsUpdateable="false"
     IsPersistent="false"
@@ -640,6 +669,21 @@ ORDER BY
     AliasName="MODIFICATION_TS"
     Expression="MODIFICATION_TS"
     SQLType="DATE"/>
+  <ViewLinkAccessor
+    Name="VersionsVO"
+    ViewLink="com.novartis.ecrs.model.view.link.CrsContentBaseVoToVersionsVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="CRSVersionCompareVO"
+    ViewLink="com.novartis.ecrs.model.view.link.CrsContentBaseCrsVersionCompareVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="CrsExportPTCurrentVO"
+    ViewLink="com.novartis.ecrs.model.view.link.CrsContentBaseVoToCrsExportPTCurrentVO"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>

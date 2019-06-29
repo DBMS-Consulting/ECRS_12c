@@ -134,7 +134,7 @@
       <property
          name="fromOutcome">compound</property>
       <property
-         name="sdm:polyPoints">L55,428.70496,153.94824,247.03516,186.44824,R50</property>
+         name="sdm:polyPoints">L55,428.0767,153.94824,247.03516,186.44824,R50</property>
    </ControlFlowCase>
    <View
       id="View13">
@@ -316,11 +316,11 @@
       <property
          name="activityId">MedDRAComponentsReport</property>
       <property
-         name="x">149.36816</property>
+         name="x">89.368164</property>
       <property
          name="description">&lt;html>&lt;p>&lt;b>MedDRAComponentsReport&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
       <property
-         name="y">372.79883</property>
+         name="y">445.09766</property>
       <property
          name="page">/pages/reports/MedDRAComponentsReport.jspx</property>
       <property
@@ -330,11 +330,11 @@
       islink="true"
       id="ControlFlowCase28"
       from="WildcardControlFlowRule2"
-      to="View27">
+      to="MethodCall44">
       <property
          name="fromOutcome">meddraComponents</property>
       <property
-         name="sdm:polyPoints">L66,429.9195,160.94824,149.36816,318.44824,T50</property>
+         name="sdm:polyPoints">L66,429.91318,160.94824,188.36328,297.79883,R50</property>
    </ControlFlowCase>
    <View
       id="View29">
@@ -434,7 +434,7 @@
       <property
          name="fromOutcome">domains</property>
       <property
-         name="sdm:polyPoints">L34,430.78473,139.94824,182.35742,86.44824,B50</property>
+         name="sdm:polyPoints">L34,430.30692,139.94824,223.35742,32.448242,R50</property>
    </ControlFlowCase>
    <View
       id="View38">
@@ -510,5 +510,28 @@
          name="fromOutcome">MedDRAVersionImpact</property>
       <property
          name="sdm:polyPoints">R17,504.0,129.44824,622.68945,-115.9541,B50</property>
+   </ControlFlowCase>
+   <MethodCall
+      id="MethodCall44">
+      <property
+         name="activityId">initJobSchedule</property>
+      <property
+         name="x">147.36328</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>initJobSchedule&lt;/b>&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+      <property
+         name="y">298.1494</property>
+      <property
+         name="exceptionHandler">false</property>
+   </MethodCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase46"
+      from="MethodCall44"
+      to="View27">
+      <property
+         name="fromOutcome">initJobSchedule</property>
+      <property
+         name="sdm:polyPoints">B50,147.36328,351.79883,89.368164,390.74707,T50</property>
    </ControlFlowCase>
 </SDM>

@@ -157,6 +157,10 @@
     <servlet-class>oracle.adf.share.security.authentication.AuthenticationServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <servlet>
+    <servlet-name>CompletionGuidelinesServlet</servlet-name>
+    <servlet-class>com.novartis.ecrs.view.CompletionGuidelinesServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>/faces/*</url-pattern>
@@ -188,6 +192,10 @@
   <servlet-mapping>
     <servlet-name>adfAuthentication</servlet-name>
     <url-pattern>/adfAuthentication</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CompletionGuidelinesServlet</servlet-name>
+    <url-pattern>/completionguidelinesservlet</url-pattern>
   </servlet-mapping>
   <session-config>
     <session-timeout>60</session-timeout>

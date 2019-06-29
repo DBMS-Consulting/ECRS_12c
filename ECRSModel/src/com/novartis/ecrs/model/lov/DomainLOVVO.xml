@@ -4,11 +4,10 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="DomainLOVVO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.12.24"
   BindingStyle="OracleName"
   CustomQuery="true"
-  PageIterMode="Full"
-  UseGlueCode="false">
+  PageIterMode="Full">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
   </DesignTime>
@@ -18,6 +17,10 @@
         ResId="com.novartis.ecrs.model.lov.DomainLOVVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
+  <Variable
+    Name="bindDomainName"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
   <SQLQuery><![CDATA[Select domain_id, domain_name, domain_desc from crs_domains where active_flag = 'Y']]></SQLQuery>
   <ViewAttribute
     Name="DomainId"
@@ -59,6 +62,42 @@
       <Attr Name="_DisplaySize" Value="100"/>
     </DesignTime>
   </ViewAttribute>
+  <ViewCriteria
+    Name="FilterOtherDataDomainCriteria"
+    ViewObjectName="com.novartis.ecrs.model.lov.DomainLOVVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="DomainLOVVOCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="DomainName"
+        ViewAttribute="DomainName"
+        Operator="="
+        Conjunction="AND"
+        Value=":bindDomainName"
+        Required="Optional"
+        IsBindVarValue="true"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>

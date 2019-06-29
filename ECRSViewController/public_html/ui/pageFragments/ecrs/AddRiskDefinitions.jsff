@@ -8,7 +8,7 @@
                   id="t1"/>
     <af:panelHeader text="#{ecrsviewcontrollerBundle.RELATIONS} : #{pageFlowScope.crsName}" id="ph1" styleClass="AFStretchWidth" size="1"
                     partialTriggers="b1 b3 b2">
-      <f:facet name="context"/>
+      <f:facet name="context"/>soc
       <f:facet name="menuBar"/>
       <f:facet name="toolbar"/>
       <f:facet name="legend"/>
@@ -35,10 +35,14 @@
                                                  filename="AddRiskDefinitionsReport.xls"
                                                  method="#{pageFlowScope.manageCRSBean.exportRiskDefinitions}"/>
                 </af:commandButton>
-                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" rendered="false"
-                                  id="cb25" icon="/images/excel_icon.gif">
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}"
+                                  id="cb37" icon="/images/excel_icon.gif">
+                  <af:showPopupBehavior popupId="::p16"/>
+                </af:commandButton>
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" rendered="false" id="cb25"
+                                  icon="/images/excel_icon.gif">
                   <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                                                 filename="PTReport.xls" 
+                                                 filename="PTReport.xls"
                                                  method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>
                 </af:commandButton>
                 <af:commandButton text="#{ecrsviewcontrollerBundle.COPY_RISK_DEFINTION}" id="cb2"
@@ -51,6 +55,15 @@
                 <af:commandButton text="#{ecrsviewcontrollerBundle.REFRESH_REPOSITORY}" id="cb22"
                                   icon="/images/database-refresh-icon.png"
                                   actionListener="#{pageFlowScope.manageCRSBean.refreshRepository}" rendered="false"/>
+                    <af:spacer width="10" id="s16"/>
+                <af:commandButton text="Completion Guideline" id="cb41" immediate="true"
+                                  rendered="#{pageFlowScope.flowType ne 'S'}">
+                  <af:showPopupBehavior popupId="::p12"/>
+                </af:commandButton>
+                <af:commandButton text="Completion Guideline" id="cb34" immediate="true"
+                                  rendered="#{pageFlowScope.flowType eq 'S'}">
+                  <af:showPopupBehavior popupId="::p14"/>
+                </af:commandButton>
               </af:toolbar>
             </f:facet>
             <af:table value="#{bindings.CrsRiskVO.collectionModel}" var="row" rows="#{bindings.CrsRiskVO.rangeSize}"
@@ -410,11 +423,15 @@
                                                  filename="AddRiskDefinitionsReport.xls"
                                                  method="#{pageFlowScope.manageCRSBean.exportRiskDefinitions}"/>
                 </af:commandButton>
-                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" rendered="false"
+                <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}"
                                   id="cb26" icon="/images/excel_icon.gif">
                   <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                                  filename="PTReport.xls"
-                                                 method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>
+                                                 method="#{pageFlowScope.manageCRSBean.exportPTCurrentReport}"/>
+                </af:commandButton>
+                <af:commandButton text="Completion Guideline" id="cb33" immediate="true"
+                                  rendered="#{pageFlowScope.flowType eq 'S'}">
+                  <af:showPopupBehavior popupId="::p14"/>
                 </af:commandButton>
               </af:toolbar>
             </f:facet>
@@ -427,7 +444,7 @@
         <af:commandButton text="#{ecrsviewcontrollerBundle.BACK}" id="cb8"
                           action="#{controllerContext.currentViewPort.taskFlowContext.trainModel.getPrevious}"/>
         <af:commandButton text="#{ecrsviewcontrollerBundle.NEXT}" id="cb11" action="#{pageFlowScope.manageCRSBean.onClickNext}"
-        disabled="#{pageFlowScope.manageCRSBean.flowType eq 'S'}"/>
+        disabled="false"/>
         <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb12" action="home" immediate="true"
                           actionListener="#{bindings.Rollback.execute}"/>
         <af:panelLabelAndMessage label="#{ecrsviewcontrollerBundle.DICTIONARY_VERSION_}" id="plam4">
@@ -493,6 +510,10 @@
                                 readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"
                                 valueChangeListener="#{pageFlowScope.manageCRSBean.onDomainIdChange}">
               <f:selectItems value="#{bindings.DomainId.items}" id="si65"/>
+              <!--<af:forEach items="#{bindings.DomainDesc.iteratorBinding.allRowsInRange}" var="row">
+               <f:selectItem id="si18" itemLabel="#{row.DomainDesc}" itemValue="#{row.DomainId}"/>
+                  --><!--<af:selectItem label="#{row.DomainId}" value="#{row.DomainId}" id="domainlov"/>--><!-- 
+              </af:forEach>-->
             </af:selectOneChoice>
             <!--<af:selectOneChoice label="#{bindings.DataDomain.hints.label}" id="soc1"
                                 value="#{bindings.DataDomain.inputValue}" autoSubmit="true"
@@ -513,7 +534,7 @@
               <af:selectItem label="IB (Expected in (IB))" id="si9" value="IB"/>
               <af:selectItem label="OS (Other Search)" id="si10" value="OS"/>
               <af:selectItem label="MI (Missing information)" id="si11" value="MI"/>
-              <af:selectItem label="ER (Expediting Rules)" id="si12" value="ER"/>
+              <af:selectItem label="ER (Anticipated SAE)" id="si12" value="ER"/>
                 <af:selectItem label="UD (Underlying Diseases)" id="si7611" value="UD"/>
               <af:selectItem label="A1 (USPI ADRs)" id="si7621" value="A1"/>
               <af:selectItem label="A2 (JPI ADRs)" id="si7631" value="A2"/>
@@ -715,7 +736,8 @@
                 <af:commandButton text="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" id="cb6"
                                   icon="/images/hierarchy.gif" partialSubmit="true"
                                   actionListener="#{pageFlowScope.manageCRSBean.onClickHierarchySearch}"
-                                  visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"/>
+                                  visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}" partialTriggers="::soc9"
+                                  disabled="#{bindings.DomainId.inputValue eq 3}"/>
                 <af:commandButton text="#{ecrsviewcontrollerBundle.SAVE}" id="cb13"
                                   visible="#{securityContext.userInRole['CRS_MQM'] and pageFlowScope.manageCRSBean.flowType eq 'U'}"
                                   actionListener="#{pageFlowScope.manageCRSBean.onClickRiskDefSave}">
@@ -725,9 +747,10 @@
                                   actionListener="#{pageFlowScope.manageCRSBean.refreshRepoInPopup}" rendered="false"/>
                 <af:commandButton text="#{ecrsviewcontrollerBundle.EXPORT_PT}" partialSubmit="true"               
                                   id="cb28" icon="/images/excel_icon.gif">
-                  <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  <!--<af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                                  filename="PTReport.xls" 
-                                                 method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>
+                                                 method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>-->
+                  <af:showPopupBehavior popupId="::p17"/>
                 </af:commandButton>                  
                 <af:commandButton text="#{ecrsviewcontrollerBundle.DELETE_SAFETY_TOPIC_OF_INTERES}" id="cb27" icon="/images/delete.png"
                           visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
@@ -738,6 +761,15 @@
                   <af:showPopupBehavior triggerType="action"
                                         popupId="::prplegend"/>
                 </af:commandImageLink>
+                <af:spacer width="10" id="s15"/>
+                <af:commandButton text="Completion Guideline" id="cb31" immediate="true"
+                                  rendered="#{pageFlowScope.flowType ne 'S'}">
+                  <af:showPopupBehavior popupId="::p13"/>
+                </af:commandButton>
+                <af:commandButton text="Completion Guideline" id="cb36" immediate="true"
+                                  rendered="#{pageFlowScope.flowType eq 'S'}">
+                  <af:showPopupBehavior popupId="::p15"/>
+                </af:commandButton>
               </af:toolbar>
             </f:facet>
           </af:panelCollection>
@@ -1522,7 +1554,11 @@
                                   id="cb30" icon="/images/excel_icon.gif">
                   <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                                  filename="PTReport.xls" 
-                                                 method="#{pageFlowScope.manageCRSBean.exportPTReport}"/>
+                                                 method="#{pageFlowScope.manageCRSBean.exportPTCurrentReportDetail}"/>
+                </af:commandButton>
+                <af:commandButton text="Completion Guideline" id="cb35" immediate="true"
+                                  rendered="#{pageFlowScope.flowType eq 'S'}">
+                  <af:showPopupBehavior popupId="::p15"/>
                 </af:commandButton>
                 <af:commandImageLink id="cil4" icon="/images/Help-icon.png" rendered="false">
                   <af:showPopupBehavior triggerType="action"
@@ -1550,6 +1586,73 @@
           </af:panelGroupLayout>
         </f:facet>
         <af:outputText value="There are some unsaved changes. Do you want to save the last modifications?" id="ot38"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p12" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw1" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Update CRS Add Risk Definition Completion Guidelines">
+        <af:inlineFrame id="if1" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 03 UPDATE CRS ADD RISK DEFINITION TAB.pdf'}"
+                        shortDesc="Update CRS Add Risk Definition Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p13" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw2" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Update CRS Edit Safety Topic Completion Guidelines">
+        <af:inlineFrame id="if2" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 04 UPDATE CRS EDIT SAFETY TOPIC.pdf'}"
+                        shortDesc="Update CRS Edit Safety Topic Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p14" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw3" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Browse Search CRS Risk Definition Completion Guidelines">
+        <af:inlineFrame id="if3" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 07 BROWSE SEARCH CRS RISK DEFINITION TAB.pdf'}"
+                        shortDesc="Browse Search CRS Risk Definition Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p15" contentDelivery="lazyUncached">
+      <af:panelWindow id="pw4" modal="true" contentWidth="800" contentHeight="670" resize="on"
+                      title="Browse Search CRS View Safety Topic Completion Guidelines">
+        <af:inlineFrame id="if4" styleClass="AFStretchWidth" inlineStyle="height:660px;"
+                        source="/completionguidelinesservlet?documentType=#{'eCRS CG 08 BROWSE SEARCH CRS VIEW SAFETY TOPIC.pdf'}"
+                        shortDesc="Browse Search CRS View Safety Topic Completion Guidelines"/>
+      </af:panelWindow>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p16"
+              binding="#{pageFlowScope.manageCRSBean.ptExportPendingPopup}">
+      <af:dialog id="d15" type="none" closeIconVisible="false" title="Warning">
+        <f:facet name="buttonBar">
+          <af:panelGroupLayout id="pgl20" halign="right">
+            <af:button text="Download PT Report" id="b4">
+              <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                             filename="PTReport.xls"
+                                             method="#{pageFlowScope.manageCRSBean.exportPTPendingReport}"/>
+            </af:button>
+            <af:button id="b5" text="Close"
+                       actionListener="#{pageFlowScope.manageCRSBean.closeDownloadPTPendingPopup}" immediate="true"/>
+          </af:panelGroupLayout>
+        </f:facet>
+        <af:outputText value="The PENDING Export PT report data is refreshed every 24 hours.  If you have just made a change to the CRS, please run the report tomorrow." id="ot89"/>
+      </af:dialog>
+    </af:popup>  
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p17"
+              binding="#{pageFlowScope.manageCRSBean.ptExportPendingDetailPopup}">
+      <af:dialog id="d16" type="none" closeIconVisible="false" title="Warning">
+        <f:facet name="buttonBar">
+          <af:panelGroupLayout id="pgl21" halign="right">
+            <af:button text="Download PT Report" id="b6">
+              <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                             filename="PTReport.xls"
+                                             method="#{pageFlowScope.manageCRSBean.exportPTPendingReportDetail}"/>
+            </af:button>
+            <af:button id="b7" text="Close"
+                       actionListener="#{pageFlowScope.manageCRSBean.closeDownloadPTPendingDetailPopup}" immediate="true"/>
+          </af:panelGroupLayout>
+        </f:facet>
+        <af:outputText value="The PENDING Export PT report data is refreshed every 24 hours.  If you have just made a change to the CRS, please run the report tomorrow."
+                       id="ot90"/>
       </af:dialog>
     </af:popup>
   </af:panelGroupLayout>

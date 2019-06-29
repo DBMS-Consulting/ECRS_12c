@@ -30,9 +30,20 @@
     ViewObjectName="com.novartis.ecrs.model.lov.SocLOVO"
     RowLevelBinds="true"/>
   <ViewAccessor
-    Name="DomainLOVVA"
-    ViewObjectName="com.novartis.ecrs.model.lov.DomainLOVVO"
-    RowLevelBinds="true"/>
+    Name="DomainOtherLOVVA"
+    ViewObjectName="com.novartis.ecrs.model.lov.DomainOtherLOVVO"
+    RowLevelBinds="true">
+    <ParameterMap>
+      <PIMap Variable="bindCrsId">
+        <TransientExpression
+          Name="ExpressionScript"><![CDATA[CrsId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="bindSafetyTopic">
+        <TransientExpression
+          Name="ExpressionScript"><![CDATA[SafetyTopicOfInterest]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
   <ListBinding
     Name="LOV_SocTerm"
     ListVOName="SocLOVO"
@@ -59,7 +70,7 @@
   </ListBinding>
   <ListBinding
     Name="LOV_DomainId"
-    ListVOName="DomainLOVVA"
+    ListVOName="DomainOtherLOVVA"
     ListRangeSize="-1"
     NullValueFlag="start"
     MRUCount="0"
@@ -72,7 +83,7 @@
       <Item Value="DomainId"/>
     </AttrArray>
     <AttrArray Name="ListDisplayAttrNames">
-      <Item Value="DomainName"/>
+      <Item Value="DomainDesc"/>
     </AttrArray>
     <DisplayCriteria/>
   </ListBinding>

@@ -3,6 +3,7 @@ package com.novartis.ecrs.model.view;
 import com.novartis.ecrs.model.entity.CrsCompoundEOImpl;
 import com.novartis.ecrs.model.entity.CrsContentEOImpl;
 
+import oracle.jbo.RowIterator;
 import oracle.jbo.RowSet;
 import oracle.jbo.domain.Date;
 import oracle.jbo.domain.Timestamp;
@@ -262,6 +263,16 @@ public class CrsContentVORowImpl extends ViewRowImpl {
             }
         }
         ,
+        CrsPendingPublished {
+            protected Object get(CrsContentVORowImpl obj) {
+                return obj.getCrsPendingPublished();
+            }
+
+            protected void put(CrsContentVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
         CreationTs {
             protected Object get(CrsContentVORowImpl obj) {
                 return obj.getCreationTs();
@@ -305,6 +316,36 @@ public class CrsContentVORowImpl extends ViewRowImpl {
         EntityState {
             protected Object get(CrsContentVORowImpl obj) {
                 return obj.getEntityState();
+            }
+
+            protected void put(CrsContentVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        VersionsVO {
+            protected Object get(CrsContentVORowImpl obj) {
+                return obj.getVersionsVO();
+            }
+
+            protected void put(CrsContentVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        CRSVersionCompareVO {
+            protected Object get(CrsContentVORowImpl obj) {
+                return obj.getCRSVersionCompareVO();
+            }
+
+            protected void put(CrsContentVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        CrsExportPTPending {
+            protected Object get(CrsContentVORowImpl obj) {
+                return obj.getCrsExportPTPending();
             }
 
             protected void put(CrsContentVORowImpl obj, Object value) {
@@ -455,11 +496,15 @@ public class CrsContentVORowImpl extends ViewRowImpl {
     public static final int CRSCOMPOUNDCODE = AttributesEnum.CrsCompoundCode.index();
     public static final int DESIGNEENAME = AttributesEnum.DesigneeName.index();
     public static final int LASTSYNCDATE = AttributesEnum.LastSyncDate.index();
+    public static final int CRSPENDINGPUBLISHED = AttributesEnum.CrsPendingPublished.index();
     public static final int CREATIONTS = AttributesEnum.CreationTs.index();
     public static final int MODIFICATIONTS = AttributesEnum.ModificationTs.index();
     public static final int COMPOUNDTYPE = AttributesEnum.CompoundType.index();
     public static final int COMPOUNDCODE = AttributesEnum.CompoundCode.index();
     public static final int ENTITYSTATE = AttributesEnum.EntityState.index();
+    public static final int VERSIONSVO = AttributesEnum.VersionsVO.index();
+    public static final int CRSVERSIONCOMPAREVO = AttributesEnum.CRSVersionCompareVO.index();
+    public static final int CRSEXPORTPTPENDING = AttributesEnum.CrsExportPTPending.index();
     public static final int CRSCOMPOUNDVA = AttributesEnum.CrsCompoundVA.index();
     public static final int CRSBSLUSERVA = AttributesEnum.CrsBSLUserVA.index();
     public static final int CRSTASLUSERVA = AttributesEnum.CrsTASLUserVA.index();
@@ -837,6 +882,14 @@ public class CrsContentVORowImpl extends ViewRowImpl {
     }
 
     /**
+     * Gets the attribute value for the calculated attribute LastSyncDate.
+     * @return the LastSyncDate
+     */
+    public Date getLastSyncDate() {
+        return (Date) getAttributeInternal(LASTSYNCDATE);
+    }
+
+    /**
      * Gets the attribute value for CREATION_TS using the alias name CreationTs.
      * @return the CREATION_TS
      */
@@ -892,12 +945,34 @@ public class CrsContentVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(ENTITYSTATE);
     }
 
+
     /**
-     * Gets the attribute value for the calculated attribute LastSyncDate.
-     * @return the LastSyncDate
+     * Gets the attribute value for the calculated attribute CrsPendingPublished.
+     * @return the CrsPendingPublished
      */
-    public Date getLastSyncDate() {
-        return (Date) getAttributeInternal(LASTSYNCDATE);
+    public String getCrsPendingPublished() {
+        return (String) getAttributeInternal(CRSPENDINGPUBLISHED);
+    }
+
+    /**
+     * Gets the associated <code>RowIterator</code> using master-detail link VersionsVO.
+     */
+    public RowIterator getVersionsVO() {
+        return (RowIterator) getAttributeInternal(VERSIONSVO);
+    }
+
+    /**
+     * Gets the associated <code>RowIterator</code> using master-detail link CRSVersionCompareVO.
+     */
+    public RowIterator getCRSVersionCompareVO() {
+        return (RowIterator) getAttributeInternal(CRSVERSIONCOMPAREVO);
+    }
+
+    /**
+     * Gets the associated <code>RowIterator</code> using master-detail link CrsExportPTPending.
+     */
+    public RowIterator getCrsExportPTPending() {
+        return (RowIterator) getAttributeInternal(CRSEXPORTPTPENDING);
     }
 
     /**

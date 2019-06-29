@@ -26,6 +26,7 @@
       <train-stop>
        <display-name id="__14">#{pageFlowScope.flowType eq 'S' ? 'Details' : 'Add Details'}</display-name>
         <outcome>initCreateUpdateCrs</outcome>
+        <sequential>false</sequential>
       </train-stop>
     </view>
     <view id="RiskDef">
@@ -33,6 +34,7 @@
       <train-stop>
        <display-name id="__16">#{pageFlowScope.flowType eq 'S' ? 'Risk Definitions' : 'Add Risk Definitions'}</display-name>
         <outcome>initRiskRel</outcome>
+        <sequential>false</sequential>
       </train-stop>
     </view>
     <router id="crsFlowRouter">
@@ -101,6 +103,7 @@
       <train-stop>
       <display-name>Confirm</display-name>
         <outcome>initConfirmPage</outcome>
+        <sequential>false</sequential>
         <ignore>#{pageFlowScope.flowType == 'S'}</ignore>
       </train-stop>
     </view>
@@ -114,6 +117,27 @@
       <method>#{pageFlowScope.manageCRSBean.reloadSearchPage}</method>
       <outcome>
         <fixed-outcome>toSearchPage</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="versions">
+      <page>/ui/pageFragments/ecrs/Versions.jsff</page>
+      <train-stop>
+       <display-name>Versions</display-name>
+        <outcome>initVersionsPage</outcome>
+        <sequential>false</sequential>
+        <ignore>#{(pageFlowScope.flowType == 'C') || (pageFlowScope.flowType == 'U')}</ignore>
+      </train-stop>
+    </view>
+    <method-call id="initVersionsPage">
+      <method>#{pageFlowScope.manageCRSBean.initVersionsPage}</method>
+      <outcome>
+        <fixed-outcome>versions</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="executeCrsVersionPublishedPendingCompare">
+      <method>#{bindings.executeCrsVersionPublishedPendingCompare.execute}</method>
+      <outcome>
+        <fixed-outcome>executeCrsVersionPublishedPendingCompare</fixed-outcome>
       </outcome>
     </method-call>
     <train/>
@@ -178,6 +202,10 @@
       <control-flow-case id="__43">
         <from-outcome>reloadSearchPage</from-outcome>
         <to-activity-id>reloadSearchPage</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__50">
+        <from-outcome>initVersionsPage</from-outcome>
+        <to-activity-id>initVersionsPage</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
     <control-flow-rule id="__19">
@@ -263,6 +291,27 @@
       <control-flow-case id="__45">
         <from-outcome>toSearchPage</from-outcome>
         <to-activity-id>serach</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__46">
+      <from-activity-id>versions</from-activity-id>
+      <control-flow-case id="__47">
+        <from-outcome>home</from-outcome>
+        <to-activity-id>home</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__48">
+      <from-activity-id>initVersionsPage</from-activity-id>
+      <control-flow-case id="__49">
+        <from-outcome>versions</from-outcome>
+        <to-activity-id>executeCrsVersionPublishedPendingCompare</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__51">
+      <from-activity-id>executeCrsVersionPublishedPendingCompare</from-activity-id>
+      <control-flow-case id="__52">
+        <from-outcome>executeCrsVersionPublishedPendingCompare</from-outcome>
+        <to-activity-id>versions</to-activity-id>
       </control-flow-case>
     </control-flow-rule>
     <use-page-fragments/>
