@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
-                version="11.1.2.64.36" id="MedDRAComponentsReportPageDef"
-                Package="pages.reports">
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.12.24"
+                id="MedDRAComponentsReportSheduledPageDef" Package="pages.reports">
   <parameters/>
   <executables>
     <variableIterator id="variables"/>

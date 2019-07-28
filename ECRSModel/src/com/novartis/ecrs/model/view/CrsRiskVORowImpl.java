@@ -325,6 +325,26 @@ public class CrsRiskVORowImpl extends ViewRowImpl {
             }
         }
         ,
+        SearchAppliedTo {
+            protected Object get(CrsRiskVORowImpl obj) {
+                return obj.getSearchAppliedTo();
+            }
+
+            protected void put(CrsRiskVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        Adr {
+            protected Object get(CrsRiskVORowImpl obj) {
+                return obj.getAdr();
+            }
+
+            protected void put(CrsRiskVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
         RiskPurposeList {
             protected Object get(CrsRiskVORowImpl obj) {
                 return obj.getRiskPurposeList();
@@ -451,6 +471,8 @@ public class CrsRiskVORowImpl extends ViewRowImpl {
             return vals;
         }
     }
+
+
     public static final int CRSID = AttributesEnum.CrsId.index();
     public static final int CRSRISKID = AttributesEnum.CrsRiskId.index();
     public static final int DATADOMAIN = AttributesEnum.DataDomain.index();
@@ -482,6 +504,8 @@ public class CrsRiskVORowImpl extends ViewRowImpl {
     public static final int TMSENDTS = AttributesEnum.TmsEndTs.index();
     public static final int TMSUPDATEFLAG = AttributesEnum.TmsUpdateFlag.index();
     public static final int TMSUPDATEFLAGDT = AttributesEnum.TmsUpdateFlagDt.index();
+    public static final int SEARCHAPPLIEDTO = AttributesEnum.SearchAppliedTo.index();
+    public static final int ADR = AttributesEnum.Adr.index();
     public static final int RISKPURPOSELIST = AttributesEnum.RiskPurposeList.index();
     public static final int MEDDRADICT = AttributesEnum.MeddraDict.index();
     public static final int CRSEFFECTIVEDTREL = AttributesEnum.CrsEffectiveDtRel.index();
@@ -745,6 +769,22 @@ public class CrsRiskVORowImpl extends ViewRowImpl {
      */
     public Timestamp getTmsUpdateFlagDt() {
         return (Timestamp) getAttributeInternal(TMSUPDATEFLAGDT);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute SearchAppliedTo.
+     * @return the SearchAppliedTo
+     */
+    public String getSearchAppliedTo() {
+        return (String) getAttributeInternal(SEARCHAPPLIEDTO);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Adr.
+     * @return the Adr
+     */
+    public String getAdr() {
+        return (String) getAttributeInternal(ADR);
     }
 
     /**

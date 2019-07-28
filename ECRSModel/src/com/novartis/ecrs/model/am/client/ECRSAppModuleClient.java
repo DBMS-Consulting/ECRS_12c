@@ -26,6 +26,15 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
         return (String) _ret;
     }
 
+
+    public String activateCrs(Long pCRSId, String pReasonForChange, String pUserId) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "activateCrs",
+                                        new String[] { "java.lang.Long", "java.lang.String", "java.lang.String" },
+                                        new Object[] { pCRSId, pReasonForChange, pUserId });
+        return (String) _ret;
+    }
+
     public void copyCurrentRiskRelation(Long srcRiskId, Long destCrsId) {
         Object _ret =
             this.riInvokeExportedMethod(this, "copyCurrentRiskRelation",
@@ -62,6 +71,13 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
         return;
     }
 
+    public String domainName(Integer domainId) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "domainName", new String[] { "java.lang.Integer" },
+                                        new Object[] { domainId });
+        return (String) _ret;
+    }
+
     public void executeBaseCrsVersionCompare() {
         Object _ret = this.riInvokeExportedMethod(this, "executeBaseCrsVersionCompare", null, null);
         return;
@@ -82,6 +98,14 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
 
     public String executeMedraExistsQuery() {
         Object _ret = this.riInvokeExportedMethod(this, "executeMedraExistsQuery", null, null);
+        return (String) _ret;
+    }
+
+    public String executeRelationsExistsQuery(String crsId, String domainId, String safetyTopicOfInterest) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "executeRelationsExistsQuery",
+                                        new String[] { "java.lang.String", "java.lang.String", "java.lang.String" },
+                                        new Object[] { crsId, domainId, safetyTopicOfInterest });
         return (String) _ret;
     }
 

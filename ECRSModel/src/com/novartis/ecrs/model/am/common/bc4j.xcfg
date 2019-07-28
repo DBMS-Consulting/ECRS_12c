@@ -20,5 +20,10 @@
          <Database jbo.TypeMapEntries="OracleApps" JDBCDataSource="java:comp/env/jdbc/CRSConnDS"/>
          <Security AppModuleJndiName="com.novartis.ecrs.model.am.AppModule"/>
       </AppModuleConfig>
+      <AppModuleConfig name="AppModuleLocal1" jbo.project="com.novartis.ecrs.model.ECRSModel"
+                       ApplicationName="com.novartis.ecrs.model.am.AppModule" DeployPlatform="LOCAL" JDBCName="CRSConn">
+         <Database jbo.TypeMapEntries="OracleApps"/>
+         <Security AppModuleJndiName="com.novartis.ecrs.model.am.AppModule"/>
+      </AppModuleConfig>
    </AppModuleConfigBag>
 </BC4JConfig>

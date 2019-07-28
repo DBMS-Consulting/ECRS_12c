@@ -84,7 +84,7 @@
       <property
          name="fromOutcome">roles</property>
       <property
-         name="sdm:polyPoints">B50,468.0,195.87822,501.02246,345.44824,T50</property>
+         name="sdm:polyPoints">B50,468.0,195.87938,501.02246,345.44824,T50</property>
    </ControlFlowCase>
    <View
       id="View9">
@@ -134,7 +134,7 @@
       <property
          name="fromOutcome">compound</property>
       <property
-         name="sdm:polyPoints">L55,428.0767,153.94824,247.03516,186.44824,R50</property>
+         name="sdm:polyPoints">L55,428.39368,153.94824,247.03516,186.44824,R50</property>
    </ControlFlowCase>
    <View
       id="View13">
@@ -326,16 +326,6 @@
       <property
          name="exceptionHandler">false</property>
    </View>
-   <ControlFlowCase
-      islink="true"
-      id="ControlFlowCase28"
-      from="WildcardControlFlowRule2"
-      to="MethodCall44">
-      <property
-         name="fromOutcome">meddraComponents</property>
-      <property
-         name="sdm:polyPoints">L66,429.91318,160.94824,188.36328,297.79883,R50</property>
-   </ControlFlowCase>
    <View
       id="View29">
       <property
@@ -409,7 +399,7 @@
       <property
          name="fromOutcome">retiredNmq</property>
       <property
-         name="sdm:polyPoints">L45,430.22086,146.94824,156.34668,116.44824,R50</property>
+         name="sdm:polyPoints">L39,430.327,143.44824,156.34668,116.44824,R50</property>
    </ControlFlowCase>
    <View
       id="View36">
@@ -434,7 +424,7 @@
       <property
          name="fromOutcome">domains</property>
       <property
-         name="sdm:polyPoints">L34,430.30692,139.94824,223.35742,32.448242,R50</property>
+         name="sdm:polyPoints">L28,430.84506,136.44824,182.35742,86.44824,B50</property>
    </ControlFlowCase>
    <View
       id="View38">
@@ -470,7 +460,7 @@
       <property
          name="description">&lt;html>&lt;p>&lt;b>ManageMedDRAFreeze&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
       <property
-         name="y">577.7471</property>
+         name="y">577.3965</property>
       <property
          name="page">/pages/ManageMedDRAFreeze.jspx</property>
       <property
@@ -484,7 +474,7 @@
       <property
          name="fromOutcome">freezeMedDRA</property>
       <property
-         name="sdm:polyPoints">B64,475.0,194.93297,585.6963,523.3965,T50</property>
+         name="sdm:polyPoints">B64,475.0,194.93355,585.6963,523.0459,T50</property>
    </ControlFlowCase>
    <View
       id="View44">
@@ -511,27 +501,43 @@
       <property
          name="sdm:polyPoints">R17,504.0,129.44824,622.68945,-115.9541,B50</property>
    </ControlFlowCase>
-   <MethodCall
-      id="MethodCall44">
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase49"
+      from="WildcardControlFlowRule2"
+      to="View27">
       <property
-         name="activityId">initJobSchedule</property>
+         name="tosrcid">__15</property>
       <property
-         name="x">147.36328</property>
+         name="fromOutcome">meddraComponents</property>
       <property
-         name="description">&lt;html>&lt;p>&lt;b>initJobSchedule&lt;/b>&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+         name="fromsrcid">__2</property>
       <property
-         name="y">298.1494</property>
+         name="sdm:polyPoints">L72,429.80753,164.44824,89.368164,390.74707,T50</property>
+   </ControlFlowCase>
+   <View
+      id="View45">
+      <property
+         name="activityId">MedDRAComponentsReportSheduled</property>
+      <property
+         name="x">-150.27539</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>MedDRAComponentsReportSheduled&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="y">354.09766</property>
+      <property
+         name="page">/pages/reports/MedDRAComponentsReportSheduled.jspx</property>
       <property
          name="exceptionHandler">false</property>
-   </MethodCall>
+   </View>
    <ControlFlowCase
       islink="true"
       id="ControlFlowCase46"
-      from="MethodCall44"
-      to="View27">
+      from="WildcardControlFlowRule2"
+      to="View45">
       <property
-         name="fromOutcome">initJobSchedule</property>
+         name="fromOutcome">scheduleMeddraCompStandard</property>
       <property
-         name="sdm:polyPoints">B50,147.36328,351.79883,89.368164,390.74707,T50</property>
+         name="sdm:polyPoints">L61,428.14096,157.44824,-109.27539,353.74707,R50</property>
    </ControlFlowCase>
 </SDM>

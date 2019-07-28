@@ -223,6 +223,12 @@
   <ViewUsage
     Name="DomainLOV"
     ViewObjectName="com.novartis.ecrs.model.lov.DomainLOVVO"/>
+  <ViewUsage
+    Name="DomainLOVVO"
+    ViewObjectName="com.novartis.ecrs.model.lov.DomainLOVVO"/>
+  <ViewUsage
+    Name="RelationCountVO"
+    ViewObjectName="com.novartis.ecrs.model.view.RelationCountVO"/>
   <ViewLinkUsage
     Name="CrsRiskRelationToRiskDefintionLink1"
     ViewLinkObjectName="com.novartis.ecrs.model.view.link.CrsRiskRelationToRiskDefintionLink"
@@ -298,19 +304,6 @@
       <Parameter
         Name="crsId"
         Type="java.lang.Long"/>
-    </Method>
-    <Method
-      Name="activateCrs"
-      MethodName="activateCrs">
-      <Return
-        Type="java.lang.String"
-        Name="_return_type_"/>
-      <Parameter
-        Name="pCRSId"
-        Type="java.lang.Long"/>
-      <Parameter
-        Name="pReasonForChange"
-        Type="java.lang.String"/>
     </Method>
     <Method
       Name="copyCurrentRiskRelation"
@@ -621,6 +614,48 @@
       MethodName="executeMedraExistsQuery">
       <Return
         Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="activateCrs"
+      MethodName="activateCrs">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="pCRSId"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="pReasonForChange"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="pUserId"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="domainName"
+      MethodName="domainName">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="domainId"
+        Type="java.lang.Integer"/>
+    </Method>
+    <Method
+      Name="executeRelationsExistsQuery"
+      MethodName="executeRelationsExistsQuery">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="crsId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="domainId"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="safetyTopicOfInterest"
         Type="java.lang.String"/>
     </Method>
   </ClientInterface>

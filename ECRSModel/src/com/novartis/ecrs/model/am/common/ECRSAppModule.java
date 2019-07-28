@@ -14,7 +14,6 @@ public interface ECRSAppModule extends ApplicationModule {
 
     String deleteCrs(Long crsId);
 
-    String activateCrs(Long pCRSId, String pReasonForChange);
 
     void copyCurrentRiskRelation(Long srcRiskId, Long destCrsId);
 
@@ -74,4 +73,10 @@ public interface ECRSAppModule extends ApplicationModule {
     void initJobSchedule();
 
     String executeMedraExistsQuery();
+
+    String activateCrs(Long pCRSId, String pReasonForChange, String pUserId);
+
+    String domainName(Integer domainId);
+
+    String executeRelationsExistsQuery(String crsId, String domainId, String safetyTopicOfInterest);
 }

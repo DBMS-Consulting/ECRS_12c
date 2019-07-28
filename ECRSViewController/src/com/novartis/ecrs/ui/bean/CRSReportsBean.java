@@ -9,9 +9,16 @@ import com.novartis.ecrs.view.beans.CRSBean;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -22,6 +29,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import javax.faces.event.ValueChangeEvent;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
+import javax.sql.DataSource;
 
 import oracle.adf.model.binding.DCIteratorBinding;
 
@@ -290,6 +302,52 @@ public class CRSReportsBean {
      * @throws IOException
      */
     public void downloadMedDRACompReport(FacesContext facesContext,
+                                         OutputStream outputStream) throws IOException {
+        
+        Connection conn = null;
+        InputStream inputStream = null;
+        try {
+        Context ctx = new InitialContext();
+        DataSource ds = (DataSource) ctx.lookup("jdbc/EcrsDS");
+        conn = ds.getConnection();
+        PreparedStatement ps;
+        ps = conn.prepareStatement("select prop_value from CRS_PROPERTIES where Prop_name = 'DOWNLOAD_DIRECTORY'");
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            String outputFolder = rs.getString("prop_value");
+            try {
+                    outputFolder = outputFolder.concat("\\MedDRAComponentsReport.xls");
+                    File file = new File(outputFolder);
+                    inputStream = new FileInputStream(file);
+                    int read = 0;
+                    byte[] bytes = new byte[1024];
+
+                    while ((read = inputStream.read(bytes)) != -1) {
+                        outputStream.write(bytes, 0, read);
+                    }
+                } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        ps.close();
+            
+        } catch (InvalidFormatException invalidFormatException) {
+            invalidFormatException.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            outputStream.close();
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+    }
+    
+    public void downloadMedDRACompReport1(FacesContext facesContext,
                                          OutputStream outputStream) throws IOException {
         // Add event code here...
         //  _logger.info("Start of CRSReportsBean:onAdminReportItmes()");

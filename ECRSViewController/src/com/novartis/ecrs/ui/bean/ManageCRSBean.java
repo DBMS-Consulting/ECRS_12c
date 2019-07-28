@@ -95,6 +95,7 @@ import oracle.jbo.RowIterator;
 import oracle.jbo.RowSetIterator;
 import oracle.jbo.ViewCriteria;
 import oracle.jbo.ViewObject;
+import oracle.jbo.server.RowQualifier;
 import oracle.jbo.server.ViewObjectImpl;
 import oracle.jbo.uicli.binding.JUCtrlHierNodeBinding;
 
@@ -259,6 +260,16 @@ public class ManageCRSBean implements Serializable {
     private String selectedBSL;
     private RichPopup ptExportPendingPopup;
     private RichPopup ptExportPendingDetailPopup;
+    private Boolean showADR;
+    private Boolean showMedicalHistory;
+    private Boolean showCopyADR;
+    private Boolean showCopyMedicalHistory;
+    private Boolean showAdrTentative;
+    private Boolean disableHeirarchyBtn;
+    private RichSelectOneChoice crsDomainValue;
+    private RichPopup riskDefOtherSelectionPopup;
+    private RichSelectOneChoice copyRiskDefOthersPopup;
+    private RichPopup copyRiskDefOtherSelectionPopup;
 
     public void setSelectedCrsId(String selectedCrsId) {
         this.selectedCrsId = selectedCrsId;
@@ -977,6 +988,16 @@ public class ManageCRSBean implements Serializable {
     }
 
     public void saveRiskDefs(ActionEvent actionEvent) {
+        List<String> riskPursposeList = this.getSelRiskPurposes();
+        AttributeBinding attr = (AttributeBinding)getBindings().getControlBinding("Adr"); 
+        String adrValue =(String)attr.getInputValue();
+        //String adrValue = (String)ADFUtils.invokeEL("#{bindings.Adr.inputValue}");
+        if((riskPursposeList != null) && (riskPursposeList.contains("CD")) && ((adrValue == null) || ("".equalsIgnoreCase(adrValue)))){
+        ADFUtils.addMessage(FacesMessage.SEVERITY_ERROR, "Please select ADR value");
+        return;
+        }
+        ADFUtils.setEL("#{bindings.RiskPurposeList.inputValue}",null);
+        
         String baseOrStaging = (String)ADFUtils.evaluateEL("#{pageFlowScope.manageCRSBean.baseOrStaging}");
         Row currRow = null;
         String key = null;
@@ -1581,6 +1602,7 @@ public class ManageCRSBean implements Serializable {
         logger.info("Entered search criteria : term : "+term+" level : "+level+" dictionary : "+dictionary);
         hierVO.setNamedWhereClauseParam("pTerm", (term != null && !term.isEmpty()) ? term : "%");
         hierVO.setNamedWhereClauseParam("pLevel", level != null ? level : null);
+        //hierVO.setNamedWhereClauseParam("pDict", "NMATMED");
         hierVO.setNamedWhereClauseParam("pDict", dictionary != null ? dictionary : null);
         logger.info(" Hierarchy search Query..." + hierVO.getQuery());
         if("NMATSMQ".equalsIgnoreCase(dictionary) || "MEDSMQ".equalsIgnoreCase(dictionary)){
@@ -2081,6 +2103,8 @@ public class ManageCRSBean implements Serializable {
             //columnMap.put("SearchCriteriaDetails",
             //              rsBundle.getString("com.novartis.ecrs.model.view.CrsRiskDefinitionsVO.SearchCriteriaDetails_LABEL"));
             columnMap.put("NonMeddraComponentComment", rsBundle.getString("com.novartis.ecrs.model.view.CrsRiskRelationVO.NonMeddraComponentComment_LABEL"));
+            columnMap.put("Adr", "ADR");
+            columnMap.put("SearchAppliedTo", "Search Applied To");
             //BSL, LoggedinUser in Designee, Admin,MQM
             String bsl = "";
             String designee = "";
@@ -2278,6 +2302,7 @@ public class ManageCRSBean implements Serializable {
             ADFUtils.showPopup(getCancelWarningPopup());
         }
         else{
+            ADFUtils.setPageFlowScopeValue("isCancelClicked",true);
             cancelRisk();
         }
         
@@ -4262,12 +4287,41 @@ public class ManageCRSBean implements Serializable {
     }
     public void onDomainIdChange(ValueChangeEvent valueChangeEvent) {
         logger.info("Refreshing SOC LOV based on the domain selected");
-        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
         Integer newValue = (Integer)valueChangeEvent.getNewValue();
-        logger.info("Domain selected :: " + newValue);
-        ADFUtils.addPartialTarget(searchCriteriaDetails);
-        ADFUtils.addPartialTarget(socTermSOC);
-        showStatus(ViewConstants.CRS_MODIFIED);
+        OperationBinding op = ADFUtils.findOperation("domainName");
+        Map params = op.getParamsMap();
+        params.put("domainId", newValue);
+        String domainName = (String)op.execute();
+        if("OTHER".equalsIgnoreCase(domainName)){
+            if(!"".equalsIgnoreCase(valueChangeEvent.getOldValue().toString())){
+            OperationBinding op1 = ADFUtils.findOperation("executeRelationsExistsQuery");
+            Map params1 = op1.getParamsMap();
+            params1.put("crsId", ADFUtils.evaluateEL("#{pageFlowScope.crsId}"));
+            params1.put("domainId", (Integer)valueChangeEvent.getOldValue());
+            params1.put("safetyTopicOfInterest",ADFUtils.evaluateEL("#{bindings.SafetyTopicOfInterest.inputValue}") );
+            String relationsExists = (String)op1.execute();
+            if("YES".equalsIgnoreCase(relationsExists)){
+                    ADFContext adfCtx = ADFContext.getCurrent();
+                    Map pageFlowScope = adfCtx.getPageFlowScope();
+                    pageFlowScope.put("domainOldValue", (Integer)valueChangeEvent.getOldValue());
+                    pageFlowScope.put("domainNewValue", (Integer)valueChangeEvent.getNewValue());
+                    ADFUtils.showPopup(this.getRiskDefOtherSelectionPopup());
+                }else{
+                    valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+                    logger.info("Domain selected :: " + newValue);
+                    ADFUtils.addPartialTarget(searchCriteriaDetails);
+                    ADFUtils.addPartialTarget(socTermSOC);
+                    showStatus(ViewConstants.CRS_MODIFIED);
+                }
+        }
+        }else{
+            valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+            logger.info("Domain selected :: " + newValue);
+            ADFUtils.addPartialTarget(searchCriteriaDetails);
+            ADFUtils.addPartialTarget(socTermSOC);
+            showStatus(ViewConstants.CRS_MODIFIED);
+        }
+       
         //ADFUtils.addPartialTarget(searchCriteriaDetails);
         //ADFUtils.addPartialTarget(socTermSOC);
     }
@@ -4712,12 +4766,40 @@ public class ManageCRSBean implements Serializable {
     
     public void onDomainIdChangeInCopyRisk(ValueChangeEvent valueChangeEvent) {
         logger.info("Refreshing SOC LOV based on the domain selected");
-        valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+        
         Integer newValue = (Integer)valueChangeEvent.getNewValue();
-        logger.info("Domain selected :: " + newValue);
-        ADFUtils.addPartialTarget(searchCriteriaDetailsCopy);
-        ADFUtils.addPartialTarget(socTermSOCCopy);
-        showStatus(ViewConstants.CRS_MODIFIED);
+        OperationBinding op = ADFUtils.findOperation("domainName");
+        Map params = op.getParamsMap();
+        params.put("domainId", newValue);
+        String domainName = (String)op.execute();
+        if("OTHER".equalsIgnoreCase(domainName)){
+            OperationBinding op1 = ADFUtils.findOperation("executeRelationsExistsQuery");
+            Map params1 = op1.getParamsMap();
+            params1.put("crsId", ADFUtils.evaluateEL("#{pageFlowScope.crsId}"));
+            params1.put("domainId", (Integer)valueChangeEvent.getOldValue());
+            params1.put("safetyTopicOfInterest",ADFUtils.evaluateEL("#{bindings.SafetyTopicOfInterest.inputValue}") );
+            String relationsExists = (String)op1.execute();
+            if("YES".equalsIgnoreCase(relationsExists)){
+                    ADFContext adfCtx = ADFContext.getCurrent();
+                    Map pageFlowScope = adfCtx.getPageFlowScope();
+                    pageFlowScope.put("domainOldValue", (Integer)valueChangeEvent.getOldValue());
+                    pageFlowScope.put("domainNewValue", (Integer)valueChangeEvent.getNewValue());
+                    ADFUtils.showPopup(this.getCopyRiskDefOtherSelectionPopup());
+                }else{
+                    valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+                    logger.info("Domain selected :: " + newValue);
+                    ADFUtils.addPartialTarget(searchCriteriaDetailsCopy);
+                    ADFUtils.addPartialTarget(socTermSOCCopy);
+                    showStatus(ViewConstants.CRS_MODIFIED);
+                }
+        }else{
+            valueChangeEvent.getComponent().processUpdates(FacesContext.getCurrentInstance());
+            logger.info("Domain selected :: " + newValue);
+            ADFUtils.addPartialTarget(searchCriteriaDetailsCopy);
+            ADFUtils.addPartialTarget(socTermSOCCopy);
+            showStatus(ViewConstants.CRS_MODIFIED);
+        }
+        
         //ADFUtils.addPartialTarget(searchCriteriaDetails);
         //ADFUtils.addPartialTarget(socTermSOC);
     }
@@ -4883,6 +4965,11 @@ public class ManageCRSBean implements Serializable {
     public void onRiskPurposeVC(ValueChangeEvent valueChangeEvent) {
         if(valueChangeEvent.getNewValue() != valueChangeEvent.getOldValue() && valueChangeEvent.getNewValue()!= null){
             List<String> selRiskPurposes = (List<String>) valueChangeEvent.getNewValue();
+            
+            if(!selRiskPurposes.contains("CD")){
+            ADFUtils.setEL("#{bindings.Adr.inputValue}", null);
+            }
+            
 //            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
 //                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
 //            }
@@ -4891,8 +4978,11 @@ public class ManageCRSBean implements Serializable {
     }
 
     public void onCopyRiskPurposeVC(ValueChangeEvent valueChangeEvent) {
+        List<String> selRiskPurposes = (List<String>) valueChangeEvent.getNewValue();
         if(valueChangeEvent.getNewValue() != valueChangeEvent.getOldValue() && valueChangeEvent.getNewValue()!= null){
-            List<String> selRiskPurposes = (List<String>) valueChangeEvent.getNewValue();
+            if(!selRiskPurposes.contains("CD")){
+            ADFUtils.setEL("#{bindings.Adr.inputValue}", null);
+            }
 //            if(selRiskPurposes.contains("A2") && (selRiskPurposes.contains("RM") || selRiskPurposes.contains("PS"))){
 //                ADFUtils.showFacesMessage("If A2 is selected,  RM or PS cannot also be selected.  Please ensure that only A2 is selected or removed.", FacesMessage.SEVERITY_ERROR);
 //            }
@@ -4920,6 +5010,14 @@ public class ManageCRSBean implements Serializable {
     }
 
     public void stoiVC(ValueChangeEvent valueChangeEvent) {
+//        DCIteratorBinding realtionIter = ADFUtils.findIterator("CrsRiskRelationVOIterator");
+//        ViewObject relations = realtionIter.getViewObject();
+//        Row relationRow = relations.getCurrentRow(); 
+//        RowQualifier rq = new RowQualifier("CrsId= " + row.getAttribute("CrsId") +" AND SafetyTopicOfInterest= '" +row.getAttribute("SafetyTopicOfInterest") + "'");
+//        Row[] rows = relations.getFilteredRows(rq);
+//        for(Row row : rows){
+//            
+//        }
         String val = (String)valueChangeEvent.getNewValue();
                if(val != null && val.contains("'")){
                    String[] str = val.split("'");
@@ -7072,11 +7170,11 @@ public class ManageCRSBean implements Serializable {
             row = sheet.createRow(idx); //creating 1st row
             row.createCell(0).setCellValue("State: "+this.getSelectedState());
             row.getCell(0).setCellStyle(colStyleTopLeft);
-            row.createCell(2).setCellValue("BSL: "+this.getSelectedBSL());
+            row.createCell(2).setCellValue("GPSL: "+this.getSelectedBSL());
             row.getCell(2).setCellStyle(colStyleTopLeft);
             idx = idx + 1;
             row = sheet.createRow(idx); //creating 1st row
-            row.createCell(0).setCellValue("TASL: "+this.getSelectedTASL());
+            row.createCell(0).setCellValue("HPS: "+this.getSelectedTASL());
             row.getCell(0).setCellStyle(colStyleTopLeft);
             idx = idx + 1;
             row = sheet.createRow(idx); //creating 1st row
@@ -7306,11 +7404,11 @@ public class ManageCRSBean implements Serializable {
             row = sheet.createRow(idx); //creating 1st row
             row.createCell(0).setCellValue("State: "+this.getSelectedState());
             row.getCell(0).setCellStyle(colStyleTopLeft);
-            row.createCell(2).setCellValue("BSL: "+this.getSelectedBSL());
+            row.createCell(2).setCellValue("GPSL: "+this.getSelectedBSL());
             row.getCell(2).setCellStyle(colStyleTopLeft);
             idx = idx + 1;
             row = sheet.createRow(idx); //creating 1st row
-            row.createCell(0).setCellValue("TASL: "+this.getSelectedTASL());
+            row.createCell(0).setCellValue("HPS: "+this.getSelectedTASL());
             row.getCell(0).setCellStyle(colStyleTopLeft);
             idx = idx + 1;
             row = sheet.createRow(idx); //creating 1st row
@@ -7531,11 +7629,11 @@ public class ManageCRSBean implements Serializable {
         row = sheet.createRow(idx); //creating 1st row
         row.createCell(0).setCellValue("State: "+this.getSelectedState());
         row.getCell(0).setCellStyle(colStyleTopLeft);
-        row.createCell(2).setCellValue("BSL: "+this.getSelectedBSL());
+        row.createCell(2).setCellValue("GPSL: "+this.getSelectedBSL());
         row.getCell(2).setCellStyle(colStyleTopLeft);
         idx = idx + 1;
         row = sheet.createRow(idx); //creating 1st row
-        row.createCell(0).setCellValue("TASL: "+this.getSelectedTASL());
+        row.createCell(0).setCellValue("HPS: "+this.getSelectedTASL());
         row.getCell(0).setCellStyle(colStyleTopLeft);
         idx = idx + 1;
         row = sheet.createRow(idx); //creating 1st row
@@ -7768,11 +7866,11 @@ public class ManageCRSBean implements Serializable {
         row = sheet.createRow(idx); //creating 1st row
         row.createCell(0).setCellValue("State: "+this.getSelectedState());
         row.getCell(0).setCellStyle(colStyleTopLeft);
-        row.createCell(2).setCellValue("BSL: "+this.getSelectedBSL());
+        row.createCell(2).setCellValue("GPSL: "+this.getSelectedBSL());
         row.getCell(2).setCellStyle(colStyleTopLeft);
         idx = idx + 1;
         row = sheet.createRow(idx); //creating 1st row
-        row.createCell(0).setCellValue("TASL: "+this.getSelectedTASL());
+        row.createCell(0).setCellValue("HPS: "+this.getSelectedTASL());
         row.getCell(0).setCellStyle(colStyleTopLeft);
         idx = idx + 1;
         row = sheet.createRow(idx); //creating 1st row
@@ -7882,5 +7980,169 @@ public class ManageCRSBean implements Serializable {
 
     public void closeDownloadPTPendingDetailPopup(ActionEvent actionEvent) {
         this.getPtExportPendingDetailPopup().hide();
+    }
+
+    public void setShowADR(Boolean showADR) {
+        this.showADR = showADR;
+    }
+
+    public Boolean getShowADR() {
+        List<String> riskPursposeList = this.getSelRiskPurposes();
+        if((riskPursposeList != null) && (riskPursposeList.contains("CD"))){
+            return true;
+        }else{
+            return false;
+        }
+        //return showADR;
+    }
+
+    public void setShowMedicalHistory(Boolean showMedicalHistory) {
+        this.showMedicalHistory = showMedicalHistory;
+    }
+
+    public Boolean getShowMedicalHistory() {
+        List<String> riskPursposeList = this.getSelRiskPurposes();
+        if((riskPursposeList == null) || (riskPursposeList.contains("CD") || riskPursposeList.contains("A1") || riskPursposeList.contains("A2") || riskPursposeList.contains("UD") || riskPursposeList.contains("ER")) ){
+            Boolean isCancelClicked =  (Boolean)ADFUtils.getPageFlowScopeValue("isCancelClicked");
+            if(!((isCancelClicked != null) && isCancelClicked)){
+            ADFUtils.setEL("#{bindings.SearchAppliedTo.inputValue}", "Adverse Event");
+            }
+            ADFUtils.setPageFlowScopeValue("isCancelClicked",false);
+            return false;
+        }else{
+            return true;
+        }
+       // return showMedicalHistory;
+    }
+
+    public void setShowCopyADR(Boolean showCopyADR) {
+        this.showCopyADR = showCopyADR;
+    }
+
+    public Boolean getShowCopyADR() {
+        List<String> riskPursposeList = this.getSelRiskPurposes();
+        if((riskPursposeList != null) && (riskPursposeList.contains("CD"))){
+            return true;
+        }else{
+            return false;
+        }
+        //return showCopyADR;
+    }
+
+    public void setShowCopyMedicalHistory(Boolean showCopyMedicalHistory) {
+        this.showCopyMedicalHistory = showCopyMedicalHistory;
+    }
+
+    public Boolean getShowCopyMedicalHistory() {
+        List<String> riskPursposeList = this.getSelRiskPurposes();
+        if((riskPursposeList == null) || (riskPursposeList.contains("CD") || riskPursposeList.contains("A1") || riskPursposeList.contains("A2") || riskPursposeList.contains("UD") || riskPursposeList.contains("ER")) ){
+            return false;
+        }else{
+            return true;
+        }
+        //return showCopyMedicalHistory;
+    }
+
+    public void setShowAdrTentative(Boolean showAdrTentative) {
+        this.showAdrTentative = showAdrTentative;
+    }
+
+    public Boolean getShowAdrTentative() {
+        if("BASE".equalsIgnoreCase(this.getBaseOrStaging())){
+            DCIteratorBinding riskIter = ADFUtils.findIterator("CrsRiskBaseVOIterator");
+            RowSetIterator rsi = riskIter.getViewObject().createRowSetIterator(null);
+            rsi.reset();
+            while (rsi.hasNext()) {
+                     Row row = rsi.next();
+                   String cd = (String)row.getAttribute("RiskPurposeCdFlag");
+                if("T".equalsIgnoreCase(cd)){
+                    rsi.closeRowSetIterator();
+                    return true;
+                }
+                  }
+            rsi.closeRowSetIterator();  
+        }else{
+            DCIteratorBinding riskIter = ADFUtils.findIterator("CrsRiskVOIterator");
+            RowSetIterator rsi = riskIter.getViewObject().createRowSetIterator(null);
+            rsi.reset();
+            while (rsi.hasNext()) {
+                     Row row = rsi.next();
+                   String cd = (String)row.getAttribute("RiskPurposeCdFlag");
+                if("T".equalsIgnoreCase(cd)){
+                    rsi.closeRowSetIterator();
+                    return true;
+                }
+                  }
+            rsi.closeRowSetIterator();
+        }   
+        return false;
+    }
+
+    public void setDisableHeirarchyBtn(Boolean disableHeirarchyBtn) {
+        this.disableHeirarchyBtn = disableHeirarchyBtn;
+    }
+
+    public Boolean getDisableHeirarchyBtn() {
+        OperationBinding op = ADFUtils.findOperation("domainName");
+        Map params = op.getParamsMap();
+        params.put("domainId", ADFUtils.evaluateEL("#{bindings.DomainId.inputValue}"));
+        String domainName = (String)op.execute();
+        if("OTHER".equalsIgnoreCase(domainName)){
+            return true;
+        }else{
+            return false;
+        }
+        //return disableHeirarchyBtn;
+    }
+
+    public void setCrsDomainValue(RichSelectOneChoice crsDomainValue) {
+        this.crsDomainValue = crsDomainValue;
+    }
+
+    public RichSelectOneChoice getCrsDomainValue() {
+        return crsDomainValue;
+    }
+
+    public void setRiskDefOtherSelectionPopup(RichPopup riskDefOtherSelectionPopup) {
+        this.riskDefOtherSelectionPopup = riskDefOtherSelectionPopup;
+    }
+
+    public RichPopup getRiskDefOtherSelectionPopup() {
+        return riskDefOtherSelectionPopup;
+    }
+
+    public void closeRiskDefOthersPopup(ActionEvent actionEvent) {
+        this.getRiskDefOtherSelectionPopup().hide();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        Map pageFlowScope = adfCtx.getPageFlowScope();
+        Integer domainOldValue = (Integer)pageFlowScope.get("domainOldValue");
+        this.getCrsDomainValue().setValue(domainOldValue);
+        ADFUtils.setEL("#{bindings.DomainId.inputValue}",domainOldValue);
+    }
+
+    public void setCopyRiskDefOthersPopup(RichSelectOneChoice copyRiskDefOthersPopup) {
+        this.copyRiskDefOthersPopup = copyRiskDefOthersPopup;
+    }
+
+    public RichSelectOneChoice getCopyRiskDefOthersPopup() {
+        return copyRiskDefOthersPopup;
+    }
+
+    public void setCopyRiskDefOtherSelectionPopup(RichPopup copyRiskDefOtherSelectionPopup) {
+        this.copyRiskDefOtherSelectionPopup = copyRiskDefOtherSelectionPopup;
+    }
+
+    public RichPopup getCopyRiskDefOtherSelectionPopup() {
+        return copyRiskDefOtherSelectionPopup;
+    }
+
+    public void copyCloseRiskDefOthersPopup(ActionEvent actionEvent) {
+        
+        this.getCopyRiskDefOtherSelectionPopup().hide();
+        ADFContext adfCtx = ADFContext.getCurrent();
+        Map pageFlowScope = adfCtx.getPageFlowScope();
+        Integer domainOldValue = (Integer)pageFlowScope.get("domainOldValue");
+        this.getCrsDomainValue().setValue(domainOldValue);
+        ADFUtils.setEL("#{bindings.DomainId.inputValue}",domainOldValue);
     }
 }

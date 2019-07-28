@@ -44,6 +44,14 @@
       </PIMap>
     </ParameterMap>
   </ViewAccessor>
+  <ViewAccessor
+    Name="ADRVA"
+    ViewObjectName="com.novartis.ecrs.model.lov.ADRVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="SearchAppliedToVA"
+    ViewObjectName="com.novartis.ecrs.model.lov.SearchAppliedTo"
+    RowLevelBinds="true"/>
   <ListBinding
     Name="LOV_SocTerm"
     ListVOName="SocLOVO"
@@ -87,23 +95,60 @@
     </AttrArray>
     <DisplayCriteria/>
   </ListBinding>
-  <SQLQuery><![CDATA[SELECT CrsRiskRelationsEO.CRS_ID, 
-       CrsRiskRelationsEO.CRS_RISK_ID, 
-       CrsRiskRelationsEO.MQM_COMMENT, 
-       CrsRiskRelationsEO.NON_MEDDRA_COMPONENT_COMMENT, 
-       CrsRiskRelationsEO.SAFETY_TOPIC_OF_INTEREST, 
-       CrsRiskRelationsEO.SOC_DICT_CONTENT_ENTRY_TS, 
-       CrsRiskRelationsEO.SOC_DICT_CONTENT_ID, 
-       CrsRiskRelationsEO.SOC_TERM, 
-       CrsRiskRelationsEO.UI_VERSION_NUMBER, 
-       CrsRiskRelationsEO.RISK_PURPOSE_LIST, 
-       CrsRiskRelationsEO.CRS_EFFECTIVE_DT,
-       CrsRiskRelationsEO.DOMAIN_ID,
-       CrsRiskRelationsEO.CREATED_BY,
-       CrsRiskRelationsEO.CREATION_TS,
-       CrsRiskRelationsEO.MODIFIED_BY,
-       CrsRiskRelationsEO.MODIFICATION_TS,
-       CrsRiskRelationsEO.SEARCH_CRITERIA_DETAILS
+  <ListBinding
+    Name="LOV_Adr"
+    ListVOName="ADRVA"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Adr"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_SearchAppliedTo"
+    ListVOName="SearchAppliedToVA"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="SearchAppliedTo"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Code"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT CrsRiskRelationsEO.CRS_ID,   
+       CrsRiskRelationsEO.CRS_RISK_ID,   
+       CrsRiskRelationsEO.MQM_COMMENT,   
+       CrsRiskRelationsEO.NON_MEDDRA_COMPONENT_COMMENT,   
+       CrsRiskRelationsEO.SAFETY_TOPIC_OF_INTEREST,   
+       CrsRiskRelationsEO.SOC_DICT_CONTENT_ENTRY_TS,   
+       CrsRiskRelationsEO.SOC_DICT_CONTENT_ID,   
+       CrsRiskRelationsEO.SOC_TERM,   
+       CrsRiskRelationsEO.UI_VERSION_NUMBER,   
+       CrsRiskRelationsEO.RISK_PURPOSE_LIST,   
+       CrsRiskRelationsEO.CRS_EFFECTIVE_DT,  
+       CrsRiskRelationsEO.DOMAIN_ID,  
+       CrsRiskRelationsEO.CREATED_BY,  
+       CrsRiskRelationsEO.CREATION_TS,  
+       CrsRiskRelationsEO.MODIFIED_BY,  
+       CrsRiskRelationsEO.MODIFICATION_TS,  
+       CrsRiskRelationsEO.SEARCH_CRITERIA_DETAILS,  
+       CrsRiskRelationsEO.ADR,  
+       CrsRiskRelationsEO.SEARCH_APPLIED_TO 
 FROM CRS_RISK_RELATIONS_STG CrsRiskRelationsEO]]></SQLQuery>
   <EntityUsage
     Name="CrsRiskRelationsEO"
@@ -270,6 +315,35 @@ FROM CRS_RISK_RELATIONS_STG CrsRiskRelationsEO]]></SQLQuery>
       <SchemaBasedProperties>
         <LABEL
           ResId="com.novartis.ecrs.model.view.CrsRiskRelationVO.SearchCriteriaDetails_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Adr"
+    PrecisionRule="true"
+    EntityAttrName="Adr"
+    EntityUsage="CrsRiskRelationsEO"
+    AliasName="ADR"
+    LOVName="LOV_Adr">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SearchAppliedTo"
+    PrecisionRule="true"
+    EntityAttrName="SearchAppliedTo"
+    EntityUsage="CrsRiskRelationsEO"
+    AliasName="SEARCH_APPLIED_TO"
+    LOVName="LOV_SearchAppliedTo"
+    DefaultValue="Adverse Event">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
       </SchemaBasedProperties>
     </Properties>
   </ViewAttribute>

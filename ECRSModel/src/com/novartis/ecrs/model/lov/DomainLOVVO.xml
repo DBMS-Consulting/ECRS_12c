@@ -102,4 +102,7 @@
     <PropertiesBundle
       PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
   </ResourceBundle>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="DomainId"/>
+  </AttrArray>
 </ViewObject>

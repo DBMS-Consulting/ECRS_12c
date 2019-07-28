@@ -12,4 +12,8 @@
     <converter-id>TrimEndSpaces</converter-id>
     <converter-class>com.novartis.ecrs.view.converter.TrimEndSpacesConverter</converter-class>
   </converter>
+  <converter>
+    <converter-id>ConvertFirstLetterToCapital</converter-id>
+    <converter-class>com.novartis.ecrs.view.converter.ChangeFirstLetterToCapital</converter-class>
+  </converter>
 </faces-config>

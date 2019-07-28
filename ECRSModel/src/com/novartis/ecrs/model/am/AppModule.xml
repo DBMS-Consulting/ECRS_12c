@@ -6,4 +6,8 @@
   Name="AppModule"
   Version="12.2.1.12.24"
   InheritPersonalization="merge"
-  ClearCacheOnRollback="true"></AppModule>
+  ClearCacheOnRollback="true">
+  <ViewUsage
+    Name="CrsRiskRelationVO1"
+    ViewObjectName="com.novartis.ecrs.model.view.CrsRiskRelationVO"/>
+</AppModule>

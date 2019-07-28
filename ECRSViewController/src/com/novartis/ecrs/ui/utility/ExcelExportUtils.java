@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.text.SimpleDateFormat;
-
+import java.util.List;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -87,6 +87,45 @@ public class ExcelExportUtils {
            writeImageTOExcel(sheet,imageInpStream);
           return sheet;
        }
+    
+    public static Sheet writeExcelSheet(Sheet sheet, List rowSet,
+                                  int rowStartIndex, int cellStartIndex,
+                                  LinkedHashMap columnMap, String tableHeader,
+                                  String dateCellFormat,
+                                  String emptyValReplace,InputStream imageInpStream) throws IOException {
+        int rowIndex = rowStartIndex;
+        org.apache.poi.ss.usermodel.Row row = null;
+        //Write Table Header
+           if(tableHeader!=null){
+               row = sheet.getRow(rowIndex) != null ? sheet.getRow(rowIndex) : sheet.createRow(rowIndex) ;
+               writeTableHeader(sheet, row, rowIndex,cellStartIndex, columnMap, tableHeader);
+               rowIndex++;
+           }    
+           //Insert Date
+           row = sheet.getRow(rowIndex-2) != null ? sheet.getRow(rowIndex-2) : sheet.createRow(rowIndex-2) ;
+           org.apache.poi.ss.usermodel.Cell cell = null;
+           cell = row.getCell(cellStartIndex) != null ? row.getCell(cellStartIndex) : row.createCell(cellStartIndex) ;
+           String pattern = "dd/MM/yyyy";
+           SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+           String date = simpleDateFormat.format(new Date());
+           cell.setCellValue("Report Generated On : ".concat(date));
+           //Write HeaderRow       
+           row = sheet.getRow(rowIndex) != null ? sheet.getRow(rowIndex) : sheet.createRow(rowIndex) ;
+           writeHeaderRow(sheet, row, rowIndex,cellStartIndex, columnMap,tableHeader);
+           rowIndex++;
+           
+           //Write Cell
+           // Moved cell style creation out side for loop to fix issue while exporting large data 
+           CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+           for(int rowCounter=0; rowCounter< rowSet.size(); rowCounter++){                 
+               row = sheet.getRow(rowIndex) != null ? sheet.getRow(rowIndex) : sheet.createRow(rowIndex) ;                     
+               writeData(sheet, row, rowIndex,cellStartIndex, cellStyle, columnMap, rowSet, rowCounter,tableHeader,dateCellFormat,emptyValReplace); 
+               rowIndex++;          
+           }
+           writeImageTOExcel(sheet,imageInpStream);
+          return sheet;
+       }
       
        private static void writeTableHeader(Sheet sheet, org.apache.poi.ss.usermodel.Row row,
                                   int rowIndex, int cellStartIndex, LinkedHashMap columnMap, String tableHeader){
@@ -152,6 +191,53 @@ public class ExcelExportUtils {
                        //Custom Code to write Status based on Status Code for LastStatusCol                                            
                          cell.setCellValue(currentRow.getAttribute(attribute).toString());  
                    }   
+               }
+               if ("RiskPurposeSpFlag".equals(attribute) ||
+                "RiskPurposeDsFlag".equals(attribute) ||
+                "RiskPurposeRmFlag".equals(attribute) ||
+                "RiskPurposePsFlag".equals(attribute) ||
+                "RiskPurposeIbFlag".equals(attribute) ||
+                "RiskPurposeCdFlag".equals(attribute) ||
+                "RiskPurposeOsFlag".equals(attribute) ||
+                "RiskPurposeMiFlag".equals(attribute) ||
+                "RiskPurposeErFlag".equals(attribute) || 
+                "RiskPurposeUdFlag".equals(attribute) ||
+                "RiskPurposeA1Flag".equals(attribute) ||
+                "RiskPurposeA2Flag".equals(attribute))
+                sheet.setColumnWidth(cellIndex, 1000);
+            else
+                sheet.setColumnWidth(cellIndex, 6000);
+               
+               setDataCellStyle(sheet, rowIndex, cellIndex,cellStyle);
+               cellIndex++; 
+                
+           }       
+       }
+    
+    private static void writeData(Sheet sheet,
+                                  org.apache.poi.ss.usermodel.Row row,
+                                  int rowIndex, int cellStartIndex, CellStyle cellStyle,
+                                  LinkedHashMap columnMap,
+                                  List rowSet, int rowCounter,
+                                  String tableHeader, String dateFormat,
+                                  String emptyValReplace) {
+        int cellIndex=cellStartIndex;           
+           Iterator entries = columnMap.entrySet().iterator();
+          // CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+           while (entries.hasNext()) {
+               Map.Entry entry = (Map.Entry) entries.next();
+               Map<String,String> dataMap = (Map<String,String>)rowSet.get(rowCounter);  
+               org.apache.poi.ss.usermodel.Cell cell = null;
+               cell = row.getCell(cellIndex) != null ? row.getCell(cellIndex) : row.createCell(cellIndex) ; 
+               String attribute = (String)entry.getKey();
+               if (dataMap.get(attribute) == null){
+                   if(emptyValReplace!=null)
+                        cell.setCellValue(emptyValReplace);
+                   else
+                    cell.setCellValue("");
+               }
+               else {                                        
+                         cell.setCellValue(dataMap.get(attribute).toString());     
                }
                if ("RiskPurposeSpFlag".equals(attribute) ||
                 "RiskPurposeDsFlag".equals(attribute) ||
@@ -272,8 +358,8 @@ public class ExcelExportUtils {
      */
     public InputStream getExcelInpStream() {
         InputStream inputStreamOfExcel =
-             this.getClass().getClassLoader().getResourceAsStream("EcrsReports.xls");
-//            ExcelExportUtils.loadResourceAsStream("C:\\ECRS_12c.git\\trunk\\ECRSViewController\\public_html\\exceltemplate\\EcrsReports.xls");
+//             this.getClass().getClassLoader().getResourceAsStream("EcrsReports.xls");
+            ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\exceltemplate\\EcrsReports.xls");
         return inputStreamOfExcel;
     }
     
@@ -282,8 +368,8 @@ public class ExcelExportUtils {
      */
     public InputStream getImageInpStream() {
         InputStream inputStreamOfExcel =
-             this.getClass().getClassLoader().getResourceAsStream("crs.png");
-//            ExcelExportUtils.loadResourceAsStream("C:\\ECRS_12c.git\\trunk\\ECRSViewController\\public_html\\images\\crs.png");
+ //            this.getClass().getClassLoader().getResourceAsStream("crs.png");
+            ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\images\\crs.png");
         return inputStreamOfExcel;
     }
 }

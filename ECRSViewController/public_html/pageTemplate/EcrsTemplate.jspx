@@ -167,6 +167,9 @@
                                                 action="domains" inlineStyle="font-weight: bold;"/>
                             <af:commandMenuItem text="#{ecrsviewcontrollerBundle.MEDDRA_FREEZE}" id="pt_cmi9" immediate="true"
                                                 action="freezeMedDRA" inlineStyle="font-weight: bold;"/>
+                            <af:commandMenuItem text="Schedule #{ecrsviewcontrollerBundle.MEDDRA_COMPONENTS} Report"
+                                                    id="pt_cmi11" action="scheduleMeddraCompStandard" inlineStyle="font-weight: bold;"
+                                                    immediate="true"/>
                         </af:menu>
                     </af:menuBar>
                     <af:separator id="s1"/>

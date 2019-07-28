@@ -190,6 +190,26 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
         }
         ,
+        Adr {
+            public Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getAdr();
+            }
+
+            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAdr((String) value);
+            }
+        }
+        ,
+        SearchAppliedTo {
+            public Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getSearchAppliedTo();
+            }
+
+            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setSearchAppliedTo((String) value);
+            }
+        }
+        ,
         CrsRiskDefinitionsVO {
             public Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getCrsRiskDefinitionsVO();
@@ -213,6 +233,26 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
         DomainOtherLOVVA {
             public Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getDomainOtherLOVVA();
+            }
+
+            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        ADRVA {
+            public Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getADRVA();
+            }
+
+            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        SearchAppliedToVA {
+            public Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getSearchAppliedToVA();
             }
 
             public void put(CrsRiskRelationVORowImpl obj, Object value) {
@@ -263,9 +303,13 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
     public static final int MODIFIEDBY = AttributesEnum.ModifiedBy.index();
     public static final int MODIFICATIONTS = AttributesEnum.ModificationTs.index();
     public static final int SEARCHCRITERIADETAILS = AttributesEnum.SearchCriteriaDetails.index();
+    public static final int ADR = AttributesEnum.Adr.index();
+    public static final int SEARCHAPPLIEDTO = AttributesEnum.SearchAppliedTo.index();
     public static final int CRSRISKDEFINITIONSVO = AttributesEnum.CrsRiskDefinitionsVO.index();
     public static final int SOCLOVO = AttributesEnum.SocLOVO.index();
     public static final int DOMAINOTHERLOVVA = AttributesEnum.DomainOtherLOVVA.index();
+    public static final int ADRVA = AttributesEnum.ADRVA.index();
+    public static final int SEARCHAPPLIEDTOVA = AttributesEnum.SearchAppliedToVA.index();
 
     /**
      * This is the default constructor (do not remove).
@@ -554,6 +598,38 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
     }
 
     /**
+     * Gets the attribute value for ADR using the alias name Adr.
+     * @return the ADR
+     */
+    public String getAdr() {
+        return (String) getAttributeInternal(ADR);
+    }
+
+    /**
+     * Sets <code>value</code> as attribute value for ADR using the alias name Adr.
+     * @param value value to set the ADR
+     */
+    public void setAdr(String value) {
+        setAttributeInternal(ADR, value);
+    }
+
+    /**
+     * Gets the attribute value for SEARCH_APPLIED_TO using the alias name SearchAppliedTo.
+     * @return the SEARCH_APPLIED_TO
+     */
+    public String getSearchAppliedTo() {
+        return (String) getAttributeInternal(SEARCHAPPLIEDTO);
+    }
+
+    /**
+     * Sets <code>value</code> as attribute value for SEARCH_APPLIED_TO using the alias name SearchAppliedTo.
+     * @param value value to set the SEARCH_APPLIED_TO
+     */
+    public void setSearchAppliedTo(String value) {
+        setAttributeInternal(SEARCHAPPLIEDTO, value);
+    }
+
+    /**
      * Gets the associated <code>RowIterator</code> using master-detail link CrsRiskDefinitionsVO.
      */
     public RowIterator getCrsRiskDefinitionsVO() {
@@ -572,6 +648,20 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
      */
     public RowSet getDomainOtherLOVVA() {
         return (RowSet) getAttributeInternal(DOMAINOTHERLOVVA);
+    }
+
+    /**
+     * Gets the view accessor <code>RowSet</code> ADRVA.
+     */
+    public RowSet getADRVA() {
+        return (RowSet) getAttributeInternal(ADRVA);
+    }
+
+    /**
+     * Gets the view accessor <code>RowSet</code> SearchAppliedToVA.
+     */
+    public RowSet getSearchAppliedToVA() {
+        return (RowSet) getAttributeInternal(SEARCHAPPLIEDTOVA);
     }
 
     /**

@@ -24,7 +24,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setCrsRiskId((Long)value);
+                obj.setCrsRiskId((Long) value);
             }
         }
         ,
@@ -34,7 +34,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setSafetyTopicOfInterest((String)value);
+                obj.setSafetyTopicOfInterest((String) value);
             }
         }
         ,
@@ -44,7 +44,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeSpFlag((String)value);
+                obj.setRiskPurposeSpFlag((String) value);
             }
         }
         ,
@@ -54,7 +54,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeDsFlag((String)value);
+                obj.setRiskPurposeDsFlag((String) value);
             }
         }
         ,
@@ -64,7 +64,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeRmFlag((String)value);
+                obj.setRiskPurposeRmFlag((String) value);
             }
         }
         ,
@@ -74,7 +74,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposePsFlag((String)value);
+                obj.setRiskPurposePsFlag((String) value);
             }
         }
         ,
@@ -84,7 +84,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeCdFlag((String)value);
+                obj.setRiskPurposeCdFlag((String) value);
             }
         }
         ,
@@ -94,7 +94,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeIbFlag((String)value);
+                obj.setRiskPurposeIbFlag((String) value);
             }
         }
         ,
@@ -104,7 +104,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeOsFlag((String)value);
+                obj.setRiskPurposeOsFlag((String) value);
             }
         }
         ,
@@ -114,7 +114,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeMiFlag((String)value);
+                obj.setRiskPurposeMiFlag((String) value);
             }
         }
         ,
@@ -124,7 +124,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeErFlag((String)value);
+                obj.setRiskPurposeErFlag((String) value);
             }
         }
         ,
@@ -134,7 +134,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setCrsId((Long)value);
+                obj.setCrsId((Long) value);
             }
         }
         ,
@@ -144,7 +144,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setDatabaseId((Integer)value);
+                obj.setDatabaseId((Integer) value);
             }
         }
         ,
@@ -154,7 +154,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setDataDomain((String)value);
+                obj.setDataDomain((String) value);
             }
         }
         ,
@@ -164,7 +164,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setNonMeddraComponentComment((String)value);
+                obj.setNonMeddraComponentComment((String) value);
             }
         }
         ,
@@ -174,7 +174,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setMqmComment((String)value);
+                obj.setMqmComment((String) value);
             }
         }
         ,
@@ -184,7 +184,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setSocTerm((String)value);
+                obj.setSocTerm((String) value);
             }
         }
         ,
@@ -194,7 +194,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setSocDictContentId((Long)value);
+                obj.setSocDictContentId((Long) value);
             }
         }
         ,
@@ -204,7 +204,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setSocDictContentEntryTs((Timestamp)value);
+                obj.setSocDictContentEntryTs((Timestamp) value);
             }
         }
         ,
@@ -214,7 +214,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setRiskPurposeList((String)value);
+                obj.setRiskPurposeList((String) value);
             }
         }
         ,
@@ -224,7 +224,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setDatabaseList((String)value);
+                obj.setDatabaseList((String) value);
             }
         }
         ,
@@ -254,7 +254,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setDomainId((Integer)value);
+                obj.setDomainId((Integer) value);
             }
         }
         ,
@@ -304,7 +304,27 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setSearchCriteriaDetails((String)value);
+                obj.setSearchCriteriaDetails((String) value);
+            }
+        }
+        ,
+        SearchAppliedTo {
+            public Object get(CrsRiskRelationsEOImpl obj) {
+                return obj.getSearchAppliedTo();
+            }
+
+            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+                obj.setSearchAppliedTo((String) value);
+            }
+        }
+        ,
+        Adr {
+            public Object get(CrsRiskRelationsEOImpl obj) {
+                return obj.getAdr();
+            }
+
+            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+                obj.setAdr((String) value);
             }
         }
         ,
@@ -314,7 +334,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
 
             public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setCrsContentEO((CrsContentEOImpl)value);
+                obj.setCrsContentEO((CrsContentEOImpl) value);
             }
         }
         ,
@@ -385,6 +405,8 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
     public static final int MODIFIEDBY = AttributesEnum.ModifiedBy.index();
     public static final int MODIFICATIONTS = AttributesEnum.ModificationTs.index();
     public static final int SEARCHCRITERIADETAILS = AttributesEnum.SearchCriteriaDetails.index();
+    public static final int SEARCHAPPLIEDTO = AttributesEnum.SearchAppliedTo.index();
+    public static final int ADR = AttributesEnum.Adr.index();
     public static final int CRSCONTENTEO = AttributesEnum.CrsContentEO.index();
     public static final int CRSDOMAINSEO = AttributesEnum.CrsDomainsEO.index();
 
@@ -825,6 +847,38 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
     }
 
     /**
+     * Gets the attribute value for SearchAppliedTo, using the alias name SearchAppliedTo.
+     * @return the value of SearchAppliedTo
+     */
+    public String getSearchAppliedTo() {
+        return (String) getAttributeInternal(SEARCHAPPLIEDTO);
+    }
+
+    /**
+     * Sets <code>value</code> as the attribute value for SearchAppliedTo.
+     * @param value value to set the SearchAppliedTo
+     */
+    public void setSearchAppliedTo(String value) {
+        setAttributeInternal(SEARCHAPPLIEDTO, value);
+    }
+
+    /**
+     * Gets the attribute value for Adr, using the alias name Adr.
+     * @return the value of Adr
+     */
+    public String getAdr() {
+        return (String) getAttributeInternal(ADR);
+    }
+
+    /**
+     * Sets <code>value</code> as the attribute value for Adr.
+     * @param value value to set the Adr
+     */
+    public void setAdr(String value) {
+        setAttributeInternal(ADR, value);
+    }
+
+    /**
      * getAttrInvokeAccessor: generated method. Do not modify.
      * @param index the index identifying the attribute
      * @param attrDef the attribute
@@ -889,7 +943,7 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
      * @return a Key object based on given key constituents.
      */
     public static Key createPrimaryKey(Long crsRiskId) {
-        return new Key(new Object[]{crsRiskId});
+        return new Key(new Object[] { crsRiskId });
     }
 
 

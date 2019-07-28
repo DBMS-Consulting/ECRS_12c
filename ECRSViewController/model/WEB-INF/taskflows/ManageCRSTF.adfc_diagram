@@ -48,7 +48,7 @@
       <property
          name="fromOutcome">toUpdate</property>
       <property
-         name="sdm:polyPoints">R46,261.0134,236.60477,322.9866,145.39062,L50</property>
+         name="sdm:polyPoints">R46,261.0,236.61816,323.0,145.39062,L50</property>
    </ControlFlowCase>
    <TrainFlow
       islink="true"
@@ -108,7 +108,7 @@
       <property
          name="fromOutcome">toCreate</property>
       <property
-         name="sdm:polyPoints">R54,261.0134,243.63156,495.9866,419.1953,L50</property>
+         name="sdm:polyPoints">R54,261.0,243.61816,496.0,419.1953,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -118,7 +118,7 @@
       <property
          name="fromOutcome">CreateInsert</property>
       <property
-         name="sdm:polyPoints">T50,537.0,365.18192,709.48663,206.45578,B44</property>
+         name="sdm:polyPoints">T50,537.0,365.1953,709.5,206.44238,B44</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall13">
@@ -154,7 +154,7 @@
       <property
          name="fromOutcome">toSearch</property>
       <property
-         name="sdm:polyPoints">R46,405.23633,141.87723,487.98663,146.5459,L50</property>
+         name="sdm:polyPoints">R46,405.2218,141.89062,488.0,146.5459,L50</property>
    </ControlFlowCase>
    <ParentAction
       id="ParentAction17">
@@ -177,7 +177,7 @@
       <property
          name="fromOutcome">home</property>
       <property
-         name="sdm:polyPoints">B56,716.51337,206.45578,794.98663,289.73367,L46</property>
+         name="sdm:polyPoints">B56,716.5,206.44238,795.0,289.74707,L46</property>
    </ControlFlowCase>
    <WildcardControlFlowRule
       id="WildcardControlFlowRule20">
@@ -209,7 +209,7 @@
       <property
          name="fromOutcome">initRiskRel</property>
       <property
-         name="sdm:polyPoints">R55,841.00433,-147.4407,926.98663,-150.08691,L50</property>
+         name="sdm:polyPoints">R55,840.9872,-147.4541,927.0,-150.08691,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -219,7 +219,7 @@
       <property
          name="fromOutcome">intiated</property>
       <property
-         name="sdm:polyPoints">R50,1009.01337,-150.08691,943.01337,147.68192,R46</property>
+         name="sdm:polyPoints">R50,1009.0,-150.08691,943.0,147.69531,R46</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -229,7 +229,7 @@
       <property
          name="fromOutcome">home</property>
       <property
-         name="sdm:polyPoints">B50,902.0,205.20871,836.0,239.23369,T50</property>
+         name="sdm:polyPoints">B50,902.0,205.19531,836.0,239.24707,T50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -239,7 +239,7 @@
       <property
          name="fromOutcome">home</property>
       <property
-         name="sdm:polyPoints">B50,529.0,200.5593,792.854,296.76047,L54</property>
+         name="sdm:polyPoints">B50,529.0,200.5459,792.87555,296.74707,L54</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall27">
@@ -272,7 +272,7 @@
       <property
          name="fromOutcome">toSearch</property>
       <property
-         name="sdm:polyPoints">B44,525.48663,-97.906525,521.9732,89.639694,T38</property>
+         name="sdm:polyPoints">B44,525.5,-97.91992,522.0,89.66418,T39</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -282,7 +282,7 @@
       <property
          name="fromOutcome">createUpdateCRS</property>
       <property
-         name="sdm:polyPoints">B56,532.5134,-97.906525,709.48663,98.428986,T44</property>
+         name="sdm:polyPoints">B56,532.5,-97.91992,709.5,98.44238,T44</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -292,7 +292,7 @@
       <property
          name="fromOutcome">navToCreate</property>
       <property
-         name="sdm:polyPoints">B57,807.51337,-105.95928,716.51337,98.428986,T56</property>
+         name="sdm:polyPoints">B57,807.5,-105.98221,716.5,98.44238,T56</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -302,7 +302,7 @@
       <property
          name="fromOutcome">navToSearch</property>
       <property
-         name="sdm:polyPoints">B43,800.48663,-108.440704,536.0268,92.53252,T62</property>
+         name="sdm:polyPoints">B43,800.5,-108.4541,536.0,92.5459,T61</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall34">
@@ -327,7 +327,7 @@
       <property
          name="fromOutcome">init</property>
       <property
-         name="sdm:polyPoints">B50,189.68358,150.00754,220.0,186.10477,T50</property>
+         name="sdm:polyPoints">B50,189.6836,149.99414,220.0,186.11816,T50</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall36">
@@ -350,7 +350,7 @@
       <property
          name="fromOutcome">reloadSearch</property>
       <property
-         name="sdm:polyPoints">R66,840.01337,-140.41393,924.0,-92.27219,T50</property>
+         name="sdm:polyPoints">R66,840.0,-140.4541,924.0,-92.25879,T50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -360,7 +360,7 @@
       <property
          name="fromOutcome">toSearchPage</property>
       <property
-         name="sdm:polyPoints">L50,882.98663,-38.25879,570.01337,143.0325,R46</property>
+         name="sdm:polyPoints">L50,883.0,-38.25879,570.0,143.0459,R46</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall42">
@@ -385,7 +385,7 @@
       <property
          name="fromOutcome">initSearch</property>
       <property
-         name="sdm:polyPoints">B50,-22.500008,-105.88895,52.4866,-49.902336,L50</property>
+         name="sdm:polyPoints">B50,-22.5,-105.90234,52.5,-49.902344,L50</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall44">
@@ -408,7 +408,7 @@
       <property
          name="fromOutcome">Rollback</property>
       <property
-         name="sdm:polyPoints">B50,93.49999,4.1110573,189.68358,41.98075,T50</property>
+         name="sdm:polyPoints">B50,93.5,4.0976562,189.6836,41.99414,T50</property>
    </ControlFlowCase>
    <View
       id="View46">
@@ -435,7 +435,7 @@
       from="View8"
       to="View46">
       <property
-         name="sdm:polyPoints">R54,943.01337,154.70871,1113.4866,192.0191,L42</property>
+         name="sdm:polyPoints">R54,943.0,154.69531,1113.5,192.0459,L42</property>
    </TrainFlow>
    <MethodCall
       id="MethodCall48">
@@ -458,7 +458,7 @@
       <property
          name="fromOutcome">initConfirmPage</property>
       <property
-         name="sdm:polyPoints">R34,840.01337,-161.49428,1092.6721,-246.60352,L50</property>
+         name="sdm:polyPoints">R34,840.0,-161.4541,1092.6855,-246.60352,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -478,7 +478,7 @@
       <property
          name="fromOutcome">home</property>
       <property
-         name="sdm:polyPoints">L58,1113.4866,206.0727,877.01337,293.24707,R50</property>
+         name="sdm:polyPoints">L58,1113.5,206.0459,877.0,293.24707,R50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -488,7 +488,7 @@
       <property
          name="fromOutcome">toSearch</property>
       <property
-         name="sdm:polyPoints">L50,1112.9824,199.0459,405.0134,148.90402,R54</property>
+         name="sdm:polyPoints">L50,1112.9974,199.0459,405.0,148.89062,R54</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall53">
@@ -511,7 +511,7 @@
       <property
          name="fromOutcome">reloadSearchPage</property>
       <property
-         name="sdm:polyPoints">T50,804.0,-193.4675,665.53094,-304.2913,B56</property>
+         name="sdm:polyPoints">T50,804.0,-193.4541,665.5176,-304.3047,B56</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -521,7 +521,7 @@
       <property
          name="fromOutcome">toSearchPage</property>
       <property
-         name="sdm:polyPoints">B44,658.5042,-304.2913,529.0,90.230896,T50</property>
+         name="sdm:polyPoints">B44,658.5176,-304.3047,529.0,90.25301,T50</property>
    </ControlFlowCase>
    <View
       id="View56">
@@ -575,7 +575,7 @@
       <property
          name="fromOutcome">home</property>
       <property
-         name="sdm:polyPoints">B50,1356.5,259.76047,836.0,347.26047,B50</property>
+         name="sdm:polyPoints">B50,1356.5,259.74707,836.0,347.24707,B50</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall61">
@@ -598,7 +598,7 @@
       <property
          name="fromOutcome">initVersionsPage</property>
       <property
-         name="sdm:polyPoints">R45,840.7701,-154.4675,1239.9867,-195.75293,L50</property>
+         name="sdm:polyPoints">R45,840.7541,-154.4541,1240.0,-195.75293,L50</property>
    </ControlFlowCase>
    <MethodCall
       id="MethodCall66">
@@ -621,7 +621,7 @@
       <property
          name="fromOutcome">versions</property>
       <property
-         name="sdm:polyPoints">B50,1281.0001,-141.73953,1442.1907,7.888077,L50</property>
+         name="sdm:polyPoints">B50,1281.0001,-141.73953,1442.1907,7.888073,L50</property>
    </ControlFlowCase>
    <ControlFlowCase
       islink="true"
@@ -631,6 +631,6 @@
       <property
          name="fromOutcome">executeCrsVersionPublishedPendingCompare</property>
       <property
-         name="sdm:polyPoints">B50,1483.2041,61.901466,1356.5,151.73367,T50</property>
+         name="sdm:polyPoints">B50,1483.2041,61.888073,1356.5,151.74707,T50</property>
    </ControlFlowCase>
 </SDM>

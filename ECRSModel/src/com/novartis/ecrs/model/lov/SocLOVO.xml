@@ -4,11 +4,10 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="SocLOVO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.12.24"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
-  UseGlueCode="false"
   FetchSize="10"
   QueryHint="FIRST_ROWS(10)"
   FetchMode="FETCH_AS_NEEDED">
@@ -21,38 +20,38 @@
         ResId="com.novartis.ecrs.model.lov.SocLOVO_LABEL"/>
     </SchemaBasedProperties>
   </Properties>
-  <SQLQuery><![CDATA[SELECT
-  /*+ INDEX (c TMS_CONTENT_DEF_LEVEL_FK) */
-  l.short_name,
-  c.dict_content_code,
-  c.term,
-  c.term_upper,
-  c.dict_content_id,
-  c.dict_content_entry_ts,
-  c.end_ts,
-  c.dict_content_alt_code,
-  c.status,
-  c.category,
-  c.transaction_id,
-  c.value_1,
-  c.value_2,
-  C.VALUE_3,
-  c.value_4,
---  v.dict_name,
---  V.DICT_VERSION,
---  V.DICT_VERSION_DATE,
-  c.term || ' (' || c.dict_content_id || ')' as ui_term
-FROM tms.tms_def_dictionaries d,
-  tms.tms_def_levels l,
---  crs_dict_versions v,
-  tms.tms_dict_contents c
-WHERE d.short_name = 'MEDDRA'
---AND v.dict_id      = d.def_dictionary_id
-AND l.short_name LIKE 'SOC'
-AND d.def_dictionary_id = l.def_dictionary_id
-AND l.def_level_id      = c.def_level_id
-  --  AND c.dict_content_code LIKE '%'
-  --   AND c.term_upper LIKE UPPER('%')
+  <SQLQuery><![CDATA[SELECT 
+  /*+ INDEX (c TMS_CONTENT_DEF_LEVEL_FK) */ 
+  l.short_name, 
+  c.dict_content_code, 
+  c.term, 
+  c.term_upper, 
+  c.dict_content_id, 
+  c.dict_content_entry_ts, 
+  c.end_ts, 
+  c.dict_content_alt_code, 
+  c.status, 
+  c.category, 
+  c.transaction_id, 
+  c.value_1, 
+  c.value_2, 
+  C.VALUE_3, 
+  c.value_4, 
+--  v.dict_name, 
+--  V.DICT_VERSION, 
+--  V.DICT_VERSION_DATE, 
+  c.term || ' (' || c.dict_content_id || ')' as ui_term 
+FROM tms.tms_def_dictionaries d, 
+  tms.tms_def_levels l, 
+--  crs_dict_versions v, 
+  tms.tms_dict_contents c 
+WHERE d.short_name IN (select PROP_VALUE from crs_properties WHERE PROP_NAME = 'DEFAULT_BASE_DICTIONARY_SHORT_NAME') 
+--AND v.dict_id      = d.def_dictionary_id 
+AND l.short_name LIKE 'SOC' 
+AND d.def_dictionary_id = l.def_dictionary_id 
+AND l.def_level_id      = c.def_level_id 
+  --  AND c.dict_content_code LIKE '%' 
+  --   AND c.term_upper LIKE UPPER('%') 
 AND TO_CHAR(c.end_ts,'DD-MON-YYYY') = '15-AUG-3501' order by term]]></SQLQuery>
   <ViewAttribute
     Name="ShortName"

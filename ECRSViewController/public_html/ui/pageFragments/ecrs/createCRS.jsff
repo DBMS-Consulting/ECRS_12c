@@ -120,6 +120,7 @@
                                                   requiredMessageDetail="#{ecrsviewcontrollerBundle.INDICATION_REQ_MSG}">
                                         <f:validator binding="#{bindings.Indication.validator}"/>
                                         <f:converter converterId="TrimEndSpaces"/>
+                                        <f:converter converterId="ConvertFirstLetterToCapital"/>
                                     </af:inputText>
                                     <af:selectOneChoice label="#{ecrsviewcontrollerBundle.MARKETED}"
                                                         id="soc8"
@@ -300,6 +301,7 @@
                                                   contentStyle="width:150px;"
                                                   readOnly="true" autoSubmit="true">
                                     <f:converter converterId="TrimEndSpaces"/>
+                                    <f:converter converterId="ConvertFirstLetterToCapital"/>
                                     </af:inputText>
                                     <af:inputText label="#{ecrsviewcontrollerBundle.MARKETED}"
                                                   id="soc10"

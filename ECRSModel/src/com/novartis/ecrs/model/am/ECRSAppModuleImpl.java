@@ -24,6 +24,8 @@ import com.novartis.ecrs.model.view.CrsStateVOImpl;
 import com.novartis.ecrs.model.view.CrsStateVORowImpl;
 import com.novartis.ecrs.model.view.ECrsSearchVORowImpl;
 import com.novartis.ecrs.model.view.HierarchyChildDetailVOImpl;
+import com.novartis.ecrs.model.view.RelationCountVOImpl;
+import com.novartis.ecrs.model.view.RelationCountVORowImpl;
 import com.novartis.ecrs.model.view.VersionsVOImpl;
 import com.novartis.ecrs.model.view.VersionsVORowImpl;
 import com.novartis.ecrs.model.view.base.CrsContentBaseVOImpl;
@@ -38,6 +40,8 @@ import com.novartis.ecrs.model.view.trans.RiskPurposeTransientVOImpl;
 import com.novartis.ecrs.model.view.trans.RolesTransientVOImpl;
 import com.novartis.ecrs.model.view.trans.StateTransientVOImpl;
 import com.novartis.ecrs.model.view.trans.UserRolesTransientVOImpl;
+
+import java.math.BigDecimal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -841,19 +845,20 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
     /**
      * Activate crs function call.
      */
-    public String activateCrs(Long pCRSId,String pReasonForChange) {
+    public String activateCrs(Long pCRSId,String pReasonForChange,String pUserId) {
         //Execute the function call.
         DBTransaction txn = getDBTransaction();
         OracleCallableStatement cstmt = null;
         String cs = null;
         String returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
         if (pCRSId != null) {
-            cs = "{?=call CRS_UI_TMS_UTILS.publish_crs(?,?)}";
+            cs = "{?=call CRS_UI_TMS_UTILS.publish_crs(?,?,?)}";
             cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
             try {
                 cstmt.registerOutParameter(1, Types.VARCHAR);
                 cstmt.setNUMBER(2, new oracle.jbo.domain.Number(pCRSId));
                 cstmt.setString(3, pReasonForChange);
+                cstmt.setString(4, pUserId);
                 cstmt.execute();
                 returnMessage = cstmt.getString(1);
 
@@ -1839,5 +1844,63 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      */
     public ViewObjectImpl getDomainLOV() {
         return (ViewObjectImpl) findViewObject("DomainLOV");
+    }
+    
+    public String domainName(Integer domainId){
+        Key key = new Key(new Object[] { domainId });
+        Row[] rows = getDomainLOVVO().findByKey(key, 1);
+        if((rows != null) && (rows.length > 0)){
+            Row row = rows[0];
+            return (String)row.getAttribute("DomainName");
+        }else{
+        return null;
+        }
+    }
+
+    /**
+     * Container's getter for DomainLOVVO2.
+     * @return DomainLOVVO2
+     */
+    public ViewObjectImpl getDomainLOVVO() {
+        return (ViewObjectImpl) findViewObject("DomainLOVVO");
+    }
+
+    /**
+     * Container's getter for RelationCountVO1.
+     * @return RelationCountVO1
+     */
+    public RelationCountVOImpl getRelationCountVO() {
+        return (RelationCountVOImpl) findViewObject("RelationCountVO");
+    }
+    
+    public String executeRelationsExistsQuery(String crsId, String domainId, String safetyTopicOfInterest){
+        ViewObject riskDefVO = this.getCrsRiskDefinitionsVO();
+        if(riskDefVO.getRowCount() > 0){
+            return "YES";
+        }else{
+            return "NO"; 
+        }
+//        if(crsId != null && domainId != null && safetyTopicOfInterest != null){
+//            RelationCountVOImpl relationCountVOImpl = this.getRelationCountVO();
+//            relationCountVOImpl.setbindCrsId(crsId);
+//            relationCountVOImpl.setbindDomain(domainId);
+//            relationCountVOImpl.setbindSafetyTopic(safetyTopicOfInterest);
+//            relationCountVOImpl.executeQuery();
+//            
+//            if(relationCountVOImpl.getRowCount() > 0){
+//                RelationCountVORowImpl row = (RelationCountVORowImpl)relationCountVOImpl.first();
+//                BigDecimal count = row.getRelationCount();
+//                if (!(count.compareTo(BigDecimal.ZERO) == 0)){
+//                    return "YES";
+//                }else{
+//                    return "NO"; 
+//                }
+//            }else{
+//                return "NO";
+//            }
+//        }else{
+//            return "NO";
+//        }
+        
     }
 }

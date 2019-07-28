@@ -101,6 +101,8 @@
           <Item Value="RiskPurposeA1Flag"/>
           <Item Value="RiskPurposeA2Flag"/>
           <Item Value="RiskPurposeUdFlag"/>
+          <Item Value="Adr"/>
+          <Item Value="SearchAppliedTo"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -348,6 +350,8 @@
           <Item Value="RiskPurposeA1Flag"/>
           <Item Value="RiskPurposeA2Flag"/>
           <Item Value="RiskPurposeUdFlag"/>
+          <Item Value="Adr"/>
+          <Item Value="SearchAppliedTo"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -593,6 +597,9 @@
           <Item Value="RiskPurposeA2Flag"/>
           <Item Value="RiskPurposeA1Flag"/>
           <Item Value="RiskPurposeUdFlag"/>
+          <Item Value="Adr"/>
+          <Item Value="CrsName"/>
+          <Item Value="SearchAppliedTo"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -890,5 +897,34 @@
                   MethodName="executeMedraExistsQuery" IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
                   InstanceName="bindings.executeMedraExistsQuery.dataControl.dataProvider"
                   ReturnName="data.ECRSAppModuleDataControl.methodResults.executeMedraExistsQuery_executeMedraExistsQuery_dataControl_dataProvider_executeMedraExistsQuery_result"/>
+    <list IterBinding="CrsRiskRelationVOIterator" StaticList="false" Uses="LOV_Adr" id="Adr" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="CrsRiskRelationVOIterator" StaticList="false" Uses="LOV_SearchAppliedTo" id="SearchAppliedTo"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="CrsRiskRelationsBaseVOIterator" id="Adr1">
+      <AttrNames>
+        <Item Value="Adr"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CrsRiskRelationsBaseVOIterator" id="SearchAppliedTo1">
+      <AttrNames>
+        <Item Value="SearchAppliedTo"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="domainName" RequiresUpdateModel="true" Action="invokeMethod" MethodName="domainName"
+                  IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.domainName.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.domainName_domainName_dataControl_dataProvider_domainName_result">
+      <NamedData NDName="domainId" NDType="java.lang.Integer"/>
+    </methodAction>
+    <methodAction id="executeRelationsExistsQuery" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeRelationsExistsQuery" IsViewObjectMethod="false"
+                  DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.executeRelationsExistsQuery.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.executeRelationsExistsQuery_executeRelationsExistsQuery_dataControl_dataProvider_executeRelationsExistsQuery_result">
+      <NamedData NDName="crsId" NDType="java.lang.String"/>
+      <NamedData NDName="domainId" NDType="java.lang.String"/>
+      <NamedData NDName="safetyTopicOfInterest" NDType="java.lang.String"/>
+    </methodAction>
   </bindings>
 </pageDefinition>

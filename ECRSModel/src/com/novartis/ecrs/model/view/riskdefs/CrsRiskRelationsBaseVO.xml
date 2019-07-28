@@ -4,7 +4,7 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskRelationsBaseVO"
-  Version="12.2.1.16.48"
+  Version="12.2.1.12.24"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full">
@@ -63,23 +63,25 @@
     </AttrArray>
     <DisplayCriteria/>
   </ListBinding>
-  <SQLQuery><![CDATA[SELECT CrsRiskRelationsEO.CRS_ID, 
-       CrsRiskRelationsEO.CRS_RISK_ID, 
-       CrsRiskRelationsEO.MQM_COMMENT, 
-       CrsRiskRelationsEO.NON_MEDDRA_COMPONENT_COMMENT, 
-       CrsRiskRelationsEO.SAFETY_TOPIC_OF_INTEREST, 
-       CrsRiskRelationsEO.SOC_DICT_CONTENT_ENTRY_TS, 
-       CrsRiskRelationsEO.SOC_DICT_CONTENT_ID, 
-       CrsRiskRelationsEO.SOC_TERM, 
-       CrsRiskRelationsEO.UI_VERSION_NUMBER, 
-       CrsRiskRelationsEO.RISK_PURPOSE_LIST, 
-       CrsRiskRelationsEO.CRS_EFFECTIVE_DT,
-       CrsRiskRelationsEO.DOMAIN_ID,
-       CrsRiskRelationsEO.CREATED_BY,
-       CrsRiskRelationsEO.CREATION_TS,
-       CrsRiskRelationsEO.MODIFIED_BY,
-       CrsRiskRelationsEO.MODIFICATION_TS,
-       CrsRiskRelationsEO.SEARCH_CRITERIA_DETAILS
+  <SQLQuery><![CDATA[SELECT CrsRiskRelationsEO.CRS_ID,   
+       CrsRiskRelationsEO.CRS_RISK_ID,   
+       CrsRiskRelationsEO.MQM_COMMENT,   
+       CrsRiskRelationsEO.NON_MEDDRA_COMPONENT_COMMENT,   
+       CrsRiskRelationsEO.SAFETY_TOPIC_OF_INTEREST,   
+       CrsRiskRelationsEO.SOC_DICT_CONTENT_ENTRY_TS,   
+       CrsRiskRelationsEO.SOC_DICT_CONTENT_ID,   
+       CrsRiskRelationsEO.SOC_TERM,   
+       CrsRiskRelationsEO.UI_VERSION_NUMBER,   
+       CrsRiskRelationsEO.RISK_PURPOSE_LIST,   
+       CrsRiskRelationsEO.CRS_EFFECTIVE_DT,  
+       CrsRiskRelationsEO.DOMAIN_ID,  
+       CrsRiskRelationsEO.CREATED_BY,  
+       CrsRiskRelationsEO.CREATION_TS,  
+       CrsRiskRelationsEO.MODIFIED_BY,  
+       CrsRiskRelationsEO.MODIFICATION_TS,  
+       CrsRiskRelationsEO.SEARCH_CRITERIA_DETAILS,  
+       CrsRiskRelationsEO.ADR, 
+       CrsRiskRelationsEO.SEARCH_APPLIED_TO 
 FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
   <ViewAttribute
     Name="CrsId"
@@ -333,6 +335,36 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
           ResId="com.novartis.ecrs.model.view.riskdefs.CrsRiskRelationsBaseVO.SearchCriteriaDetails_LABEL"/>
       </SchemaBasedProperties>
     </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Adr"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ADR"
+    Expression="ADR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SearchAppliedTo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SEARCH_APPLIED_TO"
+    Expression="SEARCH_APPLIED_TO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
   </ViewAttribute>
   <AttrArray Name="KeyAttributes">
     <Item Value="CrsRiskId"/>

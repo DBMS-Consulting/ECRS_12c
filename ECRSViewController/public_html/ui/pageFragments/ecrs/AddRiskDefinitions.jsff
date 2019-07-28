@@ -8,13 +8,25 @@
                   id="t1"/>
     <af:panelHeader text="#{ecrsviewcontrollerBundle.RELATIONS} : #{pageFlowScope.crsName}" id="ph1" styleClass="AFStretchWidth" size="1"
                     partialTriggers="b1 b3 b2">
-      <f:facet name="context"/>soc
+      <f:facet name="context"/>
       <f:facet name="menuBar"/>
       <f:facet name="toolbar"/>
       <f:facet name="legend"/>
       <f:facet name="info"/>
+      <af:group id="g1" rendered="#{pageFlowScope.manageCRSBean.showAdrTentative}">
+            <af:icon name="error" id="i4"/>
+            <af:spacer width="10" height="10" id="s12"/>
+            <af:outputText value="Reminder: This CRS contains tentative ADRs" id="ot94"
+                           inlineStyle="color:Red; font-weight:bold;"/>
+          </af:group>
       <af:switcher id="s6" facetName="#{pageFlowScope.manageCRSBean.baseOrStaging}" defaultFacet="BASE">
         <f:facet name="STAGING">
+          <!--<af:group id="g1">
+            <af:icon name="required" id="i4"/>
+            <af:spacer width="10" height="10" id="s12"/>
+            <af:outputText value="Alert: This CRS contains tentative ADRs" id="ot94"
+                           inlineStyle="color:Red; font-weight:bold; font-size:large;"/>
+          </af:group>-->
           <af:panelCollection id="pc1" styleClass="AFStretchWidth">
             <f:facet name="menus">
               <af:menu text="#{ecrsviewcontrollerBundle.FILTER}" id="m1">
@@ -119,7 +131,7 @@
                   <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeCdFlag.name}" filterable="true"
                              sortable="true" headerText="#{bindings.CrsRiskVO.hints.RiskPurposeCdFlag.label}" id="c7"
                              width="20" align="center" shortDesc="#{ecrsviewcontrollerBundle.CDS}">
-                    <af:outputText value="#{row.RiskPurposeCdFlag eq 'Y' ? 'Y' : ''}" id="ot62"
+                    <af:outputText value="#{row.RiskPurposeCdFlag eq 'N' ? '' : row.RiskPurposeCdFlag}" id="ot62"
                                    shortDesc="#{ecrsviewcontrollerBundle.CDS}"/>
                   </af:column>
                   <af:column sortProperty="#{bindings.CrsRiskVO.hints.RiskPurposeOsFlag.name}" filterable="true"
@@ -200,6 +212,11 @@
                 <af:outputText value="#{row.MeddraCode}" shortDesc="#{bindings.CrsRiskVO.hints.MeddraCode.tooltip}"
                                id="ot27"/>
               </af:column>
+              <af:column headerText="Search Applied To" id="c94" sortable="true" filterable="true"
+                    sortProperty="#{bindings.CrsRiskVO.hints.SearchAppliedTo.name}">
+                <af:outputText value="#{row.SearchAppliedTo}" shortDesc="#{bindings.CrsRiskVO.hints.SearchAppliedTo.tooltip}"
+                               id="ot91"/>
+              </af:column>
               <af:column id="c23" headerText="#{ecrsviewcontrollerBundle.SAFETY_TOPIC_DEFINITION}">
                 <af:column sortProperty="#{bindings.CrsRiskVO.hints.MeddraTerm.name}" filterable="true"
                            headerText="#{bindings.CrsRiskVO.hints.MeddraTerm.label}" id="c14" width="200">
@@ -244,6 +261,12 @@
           </af:panelCollection>
         </f:facet>
         <f:facet name="BASE">
+        <!--<af:group id="g2">
+            <af:icon name="required" id="i8"/>
+            <af:spacer width="10" height="10" id="s13"/>
+            <af:outputText value="Alert: This CRS contains tentative ADRs" id="ot95"
+                    inlineStyle="color:Red; font-weight:bold; font-size:large;"/>
+          </af:group>-->
           <af:panelCollection id="pc4" styleClass="AFStretchWidth">
             <f:facet name="menus">
              <af:menu text="#{ecrsviewcontrollerBundle.FILTER}" id="m3">
@@ -307,7 +330,7 @@
                   <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeCdFlag.name}" filterable="true"
                              sortable="true" headerText="#{ecrsviewcontrollerBundle.CD}" id="c67" width="20"
                              align="center" shortDesc="#{ecrsviewcontrollerBundle.CDS}">
-                    <af:outputText value="#{row.RiskPurposeCdFlag eq 'Y' ? 'Y' : ''}" id="ot44"
+                    <af:outputText value="#{row.RiskPurposeCdFlag eq 'N' ? '' : row.RiskPurposeCdFlag}" id="ot44"
                                    shortDesc="#{ecrsviewcontrollerBundle.CDS}"/>
                   </af:column>
                   <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.RiskPurposeOsFlag.name}" filterable="true"
@@ -390,6 +413,11 @@
                 <af:outputText value="#{row.MeddraCode}" shortDesc="#{bindings.CrsRiskBaseVO.hints.MeddraCode.tooltip}"
                                id="ot82"/>
               </af:column>
+              <af:column headerText="Search Applied To" id="c95" sortable="true" filterable="true" 
+                sortProperty="#{bindings.CrsRiskBaseVO.hints.SearchAppliedTo.name}">
+                <af:outputText value="#{row.SearchAppliedTo}" shortDesc="#{bindings.CrsRiskBaseVO.hints.SearchAppliedTo.tooltip}"
+                               id="ot92"/>
+              </af:column>
               <af:column id="c81" headerText="#{ecrsviewcontrollerBundle.SAFETY_TOPIC_DEFINITION}">
                 <af:column sortProperty="#{bindings.CrsRiskBaseVO.hints.MeddraTerm.name}" filterable="true"
                            sortable="true" headerText="#{ecrsviewcontrollerBundle.MEDDRA_TERM}" id="c74" width="200">
@@ -466,7 +494,8 @@
         <f:facet name="buttonBar">
           <af:panelGroupLayout id="pgl3">
             <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb14"
-                              actionListener="#{pageFlowScope.manageCRSBean.onCancelCrsRiskPopup}" immediate="true"/>
+                              actionListener="#{pageFlowScope.manageCRSBean.onCancelCrsRiskPopup}" immediate="true">
+            </af:commandButton>
           </af:panelGroupLayout>
         </f:facet>
         <af:panelGroupLayout id="pgl2" layout="vertical" binding="#{pageFlowScope.manageCRSBean.riskDefPopupPanel}">
@@ -498,6 +527,8 @@
                               readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"
                               validator="#{pageFlowScope.manageCRSBean.validateSpecialCharactors}">
                   <f:validator binding="#{bindings.SafetyTopicOfInterest.validator}"/>
+                  <f:converter converterId="ConvertFirstLetterToCapital"/>
+                  <f:converter converterId="TrimEndSpaces"/>
                 </af:inputText>
             <!--<af:selectManyChoice label="#{ecrsviewcontrollerBundle.DATABASE}" id="smc1"
                                  value="#{pageFlowScope.manageCRSBean.selDatabases}" autoSubmit="true"
@@ -508,12 +539,21 @@
             <af:selectOneChoice value="#{bindings.DomainId.inputValue}" label="#{ecrsviewcontrollerBundle.DATA_DOMAIN}"
                                 shortDesc="#{bindings.DomainId.hints.tooltip}" id="soc9" autoSubmit="true"
                                 readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}" required="true"
-                                valueChangeListener="#{pageFlowScope.manageCRSBean.onDomainIdChange}">
+                                valueChangeListener="#{pageFlowScope.manageCRSBean.onDomainIdChange}"
+                                binding="#{pageFlowScope.manageCRSBean.crsDomainValue}" partialTriggers="b8">
               <f:selectItems value="#{bindings.DomainId.items}" id="si65"/>
               <!--<af:forEach items="#{bindings.DomainDesc.iteratorBinding.allRowsInRange}" var="row">
                <f:selectItem id="si18" itemLabel="#{row.DomainDesc}" itemValue="#{row.DomainId}"/>
                   --><!--<af:selectItem label="#{row.DomainId}" value="#{row.DomainId}" id="domainlov"/>--><!-- 
               </af:forEach>-->
+            </af:selectOneChoice>
+            <af:selectOneChoice value="#{bindings.Adr.inputValue}" label="ADR"
+                                required="#{bindings.Adr.hints.mandatory}" shortDesc="#{bindings.Adr.hints.tooltip}"
+                                id="soc12" autoSubmit="true" visible="#{pageFlowScope.manageCRSBean.showADR}"
+                                partialTriggers="smc2" showRequired="#{pageFlowScope.manageCRSBean.showADR}"
+                                readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+              <f:selectItems value="#{bindings.Adr.items}" id="si67"/>
+              <f:validator binding="#{bindings.Adr.validator}"/>
             </af:selectOneChoice>
             <!--<af:selectOneChoice label="#{bindings.DataDomain.hints.label}" id="soc1"
                                 value="#{bindings.DataDomain.inputValue}" autoSubmit="true"
@@ -539,7 +579,6 @@
               <af:selectItem label="A1 (USPI ADRs)" id="si7621" value="A1"/>
               <af:selectItem label="A2 (JPI ADRs)" id="si7631" value="A2"/>
             </af:selectManyChoice>
-            
             <af:selectOneChoice value="#{bindings.SocTerm.inputValue}" label="#{bindings.SocTerm.label}"
                                 shortDesc="#{bindings.SocTerm.hints.tooltip}" id="soc4" showRequired="#{bindings.DomainId1.inputValue == 1}"
                                 contentStyle="width:300px;" autoSubmit="true"
@@ -549,7 +588,15 @@
                                 binding="#{pageFlowScope.manageCRSBean.socTermSOC}" partialTriggers="soc9">
               <f:selectItems value="#{bindings.SocTerm.items}" id="si17"/>
             </af:selectOneChoice>
-            
+            <af:selectOneChoice value="#{bindings.SearchAppliedTo.inputValue}" label="Search Applied To"
+                                required="true" autoSubmit="true" partialTriggers="smc2"
+                                shortDesc="#{bindings.SearchAppliedTo.hints.tooltip}" id="soc13"
+                                readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+              <!--<f:selectItems value="#{bindings.SearchAppliedTo.items}" id="si77"/>-->
+              <af:selectItem id="si77" label="Adverse Event" value="Adverse Event"/>
+              <af:selectItem id="si78" label="Medical History" value="Medical History" rendered="#{pageFlowScope.manageCRSBean.showMedicalHistory}"/>
+              <f:validator binding="#{bindings.SearchAppliedTo.validator}"/>
+            </af:selectOneChoice>
           </af:panelFormLayout>
           <af:panelFormLayout id="pfl3">
             <af:inputText value="#{bindings.NonMeddraComponentComment.inputValue}"
@@ -736,8 +783,9 @@
                 <af:commandButton text="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" id="cb6"
                                   icon="/images/hierarchy.gif" partialSubmit="true"
                                   actionListener="#{pageFlowScope.manageCRSBean.onClickHierarchySearch}"
-                                  visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}" partialTriggers="::soc9"
-                                  disabled="#{bindings.DomainId.inputValue eq 3}"/>
+                                  visible="#{pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
+                                  partialTriggers="::soc9 ::b8"
+                                  disabled="#{pageFlowScope.manageCRSBean.disableHeirarchyBtn}"/>
                 <af:commandButton text="#{ecrsviewcontrollerBundle.SAVE}" id="cb13"
                                   visible="#{securityContext.userInRole['CRS_MQM'] and pageFlowScope.manageCRSBean.flowType eq 'U'}"
                                   actionListener="#{pageFlowScope.manageCRSBean.onClickRiskDefSave}">
@@ -782,6 +830,24 @@
                  inlineStyle="width:150px;">
         <f:facet name="buttonBar"/>
         <af:outputText id="ot5" value="#{ecrsviewcontrollerBundle.SAVED_SUCCESSFULLY}"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p18"
+              binding="#{pageFlowScope.manageCRSBean.riskDefOtherSelectionPopup}">
+      <af:dialog id="d17" title="Error" type="none" titleIconSource="/images/error.png">
+        <f:facet name="buttonBar">
+          <af:button text="Ok" id="b8" actionListener="#{pageFlowScope.manageCRSBean.closeRiskDefOthersPopup}"/>
+        </f:facet>
+        <af:outputText id="ot95" value="Domain value Other cannot be selected since MedDRA definition exist(s)"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup childCreation="deferred" autoCancel="disabled" id="p19"
+              binding="#{pageFlowScope.manageCRSBean.copyRiskDefOtherSelectionPopup}">
+      <af:dialog id="d18" title="Error" type="none" titleIconSource="/images/error.png">
+        <f:facet name="buttonBar">
+          <af:button text="Ok" id="b9" actionListener="#{pageFlowScope.manageCRSBean.copyCloseRiskDefOthersPopup}"/>
+        </f:facet>
+        <af:outputText id="ot96" value="Domain value Other cannot be selected since MedDRA definition exist(s)"/>
       </af:dialog>
     </af:popup>
     <af:popup childCreation="deferred" autoCancel="disabled" id="p3" contentDelivery="lazyUncached"
@@ -960,7 +1026,7 @@
                 <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeCdFlag.name}" sortable="true"
                            headerText="#{ecrsviewcontrollerBundle.CD}" id="c44" width="20"
                            shortDesc="#{ecrsviewcontrollerBundle.CDS}">
-                  <af:outputText value="#{copyRow.RiskPurposeCdFlag eq 'Y' ? 'Y' : ''}" id="ot73"
+                  <af:outputText value="#{copyRow.RiskPurposeCdFlag eq 'N' ? '' : copyRow.RiskPurposeCdFlag}" id="ot73"
                                  shortDesc="#{ecrsviewcontrollerBundle.CDS}"/>
                 </af:column>
                 <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.RiskPurposeOsFlag.name}" sortable="true"
@@ -1031,10 +1097,15 @@
                 <af:outputText value="#{copyRow.SearchCriteriaDetails}" 
                                shortDesc="#{bindings.CopyCrsRiskVO.hints.SearchCriteriaDetails.tooltip}" id="ot66"/>
               </af:column>
+               <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.SearchAppliedTo.name}" sortable="true"
+                         headerText="Search Applied To" id="c89">
+                <af:outputText value="#{copyRow.SearchAppliedTo}"
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.SearchAppliedTo.tooltip}" id="ot83"/>
+              </af:column>
               <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.MeddraCode.name}" sortable="true"
-                         headerText="#{bindings.CopyCrsRiskVO.hints.MeddraCode.label}" id="c89">
+                         headerText="#{bindings.CopyCrsRiskVO.hints.MeddraCode.label}" id="c96">
                 <af:outputText value="#{copyRow.MeddraCode}"
-                               shortDesc="#{bindings.CopyCrsRiskVO.hints.MeddraCode.tooltip}" id="ot83"/>
+                               shortDesc="#{bindings.CopyCrsRiskVO.hints.MeddraCode.tooltip}" id="ot93"/>
               </af:column>
               
               <af:column sortProperty="#{bindings.CopyCrsRiskVO.hints.MeddraTerm.name}" sortable="true"
@@ -1077,6 +1148,8 @@
                             contentStyle="width:200px;" autoSubmit="true"
                             valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
                 <f:validator binding="#{bindings.SafetyTopicOfInterest.validator}"/>
+                <f:converter converterId="ConvertFirstLetterToCapital"/>
+                <f:converter converterId="TrimEndSpaces"/>
               </af:inputText>
               <!--<af:selectManyChoice label="#{ecrsviewcontrollerBundle.DATABASE}" id="smc3"
                                    value="#{pageFlowScope.manageCRSBean.selDatabases}" autoSubmit="true"
@@ -1087,9 +1160,17 @@
                                   label="#{ecrsviewcontrollerBundle.DATA_DOMAIN}" autoSubmit="true"
                                   shortDesc="#{bindings.DomainId.hints.tooltip}" id="soc10" required="true"
                                   readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}"
-                                  valueChangeListener="#{pageFlowScope.manageCRSBean.onDomainIdChangeInCopyRisk}">
+                                  valueChangeListener="#{pageFlowScope.manageCRSBean.onDomainIdChangeInCopyRisk}"
+                                  binding="#{pageFlowScope.manageCRSBean.copyRiskDefOthersPopup}" partialTriggers="b9">
                 <f:selectItems value="#{bindings.DomainId.items}" id="si66"/>
               </af:selectOneChoice>
+              <af:selectOneChoice value="#{bindings.Adr.inputValue}" label="ADR" showRequired="#{pageFlowScope.manageCRSBean.showCopyADR}"
+                                required="#{bindings.Adr.hints.mandatory}" shortDesc="#{bindings.Adr.hints.tooltip}"
+                                id="soc16" autoSubmit="true" visible="#{pageFlowScope.manageCRSBean.showCopyADR}" partialTriggers="smc4"
+                                readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+              <f:selectItems value="#{bindings.Adr.items}" id="si81"/>
+              <f:validator binding="#{bindings.Adr.validator}"/>
+            </af:selectOneChoice>
               <!--<af:inputText value="#{bindings.DataDomain.inputValue}" label="#{bindings.DataDomain.hints.label}"
                             required="#{bindings.DataDomain.hints.mandatory}"
                             columns="#{bindings.DataDomain.hints.displayWidth}"
@@ -1126,7 +1207,15 @@
                                   valueChangeListener="#{pageFlowScope.manageCRSBean.onRiskDetailsUpdate}">
                 <f:selectItems value="#{bindings.SocTerm.items}" id="si18"/>
               </af:selectOneChoice>
-              
+              <af:selectOneChoice value="#{bindings.SearchAppliedTo.inputValue}" label="Search Applied To"
+                                required="true" autoSubmit="true" partialTriggers="smc4"
+                                shortDesc="#{bindings.SearchAppliedTo.hints.tooltip}" id="soc15"
+                                readOnly="#{!pageFlowScope.manageCRSBean.crsFieldsUpdatable}">
+              <!--<f:selectItems value="#{bindings.SearchAppliedTo.items}" id="si82"/>-->
+              <af:selectItem id="si82" label="Adverse Event" value="Adverse Event"/>
+              <af:selectItem id="si83" label="Medical History" value="Medical History" rendered="#{pageFlowScope.manageCRSBean.showCopyMedicalHistory}"/>
+              <f:validator binding="#{bindings.SearchAppliedTo.validator}"/>
+            </af:selectOneChoice>
             </af:panelFormLayout>
             <af:panelFormLayout id="pfl5">
               <af:inputText value="#{bindings.NonMeddraComponentComment.inputValue}"
@@ -1247,7 +1336,8 @@
                   <af:commandButton text="#{ecrsviewcontrollerBundle.HIERARCHY_SEARCH}" id="cb19"
                                     icon="/images/hierarchy.gif"
                                     actionListener="#{pageFlowScope.manageCRSBean.onClickCopyHierarchySearch}"
-                                    partialSubmit="true"/>
+                                    partialSubmit="true" disabled="#{pageFlowScope.manageCRSBean.disableHeirarchyBtn}"
+                                    partialTriggers="::soc10 ::b9"/>
                 </af:toolbar>
               </f:facet>
             </af:panelCollection>
@@ -1426,6 +1516,8 @@
             </af:inputText>
             <af:inputText label="#{ecrsviewcontrollerBundle.DATA_DOMAIN}" id="it25" readOnly="true"
                           value="#{pageFlowScope.dataDomainBase}"/>
+            <af:inputText label="ADR" id="it29" readOnly="true"
+                          value="#{bindings.Adr1.inputValue}"/>
             <af:selectManyChoice label="#{ecrsviewcontrollerBundle.RISK_PURPOSES}" id="smc1"
                                  value="#{pageFlowScope.manageCRSBean.selRiskPurposesBase}"
                                  readOnly="true" required="true">
@@ -1445,6 +1537,8 @@
             <af:inputText label="#{bindings.SocTerm1.label}" id="it27" value="#{pageFlowScope.socTermBase}"
                 visible="#{bindings.DomainId2.inputValue == 1 or bindings.DomainId2.inputValue == null}"
                           readOnly="true"/>
+             <af:inputText label="Search Applied To" id="it28" readOnly="true"
+                          value="#{bindings.SearchAppliedTo1.inputValue}"/>
           </af:panelFormLayout>
           <af:panelFormLayout id="pfl8">
             <af:inputText value="#{bindings.NonMeddraComponentCommentBase.inputValue}"

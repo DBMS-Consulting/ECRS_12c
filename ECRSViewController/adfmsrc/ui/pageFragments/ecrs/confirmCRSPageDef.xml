@@ -108,13 +108,6 @@
         <Item Value="MedicalLeadRejectComment"/>
       </AttrNames>
     </attributeValues>
-    <methodAction id="activateCrs" InstanceName="data.ECRSAppModuleDataControl.dataProvider"
-                  DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="true" Action="invokeMethod"
-                  MethodName="activateCrs" IsViewObjectMethod="false"
-                  ReturnName="data.ECRSAppModuleDataControl.methodResults.activateCrs_ECRSAppModuleDataControl_dataProvider_activateCrs_result">
-      <NamedData NDName="pCRSId" NDType="java.lang.Long"/>
-      <NamedData NDName="pReasonForChange" NDType="java.lang.String"/>
-    </methodAction>
     <methodAction id="fetchDesignees" InstanceName="data.ECRSAppModuleDataControl.dataProvider"
                   DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="true" Action="invokeMethod"
                   MethodName="fetchDesignees" IsViewObjectMethod="false"
@@ -178,5 +171,13 @@
     <methodAction id="removeMQMComments" RequiresUpdateModel="true" Action="invokeMethod" MethodName="removeMQMComments"
                   IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
                   InstanceName="bindings.removeMQMComments.dataControl.dataProvider"/>
+    <methodAction id="activateCrs" RequiresUpdateModel="true" Action="invokeMethod" MethodName="activateCrs"
+                  IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.activateCrs.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.activateCrs_activateCrs_dataControl_dataProvider_activateCrs_result">
+      <NamedData NDName="pCRSId" NDType="java.lang.Long"/>
+      <NamedData NDName="pReasonForChange" NDType="java.lang.String"/>
+      <NamedData NDName="pUserId" NDValue="#{securityContext.userName}" NDType="java.lang.String"/>
+    </methodAction>
   </bindings>
 </pageDefinition>

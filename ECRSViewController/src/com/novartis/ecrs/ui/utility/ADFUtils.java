@@ -332,7 +332,7 @@ public class ADFUtils {
         ValueExpression exp =
             expressionFactory.createValueExpression(elContext, el,
                                                     Object.class);
-
+        if(exp != null)
         exp.setValue(elContext, val);
     }
 
