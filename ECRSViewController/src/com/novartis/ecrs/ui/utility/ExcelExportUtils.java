@@ -357,9 +357,8 @@ public class ExcelExportUtils {
      * @return InputStream
      */
     public InputStream getExcelInpStream() {
-        InputStream inputStreamOfExcel =
-//             this.getClass().getClassLoader().getResourceAsStream("EcrsReports.xls");
-            ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\exceltemplate\\EcrsReports.xls");
+        InputStream inputStreamOfExcel = this.getClass().getClassLoader().getResourceAsStream("EcrsReports.xls");
+         //   ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\exceltemplate\\EcrsReports.xls");
         return inputStreamOfExcel;
     }
     
@@ -367,9 +366,8 @@ public class ExcelExportUtils {
      * @return InputStream
      */
     public InputStream getImageInpStream() {
-        InputStream inputStreamOfExcel =
- //            this.getClass().getClassLoader().getResourceAsStream("crs.png");
-            ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\images\\crs.png");
+        InputStream inputStreamOfExcel = this.getClass().getClassLoader().getResourceAsStream("crs.png");
+   //         ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\images\\crs.png");
         return inputStreamOfExcel;
     }
 }

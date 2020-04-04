@@ -5397,17 +5397,17 @@ public class ManageCRSBean implements Serializable {
     row.createCell(1).setCellValue("Purpose Of Risk Definition");
     row.getCell(1).setCellStyle(colStyleTopLeft);
     sheet.addMergedRegion(new CellRangeAddress(0,0,1,12));
-    row.createCell(16).setCellValue("Safety Topic Definition");
-    row.getCell(16).setCellStyle(colStyleTopLeft);
-    sheet.addMergedRegion(new CellRangeAddress(0,0,16,20));
+    row.createCell(17).setCellValue("Safety Topic Definition");
+    row.getCell(17).setCellStyle(colStyleTopLeft);
+    sheet.addMergedRegion(new CellRangeAddress(0,0,17,21));
     
     row1 = sheet1.createRow(idx1); //creating 1st row
     row1.createCell(1).setCellValue("Purpose Of Risk Definition");
     row1.getCell(1).setCellStyle(colStyleTopLeft);
     sheet1.addMergedRegion(new CellRangeAddress(0,0,1,12));
-    row1.createCell(16).setCellValue("Safety Topic Definition");
-    row1.getCell(16).setCellStyle(colStyleTopLeft);
-    sheet1.addMergedRegion(new CellRangeAddress(0,0,16,20));
+    row1.createCell(17).setCellValue("Safety Topic Definition");
+    row1.getCell(17).setCellStyle(colStyleTopLeft);
+    sheet1.addMergedRegion(new CellRangeAddress(0,0,17,21));
     idx = idx + 1;
     idx1 = idx1 + 1;
     }
@@ -5463,21 +5463,24 @@ public class ManageCRSBean implements Serializable {
                 row.createCell(15).setCellValue("Search Criteria Details");
                 sheet.autoSizeColumn(15);
                 row.getCell(15).setCellStyle(colStyleTopLeft);
-                row.createCell(16).setCellValue("MedDRA Code");
+                row.createCell(16).setCellValue("Search Applied To");
                 sheet.autoSizeColumn(16);
                 row.getCell(16).setCellStyle(colStyleTopLeft);
-                row.createCell(17).setCellValue("MedDRA Term");
+                row.createCell(17).setCellValue("MedDRA Code");
                 sheet.autoSizeColumn(17);
                 row.getCell(17).setCellStyle(colStyleTopLeft);
-                row.createCell(18).setCellValue("MedDRA Level");
+                row.createCell(18).setCellValue("MedDRA Term");
                 sheet.autoSizeColumn(18);
                 row.getCell(18).setCellStyle(colStyleTopLeft);
-                row.createCell(19).setCellValue("MedDRA Qualifier");
+                row.createCell(19).setCellValue("MedDRA Level");
                 sheet.autoSizeColumn(19);
-                row.getCell(19).setCellStyle(colStyleTopLeft); /*  */
-                row.createCell(20).setCellValue("Comment");
+                row.getCell(19).setCellStyle(colStyleTopLeft);
+                row.createCell(20).setCellValue("MedDRA Qualifier");
                 sheet.autoSizeColumn(20);
-                row.getCell(20).setCellStyle(colStyleTopLeft);
+                row.getCell(20).setCellStyle(colStyleTopLeft); /*  */
+                row.createCell(21).setCellValue("Comment");
+                sheet.autoSizeColumn(21);
+                row.getCell(21).setCellStyle(colStyleTopLeft);
                 
         row1.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
         sheet1.autoSizeColumn(0);
@@ -5527,21 +5530,24 @@ public class ManageCRSBean implements Serializable {
         row1.createCell(15).setCellValue("Search Criteria Details");
         sheet1.autoSizeColumn(15);
         row1.getCell(15).setCellStyle(colStyleTopLeft);
-        row1.createCell(16).setCellValue("MedDRA Code");
+        row1.createCell(16).setCellValue("Search Applied To");
         sheet1.autoSizeColumn(16);
         row1.getCell(16).setCellStyle(colStyleTopLeft);
-        row1.createCell(17).setCellValue("MedDRA Term");
+        row1.createCell(17).setCellValue("MedDRA Code");
         sheet1.autoSizeColumn(17);
         row1.getCell(17).setCellStyle(colStyleTopLeft);
-        row1.createCell(18).setCellValue("MedDRA Level");
+        row1.createCell(18).setCellValue("MedDRA Term");
         sheet1.autoSizeColumn(18);
         row1.getCell(18).setCellStyle(colStyleTopLeft);
-        row1.createCell(19).setCellValue("MedDRA Qualifier");
+        row1.createCell(19).setCellValue("MedDRA Level");
         sheet1.autoSizeColumn(19);
-        row1.getCell(19).setCellStyle(colStyleTopLeft); /*  */
-        row1.createCell(20).setCellValue("Comment");
+        row1.getCell(19).setCellStyle(colStyleTopLeft);
+        row1.createCell(20).setCellValue("MedDRA Qualifier");
         sheet1.autoSizeColumn(20);
-        row1.getCell(20).setCellStyle(colStyleTopLeft);
+        row1.getCell(20).setCellStyle(colStyleTopLeft); /*  */
+        row1.createCell(21).setCellValue("Comment");
+        sheet1.autoSizeColumn(21);
+        row1.getCell(21).setCellStyle(colStyleTopLeft);
     
     idx = idx + 1;
     idx1 = idx1 + 1;
@@ -5775,27 +5781,27 @@ public class ManageCRSBean implements Serializable {
             row.createCell(15).setCellValue("");
         sheet.autoSizeColumn(15);
         
-        if (viewObjectRow.getEarliestMeddraCode() != null){
-            row.createCell(16).setCellValue(viewObjectRow.getEarliestMeddraCode());
-            if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+        if (viewObjectRow.getEarliestSearchAppliedTo() != null){
+            row.createCell(16).setCellValue(viewObjectRow.getEarliestSearchAppliedTo());
+            if((viewObjectRow.getEarliestSearchAppliedToClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSearchAppliedToClr())){
             row.getCell(16).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+            }else if((viewObjectRow.getEarliestSearchAppliedToClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSearchAppliedToClr())){
                 row.getCell(16).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+            }else if((viewObjectRow.getEarliestSearchAppliedToClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSearchAppliedToClr())){
                 row.getCell(16).setCellStyle(orangeColourCellStyle);
             }
         }
         else
-            row.createCell(16).setCellValue("");
+        row.createCell(16).setCellValue("");
         sheet.autoSizeColumn(16);
         
-        if (viewObjectRow.getEarliestMeddraTerm() != null){
-            row.createCell(17).setCellValue(viewObjectRow.getEarliestMeddraTerm());
-            if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+        if (viewObjectRow.getEarliestMeddraCode() != null){
+            row.createCell(17).setCellValue(viewObjectRow.getEarliestMeddraCode());
+            if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
             row.getCell(17).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
                 row.getCell(17).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
                 row.getCell(17).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -5803,13 +5809,13 @@ public class ManageCRSBean implements Serializable {
             row.createCell(17).setCellValue("");
         sheet.autoSizeColumn(17);
         
-        if (viewObjectRow.getEarliestMeddraExtension() != null){
-            row.createCell(18).setCellValue(viewObjectRow.getEarliestMeddraExtension());
-            if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+        if (viewObjectRow.getEarliestMeddraTerm() != null){
+            row.createCell(18).setCellValue(viewObjectRow.getEarliestMeddraTerm());
+            if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
             row.getCell(18).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
                 row.getCell(18).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
                 row.getCell(18).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -5817,13 +5823,13 @@ public class ManageCRSBean implements Serializable {
             row.createCell(18).setCellValue("");
         sheet.autoSizeColumn(18);
         
-        if (viewObjectRow.getEarliestMeddraQualifier() != null){
-            row.createCell(19).setCellValue(viewObjectRow.getEarliestMeddraQualifier());
-            if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+        if (viewObjectRow.getEarliestMeddraExtension() != null){
+            row.createCell(19).setCellValue(viewObjectRow.getEarliestMeddraExtension());
+            if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
             row.getCell(19).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
                 row.getCell(19).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
                 row.getCell(19).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -5831,19 +5837,33 @@ public class ManageCRSBean implements Serializable {
             row.createCell(19).setCellValue("");
         sheet.autoSizeColumn(19);
         
-        if (viewObjectRow.getEarliestNonMeddraCompCmt() != null){
-            row.createCell(20).setCellValue(viewObjectRow.getEarliestNonMeddraCompCmt());
-            if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+        if (viewObjectRow.getEarliestMeddraQualifier() != null){
+            row.createCell(20).setCellValue(viewObjectRow.getEarliestMeddraQualifier());
+            if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
             row.getCell(20).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
                 row.getCell(20).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
                 row.getCell(20).setCellStyle(orangeColourCellStyle);
             }
         }
         else
             row.createCell(20).setCellValue("");
         sheet.autoSizeColumn(20);
+        
+        if (viewObjectRow.getEarliestNonMeddraCompCmt() != null){
+            row.createCell(21).setCellValue(viewObjectRow.getEarliestNonMeddraCompCmt());
+            if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+            row.getCell(21).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+                row.getCell(21).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+                row.getCell(21).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(21).setCellValue("");
+        sheet.autoSizeColumn(21);
                
         
         if (viewObjectRow.getLatestSafetyTopic() != null){
@@ -6070,13 +6090,13 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(15).setCellValue("");
         sheet1.autoSizeColumn(15);
         
-        if (viewObjectRow.getLatestMeddraCode() != null){
-            row1.createCell(16).setCellValue(viewObjectRow.getLatestMeddraCode());
-            if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+        if (viewObjectRow.getLatestSearchAppliedTo() != null){
+            row1.createCell(16).setCellValue(viewObjectRow.getLatestSearchAppliedTo());
+            if((viewObjectRow.getLatestSearchAppliedToColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSearchAppliedToColor())){
             row1.getCell(16).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+            }else if((viewObjectRow.getLatestSearchAppliedToColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSearchAppliedToColor())){
                 row1.getCell(16).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+            }else if((viewObjectRow.getLatestSearchAppliedToColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSearchAppliedToColor())){
                 row1.getCell(16).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -6084,13 +6104,13 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(16).setCellValue("");
         sheet1.autoSizeColumn(16);
         
-        if (viewObjectRow.getLatestMeddraTerm() != null){
-            row1.createCell(17).setCellValue(viewObjectRow.getLatestMeddraTerm());
-            if((viewObjectRow.getLatestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+        if (viewObjectRow.getLatestMeddraCode() != null){
+            row1.createCell(17).setCellValue(viewObjectRow.getLatestMeddraCode());
+            if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
             row1.getCell(17).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
                 row1.getCell(17).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
                 row1.getCell(17).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -6098,13 +6118,13 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(17).setCellValue("");
         sheet1.autoSizeColumn(17);
         
-        if (viewObjectRow.getLatestMeddraExtension() != null){
-            row1.createCell(18).setCellValue(viewObjectRow.getLatestMeddraExtension());
-            if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+        if (viewObjectRow.getLatestMeddraTerm() != null){
+            row1.createCell(18).setCellValue(viewObjectRow.getLatestMeddraTerm());
+            if((viewObjectRow.getLatestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
             row1.getCell(18).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
                 row1.getCell(18).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
                 row1.getCell(18).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -6112,13 +6132,13 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(18).setCellValue("");
         sheet1.autoSizeColumn(18);
         
-        if (viewObjectRow.getLatestMeddraQualifier() != null){
-            row1.createCell(19).setCellValue(viewObjectRow.getLatestMeddraQualifier());
-            if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+        if (viewObjectRow.getLatestMeddraExtension() != null){
+            row1.createCell(19).setCellValue(viewObjectRow.getLatestMeddraExtension());
+            if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
             row1.getCell(19).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
                 row1.getCell(19).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
                 row1.getCell(19).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -6126,19 +6146,33 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(19).setCellValue("");
         sheet1.autoSizeColumn(19);
         
-        if (viewObjectRow.getLatestNonMeddraCompCmt() != null){
-            row1.createCell(20).setCellValue(viewObjectRow.getLatestNonMeddraCompCmt());
-            if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+        if (viewObjectRow.getLatestMeddraQualifier() != null){
+            row1.createCell(20).setCellValue(viewObjectRow.getLatestMeddraQualifier());
+            if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
             row1.getCell(20).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
                 row1.getCell(20).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
                 row1.getCell(20).setCellStyle(orangeColourCellStyle);
             }
         }
         else
             row1.createCell(20).setCellValue("");
         sheet1.autoSizeColumn(20);
+        
+        if (viewObjectRow.getLatestNonMeddraCompCmt() != null){
+            row1.createCell(21).setCellValue(viewObjectRow.getLatestNonMeddraCompCmt());
+            if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+            row1.getCell(21).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+                row1.getCell(21).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+                row1.getCell(21).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(21).setCellValue("");
+        sheet1.autoSizeColumn(21);
         
     //2nd Row ends
     flag = true; 
@@ -6276,17 +6310,18 @@ public class ManageCRSBean implements Serializable {
     row.createCell(1).setCellValue("Purpose Of Risk Definition");
     row.getCell(1).setCellStyle(colStyleTopLeft);
     sheet.addMergedRegion(new CellRangeAddress(0,0,1,12));
-    row.createCell(16).setCellValue("Safety Topic Definition");
-    row.getCell(16).setCellStyle(colStyleTopLeft);
-    sheet.addMergedRegion(new CellRangeAddress(0,0,16,20));
+    row.createCell(17).setCellValue("Safety Topic Definition");
+    row.getCell(17).setCellStyle(colStyleTopLeft);
+    sheet.addMergedRegion(new CellRangeAddress(0,0,17,20));
     
     row1 = sheet1.createRow(idx1); //creating 1st row
     row1.createCell(1).setCellValue("Purpose Of Risk Definition");
     row1.getCell(1).setCellStyle(colStyleTopLeft);
     sheet1.addMergedRegion(new CellRangeAddress(0,0,1,12));
-    row1.createCell(16).setCellValue("Safety Topic Definition");
-    row1.getCell(16).setCellStyle(colStyleTopLeft);
-    sheet1.addMergedRegion(new CellRangeAddress(0,0,16,20));
+    row1.createCell(17).setCellValue("Safety Topic Definition");
+    row1.getCell(17).setCellStyle(colStyleTopLeft);
+    sheet1.addMergedRegion(new CellRangeAddress(0,0,17,20));
+    
     idx = idx + 1;
     idx1 = idx1 + 1;
     }
@@ -6342,21 +6377,24 @@ public class ManageCRSBean implements Serializable {
                 row.createCell(15).setCellValue("Search Criteria Details");
                 sheet.autoSizeColumn(15);
                 row.getCell(15).setCellStyle(colStyleTopLeft);
-                row.createCell(16).setCellValue("MedDRA Code");
+                row.createCell(16).setCellValue("Search Applied To");
                 sheet.autoSizeColumn(16);
                 row.getCell(16).setCellStyle(colStyleTopLeft);
-                row.createCell(17).setCellValue("MedDRA Term");
+                row.createCell(17).setCellValue("MedDRA Code");
                 sheet.autoSizeColumn(17);
                 row.getCell(17).setCellStyle(colStyleTopLeft);
-                row.createCell(18).setCellValue("MedDRA Level");
+                row.createCell(18).setCellValue("MedDRA Term");
                 sheet.autoSizeColumn(18);
                 row.getCell(18).setCellStyle(colStyleTopLeft);
-                row.createCell(19).setCellValue("MedDRA Qualifier");
+                row.createCell(19).setCellValue("MedDRA Level");
                 sheet.autoSizeColumn(19);
-                row.getCell(19).setCellStyle(colStyleTopLeft); /*  */
-                row.createCell(20).setCellValue("Comment");
+                row.getCell(19).setCellStyle(colStyleTopLeft);
+                row.createCell(20).setCellValue("MedDRA Qualifier");
                 sheet.autoSizeColumn(20);
-                row.getCell(20).setCellStyle(colStyleTopLeft);
+                row.getCell(20).setCellStyle(colStyleTopLeft); /*  */
+                row.createCell(21).setCellValue("Comment");
+                sheet.autoSizeColumn(21);
+                row.getCell(21).setCellStyle(colStyleTopLeft);
                 
         row1.createCell(0).setCellValue("Safety Topic Of Interest"); //setting column heading
         sheet1.autoSizeColumn(0);
@@ -6406,21 +6444,24 @@ public class ManageCRSBean implements Serializable {
         row1.createCell(15).setCellValue("Search Criteria Details");
         sheet1.autoSizeColumn(15);
         row1.getCell(15).setCellStyle(colStyleTopLeft);
-        row1.createCell(16).setCellValue("MedDRA Code");
+        row1.createCell(16).setCellValue("Search Applied To");
         sheet1.autoSizeColumn(16);
         row1.getCell(16).setCellStyle(colStyleTopLeft);
-        row1.createCell(17).setCellValue("MedDRA Term");
+        row1.createCell(17).setCellValue("MedDRA Code");
         sheet1.autoSizeColumn(17);
         row1.getCell(17).setCellStyle(colStyleTopLeft);
-        row1.createCell(18).setCellValue("MedDRA Level");
+        row1.createCell(18).setCellValue("MedDRA Term");
         sheet1.autoSizeColumn(18);
         row1.getCell(18).setCellStyle(colStyleTopLeft);
-        row1.createCell(19).setCellValue("MedDRA Qualifier");
+        row1.createCell(19).setCellValue("MedDRA Level");
         sheet1.autoSizeColumn(19);
-        row1.getCell(19).setCellStyle(colStyleTopLeft); /*  */
-        row1.createCell(20).setCellValue("Comment");
+        row1.getCell(19).setCellStyle(colStyleTopLeft);
+        row1.createCell(20).setCellValue("MedDRA Qualifier");
         sheet1.autoSizeColumn(20);
-        row1.getCell(20).setCellStyle(colStyleTopLeft);
+        row1.getCell(20).setCellStyle(colStyleTopLeft); /*  */
+        row1.createCell(21).setCellValue("Comment");
+        sheet1.autoSizeColumn(21);
+        row1.getCell(21).setCellStyle(colStyleTopLeft);
     
     idx = idx + 1;
     idx1 = idx1 + 1;
@@ -6654,41 +6695,41 @@ public class ManageCRSBean implements Serializable {
             row.createCell(15).setCellValue("");
         sheet.autoSizeColumn(15);
         
-        if (viewObjectRow.getEarliestMeddraCode() != null){
-            row.createCell(16).setCellValue(viewObjectRow.getEarliestMeddraCode());
-            if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+        if (viewObjectRow.getEarliestSearchAppliedTo() != null){
+            row.createCell(16).setCellValue(viewObjectRow.getEarliestSearchAppliedTo());
+            if((viewObjectRow.getEarliestSearchAppliedToClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestSearchAppliedToClr())){
             row.getCell(16).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+            }else if((viewObjectRow.getEarliestSearchAppliedToClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestSearchAppliedToClr())){
                 row.getCell(16).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
+            }else if((viewObjectRow.getEarliestSearchAppliedToClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestSearchAppliedToClr())){
                 row.getCell(16).setCellStyle(orangeColourCellStyle);
             }
         }
         else
             row.createCell(16).setCellValue("");
-        sheet.autoSizeColumn(16);
+            sheet.autoSizeColumn(16);
         
-        if (viewObjectRow.getEarliestMeddraTerm() != null){
-            row.createCell(17).setCellValue(viewObjectRow.getEarliestMeddraTerm());
-            if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+        if (viewObjectRow.getEarliestMeddraCode() != null){
+            row.createCell(17).setCellValue(viewObjectRow.getEarliestMeddraCode());
+            if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
             row.getCell(17).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
                 row.getCell(17).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
+            }else if((viewObjectRow.getEarliestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraCodeColor())){
                 row.getCell(17).setCellStyle(orangeColourCellStyle);
             }
         }
         else
             row.createCell(17).setCellValue("");
-        sheet.autoSizeColumn(17);
+            sheet.autoSizeColumn(17);
         
-        if (viewObjectRow.getEarliestMeddraExtension() != null){
-            row.createCell(18).setCellValue(viewObjectRow.getEarliestMeddraExtension());
-            if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+        if (viewObjectRow.getEarliestMeddraTerm() != null){
+            row.createCell(18).setCellValue(viewObjectRow.getEarliestMeddraTerm());
+            if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
             row.getCell(18).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
                 row.getCell(18).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
+            }else if((viewObjectRow.getEarliestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraTermColor())){
                 row.getCell(18).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -6696,13 +6737,13 @@ public class ManageCRSBean implements Serializable {
             row.createCell(18).setCellValue("");
         sheet.autoSizeColumn(18);
         
-        if (viewObjectRow.getEarliestMeddraQualifier() != null){
-            row.createCell(19).setCellValue(viewObjectRow.getEarliestMeddraQualifier());
-            if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+        if (viewObjectRow.getEarliestMeddraExtension() != null){
+            row.createCell(19).setCellValue(viewObjectRow.getEarliestMeddraExtension());
+            if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
             row.getCell(19).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
                 row.getCell(19).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
+            }else if((viewObjectRow.getEarliestMeddraExtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraExtColor())){
                 row.getCell(19).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -6710,19 +6751,33 @@ public class ManageCRSBean implements Serializable {
             row.createCell(19).setCellValue("");
         sheet.autoSizeColumn(19);
         
-        if (viewObjectRow.getEarliestNonMeddraCompCmt() != null){
-            row.createCell(20).setCellValue(viewObjectRow.getEarliestNonMeddraCompCmt());
-            if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+        if (viewObjectRow.getEarliestMeddraQualifier() != null){
+            row.createCell(20).setCellValue(viewObjectRow.getEarliestMeddraQualifier());
+            if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
             row.getCell(20).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
                 row.getCell(20).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+            }else if((viewObjectRow.getEarliestMeddraQualColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestMeddraQualColor())){
                 row.getCell(20).setCellStyle(orangeColourCellStyle);
             }
         }
         else
             row.createCell(20).setCellValue("");
         sheet.autoSizeColumn(20);
+        
+        if (viewObjectRow.getEarliestNonMeddraCompCmt() != null){
+            row.createCell(21).setCellValue(viewObjectRow.getEarliestNonMeddraCompCmt());
+            if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("G").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+            row.getCell(21).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("R").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+                row.getCell(21).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getEarliestNonMedCompCmtClr() != null) && ("O").equalsIgnoreCase(viewObjectRow.getEarliestNonMedCompCmtClr())){
+                row.getCell(21).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row.createCell(21).setCellValue("");
+        sheet.autoSizeColumn(21);
                
         
         if (viewObjectRow.getLatestSafetyTopic() != null){
@@ -6949,27 +7004,27 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(15).setCellValue("");
         sheet1.autoSizeColumn(15);
         
-        if (viewObjectRow.getLatestMeddraCode() != null){
-            row1.createCell(16).setCellValue(viewObjectRow.getLatestMeddraCode());
-            if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+        if (viewObjectRow.getLatestSearchAppliedTo() != null){
+            row1.createCell(16).setCellValue(viewObjectRow.getLatestSearchAppliedTo());
+            if((viewObjectRow.getLatestSearchAppliedToColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestSearchAppliedToColor())){
             row1.getCell(16).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+            }else if((viewObjectRow.getLatestSearchAppliedToColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestSearchAppliedToColor())){
                 row1.getCell(16).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
+            }else if((viewObjectRow.getLatestSearchAppliedToColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestSearchAppliedToColor())){
                 row1.getCell(16).setCellStyle(orangeColourCellStyle);
             }
         }
         else
             row1.createCell(16).setCellValue("");
-        sheet1.autoSizeColumn(16);
+            sheet1.autoSizeColumn(16);
         
-        if (viewObjectRow.getLatestMeddraTerm() != null){
-            row1.createCell(17).setCellValue(viewObjectRow.getLatestMeddraTerm());
-            if((viewObjectRow.getLatestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+        if (viewObjectRow.getLatestMeddraCode() != null){
+            row1.createCell(17).setCellValue(viewObjectRow.getLatestMeddraCode());
+            if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
             row1.getCell(17).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
                 row1.getCell(17).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
+            }else if((viewObjectRow.getLatestMeddraCodeColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraCodeColor())){
                 row1.getCell(17).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -6977,13 +7032,13 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(17).setCellValue("");
         sheet1.autoSizeColumn(17);
         
-        if (viewObjectRow.getLatestMeddraExtension() != null){
-            row1.createCell(18).setCellValue(viewObjectRow.getLatestMeddraExtension());
-            if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+        if (viewObjectRow.getLatestMeddraTerm() != null){
+            row1.createCell(18).setCellValue(viewObjectRow.getLatestMeddraTerm());
+            if((viewObjectRow.getLatestMeddraTermColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
             row1.getCell(18).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
                 row1.getCell(18).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
+            }else if((viewObjectRow.getLatestMeddraTermColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraTermColor())){
                 row1.getCell(18).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -6991,13 +7046,13 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(18).setCellValue("");
         sheet1.autoSizeColumn(18);
         
-        if (viewObjectRow.getLatestMeddraQualifier() != null){
-            row1.createCell(19).setCellValue(viewObjectRow.getLatestMeddraQualifier());
-            if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+        if (viewObjectRow.getLatestMeddraExtension() != null){
+            row1.createCell(19).setCellValue(viewObjectRow.getLatestMeddraExtension());
+            if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
             row1.getCell(19).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
                 row1.getCell(19).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
+            }else if((viewObjectRow.getLatestMeddraExtensionColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraExtensionColor())){
                 row1.getCell(19).setCellStyle(orangeColourCellStyle);
             }
         }
@@ -7005,19 +7060,33 @@ public class ManageCRSBean implements Serializable {
             row1.createCell(19).setCellValue("");
         sheet1.autoSizeColumn(19);
         
-        if (viewObjectRow.getLatestNonMeddraCompCmt() != null){
-            row1.createCell(20).setCellValue(viewObjectRow.getLatestNonMeddraCompCmt());
-            if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+        if (viewObjectRow.getLatestMeddraQualifier() != null){
+            row1.createCell(20).setCellValue(viewObjectRow.getLatestMeddraQualifier());
+            if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
             row1.getCell(20).setCellStyle(greenColourCellStyle);
-            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
                 row1.getCell(20).setCellStyle(redColourCellStyle); 
-            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+            }else if((viewObjectRow.getLatestMeddraQualifierColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestMeddraQualifierColor())){
                 row1.getCell(20).setCellStyle(orangeColourCellStyle);
             }
         }
         else
             row1.createCell(20).setCellValue("");
         sheet1.autoSizeColumn(20);
+        
+        if (viewObjectRow.getLatestNonMeddraCompCmt() != null){
+            row1.createCell(21).setCellValue(viewObjectRow.getLatestNonMeddraCompCmt());
+            if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("G").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+            row1.getCell(21).setCellStyle(greenColourCellStyle);
+            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("R").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+                row1.getCell(21).setCellStyle(redColourCellStyle); 
+            }else if((viewObjectRow.getLatestNonMedCompCmtColor() != null) && ("O").equalsIgnoreCase(viewObjectRow.getLatestNonMedCompCmtColor())){
+                row1.getCell(21).setCellStyle(orangeColourCellStyle);
+            }
+        }
+        else
+            row1.createCell(21).setCellValue("");
+        sheet1.autoSizeColumn(21);
         
     //2nd Row ends
     flag = true; 
