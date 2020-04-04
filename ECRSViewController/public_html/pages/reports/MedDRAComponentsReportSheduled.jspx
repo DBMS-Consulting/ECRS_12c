@@ -198,7 +198,8 @@
                                      <f:facet name="buttonBar">
                                             <af:panelGroupLayout id="pgl8" layout="horizontal" halign="end">
                                                 <af:button text="Yes" id="b1"
-                                                           actionListener="#{scheduleBatchJobBean.stopScheduleProcess}"/>
+                                                           actionListener="#{scheduleBatchJobBean.stopScheduleProcess}"
+                                                           immediate="true"/>
                                                 <af:button text="No" id="b4"
                                                            actionListener="#{scheduleBatchJobBean.closePopup}"/>
                                             </af:panelGroupLayout>
@@ -208,7 +209,7 @@
                                 <af:panelGroupLayout id="pgl4" layout="vertical">
                                     <af:spacer width="10" height="20" id="s2"/>
                                     <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb2"
-                                                      action="home"/>
+                                                      action="home" immediate="true"/>
                                 </af:panelGroupLayout>
                             </af:panelHeader>
                         </af:panelGroupLayout>

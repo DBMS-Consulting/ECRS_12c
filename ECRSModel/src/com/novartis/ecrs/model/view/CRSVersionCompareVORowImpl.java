@@ -1092,6 +1092,46 @@ public class CRSVersionCompareVORowImpl extends ViewRowImpl {
                 obj.setAttributeInternal(index(), value);
             }
         }
+        ,
+        EarliestSearchAppliedTo {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getEarliestSearchAppliedTo();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        LatestSearchAppliedTo {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getLatestSearchAppliedTo();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        LatestSearchAppliedToColor {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getLatestSearchAppliedToColor();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        EarliestSearchAppliedToClr {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getEarliestSearchAppliedToClr();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
         ;
         private static AttributesEnum[] vals = null;
         private static final int firstIndex = 0;
@@ -1229,6 +1269,10 @@ public class CRSVersionCompareVORowImpl extends ViewRowImpl {
     public static final int LATESTCOMPOUNDCOLOR = AttributesEnum.LatestCompoundColor.index();
     public static final int LATESTINDICATION = AttributesEnum.LatestIndication.index();
     public static final int LATESTINDICATIONCOLOR = AttributesEnum.LatestIndicationColor.index();
+    public static final int EARLIESTSEARCHAPPLIEDTO = AttributesEnum.EarliestSearchAppliedTo.index();
+    public static final int LATESTSEARCHAPPLIEDTO = AttributesEnum.LatestSearchAppliedTo.index();
+    public static final int LATESTSEARCHAPPLIEDTOCOLOR = AttributesEnum.LatestSearchAppliedToColor.index();
+    public static final int EARLIESTSEARCHAPPLIEDTOCLR = AttributesEnum.EarliestSearchAppliedToClr.index();
 
     /**
      * This is the default constructor (do not remove).
@@ -2101,6 +2145,38 @@ public class CRSVersionCompareVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(LATESTINDICATIONCOLOR);
     }
 
+
+    /**
+     * Gets the attribute value for the calculated attribute EarliestSearchAppliedTo.
+     * @return the EarliestSearchAppliedTo
+     */
+    public String getEarliestSearchAppliedTo() {
+        return (String) getAttributeInternal(EARLIESTSEARCHAPPLIEDTO);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute LatestSearchAppliedTo.
+     * @return the LatestSearchAppliedTo
+     */
+    public String getLatestSearchAppliedTo() {
+        return (String) getAttributeInternal(LATESTSEARCHAPPLIEDTO);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute LatestSearchAppliedToColor.
+     * @return the LatestSearchAppliedToColor
+     */
+    public String getLatestSearchAppliedToColor() {
+        return (String) getAttributeInternal(LATESTSEARCHAPPLIEDTOCOLOR);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute EarliestSearchAppliedToClr.
+     * @return the EarliestSearchAppliedToClr
+     */
+    public String getEarliestSearchAppliedToClr() {
+        return (String) getAttributeInternal(EARLIESTSEARCHAPPLIEDTOCLR);
+    }
 
     /**
      * getAttrInvokeAccessor: generated method. Do not modify.

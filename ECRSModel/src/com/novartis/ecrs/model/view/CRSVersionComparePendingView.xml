@@ -26,16 +26,15 @@
     Type="java.lang.String">
     <TransientExpression
       Name="VariableScript"
-      trustMode="trusted"
       CodeSourceName="CRSVersionComparePendingView"/>
   </Variable>
-  <SQLQuery><![CDATA[SELECT * FROM TABLE(P_CRS_VERSIONS_COMPARE.f_crs_versions_compare                      
-  (puserID      => :bindUserId,                   
-    pCrsID         => :bindCrsId,                     
-    PEarliestDate   => NULL,    
-    PEarliestReason => NULL,    
-    PLatestDate     => NULL,    
-    pLatestReason   => NULL                     
+  <SQLQuery><![CDATA[SELECT * FROM TABLE(P_CRS_VERSIONS_COMPARE.f_crs_versions_compare                        
+  (puserID      => :bindUserId,                    
+    pCrsID         => :bindCrsId,                       
+    PEarliestDate   => NULL,      
+    PEarliestReason => NULL,      
+    PLatestDate     => NULL,      
+    pLatestReason   => NULL                       
     ))]]></SQLQuery>
   <ViewAttribute
     Name="UserId"
@@ -63,7 +62,7 @@
     ColumnType="NUMBER"
     AliasName="CRS_ID"
     Expression="CRS_ID"
-    SQLType="NUMERIC"/>
+    SQLType="INTEGER"/>
   <ViewAttribute
     Name="EarliestDate"
     IsUpdateable="false"
@@ -675,7 +674,7 @@
     ColumnType="NUMBER"
     AliasName="EARLIEST_MEDDRA_CODE"
     Expression="EARLIEST_MEDDRA_CODE"
-    SQLType="NUMERIC"/>
+    SQLType="INTEGER"/>
   <ViewAttribute
     Name="EarliestMeddraCodeColor"
     IsUpdateable="false"
@@ -1347,7 +1346,7 @@
     ColumnType="NUMBER"
     AliasName="LATEST_MEDDRA_CODE"
     Expression="LATEST_MEDDRA_CODE"
-    SQLType="NUMERIC"/>
+    SQLType="INTEGER"/>
   <ViewAttribute
     Name="LatestMeddraCodeColor"
     IsUpdateable="false"
@@ -1643,6 +1642,66 @@
     ColumnType="VARCHAR2"
     AliasName="LATEST_INDICATION_COLOR"
     Expression="LATEST_INDICATION_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSearchAppliedTo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SEARCH_APPLIED_TO"
+    Expression="EARLIEST_SEARCH_APPLIED_TO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestSearchAppliedTo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_SEARCH_APPLIED_TO"
+    Expression="LATEST_SEARCH_APPLIED_TO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestSearchAppliedToColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_SEARCH_APPLIED_TO_COLOR"
+    Expression="LATEST_SEARCH_APPLIED_TO_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSearchAppliedToClr"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SEARCH_APPLIED_TO_CLR"
+    Expression="EARLIEST_SEARCH_APPLIED_TO_CLR"
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="1"/>

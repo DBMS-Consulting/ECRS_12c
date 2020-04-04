@@ -247,6 +247,13 @@
                                       pattern="#{bindings.CrsVersionCompare.hints.EarliestMeddraCode.format}"/>
                   </af:outputText>
                 </af:column>
+                <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestSearchAppliedTo.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Applied To" id="c149">
+                  <af:outputText value="#{row.EarliestSearchAppliedTo}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSearchAppliedTo.tooltip}"
+                                 id="ot146" inlineStyle="#{row.EarliestSearchAppliedToClr eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSearchAppliedToClr eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSearchAppliedToClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
                 <af:column id="c95" headerText="Safety Topic Definition">
                   <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestMeddraTerm.name}"
                              filterable="true" sortable="true"
@@ -417,6 +424,13 @@
                     <af:convertNumber groupingUsed="false"
                                       pattern="#{bindings.CrsVersionCompare1.hints.LatestMeddraCode.format}"/>
                   </af:outputText>
+                </af:column>
+                 <af:column sortProperty="#{bindings.CrsVersionCompare.hints.LatestSearchAppliedTo.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Applied To" id="c150">
+                  <af:outputText value="#{row.LatestSearchAppliedTo}"
+                                 shortDesc="#{bindings.CrsVersionCompare.hints.LatestSearchAppliedTo.tooltip}"
+                                 id="ot147" inlineStyle="#{row.LatestSearchAppliedToColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSearchAppliedToColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSearchAppliedToColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                 </af:column>
                 <af:column id="c96" headerText="Safety Topic Definition">
                   <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestMeddraTerm.name}" filterable="true"
@@ -643,6 +657,13 @@
                                       pattern="#{bindings.CRSVersionComparePending.hints.EarliestMeddraCode.format}"/>
                   </af:outputText>
                 </af:column>
+                 <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestSearchAppliedTo.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Applied To" id="c147">
+                  <af:outputText value="#{row.EarliestSearchAppliedTo}"
+                                 shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestSearchAppliedTo.tooltip}"
+                                 id="ot3" inlineStyle="#{row.EarliestSearchAppliedToClr eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSearchAppliedToClr eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSearchAppliedToClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
                 <af:column id="c26" headerText="Safety Topic Definition">
                   <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestMeddraTerm.name}"
                              filterable="true" sortable="true"
@@ -814,6 +835,13 @@
                     <af:convertNumber groupingUsed="false"
                                       pattern="#{bindings.CRSVersionComparePending1.hints.LatestMeddraCode.format}"/>
                   </af:outputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.LatestSearchAppliedTo.name}"
+                           filterable="true" sortable="true"
+                           headerText="Search Applied To" id="c148">
+                  <af:outputText value="#{row.LatestSearchAppliedTo}"
+                                 shortDesc="#{bindings.CRSVersionComparePending.hints.LatestSearchAppliedTo.tooltip}"
+                                 id="ot4" inlineStyle="#{row.LatestSearchAppliedToColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSearchAppliedToColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSearchAppliedToColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                 </af:column>
                 <af:column id="c50" headerText="Safety Topic Definition">
                   <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMeddraTerm.name}" filterable="true"

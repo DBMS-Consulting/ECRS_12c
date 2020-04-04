@@ -51,13 +51,13 @@
     Name="bindEarliestDate"
     Kind="where"
     Type="java.lang.String"/>
-  <SQLQuery><![CDATA[SELECT * FROM TABLE(P_CRS_VERSIONS_COMPARE.f_crs_versions_compare             
-  (puserID      => :bindUserId,          
-    pCrsID         => :bindCrsId,            
-    PEarliestDate   => :bindEarliestDate,            
-    PEarliestReason => :bindEarliestReason,            
-    PLatestDate     => :bindLatestDate,            
-    pLatestReason   => :bindLatestReason            
+  <SQLQuery><![CDATA[SELECT * FROM TABLE(P_CRS_VERSIONS_COMPARE.f_crs_versions_compare               
+  (puserID      => :bindUserId,           
+    pCrsID         => :bindCrsId,              
+    PEarliestDate   => :bindEarliestDate,              
+    PEarliestReason => :bindEarliestReason,              
+    PLatestDate     => :bindLatestDate,              
+    pLatestReason   => :bindLatestReason              
     ))]]></SQLQuery>
   <ViewAttribute
     Name="UserId"
@@ -1663,6 +1663,66 @@
     ColumnType="VARCHAR2"
     AliasName="LATEST_INDICATION_COLOR"
     Expression="LATEST_INDICATION_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSearchAppliedTo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SEARCH_APPLIED_TO"
+    Expression="EARLIEST_SEARCH_APPLIED_TO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestSearchAppliedTo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_SEARCH_APPLIED_TO"
+    Expression="LATEST_SEARCH_APPLIED_TO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestSearchAppliedToColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_SEARCH_APPLIED_TO_COLOR"
+    Expression="LATEST_SEARCH_APPLIED_TO_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestSearchAppliedToClr"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_SEARCH_APPLIED_TO_CLR"
+    Expression="EARLIEST_SEARCH_APPLIED_TO_CLR"
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="1"/>

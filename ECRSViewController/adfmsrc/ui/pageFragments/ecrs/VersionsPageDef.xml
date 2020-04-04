@@ -153,6 +153,10 @@
           <Item Value="LatestSppColor"/>
           <Item Value="LatestUnderlyingDisColor"/>
           <Item Value="LatestDataDomainColor"/>
+          <Item Value="EarliestSearchAppliedTo"/>
+          <Item Value="EarliestSearchAppliedToClr"/>
+          <Item Value="LatestSearchAppliedTo"/>
+          <Item Value="LatestSearchAppliedToColor"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -266,6 +270,10 @@
           <Item Value="LatestUnderlyingDisColor"/>
           <Item Value="LatestUnderlyingDisease"/>
           <Item Value="LatestDataDomainColor"/>
+          <Item Value="EarliestSearchAppliedTo"/>
+          <Item Value="EarliestSearchAppliedToClr"/>
+          <Item Value="LatestSearchAppliedTo"/>
+          <Item Value="LatestSearchAppliedToColor"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -478,6 +486,10 @@
           <Item Value="LatestSppColor"/>
           <Item Value="LatestUnderlyingDisColor"/>
           <Item Value="LatestUnderlyingDisease"/>
+          <Item Value="LatestSearchAppliedToColor"/>
+          <Item Value="LatestSearchAppliedTo"/>
+          <Item Value="EarliestSearchAppliedToClr"/>
+          <Item Value="EarliestSearchAppliedTo"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -592,6 +604,10 @@
           <Item Value="LatestSppColor"/>
           <Item Value="LatestUnderlyingDisColor"/>
           <Item Value="LatestUnderlyingDisease"/>
+          <Item Value="EarliestSearchAppliedTo"/>
+          <Item Value="LatestSearchAppliedTo"/>
+          <Item Value="EarliestSearchAppliedToClr"/>
+          <Item Value="LatestSearchAppliedToColor"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
