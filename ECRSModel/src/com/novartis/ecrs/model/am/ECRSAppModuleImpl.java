@@ -1045,7 +1045,7 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * @return - Domain Id
      */
     public Integer fetchDomainIdFromName(String domainName){
-        Integer domainId = 0;
+        Integer domainId = null;
         ViewObject domainVO = this.getDomainVO();
         domainVO.setWhereClause("DOMAIN_NAME = '"+domainName+"'");
         domainVO.executeQuery();
