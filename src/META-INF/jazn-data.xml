@@ -29,7 +29,7 @@
           <name>Test_Admin</name>
           <display-name>Test Admin</display-name>
           <description>Test Admin</description>
-          <credentials>{903}FJTCCMV9LKt+HFoBDIW0goiUn0UILRYo</credentials>
+          <credentials>{903}I+BZ/0pa7pFNzjmzGuBmAFj0ALJWhocT</credentials>
         </user>
       </users>
       <roles>
@@ -37,6 +37,12 @@
           <name>CRS_BSL</name>
           <display-name>CRS_BSL</display-name>
           <description>Brand Safety Leader</description>
+          <members>
+            <member>
+              <type>user</type>
+              <name>Test_BSL1</name>
+            </member>
+          </members>
         </role>
         <role>
           <name>CRS_MQM</name>
@@ -469,6 +475,23 @@
               <permission>
                 <class>oracle.adf.share.security.authorization.RegionPermission</class>
                 <name>pages.CrsCreatePageDef</name>
+                <actions>view</actions>
+              </permission>
+            </permissions>
+          </grant>
+          <grant>
+            <grantee>
+              <principals>
+                <principal>
+                  <class>oracle.security.jps.service.policystore.ApplicationRole</class>
+                  <name>Admin</name>
+                </principal>
+              </principals>
+            </grantee>
+            <permissions>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>pages.reports.MedDRAComponentsReportSheduledPageDef</name>
                 <actions>view</actions>
               </permission>
             </permissions>

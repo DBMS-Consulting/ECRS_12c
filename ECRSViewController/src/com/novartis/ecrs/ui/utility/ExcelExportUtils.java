@@ -295,10 +295,10 @@ public class ExcelExportUtils {
        }  
        
        private static void setDataCellStyle(Sheet sheet, int rowIndex, int cellIndex,CellStyle cellStyle){
-           org.apache.poi.ss.usermodel.Row row = sheet.getRow((short)rowIndex);
+           org.apache.poi.ss.usermodel.Row row = sheet.getRow(rowIndex);
            Workbook wb = sheet.getWorkbook();
            //CellStyle cellStyle = wb.createCellStyle();
-           Cell cell = row.getCell((short)cellIndex);
+           Cell cell = row.getCell(cellIndex);
            cellStyle.setAlignment(CellStyle.ALIGN_LEFT);
            cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
            cellStyle.setBorderBottom(CellStyle.BORDER_THIN);

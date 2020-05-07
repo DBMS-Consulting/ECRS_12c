@@ -90,6 +90,7 @@ import oracle.binding.OperationBinding;
 
 import oracle.javatools.resourcebundle.BundleFactory;
 
+import oracle.jbo.Key;
 import oracle.jbo.Row;
 import oracle.jbo.RowIterator;
 import oracle.jbo.RowSetIterator;
@@ -863,21 +864,16 @@ public class ManageCRSBean implements Serializable {
         relationIter.getViewObject().clearCache();
         relationIter.executeQuery();
         
+        Long riskId = (Long)ADFUtils.evaluateEL("#{row.CrsRiskId}");
+        relationIter.setCurrentRowWithKey((new Key(new Object[]{riskId})).toStringFormat(true));
         CrsRiskRelationVORowImpl relationRow = (CrsRiskRelationVORowImpl)relationIter.getCurrentRow();
-//        try {
-//            String isMedraDictExists = (String) ADFUtils.executeAction("executeMedraExistsQuery", null);
-//            if ("Y".equalsIgnoreCase(isMedraDictExists)) {
-//                relationRow.setAttribute("VDomainOther", "OTHER");
-//            } else {
-//                relationRow.setAttribute("VDomainOther", "OTHER1");
-//            }
-//        } catch (Exception e) {
-//        }
-         relationRow.getCrsRiskDefinitionsVO().reset();
         
+         relationRow.getCrsRiskDefinitionsVO().reset();
+         
         logger.info("Editing Risk definition, popup mode edit.");
         ADFUtils.setPageFlowScopeValue("popupMode", "Edit");
-        Long riskId = (Long)ADFUtils.evaluateEL("#{row.CrsRiskId}");
+        //Dileep: commented below and added above
+        //Long riskId = (Long)ADFUtils.evaluateEL("#{row.CrsRiskId}");
         ADFUtils.setPageFlowScopeValue("crsRiskId", riskId);
         String dataDomain = (String)ADFUtils.evaluateEL("#{row.DataDomain}");
         Integer domainId = 1;
