@@ -105,6 +105,7 @@
          <string v=".jpx"/>
          <string v=".rpx"/>
          <string v=".bcs"/>
+         <string v=".json"/>
       </list>
       <value n="internalEncoding" v="Cp1252"/>
       <list n="Javac.commandline.optionlist">
