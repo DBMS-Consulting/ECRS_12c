@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="PtExportByCrsPageDef"
+                Package="pages">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <page path="pageTemplate.EcrsTemplatePageDef" id="ptb1" Refresh="ifNeeded"/>
+    <taskFlow id="PtExportByCrsTF1" taskFlowId="/WEB-INF/taskflows/PtExportByCrsTF.xml#PtExportByCrsTF"
+              activation="deferred" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+  </executables>
+  <bindings/>
+</pageDefinition>

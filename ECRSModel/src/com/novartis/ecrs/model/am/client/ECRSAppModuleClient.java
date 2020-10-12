@@ -66,6 +66,14 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
         return (String) _ret;
     }
 
+    public void deleteSafetyTopicOfInterest(Long crsId, Long crsRiskId) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "deleteSafetyTopicOfInterest",
+                                        new String[] { "java.lang.Long", "java.lang.Long" },
+                                        new Object[] { crsId, crsRiskId });
+        return;
+    }
+
     public void deleteVersions() {
         Object _ret = this.riInvokeExportedMethod(this, "deleteVersions", null, null);
         return;
@@ -80,6 +88,13 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
 
     public void executeBaseCrsVersionCompare() {
         Object _ret = this.riInvokeExportedMethod(this, "executeBaseCrsVersionCompare", null, null);
+        return;
+    }
+
+    public void executeCrsExportPTCurrentByCrsId(Long crsId) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "executeCrsExportPTCurrentByCrsId", new String[] { "java.lang.Long" },
+                                        new Object[] { crsId });
         return;
     }
 
@@ -236,6 +251,18 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
         return (String) _ret;
     }
 
+    public String updateAutolistedness() {
+        Object _ret = this.riInvokeExportedMethod(this, "updateAutolistedness", null, null);
+        return (String) _ret;
+    }
+
+    public String updateCrsPtExport(Long crsId) {
+        Object _ret =
+            this.riInvokeExportedMethod(this, "updateCrsPtExport", new String[] { "java.lang.Long" },
+                                        new Object[] { crsId });
+        return (String) _ret;
+    }
+
     public String updateMedDRAFreezeFlag(String freezeFlag) {
         Object _ret =
             this.riInvokeExportedMethod(this, "updateMedDRAFreezeFlag", new String[] { "java.lang.String" },
@@ -243,13 +270,13 @@ public class ECRSAppModuleClient extends ApplicationModuleImpl implements ECRSAp
         return (String) _ret;
     }
 
-    public Boolean validateSafetyTopic(Long crsId, String safetyTopic, String rpList, Long crsRiskId,
-                                       Integer domainId) {
+    public Boolean validateSafetyTopic(Long crsId, String safetyTopic, String rpList, Long crsRiskId, Integer domainId,
+                                       String socTerm) {
         Object _ret =
             this.riInvokeExportedMethod(this, "validateSafetyTopic",
                                         new String[] { "java.lang.Long", "java.lang.String", "java.lang.String",
-                                                       "java.lang.Long", "java.lang.Integer" },
-                                        new Object[] { crsId, safetyTopic, rpList, crsRiskId, domainId });
+                                                       "java.lang.Long", "java.lang.Integer", "java.lang.String" },
+                                        new Object[] { crsId, safetyTopic, rpList, crsRiskId, domainId, socTerm });
         return (Boolean) _ret;
     }
 }

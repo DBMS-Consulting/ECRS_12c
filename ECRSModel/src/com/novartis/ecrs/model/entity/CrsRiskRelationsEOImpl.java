@@ -1,5 +1,7 @@
 package com.novartis.ecrs.model.entity;
 
+import java.math.BigDecimal;
+
 import oracle.jbo.Key;
 import oracle.jbo.domain.Timestamp;
 import oracle.jbo.server.AttributeDefImpl;
@@ -19,341 +21,368 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
      */
     public enum AttributesEnum {
         CrsRiskId {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getCrsRiskId();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setCrsRiskId((Long) value);
             }
         }
         ,
         SafetyTopicOfInterest {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getSafetyTopicOfInterest();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setSafetyTopicOfInterest((String) value);
             }
         }
         ,
         RiskPurposeSpFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeSpFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeSpFlag((String) value);
             }
         }
         ,
         RiskPurposeDsFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeDsFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeDsFlag((String) value);
             }
         }
         ,
         RiskPurposeRmFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeRmFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeRmFlag((String) value);
             }
         }
         ,
         RiskPurposePsFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposePsFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposePsFlag((String) value);
             }
         }
         ,
         RiskPurposeCdFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeCdFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeCdFlag((String) value);
             }
         }
         ,
         RiskPurposeIbFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeIbFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeIbFlag((String) value);
             }
         }
         ,
         RiskPurposeOsFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeOsFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeOsFlag((String) value);
             }
         }
         ,
         RiskPurposeMiFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeMiFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeMiFlag((String) value);
             }
         }
         ,
         RiskPurposeErFlag {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeErFlag();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeErFlag((String) value);
             }
         }
         ,
         CrsId {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getCrsId();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setCrsId((Long) value);
             }
         }
         ,
         DatabaseId {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getDatabaseId();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setDatabaseId((Integer) value);
             }
         }
         ,
         DataDomain {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getDataDomain();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setDataDomain((String) value);
             }
         }
         ,
         NonMeddraComponentComment {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getNonMeddraComponentComment();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setNonMeddraComponentComment((String) value);
             }
         }
         ,
         MqmComment {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getMqmComment();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setMqmComment((String) value);
             }
         }
         ,
         SocTerm {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getSocTerm();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setSocTerm((String) value);
             }
         }
         ,
         SocDictContentId {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getSocDictContentId();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setSocDictContentId((Long) value);
             }
         }
         ,
         SocDictContentEntryTs {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getSocDictContentEntryTs();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setSocDictContentEntryTs((Timestamp) value);
             }
         }
         ,
         RiskPurposeList {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getRiskPurposeList();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setRiskPurposeList((String) value);
             }
         }
         ,
         DatabaseList {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getDatabaseList();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setDatabaseList((String) value);
             }
         }
         ,
         UiVersionNumber {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getUiVersionNumber();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         CrsEffectiveDt {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getCrsEffectiveDt();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         DomainId {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getDomainId();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setDomainId((Integer) value);
             }
         }
         ,
         CreatedBy {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getCreatedBy();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         CreationTs {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getCreationTs();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         ModifiedBy {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getModifiedBy();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         ModificationTs {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getModificationTs();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         SearchCriteriaDetails {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getSearchCriteriaDetails();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setSearchCriteriaDetails((String) value);
             }
         }
         ,
         SearchAppliedTo {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getSearchAppliedTo();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setSearchAppliedTo((String) value);
             }
         }
         ,
         Adr {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getAdr();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setAdr((String) value);
             }
         }
         ,
+        GenderCode {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
+                return obj.getGenderCode();
+            }
+
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
+                obj.setGenderCode((String) value);
+            }
+        }
+        ,
+        CrsAgeGrpId {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
+                return obj.getCrsAgeGrpId();
+            }
+
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
+                obj.setCrsAgeGrpId((BigDecimal) value);
+            }
+        }
+        ,
+        CrsAgeSubGrpId {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
+                return obj.getCrsAgeSubGrpId();
+            }
+
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
+                obj.setCrsAgeSubGrpId((String) value);
+            }
+        }
+        ,
         CrsContentEO {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getCrsContentEO();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
                 obj.setCrsContentEO((CrsContentEOImpl) value);
             }
         }
         ,
         CrsDomainsEO {
-            public Object get(CrsRiskRelationsEOImpl obj) {
+            protected Object get(CrsRiskRelationsEOImpl obj) {
                 return obj.getCrsDomainsEO();
             }
 
-            public void put(CrsRiskRelationsEOImpl obj, Object value) {
-                obj.setCrsDomainsEO((EntityImpl)value);
+            protected void put(CrsRiskRelationsEOImpl obj, Object value) {
+                obj.setCrsDomainsEO((CrsDomainsEOImpl) value);
             }
         }
         ;
         private static AttributesEnum[] vals = null;
         private static int firstIndex = 0;
 
-        public abstract Object get(CrsRiskRelationsEOImpl object);
-
-        public abstract void put(CrsRiskRelationsEOImpl object, Object value);
 
         public int index() {
             return AttributesEnum.firstIndex() + ordinal();
@@ -373,6 +402,11 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
             }
             return vals;
         }
+
+
+        protected abstract Object get(CrsRiskRelationsEOImpl object);
+
+        protected abstract void put(CrsRiskRelationsEOImpl object, Object value);
     }
 
 
@@ -407,6 +441,9 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
     public static final int SEARCHCRITERIADETAILS = AttributesEnum.SearchCriteriaDetails.index();
     public static final int SEARCHAPPLIEDTO = AttributesEnum.SearchAppliedTo.index();
     public static final int ADR = AttributesEnum.Adr.index();
+    public static final int GENDERCODE = AttributesEnum.GenderCode.index();
+    public static final int CRSAGEGRPID = AttributesEnum.CrsAgeGrpId.index();
+    public static final int CRSAGESUBGRPID = AttributesEnum.CrsAgeSubGrpId.index();
     public static final int CRSCONTENTEO = AttributesEnum.CrsContentEO.index();
     public static final int CRSDOMAINSEO = AttributesEnum.CrsDomainsEO.index();
 
@@ -416,13 +453,13 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
     public CrsRiskRelationsEOImpl() {
     }
 
-
     /**
      * @return the definition object for this instance class.
      */
     public static synchronized EntityDefImpl getDefinitionObject() {
         return EntityDefImpl.findDefObject("com.novartis.ecrs.model.entity.CrsRiskRelationsEO");
     }
+
 
     /**
      * Gets the attribute value for CrsRiskId, using the alias name CrsRiskId.
@@ -879,6 +916,54 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
     }
 
     /**
+     * Gets the attribute value for GenderCode, using the alias name GenderCode.
+     * @return the value of GenderCode
+     */
+    public String getGenderCode() {
+        return (String) getAttributeInternal(GENDERCODE);
+    }
+
+    /**
+     * Sets <code>value</code> as the attribute value for GenderCode.
+     * @param value value to set the GenderCode
+     */
+    public void setGenderCode(String value) {
+        setAttributeInternal(GENDERCODE, value);
+    }
+
+    /**
+     * Gets the attribute value for CrsAgeGrpId, using the alias name CrsAgeGrpId.
+     * @return the value of CrsAgeGrpId
+     */
+    public BigDecimal getCrsAgeGrpId() {
+        return (BigDecimal) getAttributeInternal(CRSAGEGRPID);
+    }
+
+    /**
+     * Sets <code>value</code> as the attribute value for CrsAgeGrpId.
+     * @param value value to set the CrsAgeGrpId
+     */
+    public void setCrsAgeGrpId(BigDecimal value) {
+        setAttributeInternal(CRSAGEGRPID, value);
+    }
+
+    /**
+     * Gets the attribute value for CrsAgeSubGrpId, using the alias name CrsAgeSubGrpId.
+     * @return the value of CrsAgeSubGrpId
+     */
+    public String getCrsAgeSubGrpId() {
+        return (String) getAttributeInternal(CRSAGESUBGRPID);
+    }
+
+    /**
+     * Sets <code>value</code> as the attribute value for CrsAgeSubGrpId.
+     * @param value value to set the CrsAgeSubGrpId
+     */
+    public void setCrsAgeSubGrpId(String value) {
+        setAttributeInternal(CRSAGESUBGRPID, value);
+    }
+
+    /**
      * getAttrInvokeAccessor: generated method. Do not modify.
      * @param index the index identifying the attribute
      * @param attrDef the attribute
@@ -926,14 +1011,14 @@ public class CrsRiskRelationsEOImpl extends EntityImpl {
     /**
      * @return the associated entity oracle.jbo.server.EntityImpl.
      */
-    public EntityImpl getCrsDomainsEO() {
-        return (EntityImpl)getAttributeInternal(CRSDOMAINSEO);
+    public CrsDomainsEOImpl getCrsDomainsEO() {
+        return (CrsDomainsEOImpl) getAttributeInternal(CRSDOMAINSEO);
     }
 
     /**
      * Sets <code>value</code> as the associated entity oracle.jbo.server.EntityImpl.
      */
-    public void setCrsDomainsEO(EntityImpl value) {
+    public void setCrsDomainsEO(CrsDomainsEOImpl value) {
         setAttributeInternal(CRSDOMAINSEO, value);
     }
 

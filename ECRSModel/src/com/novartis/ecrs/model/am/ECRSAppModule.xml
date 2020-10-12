@@ -4,7 +4,7 @@
 <AppModule
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="ECRSAppModule"
-  Version="12.2.1.12.24"
+  Version="12.2.1.22.48"
   ClearCacheOnRollback="true"
   ComponentClass="com.novartis.ecrs.model.am.ECRSAppModuleImpl"
   ComponentInterface="com.novartis.ecrs.model.am.common.ECRSAppModule"
@@ -229,6 +229,32 @@
   <ViewUsage
     Name="RelationCountVO"
     ViewObjectName="com.novartis.ecrs.model.view.RelationCountVO"/>
+  <ViewUsage
+    Name="AutolistednessVO"
+    ViewObjectName="com.novartis.ecrs.model.view.AutolistednessVO"/>
+  <ViewUsage
+    Name="DictionaryVVO"
+    ViewObjectName="com.novartis.ecrs.model.lov.DictionaryVVO"/>
+  <ViewUsage
+    Name="ExportPTRVO"
+    ViewObjectName="com.novartis.ecrs.model.view.ExportPTRVO"/>
+  <ViewUsage
+    Name="CrsExportPTCurrentExport"
+    ViewObjectName="com.novartis.ecrs.model.view.CrsExportPTCurrentVO">
+    <ViewCriteriaUsage
+      Name="QueryByCrsId"
+      FullName="com.novartis.ecrs.model.view.CrsExportPTCurrentVO.QueryByCrsId"/>
+  </ViewUsage>
+  <ViewUsage
+    Name="AgeSubGroupVO"
+    ViewObjectName="com.novartis.ecrs.model.lov.AgeSubGroupVVO"/>
+  <ViewUsage
+    Name="ValidateRiskRelationDef"
+    ViewObjectName="com.novartis.ecrs.model.view.ValidateRiskRelationDefVO">
+    <ViewCriteriaUsage
+      Name="ValidateRiskRelationDefVOCriteria"
+      FullName="com.novartis.ecrs.model.view.ValidateRiskRelationDefVO.ValidateRiskRelationDefVOCriteria"/>
+  </ViewUsage>
   <ViewLinkUsage
     Name="CrsRiskRelationToRiskDefintionLink1"
     ViewLinkObjectName="com.novartis.ecrs.model.view.link.CrsRiskRelationToRiskDefintionLink"
@@ -451,28 +477,6 @@
         Type="java.lang.String"/>
     </Method>
     <Method
-      Name="validateSafetyTopic"
-      MethodName="validateSafetyTopic">
-      <Return
-        Type="java.lang.Boolean"
-        Name="_return_type_"/>
-      <Parameter
-        Name="crsId"
-        Type="java.lang.Long"/>
-      <Parameter
-        Name="safetyTopic"
-        Type="java.lang.String"/>
-      <Parameter
-        Name="rpList"
-        Type="java.lang.String"/>
-      <Parameter
-        Name="crsRiskId"
-        Type="java.lang.Long"/>
-      <Parameter
-        Name="domainId"
-        Type="java.lang.Integer"/>
-    </Method>
-    <Method
       Name="isCRSVersionInitial"
       MethodName="isCRSVersionInitial">
       <Return
@@ -657,6 +661,81 @@
       <Parameter
         Name="safetyTopicOfInterest"
         Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="updateAutolistedness"
+      MethodName="updateAutolistedness">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="executeCrsExportPTCurrentByCrsId"
+      MethodName="executeCrsExportPTCurrentByCrsId">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="crsId"
+        Type="java.lang.Long"/>
+    </Method>
+    <Method
+      Name="updateCrsPtExport"
+      MethodName="updateCrsPtExport">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="crsId"
+        Type="java.lang.Long"/>
+    </Method>
+    <Method
+      Name="validateSafetyTopic"
+      MethodName="validateSafetyTopic">
+      <Return
+        Name="_return_type_"
+        Type="java.lang.Boolean"/>
+      <Parameter
+        Name="crsId"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="safetyTopic"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="rpList"
+        Type="java.lang.String"/>
+      <Parameter
+        Name="crsRiskId"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="domainId"
+        Type="java.lang.Integer"/>
+      <Parameter
+        Name="socTerm"
+        Type="java.lang.String"/>
+    </Method>
+    <Method
+      Name="deleteSafetyTopicOfInterest1"
+      MethodName="deleteSafetyTopicOfInterest">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="crsRiskId"
+        Type="java.lang.Long"/>
+    </Method>
+    <Method
+      Name="deleteSafetyTopicOfInterest"
+      MethodName="deleteSafetyTopicOfInterest">
+      <Return
+        Name="_return_type_"
+        Type="void"/>
+      <Parameter
+        Name="crsId"
+        Type="java.lang.Long"/>
+      <Parameter
+        Name="crsRiskId"
+        Type="java.lang.Long"/>
     </Method>
   </ClientInterface>
 </AppModule>

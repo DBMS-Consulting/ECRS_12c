@@ -4,13 +4,14 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsExportPTPending"
-  Version="12.2.1.12.24"
+  Version="12.2.1.22.48"
   InheritPersonalization="merge"
   BindingStyle="OracleName"
   CustomQuery="true"
   RowClass="com.novartis.ecrs.model.view.CrsExportPTPendingRowImpl"
   ComponentClass="com.novartis.ecrs.model.view.CrsExportPTPendingImpl"
-  PageIterMode="Full">
+  PageIterMode="Full"
+  AccessMode="DEFAULT">
   <DesignTime>
     <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
     <Attr Name="_isExpertMode" Value="true"/>
@@ -34,18 +35,20 @@
     Name="bindDomainName"
     Kind="viewcriteria"
     Type="java.lang.String"/>
-  <SQLQuery><![CDATA[SELECT   
-  crs_id,   
-  crs_name,   
-  safety_topic_of_interest,   
- risk_purpose_list,   
-  meddra_term,   
-  pt_name,   
-  pt_code,
-  DOMAIN_NAME
-FROM CRS_MEDDRA_PT_PEND    
---where DOMAIN_NAME = 'MEDDRA'  
-where meddra_term is not null
+  <SQLQuery><![CDATA[SELECT     
+  crs_id,     
+  crs_name,     
+  safety_topic_of_interest,     
+ risk_purpose_list,     
+  meddra_term,     
+  pt_name,     
+  pt_code,  
+  DOMAIN_NAME,  
+  RKSEX Gender,  
+  RKAGEC Age 
+FROM CRS_MEDDRA_PT_PEND      
+--where DOMAIN_NAME = 'MEDDRA'    
+where meddra_term is not null  
 order by safety_topic_of_interest, meddra_term, pt_name]]></SQLQuery>
   <ViewAttribute
     Name="CrsId"
@@ -160,6 +163,36 @@ order by safety_topic_of_interest, meddra_term, pt_name]]></SQLQuery>
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Gender"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="GENDER"
+    Expression="GENDER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Age"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="AGE"
+    Expression="AGE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute

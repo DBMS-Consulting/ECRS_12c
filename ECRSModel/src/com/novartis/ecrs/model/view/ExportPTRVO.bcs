@@ -1,0 +1,12 @@
+//Groovy Scripts for com.novartis.ecrs.model.view.ExportPTRVO
+
+package com.novartis.ecrs.model.view
+
+import oracle.jbo.script.annotation.AccessorParameterExpression;
+
+@AccessorParameterExpression(accessorName="CrsCompoundVA", name="bindCompoundType")
+def bindCompoundType_CrsCompoundVA_BindVariable_BoundParameter()
+{
+CompoundType
+}
+

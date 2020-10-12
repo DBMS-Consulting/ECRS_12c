@@ -260,6 +260,39 @@ public class ExcelExportUtils {
                 
            }       
        }
+    
+    public void writeData1(Sheet sheet,
+                                  org.apache.poi.ss.usermodel.Row row,
+                                  int rowIndex, int cellStartIndex, CellStyle cellStyle,
+                                  LinkedHashMap columnMap,
+                                  List rowSet, int rowCounter,
+                                  String tableHeader, String dateFormat,
+                                  String emptyValReplace) {
+        int cellIndex=cellStartIndex;           
+           Iterator entries = columnMap.entrySet().iterator();
+          // CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+           while (entries.hasNext()) {
+               Map.Entry entry = (Map.Entry) entries.next();
+               Map<String,String> dataMap = (Map<String,String>)rowSet.get(rowCounter);  
+               org.apache.poi.ss.usermodel.Cell cell = null;
+               cell = row.getCell(cellIndex) != null ? row.getCell(cellIndex) : row.createCell(cellIndex) ; 
+               String attribute = (String)entry.getKey();
+               if (dataMap.get(attribute) == null){
+                   if(emptyValReplace!=null)
+                        cell.setCellValue(emptyValReplace);
+                   else
+                    cell.setCellValue("");
+               }
+               else {                                        
+                         cell.setCellValue(dataMap.get(attribute).toString());     
+               }
+                sheet.setColumnWidth(cellIndex, 6000);
+               
+               setDataCellStyle(sheet, rowIndex, cellIndex,cellStyle);
+               cellIndex++; 
+                
+           }       
+       }
        
        private static void setTableHeaderCellStyle(Sheet sheet, int rowIndex, int cellIndex) {
            org.apache.poi.ss.usermodel.Row row = sheet.getRow((short)rowIndex);
@@ -357,8 +390,8 @@ public class ExcelExportUtils {
      * @return InputStream
      */
     public InputStream getExcelInpStream() {
-        InputStream inputStreamOfExcel = this.getClass().getClassLoader().getResourceAsStream("EcrsReports.xls");
-         //   ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\exceltemplate\\EcrsReports.xls");
+        InputStream inputStreamOfExcel =  this.getClass().getClassLoader().getResourceAsStream("EcrsReports.xls");
+            //ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\exceltemplate\\EcrsReports.xls");
         return inputStreamOfExcel;
     }
     
@@ -366,8 +399,9 @@ public class ExcelExportUtils {
      * @return InputStream
      */
     public InputStream getImageInpStream() {
+        System.out.println("---Image from Resource Steam------");
         InputStream inputStreamOfExcel = this.getClass().getClassLoader().getResourceAsStream("crs.png");
-   //         ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\images\\crs.png");
+            //ExcelExportUtils.loadResourceAsStream("C:\\Users\\DileepKumar\\Desktop\\Donna\\ECRS\\trunk\\ECRSViewController\\public_html\\images\\crs.png");
         return inputStreamOfExcel;
     }
 }

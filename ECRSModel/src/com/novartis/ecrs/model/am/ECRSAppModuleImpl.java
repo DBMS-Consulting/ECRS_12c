@@ -3,8 +3,12 @@ package com.novartis.ecrs.model.am;
 
 import com.novartis.ecrs.model.am.common.ECRSAppModule;
 import com.novartis.ecrs.model.constants.ModelConstants;
+import com.novartis.ecrs.model.lov.AgeSubGroupVVOImpl;
+import com.novartis.ecrs.model.lov.DictionaryVVOImpl;
 import com.novartis.ecrs.model.lov.UserRoleVOImpl;
 import com.novartis.ecrs.model.lov.UserRoleVORowImpl;
+import com.novartis.ecrs.model.view.AutolistednessVOImpl;
+import com.novartis.ecrs.model.view.AutolistednessVORowImpl;
 import com.novartis.ecrs.model.view.CRSVersionComparePendingViewImpl;
 import com.novartis.ecrs.model.view.CRSVersionComparePendingViewRowImpl;
 import com.novartis.ecrs.model.view.CRSVersionCompareVOImpl;
@@ -17,15 +21,18 @@ import com.novartis.ecrs.model.view.CrsContentVORowImpl;
 import com.novartis.ecrs.model.view.CrsExportPTCurrentVOImpl;
 import com.novartis.ecrs.model.view.CrsExportPTPendingImpl;
 import com.novartis.ecrs.model.view.CrsRiskDefinitionsVOImpl;
+import com.novartis.ecrs.model.view.CrsRiskDefinitionsVORowImpl;
 import com.novartis.ecrs.model.view.CrsRiskRelationVOImpl;
 import com.novartis.ecrs.model.view.CrsRiskRelationVORowImpl;
 import com.novartis.ecrs.model.view.CrsRiskVORowImpl;
 import com.novartis.ecrs.model.view.CrsStateVOImpl;
 import com.novartis.ecrs.model.view.CrsStateVORowImpl;
 import com.novartis.ecrs.model.view.ECrsSearchVORowImpl;
+import com.novartis.ecrs.model.view.ExportPTRVOImpl;
 import com.novartis.ecrs.model.view.HierarchyChildDetailVOImpl;
 import com.novartis.ecrs.model.view.RelationCountVOImpl;
 import com.novartis.ecrs.model.view.RelationCountVORowImpl;
+import com.novartis.ecrs.model.view.ValidateRiskRelationDefVOImpl;
 import com.novartis.ecrs.model.view.VersionsVOImpl;
 import com.novartis.ecrs.model.view.VersionsVORowImpl;
 import com.novartis.ecrs.model.view.base.CrsContentBaseVOImpl;
@@ -53,7 +60,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+
+import java.util.Set;
 
 import oracle.adf.share.ADFContext;
 
@@ -65,6 +76,7 @@ import oracle.jbo.Row;
 import oracle.jbo.RowSetIterator;
 import oracle.jbo.ViewCriteria;
 import oracle.jbo.ViewObject;
+import oracle.jbo.domain.Date;
 import oracle.jbo.server.ApplicationModuleImpl;
 import oracle.jbo.server.DBTransaction;
 import oracle.jbo.server.DBTransactionImpl;
@@ -368,8 +380,8 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
      * Container's getter for CrsRiskDefinitionsVO.
      * @return CrsRiskDefinitionsVO
      */
-    public ViewObjectImpl getCrsRiskDefinitionsVO() {
-        return (ViewObjectImpl)findViewObject("CrsRiskDefinitionsVO");
+    public CrsRiskDefinitionsVOImpl getCrsRiskDefinitionsVO() {
+        return (CrsRiskDefinitionsVOImpl) findViewObject("CrsRiskDefinitionsVO");
     }
 
     /**
@@ -923,13 +935,16 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
         String cs = null;
         String returnCode = null;
         String returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
+        ADFContext adfCtx = ADFContext.getCurrent(); 
+        SecurityContext secCntx = adfCtx.getSecurityContext(); 
         if (pCRSId != null) {
-            cs = "{?=call CRS_UI_TMS_UTILS.retire_crs (?,?)}";
+            cs = "{?=call CRS_UI_TMS_UTILS.retire_crs (?,?,?)}";
             cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
             try {
                 cstmt.registerOutParameter(1, Types.VARCHAR);
                 cstmt.setNUMBER(2, new oracle.jbo.domain.Number(pCRSId));
                 cstmt.setString(3, pReasonForChange);
+                cstmt.setString(4, secCntx.getUserName().toUpperCase());
                 cstmt.execute();
                 returnMessage = cstmt.getString(1);
                 baseVO.executeQuery();
@@ -960,13 +975,16 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
         String cs = null;
         String returnCode = null;
         String returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
+        ADFContext adfCtx = ADFContext.getCurrent(); 
+        SecurityContext secCntx = adfCtx.getSecurityContext();
         if (pCRSId != null) {
-            cs = "{?=call CRS_UI_TMS_UTILS.reactivate_crs (?,?)}";
+            cs = "{?=call CRS_UI_TMS_UTILS.reactivate_crs (?,?,?)}";
             cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
             try {
                 cstmt.registerOutParameter(1, Types.VARCHAR);
                 cstmt.setNUMBER(2, new oracle.jbo.domain.Number(pCRSId));
                 cstmt.setString(3, pReasonForChange);
+                cstmt.setString(4, secCntx.getUserName().toUpperCase());
                 cstmt.execute();
                 returnMessage = cstmt.getString(1);
                 baseVO.executeQuery();
@@ -1111,17 +1129,55 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
         return (ViewObjectImpl)findViewObject("UserFullNameVO");
     }
     
-    public Boolean validateSafetyTopic(Long crsId, String safetyTopic, String rpList, Long crsRiskId, Integer domainId){
-        ViewObject relationVO = this.getFetchCrsRiskRelationVO();
-       // relationVO.setWhereClause("CRS_ID = "+crsId+" and SAFETY_TOPIC_OF_INTEREST = '"+safetyTopic+"' and RISK_PURPOSE_LIST = '"+rpList+"' and DOMAIN_ID = "+domainId+" and CRS_RISK_ID <> "+crsRiskId);
-       relationVO.setWhereClause(
-                    "CRS_ID = " + crsId + " and SAFETY_TOPIC_OF_INTEREST = '" + safetyTopic + "' and RISK_PURPOSE_LIST = '" + rpList + "' and DOMAIN_ID = " + domainId + " and CRS_RISK_ID <> " + crsRiskId);
-        relationVO.executeQuery();
-        logger.info("validateSafetyTopic Qry...." + relationVO.getQuery());
-        if(relationVO.getEstimatedRowCount() > 0)
-            return Boolean.TRUE;
-        else
-            return Boolean.FALSE;
+    public Boolean validateSafetyTopic(Long crsId, String safetyTopic, String rpList, Long crsRiskId, Integer domainId, String socTerm){
+        
+        CrsRiskDefinitionsVOImpl crsRiskDefinitionsVOImpl = (CrsRiskDefinitionsVOImpl)this.getCrsRiskDefinitionsVO();
+        Row[] rows = crsRiskDefinitionsVOImpl.getAllRowsInRange();
+        if(rows.length > 0){
+            Set<String> medraTerms = new HashSet<String>();
+            List<String> defIdList = new ArrayList<String>();
+            for(Row row : rows){
+                CrsRiskDefinitionsVORowImpl crsRiskDefinitionsVORowImpl = (CrsRiskDefinitionsVORowImpl)row;
+                boolean added = medraTerms.add(crsRiskDefinitionsVORowImpl.getMeddraTerm());
+                if(!added){
+                    return Boolean.TRUE;
+                } 
+                defIdList.add(crsRiskDefinitionsVORowImpl.getCrsRiskDefnId().toString());
+            }
+            String defIdsCommaSeparated = String.join(",", defIdList);
+            Iterator<String> it = medraTerms.iterator();
+                 while(it.hasNext()){
+                    //System.out.println(it.next());
+                     String term = (String)it.next();
+                     ViewObject vo = this.getValidateRiskRelationDef();
+                     vo.setNamedWhereClauseParam("bindCrsId", crsId);
+                     vo.setNamedWhereClauseParam("bindDomain", domainId);
+                     vo.setNamedWhereClauseParam("bindRiskPurpose", rpList);
+                     vo.setNamedWhereClauseParam("bindSafetyTopic", safetyTopic);
+                     vo.setNamedWhereClauseParam("bindSearchAppliedTo", socTerm);
+                     vo.setNamedWhereClauseParam("bindTerm", term);
+                     vo.setWhereClause("CRS_RISK_DEFN_ID NOT IN ("+defIdsCommaSeparated+")");
+                     vo.executeQuery();
+                     logger.info("validateSafetyTopic Qry...." + vo.getQuery());
+                     if(vo.getEstimatedRowCount() > 0){
+                         return Boolean.TRUE;
+                     }
+                 }
+        }else{
+            ViewObject relationVO = this.getFetchCrsRiskRelationVO();
+            // relationVO.setWhereClause("CRS_ID = "+crsId+" and SAFETY_TOPIC_OF_INTEREST = '"+safetyTopic+"' and RISK_PURPOSE_LIST = '"+rpList+"' and DOMAIN_ID = "+domainId+" and CRS_RISK_ID <> "+crsRiskId);
+            relationVO.setWhereClause(
+                        "CRS_ID = " + crsId + " and UPPER(SAFETY_TOPIC_OF_INTEREST) = '" + safetyTopic.toUpperCase() + "' and RISK_PURPOSE_LIST = '" + rpList + "' and DOMAIN_ID = " + domainId + " and SEARCH_APPLIED_TO = '"+socTerm.toUpperCase() +"' and CRS_RISK_ID <> " + crsRiskId);
+            System.out.println(relationVO.getQuery());
+            relationVO.executeQuery();
+            logger.info("validateSafetyTopic Qry...." + relationVO.getQuery());
+            if(relationVO.getEstimatedRowCount() > 0)
+                return Boolean.TRUE;
+            else
+                return Boolean.FALSE;
+        }
+        
+        return Boolean.FALSE;
     }
 
     /**
@@ -1902,5 +1958,154 @@ public class ECRSAppModuleImpl extends ApplicationModuleImpl implements ECRSAppM
 //            return "NO";
 //        }
         
+    }
+
+    /**
+     * Container's getter for AutolistednessVO1.
+     * @return AutolistednessVO1
+     */
+    public AutolistednessVOImpl getAutolistednessVO() {
+        return (AutolistednessVOImpl) findViewObject("AutolistednessVO");
+    }
+    
+    public String updateAutolistedness(){
+       AutolistednessVORowImpl row = (AutolistednessVORowImpl)this.getAutolistednessVO().getCurrentRow();
+       String autolistedness = row.getUpdatableListedness();
+       Long crsId = row.getCrsId();
+        OracleCallableStatement cstmt = null;
+        String cs = null;
+        DBTransaction txn = getDBTransaction();
+        ADFContext adfCtx = ADFContext.getCurrent(); 
+        SecurityContext secCntx = adfCtx.getSecurityContext();
+        cs = "{call crs_ui_tms_utils.update_crs_listedness(?,?,?)}";
+        cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
+        try {
+            cstmt.setNUMBER(1, new oracle.jbo.domain.Number(crsId));
+            cstmt.setString(2, autolistedness);
+            cstmt.setString(3, secCntx.getUserName().toUpperCase());
+            cstmt.execute();
+            txn.commit();
+            return "Y";
+        } catch (Exception e) {
+           //e.printStackTrace();
+           txn.rollback();
+        } finally {
+            try {
+                if (cstmt != null && !cstmt.isClosed())
+                    cstmt.close();
+            } catch (Exception e) {
+                throw new JboException(e);
+            }
+        }
+        return "N";
+    }
+
+    /**
+     * Container's getter for DictionaryVVO1.
+     * @return DictionaryVVO1
+     */
+    public DictionaryVVOImpl getDictionaryVVO() {
+        return (DictionaryVVOImpl) findViewObject("DictionaryVVO");
+    }
+
+    /**
+     * Container's getter for ExportPTRVO1.
+     * @return ExportPTRVO1
+     */
+    public ExportPTRVOImpl getExportPTRVO() {
+        return (ExportPTRVOImpl) findViewObject("ExportPTRVO");
+    }
+
+    /**
+     * Container's getter for CrsExportPTCurrentVO1.
+     * @return CrsExportPTCurrentVO1
+     */
+    public CrsExportPTCurrentVOImpl getCrsExportPTCurrentExport() {
+        return (CrsExportPTCurrentVOImpl) findViewObject("CrsExportPTCurrentExport");
+    }
+    
+    public void executeCrsExportPTCurrentByCrsId(Long crsId){
+        CrsExportPTCurrentVOImpl vo = this.getCrsExportPTCurrentExport();
+        vo.setbindCrsID(new BigDecimal(crsId));
+        vo.executeQuery();
+    }
+    
+    public String updateCrsPtExport(Long crsId){
+        
+        DBTransaction txn = getDBTransaction();
+        OracleCallableStatement cstmt = null;
+        String cs = null;
+        String returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
+        if (crsId != null) {
+            cs = "{call crs_ui_tms_utils.update_crs_pt_export(?,?)}";
+            cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
+            try {
+                cstmt.setNUMBER(1, new oracle.jbo.domain.Number(crsId));
+                cstmt.setDATE(2, new Date());
+                cstmt.execute();
+
+            } catch (Exception e) {
+                returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
+                logger.error("Error while deleting crs", e);
+            } finally {
+                try {
+                    if (cstmt != null && !cstmt.isClosed())
+                        cstmt.close();
+                } catch (Exception e) {
+                    throw new JboException(e);
+                }
+            }
+        } else {
+            returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
+        }
+        return returnMessage;
+    }
+
+    /**
+     * Container's getter for AgeSubGroupVVO1.
+     * @return AgeSubGroupVVO1
+     */
+    public AgeSubGroupVVOImpl getAgeSubGroupVO() {
+        return (AgeSubGroupVVOImpl) findViewObject("AgeSubGroupVO");
+    }
+
+    /**
+     * Container's getter for ValidateRiskRelationDefVO1.
+     * @return ValidateRiskRelationDefVO1
+     */
+    public ValidateRiskRelationDefVOImpl getValidateRiskRelationDef() {
+        return (ValidateRiskRelationDefVOImpl) findViewObject("ValidateRiskRelationDef");
+    }
+    
+    public void deleteSafetyTopicOfInterest(Long crsId, Long crsRiskId){
+        logger.info("Start updateMedDRAFreezeFlag");
+        OracleCallableStatement cstmt = null;
+        String cs = null;
+        String outMsg = null;
+        String returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
+        DBTransaction txn = getDBTransaction();
+            cs = "{?=call crs_ui_tms_utils.delete_safety_topic_interest(?,?)}";
+            cstmt = (OracleCallableStatement)txn.createCallableStatement(cs, DBTransaction.DEFAULT);
+            try {
+                cstmt.registerOutParameter(1, Types.VARCHAR);
+                cstmt.setNUMBER(2, new oracle.jbo.domain.Number(crsId));
+                cstmt.setNUMBER(3, new oracle.jbo.domain.Number(crsRiskId));
+                cstmt.execute();
+                returnMessage = cstmt.getString(1);
+                logger.info("returnMessage==" + returnMessage);
+                logger.info("outMsg==" + outMsg);
+            } catch (Exception e) {
+               //e.printStackTrace();
+               logger.error("Exception in deleteSafetyTopicOfInterest.." + e.getMessage(), e);
+               returnMessage = ModelConstants.PLSQL_CALL_FAILURE;
+            } finally {
+                try {
+                    if (cstmt != null && !cstmt.isClosed())
+                        cstmt.close();
+                } catch (Exception e) {
+                    throw new JboException(e);
+                }
+            }
+        logger.info("End deleteSafetyTopicOfInterest");
     }
 }

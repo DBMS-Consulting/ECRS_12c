@@ -96,6 +96,26 @@ public class CrsExportPTPendingRowImpl extends ViewRowImpl {
             }
         }
         ,
+        Gender {
+            protected Object get(CrsExportPTPendingRowImpl obj) {
+                return obj.getGender();
+            }
+
+            protected void put(CrsExportPTPendingRowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        Age {
+            protected Object get(CrsExportPTPendingRowImpl obj) {
+                return obj.getAge();
+            }
+
+            protected void put(CrsExportPTPendingRowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
         RowKey {
             protected Object get(CrsExportPTPendingRowImpl obj) {
                 return obj.getRowKey();
@@ -109,9 +129,6 @@ public class CrsExportPTPendingRowImpl extends ViewRowImpl {
         private static AttributesEnum[] vals = null;
         private static final int firstIndex = 0;
 
-        protected abstract Object get(CrsExportPTPendingRowImpl object);
-
-        protected abstract void put(CrsExportPTPendingRowImpl object, Object value);
 
         protected int index() {
             return AttributesEnum.firstIndex() + ordinal();
@@ -131,6 +148,10 @@ public class CrsExportPTPendingRowImpl extends ViewRowImpl {
             }
             return vals;
         }
+
+        protected abstract Object get(CrsExportPTPendingRowImpl object);
+
+        protected abstract void put(CrsExportPTPendingRowImpl object, Object value);
     }
 
 
@@ -142,6 +163,8 @@ public class CrsExportPTPendingRowImpl extends ViewRowImpl {
     public static final int PTNAME = AttributesEnum.PtName.index();
     public static final int PTCODE = AttributesEnum.PtCode.index();
     public static final int DOMAINNAME = AttributesEnum.DomainName.index();
+    public static final int GENDER = AttributesEnum.Gender.index();
+    public static final int AGE = AttributesEnum.Age.index();
     public static final int ROWKEY = AttributesEnum.RowKey.index();
 
     /**
@@ -212,6 +235,22 @@ public class CrsExportPTPendingRowImpl extends ViewRowImpl {
      */
     public String getDomainName() {
         return (String) getAttributeInternal(DOMAINNAME);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Gender.
+     * @return the Gender
+     */
+    public String getGender() {
+        return (String) getAttributeInternal(GENDER);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Age.
+     * @return the Age
+     */
+    public String getAge() {
+        return (String) getAttributeInternal(AGE);
     }
 
     /**

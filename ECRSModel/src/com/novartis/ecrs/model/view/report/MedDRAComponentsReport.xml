@@ -4,11 +4,10 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="MedDRAComponentsReport"
-  Version="11.1.2.64.36"
+  Version="12.2.1.22.48"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
-  UseGlueCode="false"
   FetchSize="20"
   FetchMode="FETCH_AS_NEEDED">
   <DesignTime>

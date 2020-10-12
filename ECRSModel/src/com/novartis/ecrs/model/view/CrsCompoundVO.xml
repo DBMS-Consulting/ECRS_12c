@@ -4,7 +4,7 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsCompoundVO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.22.48"
   SelectList="CrsCompoundEO.COMPOUND_ID, 
        CrsCompoundEO.COMPOUND_CODE, 
        CrsCompoundEO.COMPOUND_TYPE, 
@@ -14,7 +14,6 @@
   BindingStyle="OracleName"
   CustomQuery="false"
   PageIterMode="Full"
-  UseGlueCode="false"
   FetchSize="10"
   FetchMode="FETCH_AS_NEEDED"
   Where="CRSCOMPOUNDEO.COMPOUND_TYPE = DECODE(:bindUserRole,'CRS_BSL', DECODE(:bindFlowType,'S',CRSCOMPOUNDEO.COMPOUND_TYPE,'COMPOUND'),CRSCOMPOUNDEO.COMPOUND_TYPE)">
@@ -34,13 +33,15 @@
     Name="bindUserRole"
     Kind="where"
     Type="java.lang.String">
-    <TransientExpression><![CDATA[adf.context.current.sessionScope.get('sessionBean').userRole]]></TransientExpression>
+    <TransientExpression
+      Name="VariableScript"><![CDATA[adf.context.current.sessionScope.get('sessionBean').userRole]]></TransientExpression>
   </Variable>
   <Variable
     Name="bindFlowType"
     Kind="where"
     Type="java.lang.String">
-    <TransientExpression><![CDATA[adf.context.current.sessionScope.get('flowType')]]></TransientExpression>
+    <TransientExpression
+      Name="VariableScript"><![CDATA[adf.context.current.sessionScope.get('flowType')]]></TransientExpression>
   </Variable>
   <EntityUsage
     Name="CrsCompoundEO"
@@ -83,7 +84,7 @@
     Name="findByCompoundType"
     ViewObjectName="com.novartis.ecrs.model.view.CrsCompoundVO"
     Conjunction="AND">
-    <Properties>
+    <Properties Name="_Props">
       <CustomProperties>
         <Property
           Name="displayOperators"
@@ -112,7 +113,6 @@
         Conjunction="AND"
         Value=":bindCompoundType"
         UpperColumns="0"
-        GenerateIsNullClauseForBindVars="false"
         IsBindVarValue="true"
         Required="Optional"/>
     </ViewCriteriaRow>
@@ -121,7 +121,7 @@
     Name="searchCompounds"
     ViewObjectName="com.novartis.ecrs.model.view.CrsCompoundVO"
     Conjunction="AND">
-    <Properties>
+    <Properties Name="_Props">
       <CustomProperties>
         <Property
           Name="displayOperators"
@@ -174,4 +174,8 @@
     ViewLink="com.novartis.ecrs.model.view.link.CrsContentIdxCompoundFkLink"
     Type="oracle.jbo.RowIterator"
     IsUpdateable="false"/>
+  <SortCriteria>
+    <Sort
+      Attribute="CompoundCode"/>
+  </SortCriteria>
 </ViewObject>

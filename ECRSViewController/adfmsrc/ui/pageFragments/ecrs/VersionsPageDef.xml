@@ -157,6 +157,15 @@
           <Item Value="EarliestSearchAppliedToClr"/>
           <Item Value="LatestSearchAppliedTo"/>
           <Item Value="LatestSearchAppliedToColor"/>
+          <Item Value="EarliestCombAgeSubGrp"/>
+          <Item Value="EarliestCombAgeSubGrpClr"/>
+          <Item Value="EarliestGender"/>
+          <Item Value="EarliestGenderCodeColor"/>
+          <Item Value="LatestCombAgeSubGrp"/>
+          <Item Value="LatestCombAgeSubGrpClr"/>
+          <Item Value="LatestGender"/>
+          <Item Value="LatestGenderCodeColor"/>
+          <Item Value="UserId"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -274,6 +283,15 @@
           <Item Value="EarliestSearchAppliedToClr"/>
           <Item Value="LatestSearchAppliedTo"/>
           <Item Value="LatestSearchAppliedToColor"/>
+          <Item Value="EarliestCombAgeSubGrp"/>
+          <Item Value="EarliestCombAgeSubGrpClr"/>
+          <Item Value="EarliestGender"/>
+          <Item Value="EarliestGenderCodeColor"/>
+          <Item Value="LatestCombAgeSubGrp"/>
+          <Item Value="LatestCombAgeSubGrpClr"/>
+          <Item Value="LatestGender"/>
+          <Item Value="LatestGenderCodeColor"/>
+          <Item Value="UserId"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -490,6 +508,15 @@
           <Item Value="LatestSearchAppliedTo"/>
           <Item Value="EarliestSearchAppliedToClr"/>
           <Item Value="EarliestSearchAppliedTo"/>
+          <Item Value="EarliestCombAgeSubGrp"/>
+          <Item Value="EarliestCombAgeSubGrpClr"/>
+          <Item Value="EarliestGender"/>
+          <Item Value="EarliestGenderCodeColor"/>
+          <Item Value="LatestCombAgeSubGrp"/>
+          <Item Value="LatestCombAgeSubGrpClr"/>
+          <Item Value="LatestGender"/>
+          <Item Value="LatestGenderCodeColor"/>
+          <Item Value="UserId"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -608,6 +635,15 @@
           <Item Value="LatestSearchAppliedTo"/>
           <Item Value="EarliestSearchAppliedToClr"/>
           <Item Value="LatestSearchAppliedToColor"/>
+          <Item Value="EarliestCombAgeSubGrp"/>
+          <Item Value="EarliestCombAgeSubGrpClr"/>
+          <Item Value="EarliestGender"/>
+          <Item Value="EarliestGenderCodeColor"/>
+          <Item Value="LatestCombAgeSubGrp"/>
+          <Item Value="LatestCombAgeSubGrpClr"/>
+          <Item Value="LatestGender"/>
+          <Item Value="LatestGenderCodeColor"/>
+          <Item Value="UserId"/>
         </AttrNames>
       </nodeDefinition>
     </tree>

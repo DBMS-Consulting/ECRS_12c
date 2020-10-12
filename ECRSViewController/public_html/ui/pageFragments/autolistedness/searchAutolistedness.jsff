@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="ecrsviewcontrollerBundle" value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"/>
+     <af:panelHeader text="" id="ph1" size="1" inlineStyle="padding:5px;">
+      <f:facet name="context"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+   <af:panelGroupLayout layout="vertical" id="pgl3">
+     <af:query id="qryId1" headerText="#{ecrsviewcontrollerBundle.SEARCH_AUTOLSTNESS}" disclosed="true"
+               value="#{bindings.AutolistednessVOCriteriaQuery.queryDescriptor}"
+               model="#{bindings.AutolistednessVOCriteriaQuery.queryModel}"
+               queryListener="#{bindings.AutolistednessVOCriteriaQuery.processQuery}"
+               queryOperationListener="#{bindings.AutolistednessVOCriteriaQuery.processQueryOperation}"
+               resultComponentId="::resId1" saveQueryMode="hidden" modeChangeVisible="false"/>
+    <af:table value="#{bindings.AutolistednessVO.collectionModel}" var="row"
+              rows="#{bindings.AutolistednessVO.rangeSize}"
+              emptyText="#{bindings.AutolistednessVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+              rowBandingInterval="0" selectedRowKeys="#{bindings.AutolistednessVO.collectionModel.selectedRow}"
+              selectionListener="#{bindings.AutolistednessVO.collectionModel.makeCurrent}" rowSelection="single"
+              fetchSize="#{bindings.AutolistednessVO.rangeSize}" id="resId1">
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.CrsId.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.CrsId.label}" id="resId1c1">
+      <af:outputText value="#{row.CrsId}" shortDesc="#{bindings.AutolistednessVO.hints.CrsId.tooltip}" id="ot1">
+       <af:convertNumber groupingUsed="false" pattern="#{bindings.AutolistednessVO.hints.CrsId.format}"/>
+      </af:outputText>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.CrsName.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.CrsName.label}" id="resId1c2">
+      <af:outputText value="#{row.CrsName}" shortDesc="#{bindings.AutolistednessVO.hints.CrsName.tooltip}" id="ot2"/>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.CompoundId.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.CompoundId.label}" id="resId1c3" rendered="false">
+      <af:outputText value="#{row.CompoundId}" shortDesc="#{bindings.AutolistednessVO.hints.CompoundId.tooltip}"
+                     id="ot3">
+       <af:convertNumber groupingUsed="false" pattern="#{bindings.AutolistednessVO.hints.CompoundId.format}"/>
+      </af:outputText>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.CompoundCode.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.CompoundCode.label}" id="resId1c4">
+      <af:outputText value="#{row.CompoundCode}" shortDesc="#{bindings.AutolistednessVO.hints.CompoundCode.tooltip}"
+                     id="ot4"/>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.CompoundType.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.CompoundType.label}" id="resId1c5">
+      <af:outputText value="#{row.CompoundType}" shortDesc="#{bindings.AutolistednessVO.hints.CompoundType.tooltip}"
+                     id="ot5"/>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.CompoundDesc.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.CompoundDesc.label}" id="resId1c6">
+      <af:outputText value="#{row.CompoundDesc}" shortDesc="#{bindings.AutolistednessVO.hints.CompoundDesc.tooltip}"
+                     id="ot6"/>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.ActiveFlag.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.ActiveFlag.label}" id="resId1c7">
+      <af:outputText value="#{row.ActiveFlag}" shortDesc="#{bindings.AutolistednessVO.hints.ActiveFlag.tooltip}"
+                     id="ot7"/>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.GenericName.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.GenericName.label}" id="resId1c8">
+      <af:outputText value="#{row.GenericName}" shortDesc="#{bindings.AutolistednessVO.hints.GenericName.tooltip}"
+                     id="ot8"/>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.TradeName.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.TradeName.label}" id="resId1c9">
+      <af:outputText value="#{row.TradeName}" shortDesc="#{bindings.AutolistednessVO.hints.TradeName.tooltip}"
+                     id="ot9"/>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.Indication.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.Indication.label}" id="resId1c10">
+      <af:outputText value="#{row.Indication}" shortDesc="#{bindings.AutolistednessVO.hints.Indication.tooltip}"
+                     id="ot10"/>
+     </af:column>
+     <af:column sortProperty="#{bindings.AutolistednessVO.hints.Listedness.name}" sortable="true"
+                headerText="#{bindings.AutolistednessVO.hints.Listedness.label}" id="resId1c11">
+      <af:outputText value="#{row.Listedness}" shortDesc="#{bindings.AutolistednessVO.hints.Listedness.tooltip}"
+                     id="ot11"/>
+     </af:column>
+    </af:table>
+   </af:panelGroupLayout>
+   <af:panelGroupLayout id="pgl2" layout="vertical">
+        <af:spacer width="10" height="10" id="s2"/>
+        <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb2" action="home" immediate="true"
+                          actionListener="#{bindings.Rollback.execute}"/>
+      </af:panelGroupLayout>
+    </af:panelHeader>
+      </af:panelGroupLayout>
+</jsp:root>

@@ -63,6 +63,15 @@
   <view id="MedDRAComponentsReportSheduled">
     <page>/pages/reports/MedDRAComponentsReportSheduled.jspx</page>
   </view>
+  <view id="Autolistedness">
+    <page>/pages/Autolistedness.jspx</page>
+  </view>
+  <view id="GeneratePtExportByCrs">
+    <page>/pages/GeneratePtExportByCrs.jspx</page>
+  </view>
+  <view id="PtExportByCrs">
+    <page>/pages/PtExportByCrs.jspx</page>
+  </view>
   <control-flow-rule id="__2">
     <from-activity-id>*</from-activity-id>
     <control-flow-case id="__3">
@@ -148,6 +157,18 @@
     <control-flow-case id="__27">
       <from-outcome>scheduleMeddraCompStandard</from-outcome>
       <to-activity-id>MedDRAComponentsReportSheduled</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__25">
+      <from-outcome>autolistedness</from-outcome>
+      <to-activity-id>Autolistedness</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__28">
+      <from-outcome>genPtExpByCrs</from-outcome>
+      <to-activity-id>GeneratePtExportByCrs</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__29">
+      <from-outcome>ptExportbyCrs</from-outcome>
+      <to-activity-id>PtExportByCrs</to-activity-id>
     </control-flow-case>
   </control-flow-rule>
   <managed-bean id="__1">

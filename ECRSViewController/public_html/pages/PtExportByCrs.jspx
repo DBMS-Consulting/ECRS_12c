@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+     <c:set var="ecrsviewcontrollerBundle" value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+    <f:view>
+        <af:document title="PtExportByCrs.jspx" id="d1">
+         <af:resource type="javascript">           
+         function customHandler(event) {
+        var exportCmd = AdfPage.PAGE.findComponentByAbsoluteId("pt1:r1:0:b2");
+            var actionEvent = new AdfActionEvent(exportCmd);
+            actionEvent.forceFullSubmit();
+            actionEvent.noResponseExpected();
+            actionEvent.queue();
+            }
+
+            </af:resource>
+            <af:messages id="m1"/>
+            <af:form id="f1">
+                <af:pageTemplate viewId="/pageTemplate/EcrsTemplate.jspx" value="#{bindings.ptb1}" id="pt1">
+                    <f:facet name="content">
+                    <af:group id="g1">
+                        <div id="loaderId"> </div>
+                            <af:popup id="processingP" contentDelivery="immediate" clientComponent="true">
+                                    <af:dialog id="d2" title="Processing..." type="none" closeIconVisible="false" inlineStyle="text-align:center;" clientComponent="true"
+                                                       modal="true">
+                                            <f:facet name="buttonBar"/>
+                                            <af:panelGroupLayout id="pgl2" layout="vertical" halign="center">
+                                                    <af:spacer width="10" height="10" id="s11"/>
+                                                    <af:outputText value="Selected PT report(s) generation is in progress. Please wait..." id="ot2669"/>
+                                            </af:panelGroupLayout>
+                        </af:dialog>
+                            </af:popup>
+                            <af:region value="#{bindings.PtExportByCrsTF1.regionModel}" id="r1"/>
+                        </af:group>
+                    </f:facet>
+                </af:pageTemplate>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>
+

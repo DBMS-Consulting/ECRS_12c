@@ -2,6 +2,8 @@ package com.novartis.ecrs.model.view;
 
 import com.novartis.ecrs.model.entity.CrsRiskRelationsEOImpl;
 
+import java.math.BigDecimal;
+
 import oracle.jbo.RowIterator;
 import oracle.jbo.RowSet;
 import oracle.jbo.domain.Timestamp;
@@ -14,6 +16,8 @@ import oracle.jbo.server.ViewRowImpl;
 // ---    Warning: Do not modify method signatures of generated methods.
 // ---------------------------------------------------------------------
 public class CrsRiskRelationVORowImpl extends ViewRowImpl {
+
+
     public static final int ENTITY_CRSRISKRELATIONSEO = 0;
 
     /**
@@ -21,251 +25,319 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
      */
     public enum AttributesEnum {
         CrsId {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getCrsId();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setCrsId((Long) value);
             }
         }
         ,
         CrsRiskId {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getCrsRiskId();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setCrsRiskId((Long) value);
             }
         }
         ,
         MqmComment {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getMqmComment();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setMqmComment((String) value);
             }
         }
         ,
         NonMeddraComponentComment {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getNonMeddraComponentComment();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setNonMeddraComponentComment((String) value);
             }
         }
         ,
         SafetyTopicOfInterest {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getSafetyTopicOfInterest();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setSafetyTopicOfInterest((String) value);
             }
         }
         ,
         SocDictContentEntryTs {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getSocDictContentEntryTs();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setSocDictContentEntryTs((Timestamp) value);
             }
         }
         ,
         SocDictContentId {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getSocDictContentId();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setSocDictContentId((Long) value);
             }
         }
         ,
         SocTerm {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getSocTerm();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setSocTerm((String) value);
             }
         }
         ,
         UiVersionNumber {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getUiVersionNumber();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setUiVersionNumber((Integer)value);
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
         RiskPurposeList {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getRiskPurposeList();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setRiskPurposeList((String) value);
             }
         }
         ,
         CrsEffectiveDt {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getCrsEffectiveDt();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setCrsEffectiveDt((Timestamp)value);
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
         DomainId {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getDomainId();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setDomainId((Integer) value);
             }
         }
         ,
         CreatedBy {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getCreatedBy();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setCreatedBy((String)value);
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
         CreationTs {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getCreationTs();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setCreationTs((Timestamp)value);
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
         ModifiedBy {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getModifiedBy();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setModifiedBy((String)value);
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
         ModificationTs {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getModificationTs();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
-                obj.setModificationTs((Timestamp)value);
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
             }
         }
         ,
         SearchCriteriaDetails {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getSearchCriteriaDetails();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setSearchCriteriaDetails((String) value);
             }
         }
         ,
         Adr {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getAdr();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setAdr((String) value);
             }
         }
         ,
         SearchAppliedTo {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getSearchAppliedTo();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setSearchAppliedTo((String) value);
             }
         }
         ,
+        GenderCode {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getGenderCode();
+            }
+
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setGenderCode((String) value);
+            }
+        }
+        ,
+        CrsAgeGrpId {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getCrsAgeGrpId();
+            }
+
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setCrsAgeGrpId((BigDecimal) value);
+            }
+        }
+        ,
+        CrsAgeSubGrpId {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getCrsAgeSubGrpId();
+            }
+
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setCrsAgeSubGrpId((String) value);
+            }
+        }
+        ,
         CrsRiskDefinitionsVO {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getCrsRiskDefinitionsVO();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         SocLOVO {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getSocLOVO();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         DomainOtherLOVVA {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getDomainOtherLOVVA();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         ADRVA {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getADRVA();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ,
         SearchAppliedToVA {
-            public Object get(CrsRiskRelationVORowImpl obj) {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
                 return obj.getSearchAppliedToVA();
             }
 
-            public void put(CrsRiskRelationVORowImpl obj, Object value) {
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        GenderVA {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getGenderVA();
+            }
+
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        AgeGroupVA {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getAgeGroupVA();
+            }
+
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        AgeSubGroupVA {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getAgeSubGroupVA();
+            }
+
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        DomainLOVVA {
+            protected Object get(CrsRiskRelationVORowImpl obj) {
+                return obj.getDomainLOVVA();
+            }
+
+            protected void put(CrsRiskRelationVORowImpl obj, Object value) {
                 obj.setAttributeInternal(index(), value);
             }
         }
         ;
         private static AttributesEnum[] vals = null;
+        ;
         private static int firstIndex = 0;
 
-        public abstract Object get(CrsRiskRelationVORowImpl object);
-
-        public abstract void put(CrsRiskRelationVORowImpl object, Object value);
 
         public int index() {
             return AttributesEnum.firstIndex() + ordinal();
@@ -285,7 +357,14 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
             }
             return vals;
         }
+
+
+        protected abstract Object get(CrsRiskRelationVORowImpl object);
+
+        protected abstract void put(CrsRiskRelationVORowImpl object, Object value);
     }
+
+
     public static final int CRSID = AttributesEnum.CrsId.index();
     public static final int CRSRISKID = AttributesEnum.CrsRiskId.index();
     public static final int MQMCOMMENT = AttributesEnum.MqmComment.index();
@@ -305,11 +384,18 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
     public static final int SEARCHCRITERIADETAILS = AttributesEnum.SearchCriteriaDetails.index();
     public static final int ADR = AttributesEnum.Adr.index();
     public static final int SEARCHAPPLIEDTO = AttributesEnum.SearchAppliedTo.index();
+    public static final int GENDERCODE = AttributesEnum.GenderCode.index();
+    public static final int CRSAGEGRPID = AttributesEnum.CrsAgeGrpId.index();
+    public static final int CRSAGESUBGRPID = AttributesEnum.CrsAgeSubGrpId.index();
     public static final int CRSRISKDEFINITIONSVO = AttributesEnum.CrsRiskDefinitionsVO.index();
     public static final int SOCLOVO = AttributesEnum.SocLOVO.index();
     public static final int DOMAINOTHERLOVVA = AttributesEnum.DomainOtherLOVVA.index();
     public static final int ADRVA = AttributesEnum.ADRVA.index();
     public static final int SEARCHAPPLIEDTOVA = AttributesEnum.SearchAppliedToVA.index();
+    public static final int GENDERVA = AttributesEnum.GenderVA.index();
+    public static final int AGEGROUPVA = AttributesEnum.AgeGroupVA.index();
+    public static final int AGESUBGROUPVA = AttributesEnum.AgeSubGroupVA.index();
+    public static final int DOMAINLOVVA = AttributesEnum.DomainLOVVA.index();
 
     /**
      * This is the default constructor (do not remove).
@@ -461,13 +547,6 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
         return (Integer) getAttributeInternal(UIVERSIONNUMBER);
     }
 
-    /**
-     * Sets <code>value</code> as attribute value for UI_VERSION_NUMBER using the alias name UiVersionNumber.
-     * @param value value to set the UI_VERSION_NUMBER
-     */
-    public void setUiVersionNumber(Integer value) {
-        setAttributeInternal(UIVERSIONNUMBER, value);
-    }
 
     /**
      * Gets the attribute value for RISK_PURPOSE_LIST using the alias name RiskPurposeList.
@@ -493,13 +572,6 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
         return (Timestamp) getAttributeInternal(CRSEFFECTIVEDT);
     }
 
-    /**
-     * Sets <code>value</code> as attribute value for CRS_EFFECTIVE_DT using the alias name CrsEffectiveDt.
-     * @param value value to set the CRS_EFFECTIVE_DT
-     */
-    public void setCrsEffectiveDt(Timestamp value) {
-        setAttributeInternal(CRSEFFECTIVEDT, value);
-    }
 
     /**
      * Gets the attribute value for DOMAIN_ID using the alias name DomainId.
@@ -525,13 +597,6 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(CREATEDBY);
     }
 
-    /**
-     * Sets <code>value</code> as attribute value for CREATED_BY using the alias name CreatedBy.
-     * @param value value to set the CREATED_BY
-     */
-    public void setCreatedBy(String value) {
-        setAttributeInternal(CREATEDBY, value);
-    }
 
     /**
      * Gets the attribute value for CREATION_TS using the alias name CreationTs.
@@ -541,13 +606,6 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
         return (Timestamp) getAttributeInternal(CREATIONTS);
     }
 
-    /**
-     * Sets <code>value</code> as attribute value for CREATION_TS using the alias name CreationTs.
-     * @param value value to set the CREATION_TS
-     */
-    public void setCreationTs(Timestamp value) {
-        setAttributeInternal(CREATIONTS, value);
-    }
 
     /**
      * Gets the attribute value for MODIFIED_BY using the alias name ModifiedBy.
@@ -557,13 +615,6 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
         return (String) getAttributeInternal(MODIFIEDBY);
     }
 
-    /**
-     * Sets <code>value</code> as attribute value for MODIFIED_BY using the alias name ModifiedBy.
-     * @param value value to set the MODIFIED_BY
-     */
-    public void setModifiedBy(String value) {
-        setAttributeInternal(MODIFIEDBY, value);
-    }
 
     /**
      * Gets the attribute value for MODIFICATION_TS using the alias name ModificationTs.
@@ -573,13 +624,6 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
         return (Timestamp) getAttributeInternal(MODIFICATIONTS);
     }
 
-    /**
-     * Sets <code>value</code> as attribute value for MODIFICATION_TS using the alias name ModificationTs.
-     * @param value value to set the MODIFICATION_TS
-     */
-    public void setModificationTs(Timestamp value) {
-        setAttributeInternal(MODIFICATIONTS, value);
-    }
 
     /**
      * Gets the attribute value for SEARCH_CRITERIA_DETAILS using the alias name SearchCriteriaDetails.
@@ -629,6 +673,55 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
         setAttributeInternal(SEARCHAPPLIEDTO, value);
     }
 
+
+    /**
+     * Gets the attribute value for GENDER_CODE using the alias name GenderCode.
+     * @return the GENDER_CODE
+     */
+    public String getGenderCode() {
+        return (String) getAttributeInternal(GENDERCODE);
+    }
+
+    /**
+     * Sets <code>value</code> as attribute value for GENDER_CODE using the alias name GenderCode.
+     * @param value value to set the GENDER_CODE
+     */
+    public void setGenderCode(String value) {
+        setAttributeInternal(GENDERCODE, value);
+    }
+
+    /**
+     * Gets the attribute value for CRS_AGE_GRP_ID using the alias name CrsAgeGrpId.
+     * @return the CRS_AGE_GRP_ID
+     */
+    public BigDecimal getCrsAgeGrpId() {
+        return (BigDecimal) getAttributeInternal(CRSAGEGRPID);
+    }
+
+    /**
+     * Sets <code>value</code> as attribute value for CRS_AGE_GRP_ID using the alias name CrsAgeGrpId.
+     * @param value value to set the CRS_AGE_GRP_ID
+     */
+    public void setCrsAgeGrpId(BigDecimal value) {
+        setAttributeInternal(CRSAGEGRPID, value);
+    }
+
+    /**
+     * Gets the attribute value for CRS_AGE_SUB_GRP_ID using the alias name CrsAgeSubGrpId.
+     * @return the CRS_AGE_SUB_GRP_ID
+     */
+    public String getCrsAgeSubGrpId() {
+        return (String) getAttributeInternal(CRSAGESUBGRPID);
+    }
+
+    /**
+     * Sets <code>value</code> as attribute value for CRS_AGE_SUB_GRP_ID using the alias name CrsAgeSubGrpId.
+     * @param value value to set the CRS_AGE_SUB_GRP_ID
+     */
+    public void setCrsAgeSubGrpId(String value) {
+        setAttributeInternal(CRSAGESUBGRPID, value);
+    }
+
     /**
      * Gets the associated <code>RowIterator</code> using master-detail link CrsRiskDefinitionsVO.
      */
@@ -662,6 +755,34 @@ public class CrsRiskRelationVORowImpl extends ViewRowImpl {
      */
     public RowSet getSearchAppliedToVA() {
         return (RowSet) getAttributeInternal(SEARCHAPPLIEDTOVA);
+    }
+
+    /**
+     * Gets the view accessor <code>RowSet</code> GenderVA.
+     */
+    public RowSet getGenderVA() {
+        return (RowSet) getAttributeInternal(GENDERVA);
+    }
+
+    /**
+     * Gets the view accessor <code>RowSet</code> AgeGroupVA.
+     */
+    public RowSet getAgeGroupVA() {
+        return (RowSet) getAttributeInternal(AGEGROUPVA);
+    }
+
+    /**
+     * Gets the view accessor <code>RowSet</code> AgeSubGroupVA.
+     */
+    public RowSet getAgeSubGroupVA() {
+        return (RowSet) getAttributeInternal(AGESUBGROUPVA);
+    }
+
+    /**
+     * Gets the view accessor <code>RowSet</code> DomainLOVVA.
+     */
+    public RowSet getDomainLOVVA() {
+        return (RowSet) getAttributeInternal(DOMAINLOVVA);
     }
 
     /**

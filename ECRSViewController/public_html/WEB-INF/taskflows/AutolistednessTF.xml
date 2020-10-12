@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="AutolistednessTF">
+    <default-activity>searchAutolistedness</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name>autolistedness</managed-bean-name>
+      <managed-bean-class>com.novartis.ecrs.ui.bean.AutolistednessBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <exception-handler>exceptionHandler</exception-handler>
+    <view id="exceptionHandler">
+      <page>/ui/pageFragments/exception/exceptionHandler.jsff</page>
+    </view>
+    <view id="searchAutolistedness">
+      <page>/ui/pageFragments/autolistedness/searchAutolistedness.jsff</page>
+      <train-stop>
+        <display-name>Search</display-name>
+      </train-stop>
+    </view>
+    <view id="autolistednessDetails">
+      <page>/ui/pageFragments/autolistedness/autolistednessDetails.jsff</page>
+       <train-stop>
+        <display-name>Details</display-name>
+      </train-stop>
+    </view>
+    <parent-action id="home">
+      <parent-outcome>home</parent-outcome>
+    </parent-action>
+    <train/>
+    <control-flow-rule id="__1">
+      <from-activity-id>searchAutolistedness</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>home</from-outcome>
+        <to-activity-id>home</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

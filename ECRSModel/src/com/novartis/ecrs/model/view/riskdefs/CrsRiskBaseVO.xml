@@ -4,7 +4,7 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskBaseVO"
-  Version="12.2.1.12.24"
+  Version="12.2.1.22.48"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full">
@@ -22,57 +22,60 @@
     Kind="viewcriteria"
     Type="java.math.BigInteger"
     DefaultValue="8"/>
-  <SQLQuery><![CDATA[SELECT CRS_ID,   
-CRS_RISK_ID,   
-CRS_NAME,   
-DOMAIN_NAME DATA_DOMAIN,   
---DATABASE_LIST,   
-MQM_COMMENT,   
-NON_MEDDRA_COMPONENT_COMMENT,   
-RISK_PURPOSE_CD_FLAG,    
-RISK_PURPOSE_DS_FLAG,    
-RISK_PURPOSE_ER_FLAG,    
-RISK_PURPOSE_IB_FLAG,    
-RISK_PURPOSE_MI_FLAG,    
-RISK_PURPOSE_OS_FLAG,    
-RISK_PURPOSE_PS_FLAG,    
-RISK_PURPOSE_RM_FLAG,    
-RISK_PURPOSE_SP_FLAG,  
-SAFETY_TOPIC_OF_INTEREST,    
-SOC_DICT_CONTENT_ENTRY_TS,    
-SOC_DICT_CONTENT_ID,    
-SOC_TERM,    
-CRS_RISK_DEFN_ID,   
-MEDDRA_CODE,    
-MEDDRA_LEVEL,    
-MEDDRA_QUALIFIER,    
-MEDDRA_TERM,    
-MEDDRA_VERSION,    
-MEDDRA_VERSION_DATE,    
-SEARCH_CRITERIA_DETAILS,    
-TMS_DICT_CONTENT_ENTRY_TS,    
-TMS_DICT_CONTENT_ID,    
-TMS_END_TS,    
-TMS_UPDATE_FLAG,    
-TMS_UPDATE_FLAG_DT,   
-SEARCH_APPLIED_TO,  
-ADR, 
-DECODE(RISK_PURPOSE_SP_FLAG, 'Y', 'SP,') || DECODE(RISK_PURPOSE_DS_FLAG, 'Y', 'DS,') ||   
-DECODE(RISK_PURPOSE_RM_FLAG, 'Y', 'RM,') || DECODE(RISK_PURPOSE_PS_FLAG, 'Y', 'PS,') ||   
-DECODE(RISK_PURPOSE_CD_FLAG, 'C', 'CD,', 'T', 'CD,') || DECODE(RISK_PURPOSE_IB_FLAG, 'Y', 'IB,') ||   
-DECODE(RISK_PURPOSE_OS_FLAG, 'Y', 'OS,') || DECODE(RISK_PURPOSE_MI_FLAG, 'Y', 'MI,') ||   
-DECODE(RISK_PURPOSE_ER_FLAG, 'Y', 'ER,') || DECODE(RISK_PURPOSE_UD_FLAG, 'Y', 'UD,') ||   
-DECODE(RISK_PURPOSE_A1_FLAG, 'Y', 'A1,') || DECODE(RISK_PURPOSE_A2_FLAG, 'Y', 'A2,') AS RISK_PURPOSE_LIST,   
-MEDDRA_DICT,   
-CRS_EFFECTIVE_DT_REL,   
-CRS_EFFECTIVE_DT_DEF CRS_EFFECTIVE_DT_DEF,   
-MEDDRA_EXTENSION,   
-MEDDRA_QUALIFIER_UPD_FLAG,   
-CRS_QUALIFIER,   
-STATE_ID,   
-RISK_PURPOSE_UD_FLAG,   
-RISK_PURPOSE_A1_FLAG,   
-RISK_PURPOSE_A2_FLAG   
+  <SQLQuery><![CDATA[SELECT CRS_ID,          
+CRS_RISK_ID,          
+CRS_NAME,          
+DOMAIN_NAME DATA_DOMAIN,          
+--DATABASE_LIST,          
+MQM_COMMENT,          
+NON_MEDDRA_COMPONENT_COMMENT,          
+RISK_PURPOSE_CD_FLAG,           
+RISK_PURPOSE_DS_FLAG,           
+RISK_PURPOSE_ER_FLAG,           
+RISK_PURPOSE_IB_FLAG,           
+RISK_PURPOSE_MI_FLAG,           
+RISK_PURPOSE_OS_FLAG,           
+RISK_PURPOSE_PS_FLAG,           
+RISK_PURPOSE_RM_FLAG,           
+RISK_PURPOSE_SP_FLAG,         
+SAFETY_TOPIC_OF_INTEREST,           
+SOC_DICT_CONTENT_ENTRY_TS,           
+SOC_DICT_CONTENT_ID,           
+SOC_TERM,           
+CRS_RISK_DEFN_ID,          
+MEDDRA_CODE,           
+MEDDRA_LEVEL,           
+MEDDRA_QUALIFIER,           
+MEDDRA_TERM,           
+MEDDRA_VERSION,           
+MEDDRA_VERSION_DATE,           
+SEARCH_CRITERIA_DETAILS,           
+TMS_DICT_CONTENT_ENTRY_TS,           
+TMS_DICT_CONTENT_ID,           
+TMS_END_TS,           
+TMS_UPDATE_FLAG,           
+TMS_UPDATE_FLAG_DT,          
+SEARCH_APPLIED_TO,         
+ADR,        
+DECODE(RISK_PURPOSE_SP_FLAG, 'Y', 'SP,') || DECODE(RISK_PURPOSE_DS_FLAG, 'Y', 'DS,') ||          
+DECODE(RISK_PURPOSE_RM_FLAG, 'Y', 'RM,') || DECODE(RISK_PURPOSE_PS_FLAG, 'Y', 'PS,') ||          
+DECODE(RISK_PURPOSE_CD_FLAG, 'C', 'CD,', 'T', 'CD,') || DECODE(RISK_PURPOSE_IB_FLAG, 'Y', 'IB,') ||          
+DECODE(RISK_PURPOSE_OS_FLAG, 'Y', 'OS,') || DECODE(RISK_PURPOSE_MI_FLAG, 'Y', 'MI,') ||          
+DECODE(RISK_PURPOSE_ER_FLAG, 'Y', 'ER,') || DECODE(RISK_PURPOSE_UD_FLAG, 'Y', 'UD,') ||          
+DECODE(RISK_PURPOSE_A1_FLAG, 'Y', 'A1,') || DECODE(RISK_PURPOSE_A2_FLAG, 'Y', 'A2,') AS RISK_PURPOSE_LIST,          
+MEDDRA_DICT,          
+CRS_EFFECTIVE_DT_REL,          
+CRS_EFFECTIVE_DT_DEF CRS_EFFECTIVE_DT_DEF,          
+MEDDRA_EXTENSION,          
+MEDDRA_QUALIFIER_UPD_FLAG,          
+CRS_QUALIFIER,          
+STATE_ID,          
+RISK_PURPOSE_UD_FLAG,          
+RISK_PURPOSE_A1_FLAG,          
+RISK_PURPOSE_A2_FLAG,       
+GENDER,       
+AGE,     
+PEDIATRIC_GROUP    
 FROM CRS_RISK_RELATIONS_FLAT_VW]]></SQLQuery>
   <ViewAttribute
     Name="CrsId"
@@ -698,6 +701,51 @@ FROM CRS_RISK_RELATIONS_FLAT_VW]]></SQLQuery>
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Gender"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="GENDER"
+    Expression="GENDER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Age"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="AGE"
+    Expression="AGE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PediatricGroup"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PEDIATRIC_GROUP"
+    Expression="PEDIATRIC_GROUP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
     </DesignTime>
   </ViewAttribute>
   <ViewCriteria

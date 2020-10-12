@@ -1132,13 +1132,90 @@ public class CRSVersionCompareVORowImpl extends ViewRowImpl {
                 obj.setAttributeInternal(index(), value);
             }
         }
+        ,
+        EarliestGender {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getEarliestGender();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        LatestGender {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getLatestGender();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        EarliestGenderCodeColor {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getEarliestGenderCodeColor();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        LatestGenderCodeColor {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getLatestGenderCodeColor();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        EarliestCombAgeSubGrp {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getEarliestCombAgeSubGrp();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        LatestCombAgeSubGrp {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getLatestCombAgeSubGrp();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        EarliestCombAgeSubGrpClr {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getEarliestCombAgeSubGrpClr();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        LatestCombAgeSubGrpClr {
+            protected Object get(CRSVersionCompareVORowImpl obj) {
+                return obj.getLatestCombAgeSubGrpClr();
+            }
+
+            protected void put(CRSVersionCompareVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
         ;
         private static AttributesEnum[] vals = null;
         private static final int firstIndex = 0;
 
-        protected abstract Object get(CRSVersionCompareVORowImpl object);
-
-        protected abstract void put(CRSVersionCompareVORowImpl object, Object value);
 
         protected int index() {
             return AttributesEnum.firstIndex() + ordinal();
@@ -1158,6 +1235,11 @@ public class CRSVersionCompareVORowImpl extends ViewRowImpl {
             }
             return vals;
         }
+
+
+        protected abstract Object get(CRSVersionCompareVORowImpl object);
+
+        protected abstract void put(CRSVersionCompareVORowImpl object, Object value);
     }
 
 
@@ -1273,6 +1355,14 @@ public class CRSVersionCompareVORowImpl extends ViewRowImpl {
     public static final int LATESTSEARCHAPPLIEDTO = AttributesEnum.LatestSearchAppliedTo.index();
     public static final int LATESTSEARCHAPPLIEDTOCOLOR = AttributesEnum.LatestSearchAppliedToColor.index();
     public static final int EARLIESTSEARCHAPPLIEDTOCLR = AttributesEnum.EarliestSearchAppliedToClr.index();
+    public static final int EARLIESTGENDER = AttributesEnum.EarliestGender.index();
+    public static final int LATESTGENDER = AttributesEnum.LatestGender.index();
+    public static final int EARLIESTGENDERCODECOLOR = AttributesEnum.EarliestGenderCodeColor.index();
+    public static final int LATESTGENDERCODECOLOR = AttributesEnum.LatestGenderCodeColor.index();
+    public static final int EARLIESTCOMBAGESUBGRP = AttributesEnum.EarliestCombAgeSubGrp.index();
+    public static final int LATESTCOMBAGESUBGRP = AttributesEnum.LatestCombAgeSubGrp.index();
+    public static final int EARLIESTCOMBAGESUBGRPCLR = AttributesEnum.EarliestCombAgeSubGrpClr.index();
+    public static final int LATESTCOMBAGESUBGRPCLR = AttributesEnum.LatestCombAgeSubGrpClr.index();
 
     /**
      * This is the default constructor (do not remove).
@@ -2176,6 +2266,70 @@ public class CRSVersionCompareVORowImpl extends ViewRowImpl {
      */
     public String getEarliestSearchAppliedToClr() {
         return (String) getAttributeInternal(EARLIESTSEARCHAPPLIEDTOCLR);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute EarliestGender.
+     * @return the EarliestGender
+     */
+    public String getEarliestGender() {
+        return (String) getAttributeInternal(EARLIESTGENDER);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute LatestGender.
+     * @return the LatestGender
+     */
+    public String getLatestGender() {
+        return (String) getAttributeInternal(LATESTGENDER);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute EarliestGenderCodeColor.
+     * @return the EarliestGenderCodeColor
+     */
+    public String getEarliestGenderCodeColor() {
+        return (String) getAttributeInternal(EARLIESTGENDERCODECOLOR);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute LatestGenderCodeColor.
+     * @return the LatestGenderCodeColor
+     */
+    public String getLatestGenderCodeColor() {
+        return (String) getAttributeInternal(LATESTGENDERCODECOLOR);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute EarliestCombAgeSubGrp.
+     * @return the EarliestCombAgeSubGrp
+     */
+    public String getEarliestCombAgeSubGrp() {
+        return (String) getAttributeInternal(EARLIESTCOMBAGESUBGRP);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute LatestCombAgeSubGrp.
+     * @return the LatestCombAgeSubGrp
+     */
+    public String getLatestCombAgeSubGrp() {
+        return (String) getAttributeInternal(LATESTCOMBAGESUBGRP);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute EarliestCombAgeSubGrpClr.
+     * @return the EarliestCombAgeSubGrpClr
+     */
+    public String getEarliestCombAgeSubGrpClr() {
+        return (String) getAttributeInternal(EARLIESTCOMBAGESUBGRPCLR);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute LatestCombAgeSubGrpClr.
+     * @return the LatestCombAgeSubGrpClr
+     */
+    public String getLatestCombAgeSubGrpClr() {
+        return (String) getAttributeInternal(LATESTCOMBAGESUBGRPCLR);
     }
 
     /**

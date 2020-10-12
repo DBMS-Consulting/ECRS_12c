@@ -93,6 +93,15 @@
           usageId="com_novartis_ecrs_view_ManageCRSTF_ManageCRSTF_executeCrsVersionPublishedPendingComparePageDef"/>
     <page path="/pages/reports/MedDRAComponentsReportSheduled.jspx"
           usageId="com_novartis_ecrs_view_MedDRAComponentsReportSheduledPageDef"/>
+    <page path="/ui/pageFragments/autolistedness/searchAutolistedness.jsff"
+          usageId="com_novartis_ecrs_view_searchAutolistednessPageDef"/>
+    <page path="/pages/Autolistedness.jspx" usageId="com_novartis_ecrs_view_AutolistednessPageDef"/>
+    <page path="/ui/pageFragments/autolistedness/autolistednessDetails.jsff"
+          usageId="com_novartis_ecrs_view_autolistednessDetailsPageDef"/>
+    <page path="/pages/GeneratePtExportByCrs.jspx" usageId="com_novartis_ecrs_view_GeneratePtExportByCrsPageDef"/>
+    <page path="/ui/pageFragments/reports/GeneratePtExportByCrs.jsff"
+          usageId="com_novartis_ecrs_view_GeneratePtExportByCrsPageDef1"/>
+    <page path="/pages/PtExportByCrs.jspx" usageId="com_novartis_ecrs_view_PtExportByCrsPageDef"/>
   </pageMap>
   <pageDefinitionUsages>
     <page id="com_novartis_ecrs_view_createCRSPageDef"
@@ -176,6 +185,15 @@
           path="taskflows.ManageCRSTF_ManageCRSTF_executeCrsVersionPublishedPendingComparePageDef"/>
     <page id="com_novartis_ecrs_view_MedDRAComponentsReportSheduledPageDef"
           path="pages.reports.MedDRAComponentsReportSheduledPageDef"/>
+    <page id="com_novartis_ecrs_view_searchAutolistednessPageDef"
+          path="ui.pageFragments.autolistedness.searchAutolistednessPageDef"/>
+    <page id="com_novartis_ecrs_view_AutolistednessPageDef" path="pages.AutolistednessPageDef"/>
+    <page id="com_novartis_ecrs_view_autolistednessDetailsPageDef"
+          path="ui.pageFragments.autolistedness.autolistednessDetailsPageDef"/>
+    <page id="com_novartis_ecrs_view_GeneratePtExportByCrsPageDef" path="pages.GeneratePtExportByCrsPageDef"/>
+    <page id="com_novartis_ecrs_view_GeneratePtExportByCrsPageDef1"
+          path="ui.pageFragments.autolistedness.GeneratePtExportByCrsPageDef"/>
+    <page id="com_novartis_ecrs_view_PtExportByCrsPageDef" path="pages.PtExportByCrsPageDef"/>
   </pageDefinitionUsages>
   <dataControlUsages>
     

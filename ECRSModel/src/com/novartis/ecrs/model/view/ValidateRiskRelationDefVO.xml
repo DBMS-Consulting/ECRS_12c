@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ValidateRiskRelationDefVO"
+  Version="12.2.1.22.48"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  AccessMode="DEFAULT"
+  RowClass="com.novartis.ecrs.model.view.ValidateRiskRelationDefVORowImpl"
+  ComponentClass="com.novartis.ecrs.model.view.ValidateRiskRelationDefVOImpl">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="bindCrsId"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="bindSafetyTopic"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <Variable
+    Name="bindRiskPurpose"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <Variable
+    Name="bindDomain"
+    Kind="viewcriteria"
+    Type="java.lang.Integer"/>
+  <Variable
+    Name="bindTerm"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <Variable
+    Name="bindSearchAppliedTo"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <SQLQuery><![CDATA[SELECT CRRS.CRS_ID,   
+CRRS.SAFETY_TOPIC_OF_INTEREST,   
+UPPER(CRRS.SAFETY_TOPIC_OF_INTEREST),   
+CRRS.RISK_PURPOSE_LIST,   
+CRRS.DOMAIN_ID,   
+CRRS.SEARCH_APPLIED_TO,   
+CRDS.MEDDRA_TERM,  
+CRDS.CRS_RISK_DEFN_ID 
+FROM CRS_RISK_RELATIONS_STG CRRS, CRS_RISK_DEFINITIONS_STG CRDS   
+WHERE CRRS.CRS_RISK_ID = CRDS.CRS_RISK_ID]]></SQLQuery>
+  <ViewAttribute
+    Name="CrsId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="LONGINT"
+    AliasName="CRS_ID"
+    Expression="CRS_ID"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SafetyTopicOfInterest"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SAFETY_TOPIC_OF_INTEREST"
+    Expression="SAFETY_TOPIC_OF_INTEREST"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Selectobjects2"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SELECTOBJECTS2"
+    Expression="SELECTOBJECTS2"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="RiskPurposeList"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="40"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="RISK_PURPOSE_LIST"
+    Expression="RISK_PURPOSE_LIST"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="40"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DomainId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="5"
+    Scale="0"
+    Type="java.lang.Integer"
+    ColumnType="NUMBER"
+    AliasName="DOMAIN_ID"
+    Expression="DOMAIN_ID"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="SearchAppliedTo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SEARCH_APPLIED_TO"
+    Expression="SEARCH_APPLIED_TO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="MeddraTerm"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="300"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="MEDDRA_TERM"
+    Expression="MEDDRA_TERM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="300"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CrsRiskDefnId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Scale="0"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="CRS_RISK_DEFN_ID"
+    Expression="CRS_RISK_DEFN_ID"
+    SQLType="NUMERIC"/>
+  <ViewCriteria
+    Name="ValidateRiskRelationDefVOCriteria"
+    ViewObjectName="com.novartis.ecrs.model.view.ValidateRiskRelationDefVO"
+    Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="ValidateRiskRelationDefVOCriteria_row_0"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="ValidateRiskRelationDefVOCriteria_ValidateRiskRelationDefVOCriteria_row_0_CrsId"
+        ViewAttribute="CrsId"
+        Operator="="
+        Conjunction="AND"
+        Value=":bindCrsId"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="SafetyTopicOfInterest"
+        ViewAttribute="SafetyTopicOfInterest"
+        Operator="="
+        Conjunction="AND"
+        Value=":bindSafetyTopic"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="RiskPurposeList"
+        ViewAttribute="RiskPurposeList"
+        Operator="="
+        Conjunction="AND"
+        Value=":bindRiskPurpose"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="ValidateRiskRelationDefVOCriteria_ValidateRiskRelationDefVOCriteria_row_0_DomainId"
+        ViewAttribute="DomainId"
+        Operator="="
+        Conjunction="AND"
+        Value=":bindDomain"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="SearchAppliedTo"
+        ViewAttribute="SearchAppliedTo"
+        Operator="="
+        Conjunction="AND"
+        Value=":bindSearchAppliedTo"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="ValidateRiskRelationDefVOCriteria_ValidateRiskRelationDefVOCriteria_row_0_MeddraTerm"
+        ViewAttribute="MeddraTerm"
+        Operator="="
+        Conjunction="AND"
+        Value=":bindTerm"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+</ViewObject>

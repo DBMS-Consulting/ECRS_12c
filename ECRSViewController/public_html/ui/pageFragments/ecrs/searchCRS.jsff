@@ -68,6 +68,7 @@
                               shortDesc="#{bindings.CompoundCode.hints.tooltip}"
                               id="soc2" contentStyle="width:170px;"
                                partialTriggers="soc1">
+            <f:selectItem value="" id="si211"/>           
             <f:selectItems value="#{bindings.CompoundCode.items}" id="si2"/>
           </af:selectOneChoice>
           <af:switcher id="s11" defaultFacet="ANONYMOUS"
@@ -228,7 +229,7 @@
                          id="ot12"/>
         </af:column>
         <af:column sortProperty="#{bindings.CrsContentBaseVO.hints.CrsCompoundCode.name}" sortable="false"
-                   headerText="#{bindings.CrsContentBaseVO.hints.CrsCompoundCode.label}" id="c16" width="70">
+                   headerText="#{ecrsviewcontrollerBundle.COMPOUND_CODE}" id="c16" width="70">
           <af:outputText value="#{row.CrsCompoundCode}"
                          shortDesc="#{bindings.CrsContentBaseVO.hints.CrsCompoundCode.tooltip}" id="ot13"/>
         </af:column>

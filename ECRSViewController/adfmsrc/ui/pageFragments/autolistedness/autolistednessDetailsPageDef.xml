@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="autolistednessDetailsPageDef"
+                Package="ui.pageFragments.autolistedness">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AutolistednessVO" RangeSize="25" DataControl="ECRSAppModuleDataControl"
+              id="AutolistednessVOIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="AutolistednessVOIterator" id="CrsId">
+      <AttrNames>
+        <Item Value="CrsId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AutolistednessVOIterator" id="CrsName">
+      <AttrNames>
+        <Item Value="CrsName"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="AutolistednessVOIterator" StaticList="false" Uses="LOV_UpdatableListedness"
+          id="UpdatableListedness" DTSupportsMRU="false" SelectItemValueMode="ListObject"/>
+    <methodAction id="updateAutolistedness" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateAutolistedness" IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.updateAutolistedness.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.updateAutolistedness_updateAutolistedness_dataControl_dataProvider_updateAutolistedness_result"/>
+    <action id="Commit" DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="Rollback" DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+  </bindings>
+</pageDefinition>

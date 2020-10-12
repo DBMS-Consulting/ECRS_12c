@@ -4,7 +4,7 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CRSVersionCompareVO"
-  Version="12.2.1.12.24"
+  Version="12.2.1.22.48"
   InheritPersonalization="merge"
   BindingStyle="OracleName"
   CustomQuery="true"
@@ -51,13 +51,13 @@
     Name="bindEarliestDate"
     Kind="where"
     Type="java.lang.String"/>
-  <SQLQuery><![CDATA[SELECT * FROM TABLE(P_CRS_VERSIONS_COMPARE.f_crs_versions_compare               
-  (puserID      => :bindUserId,           
-    pCrsID         => :bindCrsId,              
-    PEarliestDate   => :bindEarliestDate,              
-    PEarliestReason => :bindEarliestReason,              
-    PLatestDate     => :bindLatestDate,              
-    pLatestReason   => :bindLatestReason              
+  <SQLQuery><![CDATA[SELECT * FROM TABLE(P_CRS_VERSIONS_COMPARE.f_crs_versions_compare                 
+  (puserID      => :bindUserId,             
+    pCrsID         => :bindCrsId,                
+    PEarliestDate   => :bindEarliestDate,                
+    PEarliestReason => :bindEarliestReason,                
+    PLatestDate     => :bindLatestDate,                
+    pLatestReason   => :bindLatestReason                
     ))]]></SQLQuery>
   <ViewAttribute
     Name="UserId"
@@ -1723,6 +1723,126 @@
     ColumnType="VARCHAR2"
     AliasName="EARLIEST_SEARCH_APPLIED_TO_CLR"
     Expression="EARLIEST_SEARCH_APPLIED_TO_CLR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestGender"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="30"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_GENDER"
+    Expression="EARLIEST_GENDER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestGender"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="30"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_GENDER"
+    Expression="LATEST_GENDER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestGenderCodeColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_GENDER_CODE_COLOR"
+    Expression="EARLIEST_GENDER_CODE_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestGenderCodeColor"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_GENDER_CODE_COLOR"
+    Expression="LATEST_GENDER_CODE_COLOR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestCombAgeSubGrp"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_COMB_AGE_SUB_GRP"
+    Expression="EARLIEST_COMB_AGE_SUB_GRP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestCombAgeSubGrp"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="200"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_COMB_AGE_SUB_GRP"
+    Expression="LATEST_COMB_AGE_SUB_GRP"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="200"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EarliestCombAgeSubGrpClr"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EARLIEST_COMB_AGE_SUB_GRP_CLR"
+    Expression="EARLIEST_COMB_AGE_SUB_GRP_CLR"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="1"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LatestCombAgeSubGrpClr"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="1"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LATEST_COMB_AGE_SUB_GRP_CLR"
+    Expression="LATEST_COMB_AGE_SUB_GRP_CLR"
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="1"/>

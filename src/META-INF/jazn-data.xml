@@ -386,6 +386,36 @@
                 <name>/WEB-INF/taskflows/FreezeMedDRA.xml#FreezeMedDRA</name>
                 <actions>view</actions>
               </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>pages.AutolistednessPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>ui.pageFragments.autolistedness.searchAutolistednessPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/taskflows/AutolistednessTF.xml#AutolistednessTF</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>pages.GeneratePtExportByCrsPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>ui.pageFragments.autolistedness.GeneratePtExportByCrsPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/taskflows/GeneratePtExportByCrsTF.xml#GeneratePtExportByCrsTF</name>
+                <actions>view</actions>
+              </permission>
             </permissions>
           </grant>
           <grant>
@@ -431,6 +461,16 @@
               <permission>
                 <class>oracle.adf.share.security.authorization.RegionPermission</class>
                 <name>pages.reports.MedDRAVersionImpactPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>pages.PtExportByCrsPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/taskflows/PtExportByCrsTF.xml#PtExportByCrsTF</name>
                 <actions>view</actions>
               </permission>
             </permissions>
@@ -492,6 +532,36 @@
               <permission>
                 <class>oracle.adf.share.security.authorization.RegionPermission</class>
                 <name>pages.reports.MedDRAComponentsReportSheduledPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>pages.AutolistednessPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>ui.pageFragments.autolistedness.searchAutolistednessPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/taskflows/AutolistednessTF.xml#AutolistednessTF</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>pages.GeneratePtExportByCrsPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.share.security.authorization.RegionPermission</class>
+                <name>ui.pageFragments.autolistedness.GeneratePtExportByCrsPageDef</name>
+                <actions>view</actions>
+              </permission>
+              <permission>
+                <class>oracle.adf.controller.security.TaskFlowPermission</class>
+                <name>/WEB-INF/taskflows/GeneratePtExportByCrsTF.xml#GeneratePtExportByCrsTF</name>
                 <actions>view</actions>
               </permission>
             </permissions>

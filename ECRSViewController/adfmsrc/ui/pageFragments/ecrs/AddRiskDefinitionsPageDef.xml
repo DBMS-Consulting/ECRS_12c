@@ -51,6 +51,8 @@
               DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
     <iterator Binds="MedDraDefinitionExits" RangeSize="25" DataControl="ECRSAppModuleDataControl"
               id="MedDraDefinitionExitsIterator"/>
+    <iterator Binds="DictionaryVVO" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="DictionaryVVOIterator"/>
+    <iterator Binds="AgeSubGroupVO" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="AgeSubGroupVOIterator"/>
   </executables>
   <bindings>
     <attributeValues IterBinding="CrsRiskRelationVOIterator" id="SafetyTopicOfInterest">
@@ -103,6 +105,9 @@
           <Item Value="RiskPurposeUdFlag"/>
           <Item Value="Adr"/>
           <Item Value="SearchAppliedTo"/>
+          <Item Value="Age"/>
+          <Item Value="Gender"/>
+          <Item Value="PediatricGroup"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -304,8 +309,6 @@
         <Item Value="ReleaseStatusFlag"/>
       </AttrNames>
     </attributeValues>
-    <action id="Rollback" InstanceName="ECRSAppModuleDataControl" DataControl="ECRSAppModuleDataControl"
-            RequiresUpdateModel="false" Action="rollbackTransaction"/>
     <tree IterBinding="CopyCrsRiskVOIterator" id="CopyCrsRiskVO">
       <nodeDefinition DefName="com.novartis.ecrs.model.view.riskdefs.CrsRiskBaseVO" Name="CopyCrsRiskVO0">
         <AttrNames>
@@ -352,6 +355,9 @@
           <Item Value="RiskPurposeUdFlag"/>
           <Item Value="Adr"/>
           <Item Value="SearchAppliedTo"/>
+          <Item Value="Gender"/>
+          <Item Value="Age"/>
+          <Item Value="PediatricGroup"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -600,6 +606,9 @@
           <Item Value="Adr"/>
           <Item Value="CrsName"/>
           <Item Value="SearchAppliedTo"/>
+          <Item Value="Gender"/>
+          <Item Value="Age"/>
+          <Item Value="PediatricGroup"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
@@ -790,15 +799,16 @@
         <Item Value="Designee"/>
       </AttrNames>
     </attributeValues>
-    <methodAction id="validateSafetyTopic" InstanceName="data.ECRSAppModuleDataControl.dataProvider"
+    <methodAction id="validateSafetyTopic" InstanceName="bindings.validateSafetyTopic.dataControl.dataProvider"
                   DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="true" Action="invokeMethod"
                   MethodName="validateSafetyTopic" IsViewObjectMethod="false"
-                  ReturnName="data.ECRSAppModuleDataControl.methodResults.validateSafetyTopic_ECRSAppModuleDataControl_dataProvider_validateSafetyTopic_result">
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.validateSafetyTopic_validateSafetyTopic_dataControl_dataProvider_validateSafetyTopic_result">
       <NamedData NDName="crsId" NDType="java.lang.Long"/>
       <NamedData NDName="safetyTopic" NDType="java.lang.String"/>
       <NamedData NDName="rpList" NDType="java.lang.String"/>
       <NamedData NDName="crsRiskId" NDType="java.lang.Long"/>
       <NamedData NDName="domainId" NDType="java.lang.Integer"/>
+      <NamedData NDName="socTerm" NDType="java.lang.String"/>
     </methodAction>
     <attributeValues IterBinding="CrsRiskRelationVOIterator" id="CrsRiskId">
       <AttrNames>
@@ -926,5 +936,58 @@
       <NamedData NDName="domainId" NDType="java.lang.String"/>
       <NamedData NDName="safetyTopicOfInterest" NDType="java.lang.String"/>
     </methodAction>
+    <list IterBinding="DictionaryVVOIterator" ListOperMode="navigation" ListIter="DictionaryVVOIterator"
+          id="DictionaryVVO" DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="Name"/>
+        <Item Value="ShortName"/>
+      </AttrNames>
+    </list>
+    <list IterBinding="CrsRiskRelationVOIterator" StaticList="false" Uses="LOV_GenderCode" id="GenderCode"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <list IterBinding="CrsRiskRelationVOIterator" StaticList="false" Uses="LOV_CrsAgeGrpId" id="CrsAgeGrpId"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="CrsRiskRelationVOIterator" id="CrsAgeGrpId1">
+      <AttrNames>
+        <Item Value="CrsAgeGrpId"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="AgeSubGroupVOIterator" ListOperMode="multiSelect" ListIter="AgeSubGroupVOIterator"
+          id="AgeSubGroupVO" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="CrsAgeSubGrpId"/>
+      </AttrNames>
+      <ListDisplayAttrNames>
+        <Item Value="AgeSubGrpCategory"/>
+      </ListDisplayAttrNames>
+    </list>
+    <attributeValues IterBinding="CrsRiskRelationVOIterator" id="CrsAgeSubGrpId">
+      <AttrNames>
+        <Item Value="CrsAgeSubGrpId"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="CrsRiskRelationsBaseVOIterator" StaticList="false" Uses="LOV_GenderCode" id="GenderCode1"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <list IterBinding="CrsRiskRelationsBaseVOIterator" StaticList="false" Uses="LOV_CrsAgeGrpId" id="CrsAgeGrpId2"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="CrsRiskRelationsBaseVOIterator" id="CrsAgeGrpId3">
+      <AttrNames>
+        <Item Value="CrsAgeGrpId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CrsRiskRelationsBaseVOIterator" id="CrsAgeSubGrpId1">
+      <AttrNames>
+        <Item Value="CrsAgeSubGrpId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="deleteSafetyTopicOfInterest" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteSafetyTopicOfInterest" IsViewObjectMethod="false"
+                  DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.deleteSafetyTopicOfInterest.dataControl.dataProvider">
+      <NamedData NDName="crsId" NDType="java.lang.Long"/>
+      <NamedData NDName="crsRiskId" NDType="java.lang.Long"/>
+    </methodAction>
+    <action id="Rollback" DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
   </bindings>
 </pageDefinition>

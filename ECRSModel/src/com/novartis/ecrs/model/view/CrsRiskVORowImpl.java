@@ -444,13 +444,40 @@ public class CrsRiskVORowImpl extends ViewRowImpl {
                 obj.setAttributeInternal(index(), value);
             }
         }
+        ,
+        Gender {
+            protected Object get(CrsRiskVORowImpl obj) {
+                return obj.getGender();
+            }
+
+            protected void put(CrsRiskVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        Age {
+            protected Object get(CrsRiskVORowImpl obj) {
+                return obj.getAge();
+            }
+
+            protected void put(CrsRiskVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
+        ,
+        PediatricGroup {
+            protected Object get(CrsRiskVORowImpl obj) {
+                return obj.getPediatricGroup();
+            }
+
+            protected void put(CrsRiskVORowImpl obj, Object value) {
+                obj.setAttributeInternal(index(), value);
+            }
+        }
         ;
         private static AttributesEnum[] vals = null;
         private static final int firstIndex = 0;
 
-        protected abstract Object get(CrsRiskVORowImpl object);
-
-        protected abstract void put(CrsRiskVORowImpl object, Object value);
 
         protected int index() {
             return AttributesEnum.firstIndex() + ordinal();
@@ -470,6 +497,10 @@ public class CrsRiskVORowImpl extends ViewRowImpl {
             }
             return vals;
         }
+
+        protected abstract Object get(CrsRiskVORowImpl object);
+
+        protected abstract void put(CrsRiskVORowImpl object, Object value);
     }
 
 
@@ -516,6 +547,9 @@ public class CrsRiskVORowImpl extends ViewRowImpl {
     public static final int RISKPURPOSEUDFLAG = AttributesEnum.RiskPurposeUdFlag.index();
     public static final int RISKPURPOSEA1FLAG = AttributesEnum.RiskPurposeA1Flag.index();
     public static final int RISKPURPOSEA2FLAG = AttributesEnum.RiskPurposeA2Flag.index();
+    public static final int GENDER = AttributesEnum.Gender.index();
+    public static final int AGE = AttributesEnum.Age.index();
+    public static final int PEDIATRICGROUP = AttributesEnum.PediatricGroup.index();
 
     /**
      * This is the default constructor (do not remove).
@@ -865,6 +899,30 @@ public class CrsRiskVORowImpl extends ViewRowImpl {
      */
     public String getRiskPurposeA2Flag() {
         return (String) getAttributeInternal(RISKPURPOSEA2FLAG);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Gender.
+     * @return the Gender
+     */
+    public String getGender() {
+        return (String) getAttributeInternal(GENDER);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute Age.
+     * @return the Age
+     */
+    public String getAge() {
+        return (String) getAttributeInternal(AGE);
+    }
+
+    /**
+     * Gets the attribute value for the calculated attribute PediatricGroup.
+     * @return the PediatricGroup
+     */
+    public String getPediatricGroup() {
+        return (String) getAttributeInternal(PEDIATRICGROUP);
     }
 
     /**

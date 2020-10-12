@@ -4,10 +4,11 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskRelationsBaseVO"
-  Version="12.2.1.12.24"
+  Version="12.2.1.22.48"
   BindingStyle="OracleName"
   CustomQuery="true"
-  PageIterMode="Full">
+  PageIterMode="Full"
+  AccessMode="DEFAULT">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
   </DesignTime>
@@ -24,6 +25,14 @@
   <ViewAccessor
     Name="SocLOVO"
     ViewObjectName="com.novartis.ecrs.model.lov.SocLOVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="GenderVA"
+    ViewObjectName="com.novartis.ecrs.model.lov.GenderVVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="AgeGroupVA"
+    ViewObjectName="com.novartis.ecrs.model.lov.AgeGroupVVO"
     RowLevelBinds="true"/>
   <ListBinding
     Name="LOV_DomainId"
@@ -63,25 +72,62 @@
     </AttrArray>
     <DisplayCriteria/>
   </ListBinding>
-  <SQLQuery><![CDATA[SELECT CrsRiskRelationsEO.CRS_ID,   
-       CrsRiskRelationsEO.CRS_RISK_ID,   
-       CrsRiskRelationsEO.MQM_COMMENT,   
-       CrsRiskRelationsEO.NON_MEDDRA_COMPONENT_COMMENT,   
-       CrsRiskRelationsEO.SAFETY_TOPIC_OF_INTEREST,   
-       CrsRiskRelationsEO.SOC_DICT_CONTENT_ENTRY_TS,   
-       CrsRiskRelationsEO.SOC_DICT_CONTENT_ID,   
-       CrsRiskRelationsEO.SOC_TERM,   
-       CrsRiskRelationsEO.UI_VERSION_NUMBER,   
-       CrsRiskRelationsEO.RISK_PURPOSE_LIST,   
-       CrsRiskRelationsEO.CRS_EFFECTIVE_DT,  
-       CrsRiskRelationsEO.DOMAIN_ID,  
-       CrsRiskRelationsEO.CREATED_BY,  
-       CrsRiskRelationsEO.CREATION_TS,  
-       CrsRiskRelationsEO.MODIFIED_BY,  
-       CrsRiskRelationsEO.MODIFICATION_TS,  
-       CrsRiskRelationsEO.SEARCH_CRITERIA_DETAILS,  
-       CrsRiskRelationsEO.ADR, 
-       CrsRiskRelationsEO.SEARCH_APPLIED_TO 
+  <ListBinding
+    Name="LOV_GenderCode"
+    ListVOName="GenderVA"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="GenderCode"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="GenderCode"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Gender"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_CrsAgeGrpId"
+    ListVOName="AgeGroupVA"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="CrsAgeGrpId"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="CrsAgeGrpId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="AgeCategory"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <SQLQuery><![CDATA[SELECT CrsRiskRelationsEO.CRS_ID,    
+       CrsRiskRelationsEO.CRS_RISK_ID,    
+       CrsRiskRelationsEO.MQM_COMMENT,    
+       CrsRiskRelationsEO.NON_MEDDRA_COMPONENT_COMMENT,    
+       CrsRiskRelationsEO.SAFETY_TOPIC_OF_INTEREST,    
+       CrsRiskRelationsEO.SOC_DICT_CONTENT_ENTRY_TS,    
+       CrsRiskRelationsEO.SOC_DICT_CONTENT_ID,    
+       CrsRiskRelationsEO.SOC_TERM,    
+       CrsRiskRelationsEO.UI_VERSION_NUMBER,    
+       CrsRiskRelationsEO.RISK_PURPOSE_LIST,    
+       CrsRiskRelationsEO.CRS_EFFECTIVE_DT,   
+       CrsRiskRelationsEO.DOMAIN_ID,   
+       CrsRiskRelationsEO.CREATED_BY,   
+       CrsRiskRelationsEO.CREATION_TS,   
+       CrsRiskRelationsEO.MODIFIED_BY,   
+       CrsRiskRelationsEO.MODIFICATION_TS,   
+       CrsRiskRelationsEO.SEARCH_CRITERIA_DETAILS,   
+       CrsRiskRelationsEO.ADR,  
+       CrsRiskRelationsEO.SEARCH_APPLIED_TO, 
+       CrsRiskRelationsEO.GENDER_CODE,      
+       CrsRiskRelationsEO.CRS_AGE_GRP_ID,      
+       CrsRiskRelationsEO.CRS_AGE_SUB_GRP_ID 
 FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
   <ViewAttribute
     Name="CrsId"
@@ -364,6 +410,61 @@ FROM CRS_RISK_RELATIONS CrsRiskRelationsEO]]></SQLQuery>
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="GenderCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="GENDER_CODE"
+    Expression="GENDER_CODE"
+    SQLType="VARCHAR"
+    LOVName="LOV_GenderCode">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CrsAgeGrpId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="CRS_AGE_GRP_ID"
+    Expression="CRS_AGE_GRP_ID"
+    SQLType="NUMERIC"
+    LOVName="LOV_CrsAgeGrpId">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CrsAgeSubGrpId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CRS_AGE_SUB_GRP_ID"
+    Expression="CRS_AGE_SUB_GRP_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
     </DesignTime>
   </ViewAttribute>
   <AttrArray Name="KeyAttributes">

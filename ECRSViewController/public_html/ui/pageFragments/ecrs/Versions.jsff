@@ -223,6 +223,16 @@
                                  shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSoc.tooltip}" id="ot83"
                                  inlineStyle="#{row.EarliestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                 </af:column>
+                  <af:column id="c971" headerText="Demography" align="center">
+                  <af:column id="c981" headerText="Gender">
+                    <af:outputText value="#{row.EarliestGender}" id="ot981"
+                        inlineStyle="#{row.EarliestGenderCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestGenderCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestGenderCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column id="c991" headerText="Age">
+                    <af:outputText value="#{row.LatestCombAgeSubGrp}" id="ot1011"
+                        inlineStyle="#{row.LatestCombAgeSubGrpClr eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestCombAgeSubGrpClr eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestCombAgeSubGrpClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
                 <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestDataDomain.name}" filterable="true"
                            sortable="true" headerText="Data Domain"
                            id="c65">
@@ -400,6 +410,16 @@
                   <af:outputText value="#{row.LatestSoc}"
                                  shortDesc="#{bindings.CrsVersionCompare1.hints.LatestSoc.tooltip}" id="ot62"
                                  inlineStyle="#{row.LatestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                </af:column>
+                  <af:column id="c155" headerText="Demography" align="center">
+                  <af:column id="c158" headerText="Gender">
+                    <af:outputText value="#{row.EarliestGender}" id="ot150"
+                        inlineStyle="#{row.EarliestGenderCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestGenderCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestGenderCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column id="c159" headerText="Age">
+                    <af:outputText value="#{row.LatestCombAgeSubGrp}" id="ot154"
+                        inlineStyle="#{row.LatestCombAgeSubGrpClr eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestCombAgeSubGrpClr eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestCombAgeSubGrpClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
                 </af:column>
                 <af:column sortProperty="#{bindings.CrsVersionCompare1.hints.LatestDataDomain.name}" filterable="true"
                            sortable="true" headerText="Data Domain"
@@ -633,6 +653,16 @@
                                  shortDesc="#{bindings.CRSVersionComparePending.hints.EarliestSoc.tooltip}" id="ot28"
                                  inlineStyle="#{row.EarliestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                 </af:column>
+                  <af:column id="c97" headerText="Demography" align="center">
+                  <af:column id="c98" headerText="Gender">
+                    <af:outputText value="#{row.EarliestGender}" id="ot98"
+                        inlineStyle="#{row.EarliestGenderCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestGenderCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestGenderCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column id="c99" headerText="Age">
+                    <af:outputText value="#{row.LatestCombAgeSubGrp}" id="ot101"
+                        inlineStyle="#{row.LatestCombAgeSubGrpClr eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestCombAgeSubGrpClr eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestCombAgeSubGrpClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
                 <af:column sortProperty="#{bindings.CRSVersionComparePending.hints.EarliestDataDomain.name}" filterable="true"
                            sortable="true" headerText="Data Domain"
                            id="c23">
@@ -812,6 +842,16 @@
                                  shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestSoc.tooltip}" id="ot91"
                                  inlineStyle="#{row.LatestSocColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestSocColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestSocColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                 </af:column>
+                  <af:column id="c151" headerText="Demography" align="center">
+                  <af:column id="c152" headerText="Gender">
+                    <af:outputText value="#{row.LatestGender}" id="ot148"
+                        inlineStyle="#{row.LatestGenderCodeColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestGenderCodeColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestGenderCodeColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                  <af:column id="c153" headerText="Age">
+                    <af:outputText value="#{row.LatestCombAgeSubGrp}" id="ot151"
+                        inlineStyle="#{row.LatestCombAgeSubGrpClr eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestCombAgeSubGrpClr eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestCombAgeSubGrpClr eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                  </af:column>
+                </af:column>
                 <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestDataDomain.name}" filterable="true"
                            sortable="true" headerText="Data Domain"
                            id="c46">
@@ -846,21 +886,21 @@
                 <af:column id="c50" headerText="Safety Topic Definition">
                   <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMeddraTerm.name}" filterable="true"
                              sortable="true" headerText="MedDRA Term"
-                             id="c97">
+                             id="c154">
                     <af:outputText value="#{row.LatestMeddraTerm}"
                                    shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestMeddraTerm.tooltip}" id="ot95"
                                    inlineStyle="#{row.LatestMeddraTermColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraTermColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraTermColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                   </af:column>
                   <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMeddraExtension.name}"
                              filterable="true" sortable="true"
-                             headerText="MedDRA Level" id="c98">
+                             headerText="MedDRA Level" id="c157">
                     <af:outputText value="#{row.LatestMeddraExtension}"
                                    shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestMeddraExtension.tooltip}"
                                    id="ot96" inlineStyle="#{row.LatestMeddraExtensionColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraExtensionColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraExtensionColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                   </af:column>
                   <af:column sortProperty="#{bindings.CRSVersionComparePending1.hints.LatestMeddraQualifier.name}"
                              filterable="true" sortable="true"
-                             headerText="MedDRA Qualifier" id="c99">
+                             headerText="MedDRA Qualifier" id="c156">
                     <af:outputText value="#{row.LatestMeddraQualifier}"
                                    shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestMeddraQualifier.tooltip}"
                                    id="ot97" inlineStyle="#{row.LatestMeddraQualifierColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestMeddraQualifierColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestMeddraQualifierColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
@@ -870,7 +910,7 @@
                              headerText="Comment" id="c100">
                     <af:outputText value="#{row.LatestNonMeddraCompCmt}"
                                    shortDesc="#{bindings.CRSVersionComparePending1.hints.LatestNonMeddraCompCmt.tooltip}"
-                                   id="ot98" inlineStyle="#{row.LatestNonMedCompCmtColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
+                                   id="ot153" inlineStyle="#{row.LatestNonMedCompCmtColor eq 'R' ? 'color: red;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'G' ? 'color: green;font-weight: bold;' : (row.LatestNonMedCompCmtColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                   </af:column>
                 </af:column>
               </af:table>
@@ -905,7 +945,7 @@
                              sortable="true" headerText="SP"
                              id="c103" width="15">
                     <af:outputText value="#{row.EarliestSpp}"
-                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSpp.tooltip}" id="ot101"
+                                   shortDesc="#{bindings.CrsVersionCompare.hints.EarliestSpp.tooltip}" id="ot152"
                                    inlineStyle="#{row.EarliestSppColor eq 'R' ? 'color: red;font-weight: bold;' : (row.EarliestSppColor eq 'G' ? 'color: green;font-weight: bold;' : (row.EarliestSppColor eq 'O' ? 'color: orange;font-weight: bold;' : ''))}"/>
                   </af:column>
                   <af:column sortProperty="#{bindings.CrsVersionCompare.hints.EarliestDsur.name}" filterable="true"

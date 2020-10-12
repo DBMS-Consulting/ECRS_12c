@@ -491,51 +491,75 @@ public class ScheduleBatchJob implements Job{
         String meddraTerm = null;
         String ptName = null;
         String ptCode = null;
-    while (rs.next()) { 
-        System.out.println("----- number of lines processed -----"+idx);
-        safetyTopicOfInterest = rs.getString("safety_topic_of_interest");
-        riskPurposeList = rs.getString("risk_purpose_list");
-        meddraTerm = rs.getString("meddra_term");
-        ptName = rs.getString("pt_name");
-        ptCode = rs.getString("pt_code");
-        row = sheet.createRow(idx); //creating 2nd row
-        if (safetyTopicOfInterest != null){
-            row.createCell(0).setCellValue(safetyTopicOfInterest);
-        }
-        else
-            row.createCell(0).setCellValue("");
-        sheet.autoSizeColumn(0);
-
-        if (riskPurposeList != null){
-            row.createCell(1).setCellValue(riskPurposeList);
-        }
-        else
-            row.createCell(1).setCellValue("");
-        sheet.autoSizeColumn(1);
-
-        if (meddraTerm != null){
-            row.createCell(2).setCellValue(meddraTerm);
-        }
-        else
-            row.createCell(2).setCellValue("");
-        sheet.autoSizeColumn(2);
         
-        if (ptName != null){
-            row.createCell(3).setCellValue(ptName);
-        }
-        else
-            row.createCell(3).setCellValue("");
-        sheet.autoSizeColumn(3);
+        LinkedHashMap columnMap = new LinkedHashMap();
+        columnMap.put("Safety Topic Of Interest", null);
+        columnMap.put("Risk Purpose List", null);
+        columnMap.put("MedDRA Term", null);
+        columnMap.put("PT Name", null);
+        columnMap.put("PT Code", null);
         
-        if (ptCode != null){
-            row.createCell(4).setCellValue(ptCode);
+        List<Map<String,String>> dataList = new ArrayList<Map<String,String>>();
+        while(rs.next()){
+            Map<String,String> dataMap = new HashMap<String,String>();
+            dataMap.put("Safety Topic Of Interest", rs.getString("safety_topic_of_interest"));
+            dataMap.put("Risk Purpose List", rs.getString("risk_purpose_list"));
+            dataMap.put("MedDRA Term", rs.getString("meddra_term"));
+            dataMap.put("PT Name", rs.getString("pt_name"));
+            dataMap.put("PT Code", rs.getString("pt_code"));
+            dataList.add(dataMap);
         }
-        else
-            row.createCell(4).setCellValue("");
-        sheet.autoSizeColumn(4);       
-    //2nd Row ends
-    idx = idx + 1;
-    }
+        CellStyle cellStyle = sheet.getWorkbook().createCellStyle();
+        for(int rowCounter=0; rowCounter< dataList.size(); rowCounter++){                 
+            row = sheet.getRow(idx) != null ? sheet.getRow(idx) : sheet.createRow(idx) ; 
+            ExcelExportUtils excelExportUtils = new ExcelExportUtils();
+            excelExportUtils.writeData1(sheet, row, idx,0, cellStyle, columnMap, dataList, rowCounter,null,null,null); 
+            idx++;          
+        }
+//    while (rs.next()) { 
+//        safetyTopicOfInterest = rs.getString("safety_topic_of_interest");
+//        riskPurposeList = rs.getString("risk_purpose_list");
+//        meddraTerm = rs.getString("meddra_term");
+//        ptName = rs.getString("pt_name");
+//        ptCode = rs.getString("pt_code");
+//        row = sheet.createRow(idx); //creating 2nd row
+//        if (safetyTopicOfInterest != null){
+//            row.createCell(0).setCellValue(safetyTopicOfInterest);
+//        }
+//        else
+//            row.createCell(0).setCellValue("");
+//        sheet.autoSizeColumn(0);
+//
+//        if (riskPurposeList != null){
+//            row.createCell(1).setCellValue(riskPurposeList);
+//        }
+//        else
+//            row.createCell(1).setCellValue("");
+//        sheet.autoSizeColumn(1);
+//
+//        if (meddraTerm != null){
+//            row.createCell(2).setCellValue(meddraTerm);
+//        }
+//        else
+//            row.createCell(2).setCellValue("");
+//        sheet.autoSizeColumn(2);
+//        
+//        if (ptName != null){
+//            row.createCell(3).setCellValue(ptName);
+//        }
+//        else
+//            row.createCell(3).setCellValue("");
+//        sheet.autoSizeColumn(3);
+//        
+//        if (ptCode != null){
+//            row.createCell(4).setCellValue(ptCode);
+//        }
+//        else
+//            row.createCell(4).setCellValue("");
+//        sheet.autoSizeColumn(4);       
+//    //2nd Row ends
+//    idx = idx + 1;
+//    }
         rs.close();
         ps.close();
     }catch(Exception e){

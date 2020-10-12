@@ -4,17 +4,19 @@
 <ViewObject
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskDefinitionsVO"
-  Version="11.1.2.64.36"
+  Version="12.2.1.22.48"
   BindingStyle="OracleName"
   CustomQuery="true"
   PageIterMode="Full"
   ComponentClass="com.novartis.ecrs.model.view.CrsRiskDefinitionsVOImpl"
-  UseGlueCode="false"
   ComponentInterface="com.novartis.ecrs.model.view.common.CrsRiskDefinitionsVO"
-  ClientProxyName="com.novartis.ecrs.model.view.client.CrsRiskDefinitionsVOClient">
+  ClientProxyName="com.novartis.ecrs.model.view.client.CrsRiskDefinitionsVOClient"
+  RowClass="com.novartis.ecrs.model.view.CrsRiskDefinitionsVORowImpl"
+  AccessMode="DEFAULT">
   <DesignTime>
     <Attr Name="_isExpertMode" Value="true"/>
-    <Attr Name="_codeGenFlag2" Value="Coll|VarAccess"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
   </DesignTime>
   <Properties>
     <SchemaBasedProperties>
@@ -265,16 +267,18 @@ FROM
       </SchemaBasedProperties>
     </Properties>
   </ViewAttribute>
-  <ResourceBundle>
-    <PropertiesBundle
-      PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
-  </ResourceBundle>
-  <ClientInterface>
+  <ClientInterface
+    Name="__clientInterface">
     <Method
       Name="undoDelete"
       MethodName="undoDelete">
       <Return
+        Name="_return_type_"
         Type="void"/>
     </Method>
   </ClientInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
+  </ResourceBundle>
 </ViewObject>

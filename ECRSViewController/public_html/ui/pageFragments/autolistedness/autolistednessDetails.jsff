@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="ecrsviewcontrollerBundle" value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:train value="#{controllerContext.currentViewPort.taskFlowContext.trainModel}" id="t1"/>
+    <af:panelHeader text="#{ecrsviewcontrollerBundle.AUTOLISTEDNESS_DETAILS}" id="ph1" size="1" inlineStyle="padding:5px;">
+      <f:facet name="context"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+      <af:panelGroupLayout id="pgl2" layout="horizontal" styleClass="AFStretchWidth" halign="end">
+        <af:commandButton text="#{ecrsviewcontrollerBundle.SAVE}" id="cb1" action="#{pageFlowScope.autolistedness.onSave}"/>
+        <af:commandButton text="#{ecrsviewcontrollerBundle.BACK_0}" id="cb2" immediate="true"
+                          action="#{pageFlowScope.autolistedness.onClickBack}"/>
+        <f:facet name="separator">
+          <af:spacer width="10" height="10" id="s1"/>
+        </f:facet>
+      </af:panelGroupLayout>
+      <af:panelFormLayout id="pfl1">
+        <af:inputText value="#{bindings.CrsId.inputValue}" label="#{bindings.CrsId.hints.label}"
+                      required="#{bindings.CrsId.hints.mandatory}" columns="#{bindings.CrsId.hints.displayWidth}"
+                      maximumLength="#{bindings.CrsId.hints.precision}" shortDesc="#{bindings.CrsId.hints.tooltip}"
+                      id="it1">
+          <f:validator binding="#{bindings.CrsId.validator}"/>
+          <af:convertNumber groupingUsed="false" pattern="#{bindings.CrsId.format}"/>
+        </af:inputText>
+        <af:inputText value="#{bindings.CrsName.inputValue}" label="#{bindings.CrsName.hints.label}"
+                      required="#{bindings.CrsName.hints.mandatory}" columns="#{bindings.CrsName.hints.displayWidth}"
+                      maximumLength="#{bindings.CrsName.hints.precision}" shortDesc="#{bindings.CrsName.hints.tooltip}"
+                      id="it2">
+          <f:validator binding="#{bindings.CrsName.validator}"/>
+        </af:inputText>
+        <af:selectOneChoice value="#{bindings.UpdatableListedness.inputValue}"
+                            label="#{bindings.UpdatableListedness.label}"
+                            required="#{bindings.UpdatableListedness.hints.mandatory}"
+                            shortDesc="#{bindings.UpdatableListedness.hints.tooltip}" id="soc1">
+          <f:selectItems value="#{bindings.UpdatableListedness.items}" id="si1"/>
+          <f:validator binding="#{bindings.UpdatableListedness.validator}"/>
+        </af:selectOneChoice>
+      </af:panelFormLayout>
+    </af:panelHeader>
+      </af:panelGroupLayout>
+</jsp:root>

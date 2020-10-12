@@ -41,7 +41,7 @@ public interface ECRSAppModule extends ApplicationModule {
 
     String retireCrs(Long pCRSId, String pReasonForChange);
 
-    Boolean validateSafetyTopic(Long crsId, String safetyTopic, String rpList, Long crsRiskId, Integer domainId);
+    Boolean validateSafetyTopic(Long crsId, String safetyTopic, String rpList, Long crsRiskId, Integer domainId, String socTerm);
 
     Boolean isCRSVersionInitial(Long crsId);
 
@@ -79,4 +79,12 @@ public interface ECRSAppModule extends ApplicationModule {
     String domainName(Integer domainId);
 
     String executeRelationsExistsQuery(String crsId, String domainId, String safetyTopicOfInterest);
+
+    String updateAutolistedness();
+
+    void executeCrsExportPTCurrentByCrsId(Long crsId);
+
+    String updateCrsPtExport(Long crsId);
+
+    void deleteSafetyTopicOfInterest(Long crsId, Long crsRiskId);
 }

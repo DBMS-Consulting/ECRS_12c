@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="GeneratePtExportByCrsPageDef"
+                Package="ui.pageFragments.autolistedness">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ExportPTRVO" RangeSize="25" DataControl="ECRSAppModuleDataControl" id="ExportPTRVOIterator"/>
+    <searchRegion Criteria="ExportPTRVOCriteria" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ExportPTRVOIterator" id="ExportPTRVOCriteriaQuery"/>
+    <iterator id="CrsExportPTCurrentExportIterator" Binds="CrsExportPTCurrentExport"
+              DataControl="ECRSAppModuleDataControl" RangeSize="25"/>
+  </executables>
+  <bindings>
+    <action id="Rollback" DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <tree IterBinding="ExportPTRVOIterator" id="ExportPTRVO">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.ExportPTRVO" Name="ExportPTRVO0">
+        <AttrNames>
+          <Item Value="SelectRow"/>
+          <Item Value="CrsId"/>
+          <Item Value="CrsName"/>
+          <Item Value="CompoundType"/>
+          <Item Value="CompoundCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="executeCrsExportPTCurrentByCrsId" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeCrsExportPTCurrentByCrsId" IsViewObjectMethod="false"
+                  DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.executeCrsExportPTCurrentByCrsId.dataControl.dataProvider">
+      <NamedData NDName="crsId" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="findRoleDescription" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="findRoleDescription" IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.findRoleDescription.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.findRoleDescription_findRoleDescription_dataControl_dataProvider_findRoleDescription_result">
+      <NamedData NDName="role" NDType="java.lang.String"/>
+      <NamedData NDName="userName" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="updateCrsPtExport" RequiresUpdateModel="true" Action="invokeMethod" MethodName="updateCrsPtExport"
+                  IsViewObjectMethod="false" DataControl="ECRSAppModuleDataControl"
+                  InstanceName="bindings.updateCrsPtExport.dataControl.dataProvider"
+                  ReturnName="data.ECRSAppModuleDataControl.methodResults.updateCrsPtExport_updateCrsPtExport_dataControl_dataProvider_updateCrsPtExport_result">
+      <NamedData NDName="crsId" NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="ExportPTRVOIterator" id="CrsId">
+      <AttrNames>
+        <Item Value="CrsId"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

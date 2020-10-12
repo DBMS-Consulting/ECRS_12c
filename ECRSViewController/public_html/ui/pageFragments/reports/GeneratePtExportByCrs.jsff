@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="ecrsviewcontrollerBundle" value="#{adfBundle['com.novartis.ecrs.view.ECRSViewControllerBundle']}"/>
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+     <af:panelHeader text="#{pageFlowScope.generatePTFlow ? 'Generate PT Export by CRS' : 'PT Export by CRS Reports'}" 
+                     id="ph1" size="1" inlineStyle="padding:5px;">
+      <f:facet name="context"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="toolbar"/>
+      <f:facet name="legend"/>
+      <f:facet name="info"/>
+   <af:panelGroupLayout layout="vertical" id="pgl3">
+    <af:panelGroupLayout layout="vertical" id="pgl4">
+      <af:query id="qryId1" headerText="" disclosed="true"
+                value="#{bindings.ExportPTRVOCriteriaQuery.queryDescriptor}"
+                model="#{bindings.ExportPTRVOCriteriaQuery.queryModel}"
+                queryListener="#{bindings.ExportPTRVOCriteriaQuery.processQuery}"
+                queryOperationListener="#{bindings.ExportPTRVOCriteriaQuery.processQueryOperation}"
+                resultComponentId="::resId1" saveQueryMode="hidden" modeChangeVisible="false"
+                rows="2" maxColumns="2"/>
+     <af:table value="#{bindings.ExportPTRVO.collectionModel}" var="row" rows="#{bindings.ExportPTRVO.rangeSize}"
+               emptyText="#{bindings.ExportPTRVO.viewable ? 'No data to display.' : 'Access Denied.'}"
+               rowBandingInterval="0" fetchSize="#{bindings.ExportPTRVO.rangeSize}" id="resId1" autoHeightRows="15"
+               styleClass="AFStretchWidth" rowSelection="single" columnStretching="last"
+               selectedRowKeys="#{bindings.ExportPTRVO.collectionModel.selectedRow}"
+               selectionListener="#{bindings.ExportPTRVO.collectionModel.makeCurrent}" contentDelivery="immediate">
+      <af:column sortProperty="#{bindings.ExportPTRVO.hints.SelectRow.name}" sortable="true"
+                 headerText="" id="resId1c1"
+                 rendered="#{pageFlowScope.generatePTFlow}">
+        <af:selectBooleanCheckbox value="#{row.bindings.SelectRow.inputValue}"
+                                  label="#{row.bindings.SelectRow.label}"
+                                  required="#{bindings.ExportPTRVO.hints.SelectRow.mandatory}"
+                                  shortDesc="#{bindings.ExportPTRVO.hints.SelectRow.tooltip}"
+                                  id="soc1" autoSubmit="true"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.ExportPTRVO.hints.CrsId.name}" sortable="true"
+                 headerText="#{bindings.ExportPTRVO.hints.CrsId.label}" id="resId1c2">
+       <af:outputText value="#{row.CrsId}" shortDesc="#{bindings.ExportPTRVO.hints.CrsId.tooltip}" id="ot1">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.ExportPTRVO.hints.CrsId.format}"/>
+       </af:outputText>
+      </af:column>
+      <af:column sortProperty="#{bindings.ExportPTRVO.hints.CrsName.name}" sortable="true"
+                 headerText="#{bindings.ExportPTRVO.hints.CrsName.label}" id="resId1c3">
+       <af:outputText value="#{row.CrsName}" shortDesc="#{bindings.ExportPTRVO.hints.CrsName.tooltip}" id="ot2"/>
+      </af:column>
+      <af:column sortProperty="#{bindings.ExportPTRVO.hints.CompoundType.name}" sortable="true"
+                 headerText="#{bindings.ExportPTRVO.hints.CompoundType.label}" id="resId1c4">
+       <af:selectOneChoice value="#{row.bindings.CompoundType.inputValue}" label="#{row.bindings.CompoundType.label}"
+                           required="#{bindings.ExportPTRVO.hints.CompoundType.mandatory}"
+                           shortDesc="#{bindings.ExportPTRVO.hints.CompoundType.tooltip}" readOnly="true" id="soc2">
+        <f:selectItems value="#{row.bindings.CompoundType.items}" id="si2"/>
+        <f:validator binding="#{row.bindings.CompoundType.validator}"/>
+       </af:selectOneChoice>
+      </af:column>
+      <af:column sortProperty="#{bindings.ExportPTRVO.hints.CompoundCode.name}" sortable="true"
+                 headerText="#{bindings.ExportPTRVO.hints.CompoundCode.label}" id="resId1c5">
+       <af:selectOneChoice value="#{row.bindings.CompoundCode.inputValue}" label="#{row.bindings.CompoundCode.label}"
+                           required="#{bindings.ExportPTRVO.hints.CompoundCode.mandatory}"
+                           shortDesc="#{bindings.ExportPTRVO.hints.CompoundCode.tooltip}" readOnly="true" id="soc3">
+        <f:selectItems value="#{row.bindings.CompoundCode.items}" id="si3"/>
+        <f:validator binding="#{row.bindings.CompoundCode.validator}"/>
+       </af:selectOneChoice>
+      </af:column>
+     </af:table>
+    </af:panelGroupLayout>
+   </af:panelGroupLayout>
+   <af:spacer width="10" height="10" id="s2"/>
+   <af:panelGroupLayout id="pgl2" layout="horizontal">
+    <af:button text="Generate PT Report" id="b1" actionListener="#{generatePtExportByCrsBean.generateReport}"
+               rendered="#{pageFlowScope.generatePTFlow}" disabled="#{generatePtExportByCrsBean.disableGenerateButton}"
+               partialTriggers="resId1:soc1">
+    <af:clientListener method="warnAndPreventUserInput" type="action"/>
+    </af:button>
+    <af:button text="Download PT Report" id="b2" visible="false" clientComponent="true" partialSubmit="false">
+     <af:fileDownloadActionListener contentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                                                           filename="PtReport_#{bindings.CrsId}.xls"
+                                                                           method="#{generatePtExportByCrsBean.downloadPtReport}"/>
+    </af:button>
+    <af:button text="Download PT Report" id="b3" actionListener="#{generatePtExportByCrsBean.prepareForDownloadAction}"
+               rendered="#{!pageFlowScope.generatePTFlow}" clientComponent="true">
+    </af:button>
+    <af:spacer id="s1" width="20"/>
+    <af:commandButton text="#{ecrsviewcontrollerBundle.CANCELEXIT}" id="cb2" action="home" immediate="true"
+                          actionListener="#{bindings.Rollback.execute}"/>
+      </af:panelGroupLayout>
+    </af:panelHeader>
+      </af:panelGroupLayout>
+</jsp:root>

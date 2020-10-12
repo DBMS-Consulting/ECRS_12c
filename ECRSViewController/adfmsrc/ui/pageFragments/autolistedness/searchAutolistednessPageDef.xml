@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="searchAutolistednessPageDef"
+                Package="ui.pageFragments.autolistedness">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AutolistednessVO" RangeSize="25" DataControl="ECRSAppModuleDataControl"
+              id="AutolistednessVOIterator"/>
+    <searchRegion Criteria="AutolistednessVOCriteria" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="AutolistednessVOIterator" id="AutolistednessVOCriteriaQuery"/>
+  </executables>
+  <bindings>
+    <action id="Rollback" DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+    <action id="Commit" DataControl="ECRSAppModuleDataControl" RequiresUpdateModel="true" Action="commitTransaction"/>
+    <tree IterBinding="AutolistednessVOIterator" id="AutolistednessVO">
+      <nodeDefinition DefName="com.novartis.ecrs.model.view.AutolistednessVO" Name="AutolistednessVO0">
+        <AttrNames>
+          <Item Value="CrsId"/>
+          <Item Value="CrsName"/>
+          <Item Value="CompoundCode"/>
+          <Item Value="CompoundType"/>
+          <Item Value="CompoundDesc"/>
+          <Item Value="ActiveFlag"/>
+          <Item Value="GenericName"/>
+          <Item Value="TradeName"/>
+          <Item Value="Indication"/>
+          <Item Value="Listedness"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

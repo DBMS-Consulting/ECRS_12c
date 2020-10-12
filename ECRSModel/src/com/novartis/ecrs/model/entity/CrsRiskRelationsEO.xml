@@ -4,7 +4,7 @@
 <Entity
   xmlns="http://xmlns.oracle.com/bc4j"
   Name="CrsRiskRelationsEO"
-  Version="12.2.1.12.24"
+  Version="12.2.1.22.48"
   DBObjectType="TABLE"
   DBObjectName="CRS_RISK_RELATIONS_STG"
   AliasName="CrsRiskRelationsEO"
@@ -397,6 +397,41 @@
       <Attr Name="_DisplaySize" Value="50"/>
     </DesignTime>
   </Attribute>
+  <Attribute
+    Name="GenderCode"
+    Precision="2"
+    ColumnName="GENDER_CODE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="CRS_RISK_RELATIONS_STG"
+    DefaultValue="A"
+    IsNotNull="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CrsAgeGrpId"
+    ColumnName="CRS_AGE_GRP_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="CRS_RISK_RELATIONS_STG"
+    DefaultValue="1"
+    IsNotNull="true"/>
+  <Attribute
+    Name="CrsAgeSubGrpId"
+    Precision="20"
+    ColumnName="CRS_AGE_SUB_GRP_ID"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="CRS_RISK_RELATIONS_STG">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </Attribute>
   <AccessorAttribute
     Name="CrsContentEO"
     Association="com.novartis.ecrs.model.entity.assoc.CrsRiskRelationsIdxCrsFkAssoc"
@@ -435,15 +470,27 @@
     </AttrArray>
   </Key>
   <Key
-    Name="SafetyTopicOfInterestAltKey"
-    AltKey="true">
+    Name="CrsRiskRelationsStgCrsAgeGrpIdCheck">
     <DesignTime>
-      <Attr Name="_isUnique" Value="true"/>
-      <Attr Name="_DBObjectName" Value="CRS_RISK_RELATIONS_STG"/>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"CRS_AGE_GRP_ID" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="CRS_RISK_RELATIONS_STG_CRS_AGE"/>
     </DesignTime>
     <AttrArray Name="Attributes">
-      <Item Value="com.novartis.ecrs.model.entity.CrsRiskRelationsEO.CrsId"/>
-      <Item Value="com.novartis.ecrs.model.entity.CrsRiskRelationsEO.SafetyTopicOfInterest"/>
+      <Item Value="com.novartis.ecrs.model.entity.CrsRiskRelationsEO.CrsAgeGrpId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="CrsRiskRelationsStgGenderCodeCheck">
+    <DesignTime>
+      <Attr Name="_isNotNull" Value="true"/>
+      <Attr Name="_checkCondition" Value='"GENDER_CODE" IS NOT NULL'/>
+      <Attr Name="_isCheck" Value="true"/>
+      <Attr Name="_DBObjectName" Value="CRS_RISK_RELATIONS_STG_GENDER_"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="com.novartis.ecrs.model.entity.CrsRiskRelationsEO.GenderCode"/>
     </AttrArray>
   </Key>
   <Key
@@ -468,17 +515,6 @@
       <Item Value="com.novartis.ecrs.model.entity.CrsRiskRelationsEO.DomainId"/>
     </AttrArray>
   </Key>
-  <validation:UniqueKeyValidationBean
-    Name="CrsRiskRelationsEORule0"
-    ResId="SAFETY_TOPIC_OF_INTEREST_VALUE_ALREADY_EXISTS_FOR_THIS_CRS"
-    KeyName="SafetyTopicOfInterestAltKey">
-    <validation:OnAttributes>
-      <validation:Item
-        Value="CrsId"/>
-      <validation:Item
-        Value="TransSafetyTopic"/>
-    </validation:OnAttributes>
-  </validation:UniqueKeyValidationBean>
   <ResourceBundle>
     <PropertiesBundle
       PropertiesFile="com.novartis.ecrs.model.ECRSModelBundle"/>
